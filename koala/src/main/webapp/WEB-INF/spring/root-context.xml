@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+
+<!-- jang : src/main/webapp/WEB-INF/spring/oracle-config 안에 설정 값들 들어가있습니다. -->
+	<context:property-placeholder location="WEB-INF/spring/oracle-config.properties"/>
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+ 		<property name="driverClassName" value="${koala.driverClassName}"/>
+		<property name="url" value="${koala.url}"/>
+		<property name="username" value="${koala.username}"/>
+ 		<property name="password" value="${koala.password}"/>
+ 	</bean> 
+	
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+ 		<property name="dataSource" ref="dataSource" />
+ 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+ 	</bean> 
+	
+ 	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+ 		<constructor-arg ref="sqlSessionFactory"/>
+ 	</bean>
+</beans>
