@@ -14,6 +14,13 @@
 		<result column="qnaBoard" property="qnaBoard"/>
 	</resultMap>
 	
+	<resultMap type="supporters" id="supportResultSet">
+		<result column="REF_UNO" property="refUno"/>
+		<result column="GITHUB_ID" property="githubId"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<!-- <result column="NICKNAME" property="nickName"/> -->
+	</resultMap>
+	
 	<select id="allCount" resultMap="allTableResultSet">
 	<!-- error -->
 		SELECT
@@ -24,5 +31,9 @@
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'B') bulletinBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'Q') qnaBoard
 		FROM DUAL
+	</select>
+	
+	<select id="selectSupporters" resultMap="supportResultSet">
+		SELECT * FROM SUPPORTERS JOIN MEMBER ON (USER_NO = REF_UNO)
 	</select>
 </mapper>
