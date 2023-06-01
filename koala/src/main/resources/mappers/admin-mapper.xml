@@ -5,6 +5,7 @@
 
 <mapper namespace="adminMapper">
 
+	<!-- 전체 개수를 알기 위해 별도의 VO를 작성 -->
 	<resultMap type="allTable" id="allTableResultSet">
 		<result column="member" property="member"/>
 		<result column="supporters" property="supporters"/>
@@ -13,16 +14,31 @@
 		<result column="bulletinBoard" property="bulletinBoard"/>
 		<result column="qnaBoard" property="qnaBoard"/>
 	</resultMap>
-	
-	<resultMap type="supporters" id="supportResultSet">
+	<!-- 서포터즈 회원 조회 VO >> 특이사항 : resultMap을 상속 -->
+	<resultMap type="supporters" id="supportResultSet" extends="memberMapper.memberResultSet">
 		<result column="REF_UNO" property="refUno"/>
 		<result column="GITHUB_ID" property="githubId"/>
 		<result column="CREATE_DATE" property="createDate"/>
-		<!-- <result column="NICKNAME" property="nickName"/> -->
+	</resultMap>
+	<!-- 대기 중인 라이브러리 및 세팅 개수 조회 VO -->
+	<resultMap type="createSetting" id="createSettingResultSet">
+		<result column="SETTING_NO" property="settingNo"/>
+		<result column="REF_UNO" property="refUno"/>
+		<result column="SETTING_TITLE" property="settingTitle"/>
+		<result column="SETTING_VERSION" property="settingVersion"/>
+		<result column="SORT_DESCRIPTION" property="sortDescription"/>
+		<result column="SETTING_INFO" property="settingInfo"/>
+		<result column="SETTING_CODE" property="settingCode"/>
+		<result column="INPUT" property="input"/>
+		<result column="SETTING_PATH" property="settingPath"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
 	
+	
+	<!-- 관리가 필요한 게시글 개수 및 회원수 -->
 	<select id="allCount" resultMap="allTableResultSet">
-	<!-- error -->
 		SELECT
 			(SELECT COUNT(*) FROM MEMBER WHERE STATUS = 'Y') member,
 			(SELECT COUNT(*) FROM SUPPORTERS S JOIN MEMBER M ON (S.REF_UNO = M.USER_NO) WHERE M.STATUS = 'Y') supporters,
@@ -33,7 +49,14 @@
 		FROM DUAL
 	</select>
 	
+	<!-- 서포터즈 회원 조회 -->
 	<select id="selectSupporters" resultMap="supportResultSet">
 		SELECT * FROM SUPPORTERS JOIN MEMBER ON (USER_NO = REF_UNO)
 	</select>
+	
+	<!-- 아직 상태가 대기중인 라이브러리 및 세팅 -->
+	<select id="selectWaitingLibrary" resultMap="createSettingResultSet">
+		SELECT * FROM CREATE_SETTING WHERE STATUS='W' 
+	</select>
+	
 </mapper>

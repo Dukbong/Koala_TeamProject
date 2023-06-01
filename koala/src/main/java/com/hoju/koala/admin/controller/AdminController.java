@@ -7,9 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
+import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,28 +27,39 @@ public class AdminController {
 	@GetMapping("/main")
 	public String adminMain(Model model) {
 		AllCount all = adminService.selectAllCount();
-		System.out.println(all);
-		model.addAttribute("allCount", all);
-		return "admin/admin";
+		if(all != null) {
+			model.addAttribute("allCount", all);
+			System.out.println(all);
+			return "admin/admin";
+		}else {
+			return "common/nullPoint";
+		}
 	}
 	
 	@GetMapping("/supporters")
-	public String adminSupportes(Model model) {
+	public ModelAndView adminSupportes(ModelAndView mav) {
 		ArrayList<Supporters> supporter = adminService.selectSupporters();
-		
 		// 오류 발생 시 로그 파일로 남기기
 		if(supporter == null) {
 			log.info("SelectSupporters is NullPoint");
-			return "common/nullPoint";
+			return new ModelAndView("common/nullPoint");
 		}
-		
-		model.addAttribute("supporterList",supporter);
-		
+		mav = new ModelAndView("admin/supportersList");
+		mav.addObject("supporterList",supporter);
 		// view로 전달 전 확인 작업
 		for(Supporters s : supporter) {
 			System.out.println(s);
+			System.out.println(s.getNickName()); // 상속받은 메서드를 사용하여 부모 객체의 요소에 접근해서 원하는 값을 가져올 수 있다.
 		}
-		
-		return "admin/supportersList";
+		return mav;
+	}
+	
+	@GetMapping("/waitingLibrary")
+	public String adminWaitingLibrary(Model model) {
+		ArrayList<CreateSetting> libraryList = adminService.selectWaitingLibrary();
+		for(CreateSetting c : libraryList) {
+			System.out.println(c);
+		}
+		return "";
 	}
 }

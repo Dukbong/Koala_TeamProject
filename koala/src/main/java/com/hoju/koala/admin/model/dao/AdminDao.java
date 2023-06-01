@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.admin.model.vo.AllCount;
+import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 
 @Repository
@@ -31,5 +32,19 @@ public class AdminDao {
 			}
 		}
 		return supporter;
+	}
+
+	public ArrayList<CreateSetting> selectWaitingLibrary(SqlSession sqlSession) {
+		ArrayList<CreateSetting> WaitLibrary = new ArrayList<>();
+		List<Object> WaitLibraryList = sqlSession.selectList("adminMapper.selectWaitingLibrary");
+		Iterator<Object> it = WaitLibraryList.iterator();
+		while(it.hasNext()) {
+			Object obj = it.next();
+			if(obj instanceof CreateSetting) {
+				CreateSetting Library = (CreateSetting)obj;
+				WaitLibraryList.add(Library);
+			}
+		}
+		return WaitLibrary;
 	}
 }

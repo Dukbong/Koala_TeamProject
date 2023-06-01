@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hoju.koala.admin.model.dao.AdminDao;
 import com.hoju.koala.admin.model.vo.AllCount;
+import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 
 @Service
@@ -29,6 +30,12 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ArrayList<Supporters> selectSupporters() {
 		return adminDao.selectSupporters(sqlSession);
+	}
+
+
+	@Override
+	public ArrayList<CreateSetting> selectWaitingLibrary() {
+		return adminDao.selectWaitingLibrary(sqlSession);
 	}
 
 }
