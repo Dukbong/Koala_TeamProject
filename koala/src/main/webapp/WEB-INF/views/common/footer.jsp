@@ -91,44 +91,44 @@
                 <a href="#">DownLoad & Copy</a>
             </div>
             <div class="item">
-                <a href="#">ErrorBoard</a>
+                <a href="#">Error_Board</a>
             </div>
             <div class="item">
-                <a href="#">FreeBoard</a>
+                <a href="#">Bulletin_Board</a>
             </div>
             <div class="item">
-                <a href="#">TEST</a>
+                <a href="#">QnA_Board</a>
             </div>
             <div class="item more">
-                <a href="#" style="color: rgb(40, 151, 223);">TEST</a>
+                <a href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
             </div>
         </div>
         <div class="column2">
             <div class="item itemhade">
-                <a href="#">TEST</a>
+                Study
             </div>
             <div class="item">
-                <a href="#">TEST</a>
+                <a href="#">Java</a>
             </div>
             <div class="item">
-                <a href="#">TEST</a>
+                <a href="#">JavaScript</a>
             </div>
             <div class="item">
-                <a href="#">TEST</a>
+                <a href="#">SQL</a>
+            </div>
+            <div class="item">
+                <a href="#">Spring</a>
             </div>
         </div>
         <div class="column3">
             <div class="item itemhade">
-                <a href="#">TEST</a>
+                Reference
             </div>
             <div class="item">
-                <a href="#">TEST</a>
+                <a href="https://start.spring.io/">Spring Initializr</a>
             </div>
             <div class="item">
-                <a href="#">TEST</a>
-            </div>
-            <div class="item">
-                <a href="#">TEST</a>
+                <a href="https://mvnrepository.com/">MVN Repository</a>
             </div>
         </div>
         <div class="column4">

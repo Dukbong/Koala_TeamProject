@@ -19,6 +19,7 @@ public class AdminController {
 	@GetMapping("/main")
 	public String adminMain(Model model) {
 		AllCount all = adminService.selectAllCount();
+		System.out.println(all);
 		model.addAttribute("allCount", all);
 		return "admin/admin";
 	}

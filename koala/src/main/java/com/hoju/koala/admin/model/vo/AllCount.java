@@ -16,4 +16,10 @@ public class AllCount {
 	private int errorBoard;
 	private int bulletinBoard;
 	private int qnaBoard;
+//	<result column="member" property="member"/>
+//	<result column="supporters" property="supporters"/>
+//	<result column="createSetting" property="createSetting"/>
+//	<result column="errorBoard" property="errorBoard"/>
+//	<result column="bulletinBoard" property="bulletinBoard"/>
+//	<result column="qnaBoard" property="qnaBoard"/>
 }
