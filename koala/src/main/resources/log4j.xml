@@ -9,6 +9,13 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
+		<appender name="file" class="org.apache.log4j.FileAppender">
+		<param name="file" value="c:/finalLog/logHistory.txt" />
+		<param name="append" value="true"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd || HH:mm:ss}]%-5p : %c - %m %n" />
+		</layout>
+	</appender>
 	
 	<!-- Application Loggers -->
 	<logger name="com.hoju.koala">
@@ -36,6 +43,8 @@
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+		
 	</root>
 	
 </log4j:configuration>

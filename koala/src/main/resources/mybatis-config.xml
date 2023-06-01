@@ -11,6 +11,7 @@
 	</settings>  
   	
   	<typeAliases>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.Supporters" alias="supporters"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.AllCount" alias="allTable"/>
   	</typeAliases>
   
