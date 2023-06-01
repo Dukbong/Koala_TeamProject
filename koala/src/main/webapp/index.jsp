@@ -7,6 +7,7 @@
 <title></title>
 </head>
 <body>
-	<jsp:forward page="WEB-INF/views/common/mainPage.jsp"/>
+<%-- 	<jsp:forward page="WEB-INF/views/common/mainPage.jsp"/> --%>
+	<h1>안녕</h1>
 </body>
 </html>
