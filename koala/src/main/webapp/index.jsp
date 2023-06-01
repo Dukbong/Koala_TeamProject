@@ -7,6 +7,8 @@
 <title></title>
 </head>
 <body>
-	<jsp:forward page="WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="WEB-INF/views/common/header.jsp"/>
+	<div style="margin:auto; width:80%; height:500px;"></div> <!-- 예시 -->
+	<jsp:include page="WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>
