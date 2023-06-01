@@ -50,7 +50,7 @@
     .column, .column2, .column3, .column4{
         float: left;
     }
-    a{
+    .footerAtag{
         text-decoration: none;
         color: White;
     }
@@ -64,7 +64,7 @@
         font-weight: bold;
         text-align: center;
     }
-    .QuizPlay a {
+    .QuizPlay footerAtag {
         text-decoration-line :underline;
         text-decoration-color: red;
         text-decoration-thickness : 9px;
@@ -77,30 +77,27 @@
         font-size: 1rem;
         color: rgb(149, 149, 149);
     }
-	body{
-		background-color: rgb(23, 23, 23);
-	}
 </style>
 </head>
-<body>
+<body>	
     <div class="footer">
         <div class="columnTotal">
         <div class="column">
             <div class="item itemhade">Why Koala</div>
             <div class="item">
-                <a href="#">DownLoad & Copy</a>
+                <a class=footerAtag href="#">DownLoad & Copy</a>
             </div>
             <div class="item">
-                <a href="#">Error_Board</a>
+                <a class=footerAtag href="#">Error_Board</a>
             </div>
             <div class="item">
-                <a href="#">Bulletin_Board</a>
+                <a class=footerAtag href="#">Bulletin_Board</a>
             </div>
             <div class="item">
-                <a href="#">QnA_Board</a>
+                <a class=footerAtag href="#">QnA_Board</a>
             </div>
             <div class="item more">
-                <a href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
+                <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
             </div>
         </div>
         <div class="column2">
@@ -108,16 +105,16 @@
                 Study
             </div>
             <div class="item">
-                <a href="#">Java</a>
+                <a class=footerAtag href="#">Java</a>
             </div>
             <div class="item">
-                <a href="#">JavaScript</a>
+                <a class=footerAtag href="#">JavaScript</a>
             </div>
             <div class="item">
-                <a href="#">SQL</a>
+                <a class=footerAtag href="#">SQL</a>
             </div>
             <div class="item">
-                <a href="#">Spring</a>
+                <a class=footerAtag href="#">Spring</a>
             </div>
         </div>
         <div class="column3">
@@ -125,10 +122,10 @@
                 Reference
             </div>
             <div class="item">
-                <a href="https://start.spring.io/">Spring Initializr</a>
+                <a class=footerAtag href="https://start.spring.io/">Spring Initializr</a>
             </div>
             <div class="item">
-                <a href="https://mvnrepository.com/">MVN Repository</a>
+                <a class=footerAtag href="https://mvnrepository.com/">MVN Repository</a>
             </div>
         </div>
         <div class="column4">
@@ -136,7 +133,7 @@
                 Multi Quiz
             </div>
             <div class="QuizPlay">
-                <a href="#">Play</a>
+                <a class=footerAtag href="#">Play</a>
             </div>
         </div>
     </div>
