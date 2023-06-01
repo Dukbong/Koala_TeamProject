@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,20 +7,6 @@
 <title></title>
 </head>
 <body>
-<%-- 	<jsp:forward page="WEB-INF/views/common/mainPage.jsp"/> --%>
-	<h1>안녕</h1>
+	<jsp:forward page="WEB-INF/views/common/header.jsp"/>
 </body>
-=======
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title></title>
-</head>
-<body>
-	<%-- <jsp:forward page="WEB-INF/views/common/mainPage.jsp"/> --%>
-</body>
->>>>>>> branch 'main' of https://github.com/1000baamK/Koala_TeamProject.git
 </html>
