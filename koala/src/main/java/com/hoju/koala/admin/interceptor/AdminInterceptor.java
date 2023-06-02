@@ -41,6 +41,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 				}
 			}else {
 				if(result.getCount() >= 5) {
+					
 					if(result.getStatus().equals("N")) {
 						@SuppressWarnings("unused")
 						int block = adminService.blockBlockIpUser(ip);											
@@ -53,6 +54,9 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 					System.out.println(result.getCount());
 				}
 			}
+			System.out.println(result.getCount());
+			System.out.println(result.getIp());
+			System.out.println(result.getStatus());
 			session.setAttribute("alertMsg", "부적절한 접근자로 구분되었습니다.\n남은 경고횟수 : " + 1 + "회 입니다.");
 //			return false;
 			return true; // 테스트
