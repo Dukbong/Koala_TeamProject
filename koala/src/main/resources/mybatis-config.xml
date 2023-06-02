@@ -11,12 +11,9 @@
 	</settings>  
   	
   	<typeAliases>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.Supporters" alias="supporters"/>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.AllCount" alias="allTable"/>
   	</typeAliases>
-  	
-  	
-		<mappers>
-  	 		<mapper resource="/mappers/member-mapper.xml"/>
-  		</mappers>
   
   
 </configuration>

@@ -1,5 +1,9 @@
 package com.hoju.koala.board.model.dao;
 
-public class ErrorBoardDao {
+import org.springframework.stereotype.Repository;
 
+@Repository
+public class ErrorBoardDao {
+	
+	
 }
