@@ -13,6 +13,10 @@
   	<typeAliases>
   		<typeAlias type="com.hoju.koala.admin.model.vo.Supporters" alias="supporters"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.AllCount" alias="allTable"/>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.CreateSetting" alias="createSetting"/>
+  		
+  		
+  		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  		
   	</typeAliases>
   
   
