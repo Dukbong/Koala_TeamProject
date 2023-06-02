@@ -60,8 +60,7 @@
 	</select>
 	
 	<select id="selectErrorBoard" resultMap="errorBoardMapper.errorBoardResultMap">
-		SELECT * 
-		FROM ERROR_BOARD E JOIN BOARD B ON ()
+		SELECT * FROM ERROR_BOARD E JOIN BOARD B ON (E.REF_BNO = B.BOARD_NO) WHERE SOLVED = 'W'
 	</select>
 	
 </mapper>
