@@ -13,6 +13,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.member.model.vo.Member;
 
 @Service
 @RequestMapping("/admin")
@@ -74,6 +75,12 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int blockBlockIpUser(String ip) {
 		return adminDao.blockBlockIpUser(ip, sqlSession);
+	}
+
+
+	@Override
+	public ArrayList<Member> selectMemberList() {
+		return adminDao.selectMemberList(sqlSession);
 	}
 
 }

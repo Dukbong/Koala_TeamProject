@@ -15,6 +15,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,6 +82,15 @@ public class AdminController {
 		ArrayList<BlockIp> blockIpList = adminService.selectBlockIp();
 		for(BlockIp b : blockIpList) {
 			System.out.println(b);
+		}
+		return "";
+	}
+	
+	@GetMapping("/memberList")
+	public String adminMemberList(Model model) {
+		ArrayList<Member> memberList = adminService.selectMemberList();
+		for(Member m : memberList) {
+			System.out.println(m);
 		}
 		return "";
 	}

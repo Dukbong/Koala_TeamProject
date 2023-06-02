@@ -1,7 +1,6 @@
 package com.hoju.koala.member.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ public class MemberController {
 	
 	
 	
+	//로그인 페이지 이동
 	@GetMapping("/login")
 	public String login() {
 		
@@ -30,7 +30,8 @@ public class MemberController {
 		return "member/loginPage";
 	}
 	
-	@PostMapping("login")
+	//로그인
+	@PostMapping("/login")
 	public String login(HttpSession session,
 						Member m,
 						Model model) {
@@ -38,14 +39,45 @@ public class MemberController {
 		
 		Member loginUser = memberService.loginMember(m);
 		
+		if(loginUser != null) {
+			session.setAttribute("loginUser", loginUser);
+			
+			return "redirect:/";
+		}else {
+			model.addAttribute("msg", "로그인 실패");
+			
+			return "member/loginPage";
+		}
 		
 		
-		
-		
-		
-		
-		return null;
 	}
+	
+	//로그아웃
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
+		
+		return "redirect:/";
+	}
+	
+	
+	//회원가입페이지이동
+	@GetMapping("/enroll")
+	public String enroll() {
+		
+		return "member/enrollPage";
+	}
+	
+	
+	//활동 내역페이지 이동
+	@GetMapping("/ad")
+	public String ad() {
+		
+		return "member/activityDetailPage";
+	}
+	
+	
+	
 	
 	
 }

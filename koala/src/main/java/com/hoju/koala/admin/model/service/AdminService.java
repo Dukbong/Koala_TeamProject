@@ -1,6 +1,5 @@
 package com.hoju.koala.admin.model.service;
 
-import java.io.Console;
 import java.util.ArrayList;
 
 import com.hoju.koala.admin.model.vo.AllCount;
@@ -8,6 +7,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.member.model.vo.Member;
 
 public interface AdminService {
 	// 관리자가 관리해야 하는 게시판 및 회원 개수 조회
@@ -36,4 +36,7 @@ public interface AdminService {
 
 	// 진짜 차단
 	int blockBlockIpUser(String ip);
+	
+	// 회원 관리 (서포터즈 제외)
+	ArrayList<Member> selectMemberList();
 }

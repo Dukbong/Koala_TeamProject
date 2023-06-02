@@ -10,6 +10,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.member.model.vo.Member;
 
 
 // rawtypes : 제네릭타입이 불특정일 때
@@ -53,5 +54,9 @@ public class AdminDao {
 
 	public int blockBlockIpUser(String ip, SqlSession sqlSession) {
 		return sqlSession.update("adminMapper.blockBlockIpUser", ip);
+	}
+
+	public ArrayList<Member> selectMemberList(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList");
 	}
 }

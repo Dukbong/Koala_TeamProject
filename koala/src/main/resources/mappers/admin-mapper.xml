@@ -64,16 +64,20 @@
 	<select id="selectWaitingLibrary" resultMap="createSettingResultSet">
 		SELECT * FROM CREATE_SETTING WHERE STATUS='W' 
 	</select>
-	<!-- 상태가 결정되지 않은 에러 보드 게시판 -->
-<!-- 	<select id="selectErrorBoard" resultMap="errorBoardMapper.errorBoardResultMap">
-		SELECT * FROM ERROR_BOARD E JOIN BOARD B ON (E.REF_BNO = B.BOARD_NO) WHERE SOLVED = 'W'
-	</select> -->
 	
+	<!-- 상태가 결정되지 않은 에러 보드 게시판 -->
+	<!--
+	<select id="selectErrorBoard" resultMap="errorBoardMapper.errorBoardResultMap">
+		SELECT * FROM ERROR_BOARD E JOIN BOARD B ON (E.REF_BNO = B.BOARD_NO) WHERE SOLVED = 'W'
+	</select>
+	-->
+	
+
 	<!-- 부적절한 접근자 -->
 	<select id="selectBolckIp" resultMap="blockIpResultSet">
 		SELECT * FROM BLOCK_IP
 	</select>
-	
+
 	<select id="selectBlockIpUser" parameterType="string" resultMap="blockIpResultSet">
 		SELECT * FROM BLOCK_IP WHERE IP = #{ip} 
 	</select>
@@ -89,4 +93,8 @@
 	<update id="blockBlockIpUser" parameterType="string">
 		UPDATE BLOCK_IP SET STATUS = 'Y' WHERE IP = #{ip}
 	</update>
+	
+	<select id="selectMemberList" resultMap="memberMapper.memberResultSet">
+		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE REF_UNO IS NULL
+	</select>
 </mapper>

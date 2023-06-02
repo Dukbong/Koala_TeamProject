@@ -41,11 +41,13 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 				}
 			}else {
 				if(result.getCount() >= 5) {
-					if(result.getStatus().equals('N')) {
+					if(result.getStatus().equals("N")) {
+						@SuppressWarnings("unused")
 						int block = adminService.blockBlockIpUser(ip);											
 					}
 					session.setAttribute("BlockUser", "--");
 				}else {					
+					@SuppressWarnings("unused")
 					int updateBlockIp = adminService.updateBlockIpUser(ip);
 					log.info("{} >> 부적절 사용자 접근 횟수 증가", ip);
 					System.out.println(result.getCount());
