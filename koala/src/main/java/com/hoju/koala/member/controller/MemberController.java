@@ -38,13 +38,17 @@ public class MemberController {
 		
 		Member loginUser = memberService.loginMember(m);
 		
+		if(loginUser != null) {
+			session.setAttribute("loginUser", loginUser);
+			
+			return "redirect:/";
+		}else {
+			model.addAttribute("alert", "로그인 실패");
+			
+			return "member/loginPage";
+		}
 		
 		
-		
-		
-		
-		
-		return null;
 	}
 	
 	

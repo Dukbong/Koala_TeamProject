@@ -117,6 +117,12 @@
 
     </div>
     
-  	
+  	<script>
+  		$(function(){
+  			if(${alert} != null){
+  				alert(${alert});
+  			}
+  		});
+  	</script>
 </body>
 </html>
