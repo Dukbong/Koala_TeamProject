@@ -10,13 +10,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     body{
-        margin: 0;
         background-color: rgb(30, 30, 30);
         color: white;
         positon: relative;
     }
     #wrap{
-        width: 100vw;
+        width: 100%;
         height: 180px;
     }
 
@@ -35,7 +34,7 @@
     #header>div{height: 100%; float: left;}
     #header_1{width: 15%;}
     #header_2{width: 65%;}
-    #header_3{width: 20%; background-color: black;} /* 라이트모드 시 white로 변경할 것 */
+    #header_3{width: 20%;}
 
     #header_2>div{width: 100%;}
     #header_2_1{height: 70%;}
@@ -74,6 +73,7 @@
     
 	#darkmode{
 		position: absolute;
+		position: fixed;
 		margin: auto;
 		right: 5%;
 		bottom:5%;
@@ -114,6 +114,9 @@
         function changeMode(){
             $("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
         }
+        //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
+        //글자 색 - 다크모드:white / 라이트모드:black
+        //컨텐트 박스 - 다크모드:black / 라이트모드:white
     </script>
 </body>
 </html>
