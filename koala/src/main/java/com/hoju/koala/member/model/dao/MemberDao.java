@@ -13,6 +13,12 @@ public class MemberDao {
 		
 		return sqlSession.selectOne("memberMapper.loginMember", m);
 	}
+
+	//회원 정보 조회
+	public Member selectMember(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapper.selectMember", userNo);
+	}
 	
 	
 }

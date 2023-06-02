@@ -30,18 +30,16 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession();
 		Member member = (Member)session.getAttribute("loginUser");
 		
-		if(member == null) { // ·Î±×ÀÎ È¸¿øµµ ¾Æ´Ï°í °ü¸®ÀÚµµ ¾Æ´Ï´Ù. (ºÎÀûÀıÇÑ »ç¿ëÀÚ)
-			
+		if(member == null) {
 			String ip = getClientIp.getClientIp(request);
 			BlockIp result = adminService.selectBlockIpUser(ip);
 			if(result == null) {
 				int insertBlockIp = adminService.insertBlockIpUser(ip);
 				if(insertBlockIp > 0) {					
-					log.info("{} >> »õ·Î¿î ºÎÀûÀı »ç¿ëÀÚ·Î ÁöÁ¤", ip);
+					log.info("{} >> ìƒˆë¡œìš´ ë¶€ì ì ˆí•œ ì‚¬ìš©ì ì¶”ê°€", ip);
 				}
 			}else {
 				if(result.getCount() >= 5) {
-					
 					if(result.getStatus().equals("N")) {
 						@SuppressWarnings("unused")
 						int block = adminService.blockBlockIpUser(ip);											
@@ -50,24 +48,19 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 				}else {					
 					@SuppressWarnings("unused")
 					int updateBlockIp = adminService.updateBlockIpUser(ip);
-					log.info("{} >> ºÎÀûÀı »ç¿ëÀÚ Á¢±Ù È½¼ö Áõ°¡", ip);
-					System.out.println(result.getCount());
+					log.info("{} >> ë¶€ì ì ˆí•œ ì‚¬ìš©ì ì¹´ìš´í„° ì¦ê°€", ip);
 				}
 			}
-			System.out.println(result.getCount());
-			System.out.println(result.getIp());
-			System.out.println(result.getStatus());
-			session.setAttribute("alertMsg", "ºÎÀûÀıÇÑ Á¢±ÙÀÚ·Î ±¸ºĞµÇ¾ú½À´Ï´Ù.\n³²Àº °æ°íÈ½¼ö : " + 1 + "È¸ ÀÔ´Ï´Ù.");
+			session.setAttribute("alertMsg", "í˜„ì¬ " + (5 - result.getCount()) + "ë²ˆ í›„ IPê°€ ì°¨ë‹¨ë©ë‹ˆë‹¤.");
 //			return false;
-			return true; // Å×½ºÆ®
-			
+			return true; // TEST
 		}
-		if(member.getType() != 2) { // ·Î±×ÀÎ È¸¿øÀÌÁö¸¸ °ü¸®ÀÚ°¡ ¾Æ´Ï´Ù. (°æ°í)
-			session.setAttribute("alertMsg", "°ü¸®ÀÚ°¡ ¾Æ´Ï¹Ç·Î Á¢±ÙÀÌ ºÒ°¡´ÉÇÕ´Ï´Ù.");
+		if(member.getType() != 2) { // íšŒì›ì´ì§€ë§Œ ê´€ë¦¬ì x 
+			session.setAttribute("alertMsg", "ê´€ë¦¬ì ì™¸ì—ëŠ” ì ‘ê·¼ì´ ë¶ˆê°€ëŠ¥í•©ë‹ˆë‹¤.");
 			response.sendRedirect("/koala");
 //			return false; 
-			return true; // Å×½ºÆ°
-		}else { // °ü¸®ÀÚ
+			return true; // TEST
+		}else { // ê´€ë¦¬ì
 			return true;
 		}
 	}

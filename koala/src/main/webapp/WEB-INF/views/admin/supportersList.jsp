@@ -7,6 +7,7 @@
 <title>Koala Admin[Supporters]</title>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>
