@@ -150,6 +150,7 @@
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
         
+        // jang : IP 차단용 코드 입니다.
         $(function(){
         	var blockIp;
         	if(blockIp != ""){
