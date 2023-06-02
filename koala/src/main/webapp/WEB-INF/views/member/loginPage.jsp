@@ -113,7 +113,7 @@
 	                
 	                <div id="link-area">
 	                    <a href="forget">ID/PWD 찾기</a>
-	                    <a href="enroll.me">회원가입</a>
+	                    <a href="enroll">회원가입</a>
 	                </div>
 	            </form>
 	        </div>

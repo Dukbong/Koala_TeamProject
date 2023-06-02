@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +48,11 @@
         padding-top: 30px;
         color: rgb(40, 151, 223);
     }
+    
+    #header_2_1:hover{
+    	cursor: pointer;
+    }
+    
     #header_2_2>h4{
         margin: 0;
         font-size: 20px;
@@ -79,6 +85,7 @@
 		bottom:5%;
 	}
 	
+"
 	
 	
 </style>
@@ -90,7 +97,7 @@
             </div>
             <div id="header_2">
                 <div id="header_2_1">
-                    <h1>Koala initializr</h1>
+                    <h1 onclick="location.href='/koala'">Koala initializr</h1>
                 </div>
                 <div id="header_2_2">
                     <h4>CreateCode && DownloadFile</h4> <!-- 조건문 걸기 -->
@@ -98,8 +105,32 @@
             </div>
             <div id="header_3">
                 <div id="header_3_1">
-                	<a href="member/login">로그인</a>
-                	<a href="">회원가입</a>
+                	<c:choose>
+                		<c:when test="${empty loginUser }">
+		                	<a href="/koala/member/login">로그인</a>
+		                	<a href="/koala/member/enroll">회원가입</a>
+                   		</c:when>
+                   		<c:otherwise>
+                   			<span>${loginUser.userId }</span><br><br>
+                   			<select id="myPage">
+                   				<option selected>My Page<option>
+                   				<option value="ad">Activity Details</option>
+                   				<option value="as">Account Settings</option>
+                   			</select>
+                   			
+                   			<script>
+                   				$(function(){
+                   					$("#myPage").change(function(){
+                   						if(this.value == "ad"){
+                   							location.href = "/koala/member/ad";
+                   						}else if(this.value == "as"){
+                   							location.href = "/koala/member/as";
+                   						}
+                   					});
+                   				});
+                   			</script>
+                   		</c:otherwise>
+                	</c:choose>
                 </div>
             </div>
         </div>
