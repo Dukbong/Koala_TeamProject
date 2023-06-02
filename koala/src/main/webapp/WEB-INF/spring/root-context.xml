@@ -26,4 +26,13 @@
  	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
  		<constructor-arg ref="sqlSessionFactory"/>
  	</bean>
+ 	
+ 	<!-- ArrayList Bean 등록 -->
+ 	<bean class="java.util.ArrayList" id="arryList"/>
+ 	
+ 	<!-- jang : servlet-context에서 웹관련 내용을 제외시켰기 때문에 여기서는 제외한 부분만 스캔해서 빈 등록한다. -->
+ 	<context:component-scan base-package="com.hoju.koala" use-default-filters="false">
+ 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+ 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+ 	</context:component-scan>
 </beans>
