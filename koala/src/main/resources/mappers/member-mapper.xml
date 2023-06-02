@@ -6,7 +6,7 @@
 <mapper namespace="memberMapper">
 
 	<select id="loginMember" resultMap="memberResultSet">
-		SELECT * FROM
+		SELECT *
 		FROM MEMBER
 		WHERE STATUS = 'Y'
 		AND USER_ID = #{userId}
