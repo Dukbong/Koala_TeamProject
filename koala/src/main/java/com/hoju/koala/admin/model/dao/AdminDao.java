@@ -1,15 +1,20 @@
 package com.hoju.koala.admin.model.dao;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.admin.model.vo.AllCount;
+import com.hoju.koala.admin.model.vo.BlockIp;
+import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
+import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.member.model.vo.Member;
 
+
+// rawtypes : 제네릭타입이 불특정일 때
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Repository
 public class AdminDao {
 	
@@ -20,16 +25,38 @@ public class AdminDao {
 
 	// 서포터즈 정보 조회
 	public ArrayList<Supporters> selectSupporters(SqlSession sqlSession) {
-		ArrayList<Supporters> supporter = new ArrayList<>();
-		List<Object> list = sqlSession.selectList("adminMapper.selectSupporters");
-		Iterator<Object> it = list.iterator();
-		while(it.hasNext()) {
-			Object obj = it.next();
-			if(obj instanceof Supporters) {
-				Supporters support = (Supporters)obj;
-				supporter.add(support);
-			}
-		}
-		return supporter;
+		return (ArrayList) sqlSession.selectList("adminMapper.selectSupporters");
+	}
+	// 대기중인 라이브러 및 세팅 조회
+	public ArrayList<CreateSetting> selectCreateSetting(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectWaitingLibrary");
+	}
+
+	public ArrayList<ErrorBoard> selectErrorBoard(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoard");
+	}
+
+	public ArrayList<BlockIp> selectBolckIp(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp");
+	}
+
+	public BlockIp selectBlockIpUser(String ip, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectBlockIpUser", ip);
+	}
+
+	public int insertBlockIpUser(String ip, SqlSession sqlSession) {
+		return sqlSession.insert("adminMapper.insertBlockIpUser", ip);
+	}
+
+	public int updateBlockIpUser(String ip, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateBlockIpUser", ip);
+	}
+
+	public int blockBlockIpUser(String ip, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.blockBlockIpUser", ip);
+	}
+
+	public ArrayList<Member> selectMemberList(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList");
 	}
 }

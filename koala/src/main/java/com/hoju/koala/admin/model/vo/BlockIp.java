@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AllCount{
-	private int member;
-	private int supporters;
-	private int createSetting;
-	private int errorBoard;
-	private int bulletinBoard;
-	private int qnaBoard;
+public class BlockIp {
+	private String ip;
+	private int count;
+	private String status;
 }
