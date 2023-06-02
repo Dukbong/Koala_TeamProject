@@ -3,13 +3,17 @@ package com.hoju.koala.board.model.vo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ErrorBoard {
+@Getter
+@Setter
+@ToString
+public class ErrorBoard{
 	
 	private int refBno; //참조게시글번호
 	private int refSno; //참조세팅번호
