@@ -1,5 +1,7 @@
 package com.hoju.koala.board.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hoju.koala.board.model.service.ErrorBoardService;
+import com.hoju.koala.board.model.vo.ErrorSet;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,10 +27,11 @@ public class ErrorBoardController {
 	public String selectList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 			 				 Model model) {
 		
-		//ArrayList<Board> bList = ebService.selectList();
+		//pi 추가하여 수정할것
+		ArrayList<ErrorSet> ebList = ebService.selectList();
 		
-		log.info("리스트 테스트");
 		
+		model.addAttribute("ebList", ebList);
 		return "board/errorBoard/ebListView";
 	}
 	
