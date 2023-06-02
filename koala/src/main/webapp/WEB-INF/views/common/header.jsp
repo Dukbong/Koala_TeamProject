@@ -70,6 +70,9 @@
     	bottom: 0;
     	right: 0;
     	text-align: center;
+    	display: flex;
+    	justify-content: center;
+        flex-direction: column;
     }
     
     #header_3_1>a{
@@ -118,12 +121,13 @@
                    				<option value="ad">Activity Details</option>
                    				<option value="as">Account Settings</option>
                    			</select>
+                   			<a href="/koala/member/logout">로그아웃</a>
                    			
                    			<script>
                    				$(function(){
                    					$("#myPage").change(function(){
                    						if(this.value == "ad"){
-                   							location.href = "/koala/member/ad";
+                   							location.href = "/koala/member/ad?userNo="+${loginUser.userNo};
                    						}else if(this.value == "as"){
                    							location.href = "/koala/member/as";
                    						}

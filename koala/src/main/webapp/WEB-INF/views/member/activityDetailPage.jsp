@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,7 @@
         </ul>
     </div>
     <hr>
-    <div style="height: 1000px;" >
+    <div style="height: 500px;" >
 
         <div id="content">
             <div id="content1">
@@ -41,20 +42,43 @@
                         <img src="피치.png" alt="">
                     </div>
                     <div id="nickname">
-                        <span>천병국입니다.</span>
+                        <span></span>
                     </div>
                 </div>
                 <div id="con2-area">
-                    <div><span>Lv.1 Bronze</span></div>
-                    <div><span>Points : 165165pts</span></div>
-                    <div><span>Followers : 0</span></div>
+                	<table>
+                		<tr>
+                			<th>Lv.${user.userLevel } 여기는 레벨에따라 조건</th>
+                		</tr>
+                		
+                		<tr>
+                			<th>Points : ${user.point }pts</th>                			
+                		</tr>
+                		
+                		<tr>
+                			<th>Followers : 0</th>
+                		</tr>
+                		<tr>
+                			<c:if test="${user ne loginUser }">
+                				<th><button>Follow</button></th>
+                			</c:if>
+                		<tr>
+                	</table>
+                    
                 </div>
                 <div id="introduce-area">
                     <div id="introduce-box">
-                        <form action="update.me">
-                            <textarea name="" id="" cols="30" rows="5" style="resize: none;"></textarea><br>
-                            <button type="submit" style="background-color: blue;">Update</button>
-                        </form>
+                    	<c:choose>
+                    		<c:when test="${user eq loginUser }">
+		                        <form action="update.me">
+		                            <textarea name="" id="" cols="30" rows="5" style="resize: none;"></textarea><br>
+		                            <button type="submit" style="background-color: blue;">Update</button>
+		                        </form>	
+                    		</c:when>
+                    		<c:otherwise>
+                    			<textarea name="" id="" cols="30" rows="5" style="resize: none;"></textarea><br>
+                    		</c:otherwise>
+                    	</c:choose>
                     </div>
                 </div>
             </div>
@@ -70,7 +94,7 @@
             </div>
         </div>
 
-        <div id="list-area" style="width:80%; height: 70%; background-color: rgb(53, 12, 12);">
+        <div id="list-area" style="width:80%; height: 70%;">
             
         </div>
 

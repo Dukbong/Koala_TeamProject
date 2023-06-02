@@ -26,5 +26,12 @@
 		<result column="DELETE_DATE" property="deleteDate"/>
 		<result column="STATUS" property="status"/>
 	</resultMap>
+	
+	<select id="selectMember" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE STATUS = 'Y'
+		AND USER_NO = #{userNo}
+	</select>
 
 </mapper>
