@@ -64,7 +64,7 @@
         font-weight: bold;
         text-align: center;
     }
-    .QuizPlay footerAtag {
+    .QuizPlay a {
         text-decoration-line :underline;
         text-decoration-color: red;
         text-decoration-thickness : 9px;
@@ -127,13 +127,14 @@
             <div class="item">
                 <a class=footerAtag href="https://mvnrepository.com/">MVN Repository</a>
             </div>
+            
         </div>
         <div class="column4">
             <div class="Quiz">
                 Multi Quiz
             </div>
             <div class="QuizPlay">
-                <a class=footerAtag href="#">Play</a>
+                <a class="footerAtag" href="#">Play</a>
             </div>
         </div>
     </div>

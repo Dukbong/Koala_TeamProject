@@ -44,17 +44,17 @@ public class AdminController {
 	@GetMapping("/supporters")
 	public ModelAndView adminSupportes(ModelAndView mav) {
 		ArrayList<Supporters> supporter = adminService.selectSupporters();
-		// ¿À·ù ¹ß»ı ½Ã ·Î±× ÆÄÀÏ·Î ³²±â±â
+		// log ë‚¨ê¸°ê¸°
 		if(supporter == null) {
 			log.info("SelectSupporters is NullPoint");
 			return new ModelAndView("common/nullPoint");
 		}
 		mav = new ModelAndView("admin/supportersList");
 		mav.addObject("supporterList",supporter);
-		// view·Î Àü´Ş Àü È®ÀÎ ÀÛ¾÷
+		
 		for(Supporters s : supporter) {
 			System.out.println(s);
-			System.out.println(s.getNickName()); // »ó¼Ó¹ŞÀº ¸Ş¼­µå¸¦ »ç¿ëÇÏ¿© ºÎ¸ğ °´Ã¼ÀÇ ¿ä¼Ò¿¡ Á¢±ÙÇØ¼­ ¿øÇÏ´Â °ªÀ» °¡Á®¿Ã ¼ö ÀÖ´Ù.
+			System.out.println(s.getNickName()); // getterí•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ì„œ ëª¨ë‘ ê°€ì ¸ì˜¬ ìˆ˜ ìƒì† ë°›ì€ ê°ì²´ì˜ í•„ë“œì— ì ‘ê·¼ ê°€ëŠ¥
 		}
 		return mav;
 	}
@@ -65,7 +65,7 @@ public class AdminController {
 		for(CreateSetting c : libraryList) {
 			System.out.println(c);
 		}
-		return ""; // watingLibrary ºä ÆäÀÌÁö »ı¼º ÈÄ ¿¬°á
+		return "";
 	}
 	
 	@GetMapping("/errorboard")
@@ -74,7 +74,7 @@ public class AdminController {
 		for(ErrorBoard e : errorBoardList) {
 			System.out.println(e);
 		}
-		return ""; // errorBoard ºä ÆäÀÌÁö »ı¼º ÈÄ ¿¬°á
+		return "";
 	}
 	
 	@GetMapping("/blockiplist")
