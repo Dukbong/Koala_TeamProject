@@ -27,6 +27,13 @@
  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/admin/*"/>
+			<beans:bean class="com.hoju.koala.admin.interceptor.AdminInterceptor" id="AdminInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	
 	
 </beans:beans>

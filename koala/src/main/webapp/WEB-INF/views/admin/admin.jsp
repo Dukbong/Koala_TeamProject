@@ -47,6 +47,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div class="adminMain">
 			<div class="adminMainTop">
 				<div class="waitingLibrary">

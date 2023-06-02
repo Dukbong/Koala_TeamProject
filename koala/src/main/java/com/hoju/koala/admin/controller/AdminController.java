@@ -11,9 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
+import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
+	
+	
+	
 	@Autowired
 	AdminService adminService;
 	
@@ -40,28 +44,28 @@ public class AdminController {
 	@GetMapping("/supporters")
 	public ModelAndView adminSupportes(ModelAndView mav) {
 		ArrayList<Supporters> supporter = adminService.selectSupporters();
-		// ¿À·ù ¹ß»ı ½Ã ·Î±× ÆÄÀÏ·Î ³²±â±â
+		// log ë‚¨ê¸°ê¸°
 		if(supporter == null) {
 			log.info("SelectSupporters is NullPoint");
 			return new ModelAndView("common/nullPoint");
 		}
 		mav = new ModelAndView("admin/supportersList");
 		mav.addObject("supporterList",supporter);
-		// view·Î Àü´Ş Àü È®ÀÎ ÀÛ¾÷
+		
 		for(Supporters s : supporter) {
 			System.out.println(s);
-			System.out.println(s.getNickName()); // »ó¼Ó¹ŞÀº ¸Ş¼­µå¸¦ »ç¿ëÇÏ¿© ºÎ¸ğ °´Ã¼ÀÇ ¿ä¼Ò¿¡ Á¢±ÙÇØ¼­ ¿øÇÏ´Â °ªÀ» °¡Á®¿Ã ¼ö ÀÖ´Ù.
+			System.out.println(s.getNickName()); // getterí•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ì„œ ëª¨ë‘ ê°€ì ¸ì˜¬ ìˆ˜ ìƒì† ë°›ì€ ê°ì²´ì˜ í•„ë“œì— ì ‘ê·¼ ê°€ëŠ¥
 		}
 		return mav;
 	}
 	
 	@GetMapping("/waitingLibrary")
-	public String adminWaitingLibrary(Model model) {
+	public String adminCreateSetting(Model model) {
 		ArrayList<CreateSetting> libraryList = adminService.selectCreateSetting();
 		for(CreateSetting c : libraryList) {
 			System.out.println(c);
 		}
-		return ""; // watingLibrary ºä ÆäÀÌÁö »ı¼º ÈÄ ¿¬°á
+		return "";
 	}
 	
 	@GetMapping("/errorboard")
@@ -70,6 +74,24 @@ public class AdminController {
 		for(ErrorBoard e : errorBoardList) {
 			System.out.println(e);
 		}
-		return ""; // errorBoard ºä ÆäÀÌÁö »ı¼º ÈÄ ¿¬°á
+		return "";
+	}
+	
+	@GetMapping("/blockiplist")
+	public String adminblockip(Model model) {
+		ArrayList<BlockIp> blockIpList = adminService.selectBlockIp();
+		for(BlockIp b : blockIpList) {
+			System.out.println(b);
+		}
+		return "";
+	}
+	
+	@GetMapping("/memberList")
+	public String adminMemberList(Model model) {
+		ArrayList<Member> memberList = adminService.selectMemberList();
+		for(Member m : memberList) {
+			System.out.println(m);
+		}
+		return "";
 	}
 }

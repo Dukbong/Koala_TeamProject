@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
@@ -152,6 +153,19 @@
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
+        
+        // jang : IP 차단용 코드 입니다.
+        $(function(){
+        	var blockIp;
+        	if(blockIp != ""){
+        		// 배포시 주석 풀기... (차단 되어 사용이 불가능하다.)
+/*         		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
+        			parent.window.close();
+        		}else{
+        			parent.window.open("about:black","_self").close();
+        		} */
+        	}
+        })
     </script>
 </body>
 </html>
