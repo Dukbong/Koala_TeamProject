@@ -6,23 +6,28 @@
 <meta charset="UTF-8">
 <title>Login Page</title>
 <style>
+	
+	body{
+        background-color: rgb(30, 30, 30);
+        color: white;
+        
+	}
+	#wrap{
+		width: 100%;
+		height: 940px;
+	}
 	#content{
         width: 100%;
         height: 100%;
-        /* position: absolute; */
-        /* margin: auto; */
-        /* background-color: rgb(30,30,30); */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     #login-area{
-        position: fixed;
-        top: 0;
-  		left: 0;
-  		right: 0;
-  		bottom: 0;
         background-color: rgb(4, 59, 82);
-        width: 60%;
-        height: 80%;
+        width: 1000px;
+        height: 800px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -33,7 +38,7 @@
     } 
 
     .logo{
-        color: white;
+        padding: 15px;
     }
 
     label{
@@ -79,59 +84,39 @@
 </style>
 </head>
 <body>
-	<div id="content">
-
-        <div id="login-area">
-            <h1 class="logo">Koala</h1>
-            <form action="login" method="post">
-
-                <div id="input-area">
-                    <label for="userId" class="">ID</label>
-                    <input type="text" class="box" placeholder="아이디 입력" id="userId" name="userId" required> <br>
-                    <label for="userPwd" class="">Password</label>
-                    <input type="password" class="box" placeholder="패스워드 입력" id="userPwd" name="userPwd" required>
-                </div>
-
-                <div id="keep-area">
-                    <input type="checkbox" id="keepId">
-                    <label for="keepId">아이디 저장</label>
-
-                </div>
-                
-                <div id="">
-                    <button type="submit" class="box">Login</button>
-                </div>
-                
-                <div id="link-area">
-                    <a href="forget">ID/PWD 찾기</a>
-                    <a href="enroll.me">회원가입</a>
-                </div>
-            </form>
-        </div>
+	<div id="wrap">
+		<div id="content">
+	        <div id="login-area">
+	            <h1 class="logo">Koala</h1>
+	            <form action="login" method="post">
+	
+	                <div id="input-area">
+	                    <label for="userId" class="">ID</label>
+	                    <input type="text" class="box" placeholder="아이디 입력" id="userId" name="userId" required> <br>
+	                    <label for="userPwd" class="">Password</label>
+	                    <input type="password" class="box" placeholder="패스워드 입력" id="userPwd" name="userPwd" required>
+	                </div>
+	
+	                <div id="keep-area">
+	                    <input type="checkbox" id="keepId">
+	                    <label for="keepId">아이디 저장</label>
+	
+	                </div>
+	                
+	                <div id="">
+	                    <button type="submit" class="box">Login</button>
+	                </div>
+	                
+	                <div id="link-area">
+	                    <a href="forget">ID/PWD 찾기</a>
+	                    <a href="enroll.me">회원가입</a>
+	                </div>
+	            </form>
+	        </div>
+		</div>
 
     </div>
-    asdf
-    asdf
-    asdf
-    asd
-    f
-    asdf
-    asd
-    fasd
-    f
-    asdf
-    ads
-    f
-    asdf
-    <br>
-    <br>
-    <br><br><br><br><br><br><br><br><br><br><br>
-    <br>
-    <br>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
-    <br>
-    <br><br><br><br><br><br><br><br><br><br><br>
-  	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+    
   	
 </body>
 </html>

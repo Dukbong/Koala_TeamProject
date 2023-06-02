@@ -54,6 +54,23 @@
         color: rgb(248, 185, 147);
     }
     
+    #header_3_1{
+    	border: 1px solid red;
+    	height: 100%;
+    	width: 100%;
+    	top: 0;
+    	left: 0;
+    	bottom: 0;
+    	right: 0;
+    	text-align: center;
+    }
+    
+    #header_3_1>a{
+    	text-decoration: none;
+    	color: rgb(40, 151, 223);
+    	padding: 10px;
+    }
+    
 	#darkmode{
 		position: absolute;
 		position: fixed;
@@ -61,6 +78,8 @@
 		right: 5%;
 		bottom:5%;
 	}
+	
+	
 	
 </style>
 <body>
@@ -78,7 +97,10 @@
                 </div>
             </div>
             <div id="header_3">
-                <p>로그인 영역</p>
+                <div id="header_3_1">
+                	<a href="member/login">로그인</a>
+                	<a href="">회원가입</a>
+                </div>
             </div>
         </div>
         <div id="line"></div>
