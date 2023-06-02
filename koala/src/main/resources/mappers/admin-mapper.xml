@@ -35,6 +35,12 @@
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
+	<!-- 부적절한 접근 사용자 조회 -->
+	<resultMap type="blockIp" id="blockIpResultSet">
+		<result column="IP" property="ip"/>
+		<result column="COUNT" property="count"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
 	
 	
 	<!-- 관리가 필요한 게시글 개수 및 회원수 -->
@@ -58,9 +64,29 @@
 	<select id="selectWaitingLibrary" resultMap="createSettingResultSet">
 		SELECT * FROM CREATE_SETTING WHERE STATUS='W' 
 	</select>
-	
-	<select id="selectErrorBoard" resultMap="errorBoardMapper.errorBoardResultMap">
+	<!-- 상태가 결정되지 않은 에러 보드 게시판 -->
+<!-- 	<select id="selectErrorBoard" resultMap="errorBoardMapper.errorBoardResultMap">
 		SELECT * FROM ERROR_BOARD E JOIN BOARD B ON (E.REF_BNO = B.BOARD_NO) WHERE SOLVED = 'W'
+	</select> -->
+	
+	<!-- 부적절한 접근자 -->
+	<select id="selectBolckIp" resultMap="blockIpResultSet">
+		SELECT * FROM BLOCK_IP
 	</select>
 	
+	<select id="selectBlockIpUser" parameterType="string" resultMap="blockIpResultSet">
+		SELECT * FROM BLOCK_IP WHERE IP = #{ip} 
+	</select>
+	
+	<insert id="insertBlockIpUser" parameterType="string">
+		INSERT INTO BLOCK_IP VALUES (#{ip}, DEFAULT, DEFAULT)
+	</insert>
+	
+	<update id="updateBlockIpUser" parameterType="string">
+		UPDATE BLOCK_IP SET COUNT = COUNT + 1 WHERE IP = #{ip}
+	</update>
+	
+	<update id="blockBlockIpUser" parameterType="string">
+		UPDATE BLOCK_IP SET STATUS = 'Y' WHERE IP = #{ip}
+	</update>
 </mapper>

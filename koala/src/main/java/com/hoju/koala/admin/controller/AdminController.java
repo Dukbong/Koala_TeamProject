@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
+import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
@@ -21,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
+	
+	
+	
 	@Autowired
 	AdminService adminService;
 	
@@ -56,7 +59,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/waitingLibrary")
-	public String adminWaitingLibrary(Model model) {
+	public String adminCreateSetting(Model model) {
 		ArrayList<CreateSetting> libraryList = adminService.selectCreateSetting();
 		for(CreateSetting c : libraryList) {
 			System.out.println(c);
@@ -71,5 +74,14 @@ public class AdminController {
 			System.out.println(e);
 		}
 		return ""; // errorBoard 뷰 페이지 생성 후 연결
+	}
+	
+	@GetMapping("/blockiplist")
+	public String adminblockip(Model model) {
+		ArrayList<BlockIp> blockIpList = adminService.selectBlockIp();
+		for(BlockIp b : blockIpList) {
+			System.out.println(b);
+		}
+		return "";
 	}
 }
