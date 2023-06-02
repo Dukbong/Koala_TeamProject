@@ -16,7 +16,14 @@
   		<typeAlias type="com.hoju.koala.admin.model.vo.CreateSetting" alias="createSetting"/>
   		
   		
-  		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  		
+  		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  
+  		
+  		
+  		<typeAlias type="com.hoju.koala.board.model.vo.Board" alias="board"/>
+  		<typeAlias type="com.hoju.koala.board.model.vo.BoardAttachment" alias="boardAttachment"/>
+  		<typeAlias type="com.hoju.koala.board.model.vo.Liked" alias="liked"/>
+  		<typeAlias type="com.hoju.koala.board.model.vo.Reply" alias="reply"/>		
+  		<typeAlias type="com.hoju.koala.board.model.vo.ErrorBoard" alias="errorBoard"/>
   	</typeAliases>
   
   
