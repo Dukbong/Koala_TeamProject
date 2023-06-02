@@ -1,7 +1,5 @@
 package com.hoju.koala.board.controller;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hoju.koala.board.model.service.ErrorBoardService;
-import com.hoju.koala.board.model.vo.Board;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/errorBoard")
 public class ErrorBoardController {
@@ -26,7 +26,9 @@ public class ErrorBoardController {
 		
 		//ArrayList<Board> bList = ebService.selectList();
 		
-		return "board/ebListView";
+		log.info("리스트 테스트");
+		
+		return "board/errorBoard/ebListView";
 	}
 	
 	//게시글 상세 조회 메소드
