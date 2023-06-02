@@ -77,10 +77,15 @@
         font-size: 1rem;
         color: rgb(149, 149, 149);
     }
+    #line{
+    	height: 1%;
+    	border: 1px solid White;
+    }
 </style>
 </head>
 <body>	
     <div class="footer">
+    	<div id="line"></div>
         <div class="columnTotal">
         <div class="column">
             <div class="item itemhade">Why Koala</div>

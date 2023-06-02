@@ -20,11 +20,7 @@ import lombok.ToString;
 @ToString
 public class Supporters extends Member{
 	/*
-	 * Member »ó¼Ó ¹ŞÀº ÀÌÀ¯
-	 * Supporters´Â µ¥ÀÌÅÍ º£ÀÌ½º¿¡¼­ Member¸¦ ÂüÁ¶ÇÏ°í ÀÖ´Ù.
-	 * view·Î º¸¿©Áà¾ß ÇÏ´Â ³»¿ëÀº USER_NO(= refUNO), NICKNAME, GITHUB_ID, CREATE_DATE
-	 * NICKNAMEÀ» ¹ŞÀ» ¼ö ÀÖÀ» ¼ö ÀÖ´Â º¯¼ö°¡ ÇÊ¿äÇÏÁö¸¸ ÀÌ·±½ÄÀ¸·Î ¸¸µé´Ù º¸¸é VO³¢¸®ÀÇ °æ°è°¡ ¸ğÈ£ÇØÁú°Å °°´Ù.
-	 * ±×·¯±â ¶§¹®¿¡ "»ó¼Ó"À» »ı°¢Çß°í MybatisÀÇ resultMap ¶ÇÇÑ »ó¼ÓÀÌ °¡´ÉÇÒ °ÍÀ¸·Î »ı°¢Çß°í »ı°¢ÀÌ ¸Â¾Ò´Ù.*/
+	 * Member ìƒì†ì„ í†µí•´ ë³„ë„ì˜ vo í•„ë“œ ì¶”ê°€ ì—†ì´ ì‚¬ìš©ì´ ê°€ëŠ¥í•˜ë‹¤.*/
 	private int refUno;
 	private String githubId;
 	private Date createDate;
