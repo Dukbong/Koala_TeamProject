@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
+import com.hoju.koala.board.model.vo.ErrorBoard;
 
 public interface AdminService {
 	// 관리자가 관리해야 하는 게시판 및 회원 개수 조회
@@ -14,5 +15,8 @@ public interface AdminService {
 	ArrayList<Supporters> selectSupporters();
 
 	// 라이브러리 및 설정 파일 중 대기 상태인 게시글 
-	ArrayList<CreateSetting> selectWaitingLibrary();
+	ArrayList<CreateSetting> selectCreateSetting();
+
+	// 에러 게시판 중 해결되지 않은 상태 게시글
+	ArrayList<ErrorBoard> selectErrorBoard();
 }

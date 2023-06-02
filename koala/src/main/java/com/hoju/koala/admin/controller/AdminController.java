@@ -13,6 +13,7 @@ import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
+import com.hoju.koala.board.model.vo.ErrorBoard;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,10 +57,19 @@ public class AdminController {
 	
 	@GetMapping("/waitingLibrary")
 	public String adminWaitingLibrary(Model model) {
-		ArrayList<CreateSetting> libraryList = adminService.selectWaitingLibrary();
+		ArrayList<CreateSetting> libraryList = adminService.selectCreateSetting();
 		for(CreateSetting c : libraryList) {
 			System.out.println(c);
 		}
-		return "";
+		return ""; // watingLibrary 뷰 페이지 생성 후 연결
+	}
+	
+	@GetMapping("/errorboard")
+	public String adminErrorBoard(Model model) {
+		ArrayList<ErrorBoard> errorBoardList = adminService.selectErrorBoard();
+		for(ErrorBoard e : errorBoardList) {
+			System.out.println(e);
+		}
+		return ""; // errorBoard 뷰 페이지 생성 후 연결
 	}
 }

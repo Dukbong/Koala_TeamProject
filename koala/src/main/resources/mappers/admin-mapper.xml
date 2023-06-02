@@ -59,4 +59,9 @@
 		SELECT * FROM CREATE_SETTING WHERE STATUS='W' 
 	</select>
 	
+	<select id="selectErrorBoard" resultMap="errorBoardMapper.errorBoardResultMap">
+		SELECT * 
+		FROM ERROR_BOARD E JOIN BOARD B ON ()
+	</select>
+	
 </mapper>

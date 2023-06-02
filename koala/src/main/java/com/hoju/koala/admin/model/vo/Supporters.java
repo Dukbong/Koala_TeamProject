@@ -7,11 +7,17 @@ import com.hoju.koala.member.model.vo.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Supporters extends Member{
 	/*
 	 * Member 상속 받은 이유
