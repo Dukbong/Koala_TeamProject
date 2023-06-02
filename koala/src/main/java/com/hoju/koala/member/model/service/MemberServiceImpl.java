@@ -26,4 +26,14 @@ public class MemberServiceImpl implements MemberService {
 		return loginUser;
 	}
 
+
+	//회원 정보 조회
+	@Override
+	public Member selectMember(int userNo) {
+
+		Member m = memberDao.selectMember(sqlSession, userNo);
+		
+		return m;
+	}
+
 }

@@ -68,16 +68,26 @@ public class MemberController {
 		return "member/enrollPage";
 	}
 	
+	//@PostMapping("/enroll")
 	
-	//활동 내역페이지 이동
+	
+	//회원 정보 조회 (활동내역)
 	@GetMapping("/ad")
-	public String ad() {
+	public String ad(int userNo,
+					 Model model) {
+		
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userNo);
+		model.addAttribute("user", m);
+		
 		
 		return "member/activityDetailPage";
 	}
 	
 	
-	
+	//팔로우
+//	@GetMapping("/follow")
 	
 	
 }
