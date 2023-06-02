@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ErrorBoard extends Board{
+public class ErrorBoard{
 	
 	private int refBno; //참조게시글번호
 	private int refSno; //참조세팅번호

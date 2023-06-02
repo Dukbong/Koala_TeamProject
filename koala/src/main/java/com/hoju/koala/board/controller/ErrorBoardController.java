@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hoju.koala.board.model.service.ErrorBoardService;
-import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.board.model.vo.ErrorSet;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +28,7 @@ public class ErrorBoardController {
 			 				 Model model) {
 		
 		//pi 추가하여 수정할것
-		ArrayList<ErrorBoard> ebList = ebService.selectList();
+		ArrayList<ErrorSet> ebList = ebService.selectList();
 		
 		
 		model.addAttribute("ebList", ebList);

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hoju.koala.board.model.dao.ErrorBoardDao;
-import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.board.model.vo.ErrorSet;
 
 @Service
 public class ErrorBoardServiceImpl implements ErrorBoardService {
@@ -19,7 +19,7 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public ArrayList<ErrorBoard> selectList() {
+	public ArrayList<ErrorSet> selectList() {
 		
 		return ebDao.selectList(sqlSession);
 	}
