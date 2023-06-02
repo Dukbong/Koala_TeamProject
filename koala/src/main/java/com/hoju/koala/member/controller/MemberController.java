@@ -1,7 +1,6 @@
 package com.hoju.koala.member.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +37,24 @@ public class MemberController {
 		
 		Member loginUser = memberService.loginMember(m);
 		
+		if(loginUser != null) {
+			session.setAttribute("loginUser", loginUser);
+			
+			return "redirect:/";
+		}else {
+			model.addAttribute("msg", "로그인 실패");
+			
+			return "member/loginPage";
+		}
 		
 		
+	}
+	
+	@GetMapping("logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
 		
-		
-		
-		
-		return null;
+		return "redirect:/";
 	}
 	
 	
