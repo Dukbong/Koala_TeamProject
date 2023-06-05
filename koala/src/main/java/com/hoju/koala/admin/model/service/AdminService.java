@@ -7,12 +7,13 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
 public interface AdminService {
 	AllCount selectAllCount();
 
-	ArrayList<Supporters> selectSupporters();
+	ArrayList<Supporters> selectSupporters(PageInfo pi);
 
 	ArrayList<CreateSetting> selectCreateSetting();
 

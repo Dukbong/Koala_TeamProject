@@ -10,6 +10,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
 
@@ -22,8 +23,8 @@ public class AdminDao {
 		return sqlSession.selectOne("adminMapper.allCount");
 	}
 
-	public ArrayList<Supporters> selectSupporters(SqlSession sqlSession) {
-		return (ArrayList) sqlSession.selectList("adminMapper.selectSupporters");
+	public ArrayList<Supporters> selectSupporters(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList) sqlSession.selectList("adminMapper.selectSupporters",null, pi.rowBounds());
 	}
 	
 	public ArrayList<CreateSetting> selectCreateSetting(SqlSession sqlSession) {

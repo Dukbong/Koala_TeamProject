@@ -94,8 +94,8 @@
 		right: 5%;
 		bottom:5%;
 	}
-	
-"
+	/* 페이징 버튼 처리 css */
+	#pagingArea {width:fit-content; margin:auto;}
 	
 	
 </style>
@@ -165,12 +165,12 @@
         	var blockIp;
         	if(blockIp != ""){
         		// 배포시 주석 풀기... (차단 되어 사용이 불가능하다.)
-/*         		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
+/*          		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
         			parent.window.close();
         		}else{
         			alert("진짜 꺼져");
         			parent.window.open("about:black","_self").close();
-        		}  */
+        		}   */
         	}
         })
     </script>
