@@ -162,8 +162,9 @@
 /*         		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
         			parent.window.close();
         		}else{
+        			alert("진짜 꺼져");
         			parent.window.open("about:black","_self").close();
-        		} */
+        		}  */
         	}
         })
     </script>
