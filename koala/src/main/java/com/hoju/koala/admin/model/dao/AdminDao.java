@@ -57,4 +57,9 @@ public class AdminDao {
 	public ArrayList<Member> selectMemberList(SqlSession sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList");
 	}
+
+	/* 페이징 처리 보류 
+	 * public int boardListCount(SqlSession sqlSession, String board) { return
+	 * sqlSession.selectOne("adminMapper.boardCount", board); }
+	 */
 }

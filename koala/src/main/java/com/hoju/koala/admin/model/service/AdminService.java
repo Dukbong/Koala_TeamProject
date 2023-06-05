@@ -29,4 +29,7 @@ public interface AdminService {
 	int blockBlockIpUser(String ip);
 	
 	ArrayList<Member> selectMemberList();
+
+	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
+	/* int boardListCount(String board); */
 }

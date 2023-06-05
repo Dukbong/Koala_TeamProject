@@ -83,4 +83,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectMemberList(sqlSession);
 	}
 
+
+	/* 보류
+	 * @Override public int boardListCount(String board) { return
+	 * adminDao.boardListCount(sqlSession, board); }
+	 */
+
 }

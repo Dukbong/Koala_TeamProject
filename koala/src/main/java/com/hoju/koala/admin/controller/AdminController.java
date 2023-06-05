@@ -24,8 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class AdminController {
 	
-	
-	
 	@Autowired
 	AdminService adminService;
 	
