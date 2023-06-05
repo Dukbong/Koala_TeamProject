@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 <style>
     .footer{
-        background-color: black;
         width: 80%;
         height: 300px;
         margin: auto;
@@ -77,10 +76,17 @@
         font-size: 1rem;
         color: rgb(149, 149, 149);
     }
+    .linefooter{
+    	width:100%;
+    	height: 1%;
+        background-color: rgb(172, 171, 169);
+        margin: auto;
+    }
 </style>
 </head>
 <body>	
     <div class="footer">
+    	<div class="linefooter"></div>
         <div class="columnTotal">
         <div class="column">
             <div class="item itemhade">Why Koala</div>

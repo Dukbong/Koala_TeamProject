@@ -13,21 +13,19 @@ import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.member.model.vo.Member;
 
 
-// rawtypes : Á¦³×¸¯Å¸ÀÔÀÌ ºÒÆ¯Á¤ÀÏ ¶§
+// rawtypes : ì œë„¤ë¦­ íƒ€ì…ì´ ë¶ˆì™„ì „í•˜ë‹¤
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Repository
 public class AdminDao {
 	
-	// ÀüÃ¼ ¸®½ºÆ® Ä«¿îÆ® ¼ö Á¶È¸
 	public AllCount selectAllCount(SqlSession sqlSession) {
 		return sqlSession.selectOne("adminMapper.allCount");
 	}
 
-	// ¼­Æ÷ÅÍÁî Á¤º¸ Á¶È¸
 	public ArrayList<Supporters> selectSupporters(SqlSession sqlSession) {
 		return (ArrayList) sqlSession.selectList("adminMapper.selectSupporters");
 	}
-	// ´ë±âÁßÀÎ ¶óÀÌºê·¯ ¹× ¼¼ÆÃ Á¶È¸
+	
 	public ArrayList<CreateSetting> selectCreateSetting(SqlSession sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectWaitingLibrary");
 	}
