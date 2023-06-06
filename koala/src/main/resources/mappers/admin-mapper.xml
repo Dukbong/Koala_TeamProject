@@ -74,27 +74,46 @@
 	
 
 	<!-- 부적절한 접근자 -->
+	<!-- 전체 조회 -->
 	<select id="selectBolckIp" resultMap="blockIpResultSet">
 		SELECT * FROM BLOCK_IP
 	</select>
-
+	<!-- 개별 조회 -->
 	<select id="selectBlockIpUser" parameterType="string" resultMap="blockIpResultSet">
 		SELECT * FROM BLOCK_IP WHERE IP = #{ip} 
 	</select>
-	
+	<!-- 새로운 ip 추가 -->
 	<insert id="insertBlockIpUser" parameterType="string">
 		INSERT INTO BLOCK_IP VALUES (#{ip}, DEFAULT, DEFAULT)
 	</insert>
-	
+	<!-- 카운터 추가 -->
 	<update id="updateBlockIpUser" parameterType="string">
 		UPDATE BLOCK_IP SET COUNT = COUNT + 1 WHERE IP = #{ip}
 	</update>
-	
+	<!-- 5회가 되면 차단 -->
 	<update id="blockBlockIpUser" parameterType="string">
 		UPDATE BLOCK_IP SET STATUS = 'Y' WHERE IP = #{ip}
 	</update>
-	
+	<!--============================================================-->
+	<!-- 유저 -->
 	<select id="selectMemberList" resultMap="memberMapper.memberResultSet">
 		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE REF_UNO IS NULL
 	</select>
+	<!--============================================================-->
+<!-- 	
+	<select id="boardCount" parameterType="string">
+		SELECT COUNT(*)
+		<choose>
+			<when test='board.equalsIgnoreCase("member")'>
+				FROM MEMBER
+			</when>
+			<when test='board.equalsIgnoreCase("errorBoard")'>
+				FROM ERROR_BOARD
+			</when>
+			<when test='board.equalsIgnoreCase("qnaBaord")'>
+				FROM MEMBER
+			</when>
+		</choose>
+		WHERE STATUS = 'Y'
+	</select> -->
 </mapper>

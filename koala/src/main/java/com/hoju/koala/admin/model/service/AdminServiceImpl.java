@@ -13,6 +13,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
 @Service
@@ -31,8 +32,8 @@ public class AdminServiceImpl implements AdminService {
 	
 	
 	@Override
-	public ArrayList<Supporters> selectSupporters() {
-		return adminDao.selectSupporters(sqlSession);
+	public ArrayList<Supporters> selectSupporters(PageInfo pi) {
+		return adminDao.selectSupporters(sqlSession, pi);
 	}
 
 
@@ -82,5 +83,11 @@ public class AdminServiceImpl implements AdminService {
 	public ArrayList<Member> selectMemberList() {
 		return adminDao.selectMemberList(sqlSession);
 	}
+
+
+	/* 보류
+	 * @Override public int boardListCount(String board) { return
+	 * adminDao.boardListCount(sqlSession, board); }
+	 */
 
 }
