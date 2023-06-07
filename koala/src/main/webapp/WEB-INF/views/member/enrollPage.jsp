@@ -10,7 +10,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div align="center">
         <div id="enroll-area">
-            <form action="insert.me" method="post">
+            <form action="insert" method="post">
                 <label for="userId">ID</label><br>
                 <input type="text" class="" id="userId" placeholder="아이디를 입력하세요" name="userId" required> <br>
 
@@ -21,13 +21,13 @@
                 <input type="password" class="" id="checkPwd" placeholder="비밀번호 재확인" required> <br>
 
                 <label for="nickName">Nickname</label><br>
-                <input type="text" class="" id="userName" placeholder="사용하실 닉네임을 입력하세요." name="userName" required> <br>
+                <input type="text" class="" id="nickName" placeholder="사용하실 닉네임을 입력하세요." name="nickName" required> <br>
 
                 <label for="email">Email</label><br>
                 <input type="text" class="" id="email" placeholder="이메일을 입력하세요" name="email"><button>send</button> <br>
 
                 <label for="address">Verification Code</label><br>
-                <input type="text" class="" id="address" placeholder="인증번호를 입력하세요" name="address"><button>check</button> <br>
+                <input type="text" class="" id="" placeholder="인증번호를 입력하세요" name=""><button>check</button> <br>
 
                 <span>Terms of Use</span><br>
                 <textarea name="" id="" cols="30" rows="10" style="resize:none;">
