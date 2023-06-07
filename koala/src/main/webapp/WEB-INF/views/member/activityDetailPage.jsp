@@ -56,27 +56,55 @@
                 		</tr>
                 		
                 		<tr>
-                			<th>Followers : 0</th>
+                			<th>Followers : ${followCnt }</th>
                 		</tr>
                 		<tr>
                 			<c:if test="${user ne loginUser }">
-                				<th><button>Follow</button></th>
+                				<th><button id="follow">Follow</button></th>
                 			</c:if>
                 		<tr>
                 	</table>
+                	
+                	<script>
+                		$(function(){
+                			$("#follow").on("click", function(){
+                				console.log("hi");
+                				$.ajax({
+                					url:"/koala/member/follow",
+                					data:{
+                						fromUser:${loginUser.userNo},
+                						toUser:${user.userNo}
+                					},
+                					success:function(result){
+                						if(result == 1){
+                							alert("이 유저를 팔로우합니다.");
+                							
+                							
+                						}else if(result == 2){
+                							alert("팔로우를 취소합니다.");
+                						}
+                					},
+                					error:function(){
+                						alert("통신 실패!");
+                					}
+                				});
+                			});
+                		});
+                	
+                	</script>
                     
                 </div>
                 <div id="introduce-area">
                     <div id="introduce-box">
                     	<c:choose>
                     		<c:when test="${user eq loginUser }">
-		                        <form action="update.me">
-		                            <textarea name="" id="" cols="30" rows="5" style="resize: none;"></textarea><br>
+		                        <form action="update.intro" method="post">
+		                            <textarea name="introduce" id="" cols="30" rows="5" style="resize: none;">${user.introduce }</textarea><br>
 		                            <button type="submit" style="background-color: blue;">Update</button>
 		                        </form>	
                     		</c:when>
                     		<c:otherwise>
-                    			<textarea name="" id="" cols="30" rows="5" style="resize: none;"></textarea><br>
+                    			<textarea name="" id="" cols="30" rows="5" style="resize: none;" readonly>${user.introduce }</textarea><br>
                     		</c:otherwise>
                     	</c:choose>
                     </div>
