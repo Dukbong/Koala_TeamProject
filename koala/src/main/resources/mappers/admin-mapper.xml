@@ -13,6 +13,7 @@
 		<result column="errorBoard" property="errorBoard"/>
 		<result column="bulletinBoard" property="bulletinBoard"/>
 		<result column="qnaBoard" property="qnaBoard"/>
+		<result column="blockIp" property="blockIp"/>
 	</resultMap>
 	<!-- 서포터즈 회원 조회 VO >> 특이사항 : resultMap을 상속 -->
 	<resultMap type="supporters" id="supportResultSet" extends="memberMapper.memberResultSet">
@@ -51,7 +52,8 @@
 			(SELECT COUNT(*) FROM CREATE_SETTING WHERE STATUS = 'W') createSetting,
 			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'N' AND B.STATUS = 'Y') errorBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'B') bulletinBoard,
-			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'Q') qnaBoard
+			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'Q') qnaBoard,
+			(SELECT COUNT(*) FROM BLOCK_IP) blockIp
 		FROM DUAL
 	</select>
 	
@@ -59,6 +61,12 @@
 	<select id="selectSupporters" resultMap="supportResultSet">
 		SELECT * FROM SUPPORTERS JOIN MEMBER ON (USER_NO = REF_UNO)
 	</select>
+	<delete id="deleteSupporter" parameterType="string">
+		DELETE FROM SUPPORTERS
+			WHERE REF_UNO = (
+    			SELECT USER_NO FROM MEMBER WHERE USER_ID = #{uesrId}
+			)
+	</delete>
 	
 	<!-- 아직 상태가 대기중인 라이브러리 및 세팅 -->
 	<select id="selectWaitingLibrary" resultMap="createSettingResultSet">
@@ -76,7 +84,7 @@
 	<!-- 부적절한 접근자 -->
 	<!-- 전체 조회 -->
 	<select id="selectBolckIp" resultMap="blockIpResultSet">
-		SELECT * FROM BLOCK_IP
+		SELECT * FROM BLOCK_IP ORDER BY STATUS
 	</select>
 	<!-- 개별 조회 -->
 	<select id="selectBlockIpUser" parameterType="string" resultMap="blockIpResultSet">

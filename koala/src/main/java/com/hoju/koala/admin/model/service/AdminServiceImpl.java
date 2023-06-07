@@ -44,16 +44,20 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public ArrayList<ErrorBoard> selectErrorBoard() {
-		return adminDao.selectErrorBoard(sqlSession);
+	public ArrayList<ErrorBoard> selectErrorBoard(PageInfo pi) {
+		return adminDao.selectErrorBoard(sqlSession, pi);
 	}
 
 
 	@Override
-	public ArrayList<BlockIp> selectBlockIp() {
-		return adminDao.selectBolckIp(sqlSession);
+	public ArrayList<BlockIp> selectBlockIp(PageInfo pi) {
+		return adminDao.selectBolckIp(sqlSession, pi);
 	}
 
+	@Override
+	public ArrayList<Member> selectMemberList(PageInfo pi) {
+		return adminDao.selectMemberList(sqlSession, pi);
+	}
 
 	@Override
 	public BlockIp selectBlockIpUser(String ip) {
@@ -80,9 +84,11 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		return adminDao.selectMemberList(sqlSession);
+	public int deleteSupporter(String userNo) {
+		return adminDao.deleteSupporter(userNo, sqlSession);
 	}
+
+
 
 
 	/* 보류

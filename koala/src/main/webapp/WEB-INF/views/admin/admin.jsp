@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <title>Koala Admin[Main]</title>
 <style>
 	.adminMain{
@@ -69,5 +70,14 @@
 			</div>
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	
+	
+	<script>
+		$(function(){
+			var str = "${path}";
+			console.log("주소 : "+"${path}");
+		})
+	</script>
 </body>
 </html>

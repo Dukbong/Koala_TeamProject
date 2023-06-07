@@ -20,7 +20,7 @@
         background-color: rgb(30, 30, 30);
         color: white;
         positon: relative;
-         font-family: 'Noto Sans KR', sans-serif; 
+        font-family: 'Noto Sans KR', sans-serif; 
     }
     #wrap{
         width: 100%;
@@ -110,7 +110,16 @@
                     <h1 onclick="location.href='/koala'">Koala initializr</h1>
                 </div>
                 <div id="header_2_2">
-                    <h4>CreateCode && DownloadFile</h4> <!-- 조건문 걸기 -->
+                	<!-- /각 카데고리/이후 주소  ex) /admin/supporter/...-->
+                	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
+                	<c:choose>
+                		<c:when test="${loginUser.type == 2 && path.indexOf('admin') >= 0 }">                		
+	                		<h4 onclick="adminPage();">Koala Admin</h4>
+                		</c:when>
+                		<c:otherwise>        		
+	 	                   <h4>CreateCode && DownloadFile</h4> <!-- 조건문 걸기 -->
+                		</c:otherwise>
+                	</c:choose>
                 </div>
             </div>
             <div id="header_3">
@@ -148,17 +157,31 @@
         <div id="line"></div>
     </div>
     <div id="darkmode">
-    	<i class="fa-solid fa-sun fa-2xl" style="color: rgb(255, 246, 246)" onclick="changeMode();"></i> <br><br> <!-- 수정할 것 -->
-    	<i class="fa-solid fa-moon fa-2xl" style="color: rgb(30, 30, 30)"></i>
+    	<i id="dark" class="fa-solid fa-sun fa-2xl" style="color: rgb(255, 246, 246)" onclick="changeMode(event);"></i> <br><br> <!-- 수정할 것 -->
+    	<i id="white" class="fa-solid fa-moon fa-2xl" style="color: rgb(30, 30, 30)" onclick="changeMode(event);"></i>
     </div>
     
     <script>
-        function changeMode(){
-            $("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+        function changeMode(e){
+        	if(e.target.id == "dark"){        		
+            	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+            	
+        	}else{
+        		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+        		
+        	}
         }
+        
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
+        
+        
+        // admin page ()
+       	function adminPage(){
+        	location.href = "/koala/admin/main";
+        }
+        
         
         // jang : IP 차단용 코드 입니다.
         $(function(){
