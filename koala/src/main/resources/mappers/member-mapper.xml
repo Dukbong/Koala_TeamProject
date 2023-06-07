@@ -10,7 +10,6 @@
 		FROM MEMBER
 		WHERE STATUS = 'Y'
 		AND USER_ID = #{userId}
-		AND USER_PWD = #{userPwd}
 	</select>
 
 	<resultMap type="member" id="memberResultSet">
@@ -19,6 +18,7 @@
 		<result column="USER_PWD" property="userPwd"/>
 		<result column="NICKNAME" property="nickName"/>
 		<result column="EMAIL" property="email"/>
+		<result column="INTRODUCE" property="introduce"/>
 		<result column="USER_LEVEL" property="userLevel"/>
 		<result column="POINT" property="point"/>
 		<result column="TYPE" property="type"/>
@@ -32,6 +32,43 @@
 		FROM MEMBER
 		WHERE STATUS = 'Y'
 		AND USER_NO = #{userNo}
+	</select>
+	
+	<insert id="insertMember">
+		INSERT INTO MEMBER(USER_NO
+						  ,USER_ID
+						  ,USER_PWD
+						  ,NICKNAME
+						  ,EMAIL)
+		VALUES(SEQ_UNO.NEXTVAL, #{userId}, #{userPwd}, #{nickName}, #{email})
+	</insert>
+	
+	<update id="updateIntroduce">
+		UPDATE MEMBER
+		SET INTRODUCE = #{introduce}
+		WHERE USER_NO = #{userNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	
+	<!-- 팔로우 하기 -->
+	<insert id="addFollow">
+		INSERT INTO FOLLOW
+		VALUES(#{fromUser}, #{toUser})
+	</insert>
+	
+	<!-- 팔로우 취소하기 -->
+	<delete id="removeFollow">
+		DELETE FROM FOLLOW
+		WHERE FROM_USER = #{fromUser}
+		AND TO_USER = #{toUser}
+	</delete>
+	
+	<!-- 팔로우 수 조회 -->
+	<select id="selectFollowCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOW
+		WHERE TO_USER = #{userNo}
 	</select>
 
 </mapper>

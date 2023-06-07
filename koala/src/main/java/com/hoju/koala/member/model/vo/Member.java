@@ -18,6 +18,7 @@ public class Member {
 	private String userPwd;
 	private String nickName;
 	private String email;
+	private String introduce;
 	private int userLevel;
 	private int point;
 	private int type;

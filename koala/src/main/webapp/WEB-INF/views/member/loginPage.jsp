@@ -121,18 +121,13 @@
 
     </div>
     
-	  	<script>
-	  		var msg = "${msg}";
-	  		
-	  		$(function(){
-	  			if(msg != ""){
-	  				alert(msg);
-	  				
-	  				msg = "";
-	  			}
-		  		
-	  		});
-	  	</script>
+	<!-- 알림메세지 -->
+  	<c:if test="${not empty msg }">
+		<script>
+ 			alert("${msg}");
+		</script>
+		<c:remove var="msg" scope="session"/>
+	</c:if>
   		
 </body>
 </html>
