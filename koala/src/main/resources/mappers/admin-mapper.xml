@@ -102,6 +102,10 @@
 	<update id="blockBlockIpUser" parameterType="string">
 		UPDATE BLOCK_IP SET STATUS = 'Y' WHERE IP = #{ip}
 	</update>
+	
+	<update id="updateblockClear" parameterType="string">
+		UPDATE BLOCK_IP SET COUNT = 0 WHERE IP = #{ip}
+	</update>
 	<!--============================================================-->
 	<!-- 유저 -->
 	<select id="selectMemberList" resultMap="memberMapper.memberResultSet">

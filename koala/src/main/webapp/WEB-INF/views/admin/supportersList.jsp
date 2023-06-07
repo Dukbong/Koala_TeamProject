@@ -209,7 +209,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <li class="page-item"><a class="page-link"
-                                                href="/koala/admin/supporters.list?currentPage=${pi.currentPage - 1 }">Previous</a>
+                                                href="/koala/admin/supporters.list?currentPage=${pi.currentPage - 1 }">Prev</a>
                                         </li>
                                     </c:otherwise>
                                 </c:choose>

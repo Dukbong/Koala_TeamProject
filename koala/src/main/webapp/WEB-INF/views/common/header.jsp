@@ -165,10 +165,11 @@
         function changeMode(e){
         	if(e.target.id == "dark"){        		
             	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+            	$(".topLine").css("background-color", "rgb(255, 246, 246)")
             	
         	}else{
         		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
-        		
+        		$(".topLine").css("background-color", "rgb(30, 30, 30)");
         	}
         }
         

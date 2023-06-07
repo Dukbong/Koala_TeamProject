@@ -2,13 +2,12 @@ package com.hoju.koala.admin.controller;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -57,28 +56,17 @@ public class AdminController {
 	public ModelAndView adminSupportes(PageInfo p, ModelAndView mav) {
 		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 5, 4);
 		ArrayList<Supporters> supporters = adminService.selectSupporters(page);
-//		// log 남기기
-//		if(supporters == null) {
-//			log.info("SelectSupporters is NullPoint");
-//			return new ModelAndView("common/nullPoint");
-//		}
 		mav = new ModelAndView("admin/supportersList");
 		mav.addObject("supporterList",supporters);
 		mav.addObject("pi", page);
-		
-//		for(Supporters s : supporters) {
-//			System.out.println(s);
-//			System.out.println(s.getNickName()); // getter함수를 사용해서 모두 가져올 수 상속 받은 객체의 필드에 접근 가능
-//		}
 		return mav;
 	}
 	
 	@GetMapping("/supporters.demote")
+	@ResponseBody
 	public String adminSupportersDelete(String userId, Model model) {
 		int result = adminService.deleteSupporter(userId);
-		
-		new Gson().toJson(String.valueOf(result));
-		return "admin/supportersList"; 
+		return new Gson().toJson(String.valueOf(result));
 	}
 
 	
@@ -110,10 +98,20 @@ public class AdminController {
 		ArrayList<BlockIp> blockIpList = adminService.selectBlockIp(page);
 		model.addAttribute("blackList", blockIpList);
 		model.addAttribute("pi", page);
-		for(BlockIp b : blockIpList) {
-			System.out.println(b);
-		}
 		return "admin/blockIpList";
+	}
+	
+	@GetMapping("/blockip.clear")
+	@ResponseBody
+	public String adminblockip(String blackIp) {
+		int result = adminService.updateblockClear(blackIp);
+		return new Gson().toJson(String.valueOf(result));
+	}
+	@GetMapping("/blockip.action")
+	@ResponseBody
+	public String adminblockips(String blackIp) {
+		int result = adminService.updateblockClear(blackIp);
+		return new Gson().toJson(String.valueOf(result));
 	}
 	
 	@GetMapping("/member.list")

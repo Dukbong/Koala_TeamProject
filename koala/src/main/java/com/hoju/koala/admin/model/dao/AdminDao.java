@@ -63,6 +63,10 @@ public class AdminDao {
 		return sqlSession.delete("adminMapper.deleteSupporter", userNo);
 	}
 
+	public int updateblockClear(String blackIp, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateblockClear", blackIp);
+	}
+
 
 	/* 페이징 처리 보류 
 	 * public int boardListCount(SqlSession sqlSession, String board) { return
