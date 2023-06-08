@@ -169,6 +169,21 @@ public class MemberController {
 		
 	}
 	
+	//ID/PWD 찾기 페이지 이동
+	@GetMapping("/forget")
+	public String forget() {
+		
+		return "member/forgetPage";
+	}
+	
+	
+	//계정설정 페이지 이동
+	@GetMapping("/as")
+	public String as(HttpSession session) {
+		
+		return "member/accountSettingPage";
+	}
+	
 	
 	
 }
