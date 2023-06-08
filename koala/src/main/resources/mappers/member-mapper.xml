@@ -70,5 +70,12 @@
 		FROM FOLLOW
 		WHERE TO_USER = #{userNo}
 	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePwd">
+		UPDATE MEMBER
+		SET USER_PWD = #{userPwd}
+		WHERE USER_NO = #{userNo}
+	</update>
 
 </mapper>

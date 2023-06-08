@@ -26,4 +26,7 @@ public interface MemberService {
 	//팔로우 수 조회
 	int selectFollowCount(int userNo);
 
+	//비밀번호 변경
+	int updatePwd(Member loginUser);
+
 }

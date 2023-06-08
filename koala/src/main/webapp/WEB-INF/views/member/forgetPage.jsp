@@ -8,6 +8,9 @@
 <title>Login Page</title>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tilt+Prism&display=swap" rel="stylesheet">
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
@@ -33,7 +36,7 @@
         align-items: center;
     }
 
-    #login-area{
+    #fotget-area{
         /* background-color: rgb(4, 59, 82); */
         width: 1000px;
         height: 800px;
@@ -47,22 +50,27 @@
     } 
 
     .logo{
-        padding: 15px;
-        font-size: 50px;
+  		font-family: 'Tilt Prism', cursive;
+        padding: 30px;
+        font-size: 70px;
     }
 
     label{
         color: white;
         font-size: 15px;
-        margin-left: 4px;
     }
 
-    #login-area button{
+    #fotget-area button{
         width: 100%;
-        background-color: rgb(76, 0, 255);
+        background-color: rgb(75, 0, 255);
         border-color: transparent;
         color: white;
         font-size: 18px;
+        cursor: pointer;
+    }
+    
+    #fotget-area button:hover{
+    	background-color: rgb(60, 0, 200);
     }
 
     #input-area input{
@@ -73,23 +81,21 @@
         display: block;
         padding: 10px;
         border: 1px solid lightgray;
-        border-radius: 20px;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
     }
     
     #ex{
     	padding-top: 15px;
     	padding-bottom: 40px;
     }
-
-    
-
     
 </style>
 </head>
 <body>
 	<div id="wrap">
 		<div id="content">
-	        <div id="login-area">
+	        <div id="fotget-area">
 	            <span class="logo">Koala</span>
 	            <div id="ex">
 		            <span class="small">회원가입시 입력하신 이메일 주소를 입력하세요.</span><br>
@@ -121,6 +127,13 @@
 		</script>
 		<c:remove var="msg" scope="session"/>
 	</c:if>
+	
+	<!-- 자동완성 끄기 -->
+	<script>
+		$(function(){
+			$("input").attr("autocomplete", "off");
+		});
+	</script>
   		
 </body>
 </html>
