@@ -58,6 +58,12 @@ public class MemberDao {
 		
 		return sqlSession.selectOne("memberMapper.selectFollowCount", userNo);
 	}
+
+	//비밀번호 변경
+	public int updatePwd(SqlSessionTemplate sqlSession, Member loginUser) {
+		
+		return sqlSession.update("memberMapper.updatePwd", loginUser);
+	}
 	
 	
 }

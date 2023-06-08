@@ -1,6 +1,7 @@
 package com.hoju.koala.member.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	private BCryptPasswordEncoder pwdEncoder;
 	
 	
 	
@@ -45,7 +46,7 @@ public class MemberController {
 		
 		Member loginUser = memberService.loginMember(m);
 		
-		if((loginUser != null) && (bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd()))) {
+		if((loginUser != null) && (pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd()))) {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
@@ -81,7 +82,7 @@ public class MemberController {
 								Member m,
 								ModelAndView mv) {
 		
-		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
+		String encPwd = pwdEncoder.encode(m.getUserPwd());
 		
 		m.setUserPwd(encPwd);
 		
@@ -176,7 +177,6 @@ public class MemberController {
 		return "member/forgetPage";
 	}
 	
-	
 	//계정설정 페이지 이동
 	@GetMapping("/as")
 	public String as(HttpSession session) {
@@ -184,6 +184,36 @@ public class MemberController {
 		return "member/accountSettingPage";
 	}
 	
+	
+	//비밀번호 변경
+	@ResponseBody
+	@PostMapping("/updatePwd")
+	public int updatePwd(HttpServletRequest request) {
+		
+		Member loginUser = (Member)request.getSession().getAttribute("loginUser");
+		
+		//해쉬함수로인해 암호화된 현재 비밀번호
+		String currentPwd = loginUser.getUserPwd();
+
+		//모달창에서 현재 비밀번호 인풋에 사용자 입력값
+		String userPwd = request.getParameter("userPwd");
+		
+		int result = 0;
+		
+		if(pwdEncoder.matches(userPwd, currentPwd)) { //맞을때만 
+			String newPwd = request.getParameter("newPwd");
+			
+			loginUser.setUserPwd(pwdEncoder.encode(newPwd));
+			
+			result = memberService.updatePwd(loginUser);
+			
+			if(result>0) { //성공적으로 데이터베이스 업데이트했으면 세션loginUser 바꿔주기
+				request.getSession().setAttribute("loginUser", loginUser);
+			}
+		}
+		
+		return result;
+	}
 	
 	
 }
