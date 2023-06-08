@@ -277,7 +277,7 @@
 									
 									$("#updatePwdModal").modal("hide");
 								}else if(result==0){
-									alert("비밀번호가 틀렸습니다. 다시 입력해주세요.");
+									alert("다시 입력해주세요.");
 									
 									$("#updatePwdModal input[name=userPwd]").val("");
 									$("#updatePwdModal input[name=newPwd]").val("");
