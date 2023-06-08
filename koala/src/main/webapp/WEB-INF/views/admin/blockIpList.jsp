@@ -26,7 +26,7 @@
                 }
 
                 .topLine {
-                    width: 40%;
+                    width: 24%;
                     height: 140px;
                     padding: 25px;
                     border-radius: 30px;
@@ -34,7 +34,7 @@
 
                 .supporterone,
                 .supportertwo,
-                .supporterthree,
+                
                 .supporterlast {
                     width: 100%;
                     height: 25%;
@@ -42,7 +42,7 @@
 
                 .bin {
                     box-sizing: border-box;
-                    width: 5%;
+                    width: 4.5%;
                     height: 25%;
                 }
 
@@ -84,8 +84,9 @@
                 <div id="supporterLine">
                     <div id="showLine">
                         <div id="middleLine"></div>
-                        <c:forEach begin="0" end="5" step="1" var="i">
+                        <c:forEach begin="0" end="${blackList.size() }" step="1" var="i">
                             <c:if test="${blackList[i] != null }">
+                           <!--  <div class="bin"></div> -->
                                 <div class="bin"></div>
                                 <div class="topLine">
                                     <div class="supporterone">
@@ -93,11 +94,25 @@
                                             style="width: 70%; height: 100%; font-size: 18px; font-weight: bold;">
                                             ${blackList[i].ip }
                                         </div>
-                                        <div class="right" style="width: 30%; height: 100%; padding-left: 60px">
-                                            <button class="btn btn-danger action" name="action"
-                                                style="width: 100px">action</button><br><br>
-                                            <button class="btn btn-primary clear" name="clear"
-                                                style="width: 100px; margin:auto;">clear</button>
+                                        <div class="right" style="width: 30%; height: 100%; padding-right: 50px;">
+                                            
+                                             	<c:choose>
+                                                	<c:when test="${blackList[i].status == 'Y' }">
+                                            			<button class="btn btn-danger action" disabled name="action" style="width: 100px">action</button><br><br>                                                	
+                                                	</c:when>
+                                                	<c:otherwise>                                                		
+                                            			<button class="btn btn-danger action" name="action" style="width: 100px">action</button><br><br>                                                  	
+                                                	</c:otherwise>
+                                                </c:choose>
+                                                
+                                                <c:choose>
+                                                	<c:when test="${blackList[i].status == 'N' }">
+                                            			<button class="btn btn-primary clear" name="clear" style="width: 100px; margin:auto;" disabled>clear</button>                                                	
+                                                	</c:when>
+                                                	<c:otherwise>                                                		
+                                            			<button class="btn btn-primary clear" name="clear" style="width: 100px; margin:auto;">clear</button>                                                	
+                                                	</c:otherwise>
+                                                </c:choose>
                                         </div>
                                     </div>
                                     <div class="supportertwo">
@@ -114,12 +129,6 @@
                                         <div class="num1"
                                             style="width: 50%; height: 100%; font-size: 18px; font-weight: bold;">
                                             <p>Status : ${blackList[i].status }</p>
-                                        </div>
-                                        <div class="num2" style="width: 10%; height: 100%">
-                                            <!-- 빈 공간 -->
-                                        </div>
-                                        <div class="num3" style="width: 40%; height: 100%; padding-left: 117px">
-
                                         </div>
                                     </div>
                                 </div>

@@ -36,6 +36,8 @@ public interface AdminService {
 
 	int updateblockClear(String blackIp);
 
+	int updateblockAction(String blackIp);
+
 	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
 	/* int boardListCount(String board); */
 }
