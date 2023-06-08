@@ -84,7 +84,7 @@
 	<!-- 부적절한 접근자 -->
 	<!-- 전체 조회 -->
 	<select id="selectBolckIp" resultMap="blockIpResultSet">
-		SELECT * FROM BLOCK_IP ORDER BY STATUS
+		SELECT * FROM BLOCK_IP ORDER BY STATUS DESC
 	</select>
 	<!-- 개별 조회 -->
 	<select id="selectBlockIpUser" parameterType="string" resultMap="blockIpResultSet">
@@ -104,7 +104,11 @@
 	</update>
 	
 	<update id="updateblockClear" parameterType="string">
-		UPDATE BLOCK_IP SET COUNT = 0 WHERE IP = #{ip}
+		UPDATE BLOCK_IP SET COUNT = 0, STATUS = 'N' WHERE IP = #{ip}
+	</update>
+	
+	<update id="updateblockAction" parameterType="string">
+		UPDATE BLOCK_IP SET COUNT = 5, STATUS = 'Y' WHERE IP = #{ip}
 	</update>
 	<!--============================================================-->
 	<!-- 유저 -->
