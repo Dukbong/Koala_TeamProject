@@ -2,6 +2,9 @@ package com.hoju.koala.admin.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +42,6 @@ public class AdminController {
 		all = allCount();
 		if(all != null) {
 			model.addAttribute("allCount", all);
-			System.out.println(all);
 			return "admin/admin";
 		}else {
 			return "common/nullPoint";
@@ -124,4 +126,14 @@ public class AdminController {
 		}
 		return "";
 	}
+	
+	@GetMapping("mode.check")
+	@ResponseBody
+	public String displayMode(String mode, Model model, HttpServletResponse response) {
+		Cookie cookie = new Cookie("mode", mode);
+		cookie.setMaxAge(60*60*60);
+		response.addCookie(cookie);
+		return new Gson().toJson(cookie);
+	}
+	
 }
