@@ -112,8 +112,8 @@
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
                                         	<!-- 주소만 연결 -->
-                                            <a href="#">${support.userId }</a> 
-                                            <a href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
+                                            <a class="ii" href="#">${support.userId }</a> 
+                                            <a class="ii" href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
                                             

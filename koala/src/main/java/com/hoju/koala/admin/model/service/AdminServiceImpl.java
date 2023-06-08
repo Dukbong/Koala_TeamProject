@@ -95,6 +95,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 
+	@Override
+	public int updateblockAction(String blackIp) {
+		return adminDao.updateblockAction(blackIp, sqlSession);
+	}
+
+
 
 
 	/* 보류

@@ -69,7 +69,6 @@ public class AdminController {
 		return new Gson().toJson(String.valueOf(result));
 	}
 
-	
 	@GetMapping("/waitingLibrary.list")
 	public String adminCreateSetting(Model model) {
 		ArrayList<CreateSetting> libraryList = adminService.selectCreateSetting();
@@ -103,14 +102,14 @@ public class AdminController {
 	
 	@GetMapping("/blockip.clear")
 	@ResponseBody
-	public String adminblockip(String blackIp) {
+	public String adminblockipClear(String blackIp) {
 		int result = adminService.updateblockClear(blackIp);
 		return new Gson().toJson(String.valueOf(result));
 	}
 	@GetMapping("/blockip.action")
 	@ResponseBody
-	public String adminblockips(String blackIp) {
-		int result = adminService.updateblockClear(blackIp);
+	public String adminblockipAction(String blackIp) {
+		int result = adminService.updateblockAction(blackIp);
 		return new Gson().toJson(String.valueOf(result));
 	}
 	

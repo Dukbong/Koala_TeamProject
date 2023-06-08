@@ -165,11 +165,13 @@
         function changeMode(e){
         	if(e.target.id == "dark"){        		
             	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
-            	$(".topLine").css("background-color", "rgb(255, 246, 246)")
+            	$(".topLine").css("background-color", "white")
+            	$(".ii").css("color", "black");
             	
         	}else{
         		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
-        		$(".topLine").css("background-color", "rgb(30, 30, 30)");
+        		$(".topLine").css("background-color", "black");
+        		$(".ii").css("color", "#ffffff");
         	}
         }
         
