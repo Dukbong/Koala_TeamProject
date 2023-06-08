@@ -108,6 +108,7 @@ public class AdminController {
 		int result = adminService.updateblockClear(blackIp);
 		return new Gson().toJson(String.valueOf(result));
 	}
+	
 	@GetMapping("/blockip.action")
 	@ResponseBody
 	public String adminblockipAction(String blackIp) {
@@ -131,9 +132,10 @@ public class AdminController {
 	@ResponseBody
 	public String displayMode(String mode, Model model, HttpServletResponse response) {
 		Cookie cookie = new Cookie("mode", mode);
-		cookie.setMaxAge(60*60*60);
+		cookie.setMaxAge(24*60*60*1000); //24시간
+		cookie.setPath("/");
 		response.addCookie(cookie);
+		System.out.println("쿠키발송");
 		return new Gson().toJson(cookie);
 	}
-	
 }

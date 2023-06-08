@@ -14,6 +14,7 @@ public class AllCount{
 	private int supporters;
 	private int createSetting;
 	private int errorBoard;
+	private int issue;
 	private int bulletinBoard;
 	private int qnaBoard;
 	private int blockIp;

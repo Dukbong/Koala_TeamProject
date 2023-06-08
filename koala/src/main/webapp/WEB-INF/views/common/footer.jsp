@@ -128,10 +128,10 @@
                 Reference
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="https://start.spring.io/">Spring Initializr</a>
+                <a class="footerAtag ii" href="https://start.spring.io/" target='_blank'>Spring Initializr</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="https://mvnrepository.com/">MVN Repository</a>
+                <a class="footerAtag ii" href="https://mvnrepository.com/" target='_blank'>MVN Repository</a>
             </div>
             
         </div>

@@ -14,6 +14,7 @@
 		<result column="bulletinBoard" property="bulletinBoard"/>
 		<result column="qnaBoard" property="qnaBoard"/>
 		<result column="blockIp" property="blockIp"/>
+		<result column="issue" property="issue"/>
 	</resultMap>
 	<!-- 서포터즈 회원 조회 VO >> 특이사항 : resultMap을 상속 -->
 	<resultMap type="supporters" id="supportResultSet" extends="memberMapper.memberResultSet">
@@ -50,10 +51,11 @@
 			(SELECT COUNT(*) FROM MEMBER WHERE STATUS = 'Y') member,
 			(SELECT COUNT(*) FROM SUPPORTERS S JOIN MEMBER M ON (S.REF_UNO = M.USER_NO) WHERE M.STATUS = 'Y') supporters,
 			(SELECT COUNT(*) FROM CREATE_SETTING WHERE STATUS = 'W') createSetting,
-			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'N' AND B.STATUS = 'Y') errorBoard,
+			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'W' AND B.STATUS = 'Y') errorBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'B') bulletinBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'Q') qnaBoard,
-			(SELECT COUNT(*) FROM BLOCK_IP) blockIp
+			(SELECT COUNT(*) FROM BLOCK_IP) blockIp,
+			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'E' AND B.STATUS = 'Y') issue
 		FROM DUAL
 	</select>
 	
