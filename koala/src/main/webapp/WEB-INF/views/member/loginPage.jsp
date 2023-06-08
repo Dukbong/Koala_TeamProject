@@ -8,6 +8,9 @@
 <title>Login Page</title>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tilt+Prism&display=swap" rel="stylesheet">
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
@@ -47,22 +50,27 @@
     } 
 
     .logo{
+  		font-family: 'Tilt Prism', cursive;
         padding: 30px;
-        font-size: 50px;
+        font-size: 70px;
     }
 
     label{
         color: white;
         font-size: 15px;
-        margin-left: 4px;
     }
 
     #login-area button{
         width: 100%;
-        background-color: rgb(76, 0, 255);
+        background-color: rgb(75, 0, 255);
         border-color: transparent;
         color: white;
         font-size: 18px;
+        cursor: pointer;
+    }
+    
+    #login-area button:hover{
+    	background-color: rgb(60, 0, 200);
     }
 
     #input-area input{
@@ -73,12 +81,13 @@
         display: block;
         padding: 10px;
         border: 1px solid lightgray;
-        border-radius: 20px;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     #keep-area{
         margin-bottom: 50px;
-        padding: 10px;
+        padding-top: 5px;
     }
 
     #link-area{
@@ -92,7 +101,31 @@
         margin: 10px;
         
     }
+    
+    /* 애니메이션 효과를 위한 CSS 스타일 지정 */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 로그인 영역의 애니메이션 효과를 적용하는 CSS 스타일 지정 */
+    #login-area {
+        animation: fadeInDown 1s;
+    }
+    
+    
+    
+    
 </style>
+
+
+
 </head>
 <body>
 	<div id="wrap">
@@ -111,7 +144,6 @@
 	                <div id="keep-area">
 	                    <input type="checkbox" id="keepId">
 	                    <label for="keepId">아이디 저장</label>
-	
 	                </div>
 	                
 	                <div id="">
@@ -135,6 +167,13 @@
 		</script>
 		<c:remove var="msg" scope="session"/>
 	</c:if>
+	
+	<!-- 자동완성 끄기 -->
+	<script>
+		$(function(){
+			$("input").attr("autocomplete", "off");
+		});
+	</script>
   		
 </body>
 </html>

@@ -197,11 +197,11 @@ public class MemberController {
 
 		//모달창에서 현재 비밀번호 인풋에 사용자 입력값
 		String userPwd = request.getParameter("userPwd");
+		//모달창에서 사용자가 입력한 새로운비밀번호
+		String newPwd = request.getParameter("newPwd");
 		
 		int result = 0;
-		
-		if(pwdEncoder.matches(userPwd, currentPwd)) { //맞을때만 
-			String newPwd = request.getParameter("newPwd");
+		if(pwdEncoder.matches(userPwd, currentPwd) && (!userPwd.equals(newPwd))) { //부합할때 진행
 			
 			loginUser.setUserPwd(pwdEncoder.encode(newPwd));
 			
