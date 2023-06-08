@@ -31,12 +31,16 @@ public class AdminDao {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectWaitingLibrary");
 	}
 
-	public ArrayList<ErrorBoard> selectErrorBoard(SqlSession sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoard");
+	public ArrayList<ErrorBoard> selectErrorBoard(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoard",null, pi.rowBounds());
 	}
 
-	public ArrayList<BlockIp> selectBolckIp(SqlSession sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp");
+	public ArrayList<BlockIp> selectBolckIp(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp",null, pi.rowBounds());
+	}
+	
+	public ArrayList<Member> selectMemberList(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList",null, pi.rowBounds());
 	}
 
 	public BlockIp selectBlockIpUser(String ip, SqlSession sqlSession) {
@@ -55,9 +59,14 @@ public class AdminDao {
 		return sqlSession.update("adminMapper.blockBlockIpUser", ip);
 	}
 
-	public ArrayList<Member> selectMemberList(SqlSession sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList");
+	public int deleteSupporter(String userNo, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.deleteSupporter", userNo);
 	}
+
+	public int updateblockClear(String blackIp, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateblockClear", blackIp);
+	}
+
 
 	/* 페이징 처리 보류 
 	 * public int boardListCount(SqlSession sqlSession, String board) { return

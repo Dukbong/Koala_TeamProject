@@ -17,19 +17,24 @@ public interface AdminService {
 
 	ArrayList<CreateSetting> selectCreateSetting();
 
-	ArrayList<ErrorBoard> selectErrorBoard();
+	ArrayList<ErrorBoard> selectErrorBoard(PageInfo page);
 
-	ArrayList<BlockIp> selectBlockIp();
+	ArrayList<BlockIp> selectBlockIp(PageInfo page);
 
 	BlockIp selectBlockIpUser(String ip);
 	
+	// intercepter에서  행해지는 curd
 	int insertBlockIpUser(String ip);
 	
 	int updateBlockIpUser(String ip);
 
 	int blockBlockIpUser(String ip);
-	
-	ArrayList<Member> selectMemberList();
+	// =======================
+	ArrayList<Member> selectMemberList(PageInfo page);
+
+	int deleteSupporter(String userNo);
+
+	int updateblockClear(String blackIp);
 
 	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
 	/* int boardListCount(String board); */
