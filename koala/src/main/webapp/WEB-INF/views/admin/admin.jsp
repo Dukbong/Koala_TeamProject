@@ -105,7 +105,7 @@
 						</div>
 					</div>
 					<div class=waitingLibraryValue>
-						123
+						${allCount.createSetting }
 					</div>
 				</div>
 				<div class="din"></div>
@@ -121,7 +121,7 @@
 						</div>
 					</div>
 					<div class=supportesValue>
-						123
+						${allCount.supporters }
 					</div>
 				</div>
 				<div class="din"></div>
@@ -131,10 +131,21 @@
 		
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
-	
-	
 	<script>
+	$(function(){
+		$(".waitingLibrary").on("click", function(){
+			// Settings jsp 파일로 이동
+			location.href="";
+		}).on("mouseenter", function(){
+			$(this).css("cursor","pointer");
+		});
+		
+		$(".supportes").on("click", ()=>{
+			location.href = "/koala/admin/supporters.list";
+		}).on("mouseenter", function(){
+			$(this).css("cursor","pointer");
+		});
+	})
 	</script>
 </body>
 </html>
