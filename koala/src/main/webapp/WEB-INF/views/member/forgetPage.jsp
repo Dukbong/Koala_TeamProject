@@ -47,7 +47,7 @@
     } 
 
     .logo{
-        padding: 30px;
+        padding: 15px;
         font-size: 50px;
     }
 
@@ -75,23 +75,15 @@
         border: 1px solid lightgray;
         border-radius: 20px;
     }
-
-    #keep-area{
-        margin-bottom: 50px;
-        padding: 10px;
+    
+    #ex{
+    	padding-top: 15px;
+    	padding-bottom: 40px;
     }
 
-    #link-area{
-        text-align: center;
-        margin: 10px;
-    }
+    
 
-    #link-area>a{
-        text-decoration: none;
-        color: white;
-        margin: 10px;
-        
-    }
+    
 </style>
 </head>
 <body>
@@ -99,28 +91,22 @@
 		<div id="content">
 	        <div id="login-area">
 	            <span class="logo">Koala</span>
+	            <div id="ex">
+		            <span class="small">회원가입시 입력하신 이메일 주소를 입력하세요.</span><br>
+		            <span class="small">해당 이메일로 아이디와 변경된 패스워드를 보내드립니다.</span>
+	            </div>
+	            
 	            <form action="login" method="post">
 	
 	                <div id="input-area">
-	                    <label for="userId" class="">ID</label>
-	                    <input type="text" class="box" placeholder="아이디 입력" id="userId" name="userId" required> <br>
-	                    <label for="userPwd" class="">Password</label>
-	                    <input type="password" class="box" placeholder="패스워드 입력" id="userPwd" name="userPwd" required>
+	                    <label for="email" class="">Email</label>
+	                    <input type="email" class="box" placeholder="이메일 입력" id="email" name="userId" required> <br>
 	                </div>
 	
-	                <div id="keep-area">
-	                    <input type="checkbox" id="keepId">
-	                    <label for="keepId">아이디 저장</label>
-	
-	                </div>
+	                
 	                
 	                <div id="">
-	                    <button type="submit" class="box">Login</button>
-	                </div>
-	                
-	                <div id="link-area">
-	                    <a href="forget">ID/PWD 찾기</a>
-	                    <a href="enroll">회원가입</a>
+	                    <button type="submit" class="box">GO</button>
 	                </div>
 	            </form>
 	        </div>

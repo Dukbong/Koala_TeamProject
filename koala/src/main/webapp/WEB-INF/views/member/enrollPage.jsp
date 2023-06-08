@@ -5,32 +5,127 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+
+	*{
+		box-sizing: border-box;
+	}
+	#content{
+		margin: auto;
+		width: 80%;
+		height: 1000px;
+	}
+	
+	#insert-form{
+		width: 100%;
+		height: 100%;
+	}
+	
+	#content_1{
+		width: 100%;
+		height: 100%;
+		margin: 0 auto;
+		border: 1px solid #dadada;
+		border-radius: 5px;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+	
+	#enroll-area{
+		height: 100%;
+		width: 100%;
+	}
+	
+	
+	.box{
+		float: left;
+		width: 60%;
+		height: 40px;
+		border: 1px solid #dadada;
+		padding: 10px;
+		border-radius: 5px;
+		margin-bottom: 20px;
+	}
+	
+	textarea{
+		width: 100%;
+	}
+	
+	#center{
+		width: 50%;
+		height: 100%;
+	}
+	
+	label,#ToU{
+		float: left;
+	}
+	
+	#no-float{
+		float: none;
+	}
+	
+	.pack{
+		float: left;
+		width: 100%;
+	}
+	
+	.pack>button{
+		float: left;
+		height: 40px;
+		width: 80px;
+		padding: 10px;
+		border-radius: 5px;
+		margin-bottom: 20px;
+	}
+	
+	#level{
+    	appearance: none;
+    	border-radius: 10px;
+	}
+	
+	
+</style>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-	<div align="center">
-        <div id="enroll-area">
-            <form action="insert" method="post">
-                <label for="userId">ID</label><br>
-                <input type="text" class="" id="userId" placeholder="아이디를 입력하세요" name="userId" required> <br>
+	<div id="content">
+		<div id="content_1" align="center">
+	        <div id="enroll-area">
+	            <form action="insert" method="post" id="insert-form">
+	            	<div id="center">
+	            		<div id=pack">
+			                <label for="userId">ID</label><br>
+			                <input type="text" class="box" id="userId" placeholder="아이디" name="userId" required> <br>
+	            		</div>
 
-                <label for="userPwd">Password</label><br>
-                <input type="password" class="" id="userPwd" placeholder="비밀번호를 입력하세요" name="userPwd" required><span>보안성</span>ㅡㅡㅡㅡ <br>
-
-                <label for="checkPwd">Password Check</label><br>
-                <input type="password" class="" id="checkPwd" placeholder="비밀번호 재확인" required> <br>
-
-                <label for="nickName">Nickname</label><br>
-                <input type="text" class="" id="nickName" placeholder="사용하실 닉네임을 입력하세요." name="nickName" required> <br>
-
-                <label for="email">Email</label><br>
-                <input type="text" class="" id="email" placeholder="이메일을 입력하세요" name="email"><button>send</button> <br>
-
-                <label for="address">Verification Code</label><br>
-                <input type="text" class="" id="" placeholder="인증번호를 입력하세요" name=""><button>check</button> <br>
-
-                <span>Terms of Use</span><br>
-                <textarea name="" id="" cols="30" rows="10" style="resize:none;">
+	            		<div class="pack">
+			                <label for="userPwd">Password</label><br>
+			                <input type="password" class="box" id="userPwd" placeholder="비밀번호" name="userPwd" required><span style="font-size: 15px;">보안성</span>
+			                <progress max="4" value="0" id="level"></progress> <br>
+	            		</div>
+						
+	            		<div class="pack">
+			                <label for="checkPwd">Password Check</label><br>
+			                <input type="password" class="box" id="checkPwd" placeholder="비밀번호 재확인" required> <br>
+	            		</div>
+	            		
+	            		<div class="pack">
+			                <label for="nickName">Nickname</label><br>
+			                <input type="text" class="box" id="nickName" placeholder="닉네임" name="nickName" required> <br>
+	            		</div>
+	            		
+	            		<div class="pack">
+		     	           <label for="email">Email</label><br>
+		        	        <input type="email" class="box" id="email" placeholder="이메일" name="email"><button>send</button> <br>
+	            		</div>
+	            		
+	            		<div class="pack">
+			                <label for="address">Verification Code</label><br>
+			                <input type="text" class="box" id="" placeholder="인증번호" name=""><button>check</button> <br>
+	            		</div>
+		
+		                <span id="ToU">Terms of Use</span><br>
+		                <textarea name="" id="" cols="30" rows="10" style="resize:none; height: 200px">
 [코알라] 회원가입 및 개인정보 수집 및 이용약관
 
 제 1조 (목적)
@@ -68,15 +163,17 @@
 이름: 천병국
 이메일: 1000baam@gmail.com
 전화번호: 000-0000-0000
-                </textarea><br>
-                <input type="checkbox" id="agree">
-                <label for="agree">이용약관 및 개인정보 수집에 동의합니다.</label>
-                <br><br>
-                <button type="submit">submit</button>
-            </form>
-        </div>
-    </div>
-    
+		                </textarea><br>
+		                <input type="checkbox" id="agree">
+		                <label for="agree" id="no-float">이용약관 및 개인정보 수집에 동의합니다.</label>
+		                <br><br>
+		                <button type="submit">submit</button>
+	            	</div>
+	            </form>
+	        </div>
+	    </div>
+	    
+	</div>
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>
