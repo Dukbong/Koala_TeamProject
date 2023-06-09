@@ -10,34 +10,37 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
 
-// rawtypes : ¡¶≥◊∏Ø≈∏¿‘¿Ã ∫“∆Ø¡§¿œ ∂ß
+// rawtypes : Ï†úÎÑ§Î¶≠ ÌÉÄÏûÖÏù¥ Î∂àÏôÑÏ†ÑÌïòÎã§
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Repository
 public class AdminDao {
 	
-	// ¿¸√º ∏ÆΩ∫∆Æ ƒ´øÓ∆Æ ºˆ ¡∂»∏
 	public AllCount selectAllCount(SqlSession sqlSession) {
 		return sqlSession.selectOne("adminMapper.allCount");
 	}
 
-	// º≠∆˜≈Õ¡Ó ¡§∫∏ ¡∂»∏
-	public ArrayList<Supporters> selectSupporters(SqlSession sqlSession) {
-		return (ArrayList) sqlSession.selectList("adminMapper.selectSupporters");
+	public ArrayList<Supporters> selectSupporters(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList) sqlSession.selectList("adminMapper.selectSupporters",null, pi.rowBounds());
 	}
-	// ¥Î±‚¡ﬂ¿Œ ∂Û¿Ã∫Í∑Ø π◊ ºº∆√ ¡∂»∏
+	
 	public ArrayList<CreateSetting> selectCreateSetting(SqlSession sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectWaitingLibrary");
 	}
 
-	public ArrayList<ErrorBoard> selectErrorBoard(SqlSession sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoard");
+	public ArrayList<ErrorBoard> selectErrorBoard(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoard",null, pi.rowBounds());
 	}
 
-	public ArrayList<BlockIp> selectBolckIp(SqlSession sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp");
+	public ArrayList<BlockIp> selectBolckIp(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp",null, pi.rowBounds());
+	}
+	
+	public ArrayList<Member> selectMemberList(SqlSession sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList",null, pi.rowBounds());
 	}
 
 	public BlockIp selectBlockIpUser(String ip, SqlSession sqlSession) {
@@ -56,7 +59,23 @@ public class AdminDao {
 		return sqlSession.update("adminMapper.blockBlockIpUser", ip);
 	}
 
-	public ArrayList<Member> selectMemberList(SqlSession sqlSession) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList");
+	public int updateblockClear(String blackIp, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateblockClear", blackIp);
 	}
+	
+	public int updateblockAction(String blackIp, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateblockAction", blackIp);
+	}
+	
+	public int deleteSupporter(String userNo, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.deleteSupporter", userNo);
+	}
+
+
+
+
+	/* ÌéòÏù¥Ïßï Ï≤òÎ¶¨ Î≥¥Î•ò 
+	 * public int boardListCount(SqlSession sqlSession, String board) { return
+	 * sqlSession.selectOne("adminMapper.boardCount", board); }
+	 */
 }

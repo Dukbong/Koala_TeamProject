@@ -20,7 +20,7 @@
         background-color: rgb(30, 30, 30);
         color: white;
         positon: relative;
-         font-family: 'Noto Sans KR', sans-serif; 
+        font-family: 'Noto Sans KR', sans-serif; 
     }
     #wrap{
         width: 100%;
@@ -94,8 +94,25 @@
 		right: 5%;
 		bottom:5%;
 	}
+	/* 페이징 버튼 처리 css */
+	#pagingArea {width:fit-content; margin:auto;}
 	
-"
+	
+/* 	        	if(e.target.id == "dark" || !e.target){ */
+/*         		test(e); */
+/*             	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black"); */
+/*             	$(".topLine").css("background-color", "white") */
+/*             	$(".ii").css("color", "black"); */
+            	
+/*         	}else{ */
+/*         		test(e); */
+/*         		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white"); */
+/*         		$(".topLine").css("background-color", "black"); */
+/*         		$(".ii").css("color", "#ffffff"); */
+/*         	} */
+	
+	
+	
 	
 	
 </style>
@@ -103,14 +120,23 @@
     <div id="wrap">
         <div id="header">
             <div id="header_1">
-                <i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i>
+                <a href="menubar.jsp"><i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i></a>
             </div>
             <div id="header_2">
                 <div id="header_2_1">
                     <h1 onclick="location.href='/koala'">Koala initializr</h1>
                 </div>
                 <div id="header_2_2">
-                    <h4>CreateCode && DownloadFile</h4> <!-- 조건문 걸기 -->
+                	<!-- /각 카데고리/이후 주소  ex) /admin/supporter/...-->
+                	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
+                	<c:choose>
+                		<c:when test="${loginUser.type == 2 && path.indexOf('admin') >= 0 }">                		
+	                		<h4 onclick="adminPage();">Koala Admin</h4>
+                		</c:when>
+                		<c:otherwise>        		
+	 	                   <h4>CreateCode && DownloadFile</h4> <!-- 조건문 걸기 -->
+                		</c:otherwise>
+                	</c:choose>
                 </div>
             </div>
             <div id="header_3">
@@ -148,30 +174,90 @@
         <div id="line"></div>
     </div>
     <div id="darkmode">
-    	<i class="fa-solid fa-sun fa-2xl" style="color: rgb(255, 246, 246)" onclick="changeMode();"></i> <br><br> <!-- 수정할 것 -->
-    	<i class="fa-solid fa-moon fa-2xl" style="color: rgb(30, 30, 30)"></i>
+    	<i id="dark" class="fa-solid fa-sun fa-2xl" style="color: rgb(255, 246, 246)" onclick="changeMode(event);"></i> <br><br> <!-- 수정할 것 -->
+    	<i id="white" class="fa-solid fa-moon fa-2xl" style="color: rgb(30, 30, 30)" onclick="changeMode(event);"></i>
     </div>
     
     <script>
-        function changeMode(){
-            $("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+    	$(function(){
+    		var mode = "${cookie.mode.value}";
+    		console.log(mode);
+    		if(mode == "dark" || !mode){
+    			$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+            	$(".topLine").css("background-color", "white")
+            	$(".ii").css("color", "black");
+    		}else{
+    			$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+        		$(".topLine").css("background-color", "black");
+        		$(".ii").css("color", "#ffffff");
+    		}
+    	})
+    
+    
+        function changeMode(e){
+        	if(e.target.id == "dark" || !e.target){
+        		test(e);
+            	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+            	$(".topLine").css("background-color", "white")
+            	$(".ii").css("color", "black");
+            	
+        	}else{
+        		test(e);
+        		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+        		$(".topLine").css("background-color", "black");
+        		$(".ii").css("color", "#ffffff");
+        	}
         }
+        
+        
+        // 쿠키를 보내기 위한 함수
+        function test(e){
+        	$.ajax({
+        		url : "/koala/admin/mode.check",
+        		data : {
+        			mode : e.target.id,
+        		},
+        		success : (data)=>{
+        			console.log(data);
+        		},
+        		error : ()=>{
+        			console.log("mode check aJax error");
+        		}
+        	})
+        }
+        
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
+        
+        
+        // admin page ()
+       	function adminPage(){
+        	location.href = "/koala/admin/main";
+        }
+        
         
         // jang : IP 차단용 코드 입니다.
         $(function(){
         	var blockIp;
         	if(blockIp != ""){
         		// 배포시 주석 풀기... (차단 되어 사용이 불가능하다.)
-/*         		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
+/*          		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
         			parent.window.close();
         		}else{
+        			alert("진짜 꺼져");
         			parent.window.open("about:black","_self").close();
-        		} */
+        		}   */
         	}
         })
     </script>
+    
+    <!-- 알림메세지 -->
+  	<c:if test="${not empty msg }">
+		<script>
+ 			alert("${msg}");
+		</script>
+		<c:remove var="msg" scope="session"/>
+	</c:if>
 </body>
 </html>

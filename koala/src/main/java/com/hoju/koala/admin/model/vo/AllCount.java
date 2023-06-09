@@ -16,4 +16,5 @@ public class AllCount{
 	private int errorBoard;
 	private int bulletinBoard;
 	private int qnaBoard;
+	private int blockIp;
 }

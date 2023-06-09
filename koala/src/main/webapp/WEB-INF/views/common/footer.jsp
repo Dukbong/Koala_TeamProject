@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 <style>
     .footer{
-        background-color: black;
         width: 80%;
         height: 300px;
         margin: auto;
@@ -77,24 +76,31 @@
         font-size: 1rem;
         color: rgb(149, 149, 149);
     }
+    .linefooter{
+    	width:100%;
+    	height: 1%;
+        background-color: rgb(172, 171, 169);
+        margin: auto;
+    }
 </style>
 </head>
 <body>	
-    <div class="footer">
+    <div class="footer ii">
+    	<div class="linefooter"></div>
         <div class="columnTotal">
         <div class="column">
             <div class="item itemhade">Why Koala</div>
             <div class="item">
-                <a class=footerAtag href="#">DownLoad & Copy</a>
+                <a class="footerAtag ii"  href="#">DownLoad & Copy</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="#">Error_Board</a>
+                <a class="footerAtag ii" href="#">Error_Board</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="#">Bulletin_Board</a>
+                <a class="footerAtag ii" href="#">Bulletin_Board</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="#">QnA_Board</a>
+                <a class="footerAtag ii" href="/koala/board/qnaBoard/list">QnA_Board</a>
             </div>
             <div class="item more">
                 <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
@@ -105,16 +111,16 @@
                 Study
             </div>
             <div class="item">
-                <a class=footerAtag href="#">Java</a>
+                <a class="footerAtag ii" href="#">Java</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="#">JavaScript</a>
+                <a class="footerAtag ii" href="#">JavaScript</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="#">SQL</a>
+                <a class="footerAtag ii" href="#">SQL</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="#">Spring</a>
+                <a class="footerAtag ii" href="#">Spring</a>
             </div>
         </div>
         <div class="column3">
@@ -122,10 +128,10 @@
                 Reference
             </div>
             <div class="item">
-                <a class=footerAtag href="https://start.spring.io/">Spring Initializr</a>
+                <a class="footerAtag ii" href="https://start.spring.io/">Spring Initializr</a>
             </div>
             <div class="item">
-                <a class=footerAtag href="https://mvnrepository.com/">MVN Repository</a>
+                <a class="footerAtag ii" href="https://mvnrepository.com/">MVN Repository</a>
             </div>
             
         </div>

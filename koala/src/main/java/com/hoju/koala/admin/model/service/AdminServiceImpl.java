@@ -13,6 +13,7 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
 @Service
@@ -31,8 +32,8 @@ public class AdminServiceImpl implements AdminService {
 	
 	
 	@Override
-	public ArrayList<Supporters> selectSupporters() {
-		return adminDao.selectSupporters(sqlSession);
+	public ArrayList<Supporters> selectSupporters(PageInfo pi) {
+		return adminDao.selectSupporters(sqlSession, pi);
 	}
 
 
@@ -43,16 +44,20 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public ArrayList<ErrorBoard> selectErrorBoard() {
-		return adminDao.selectErrorBoard(sqlSession);
+	public ArrayList<ErrorBoard> selectErrorBoard(PageInfo pi) {
+		return adminDao.selectErrorBoard(sqlSession, pi);
 	}
 
 
 	@Override
-	public ArrayList<BlockIp> selectBlockIp() {
-		return adminDao.selectBolckIp(sqlSession);
+	public ArrayList<BlockIp> selectBlockIp(PageInfo pi) {
+		return adminDao.selectBolckIp(sqlSession, pi);
 	}
 
+	@Override
+	public ArrayList<Member> selectMemberList(PageInfo pi) {
+		return adminDao.selectMemberList(sqlSession, pi);
+	}
 
 	@Override
 	public BlockIp selectBlockIpUser(String ip) {
@@ -79,8 +84,28 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		return adminDao.selectMemberList(sqlSession);
+	public int deleteSupporter(String userNo) {
+		return adminDao.deleteSupporter(userNo, sqlSession);
 	}
+
+
+	@Override
+	public int updateblockClear(String blackIp) {
+		return adminDao.updateblockClear(blackIp, sqlSession);
+	}
+
+
+	@Override
+	public int updateblockAction(String blackIp) {
+		return adminDao.updateblockAction(blackIp, sqlSession);
+	}
+
+
+
+
+	/* 보류
+	 * @Override public int boardListCount(String board) { return
+	 * adminDao.boardListCount(sqlSession, board); }
+	 */
 
 }

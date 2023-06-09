@@ -7,36 +7,37 @@ import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
 public interface AdminService {
-	// °ü¸®ÀÚ°¡ °ü¸®ÇØ¾ß ÇÏ´Â °Ô½ÃÆÇ ¹× È¸¿ø °³¼ö Á¶È¸
 	AllCount selectAllCount();
 
-	// ¼­Æ÷ÅÍÁî È¸¿ø °ü¸®¸¦ À§ÇÑ ÀüÃ¼ Á¶È¸
-	ArrayList<Supporters> selectSupporters();
+	ArrayList<Supporters> selectSupporters(PageInfo pi);
 
-	// ¶óÀÌºê·¯¸® ¹× ¼³Á¤ ÆÄÀÏ Áß ´ë±â »óÅÂÀÎ °Ô½Ã±Û 
 	ArrayList<CreateSetting> selectCreateSetting();
 
-	// ¿¡·¯ °Ô½ÃÆÇ Áß ÇØ°áµÇÁö ¾ÊÀº »óÅÂ °Ô½Ã±Û
-	ArrayList<ErrorBoard> selectErrorBoard();
+	ArrayList<ErrorBoard> selectErrorBoard(PageInfo page);
 
-	// ºÎÀûÀıÇÑ Á¢±ÙÀÚ Á¶È¸
-	ArrayList<BlockIp> selectBlockIp();
+	ArrayList<BlockIp> selectBlockIp(PageInfo page);
 
-	// ºÎÀûÀıÇÑ Á¢±ÙÀÚ Æ¯Á¤ Á¶È¸
 	BlockIp selectBlockIpUser(String ip);
 	
-	// ºÎÀûÀıÇÑ Á¢±ÙÀÚ ÀÎ¼­Æ®
+	// intercepterì—ì„œ  í–‰í•´ì§€ëŠ” curd
 	int insertBlockIpUser(String ip);
 	
-	// ºÎÀûÀıÇÑ Á¢±ÙÀÚ ¾÷µ¥ÀÌÆ®
 	int updateBlockIpUser(String ip);
 
-	// ÁøÂ¥ Â÷´Ü
 	int blockBlockIpUser(String ip);
-	
-	// È¸¿ø °ü¸® (¼­Æ÷ÅÍÁî Á¦¿Ü)
-	ArrayList<Member> selectMemberList();
+	// =======================
+	ArrayList<Member> selectMemberList(PageInfo page);
+
+	int deleteSupporter(String userNo);
+
+	int updateblockClear(String blackIp);
+
+	int updateblockAction(String blackIp);
+
+	// ì¢€ë” ì‰½ê²Œ í˜ì´ì§• ì²˜ë¦¬ë¥¼ ìœ„í•œ í•¨ìˆ˜ (ë³´ë¥˜)
+	/* int boardListCount(String board); */
 }

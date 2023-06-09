@@ -36,7 +36,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 			if(result == null) {
 				int insertBlockIp = adminService.insertBlockIpUser(ip);
 				if(insertBlockIp > 0) {					
-					log.info("{} >> 새로운 부적절한 사용자 추가", ip);
+					log.info("New Block List >>> {}", ip);
 				}
 			}else {
 				if(result.getCount() >= 5) {
@@ -48,7 +48,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 				}else {					
 					@SuppressWarnings("unused")
 					int updateBlockIp = adminService.updateBlockIpUser(ip);
-					log.info("{} >> 부적절한 사용자 카운터 증가", ip);
+					log.info("Existing Block List Count++  >>> {}", ip);
 				}
 			}
 			session.setAttribute("alertMsg", "현재 " + (5 - result.getCount()) + "번 후 IP가 차단됩니다.");
