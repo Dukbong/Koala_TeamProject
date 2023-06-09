@@ -103,14 +103,16 @@ public class MemberController {
 	
 	//회원 정보 조회 (활동내역)
 	@GetMapping("/ad")
-	public ModelAndView ad(int userNo,
+	public ModelAndView ad(String userId,
 					 ModelAndView mv) {
 		
-		
+		System.out.println(userId);
 		//조회해온 유저담기
-		Member m = memberService.selectMember(userNo);
+		Member m = memberService.selectMember(userId);
+		
+		System.out.println(m);
 		//해당 유저팔로우수 조회
-		int cnt = memberService.selectFollowCount(userNo);
+		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
 		if(m != null) {
 			mv.addObject("user", m);

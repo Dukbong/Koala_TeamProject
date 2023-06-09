@@ -159,7 +159,8 @@
                    				$(function(){
                    					$("#myPage").change(function(){
                    						if(this.value == "ad"){
-                   							location.href = "/koala/member/ad?userNo="+${loginUser.userNo};
+                   							console.log("hi");
+                   							location.href = "/koala/member/ad?userId=${loginUser.userId}";
                    						}else if(this.value == "as"){
                    							location.href = "/koala/member/as";
                    						}

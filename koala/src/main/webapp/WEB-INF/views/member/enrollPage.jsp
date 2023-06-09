@@ -160,9 +160,9 @@
 제 8조 (개인정보 관리 책임자)
 [코알라]은 회원의 개인정보를 보호하고 개인정보와 관련된 불만을 처리하기 위해 개인정보 관리 책임자를 지정하여 운영하고 있습니다. 개인정보 관련 문의사항은 아래의 연락처로 문의하여 주시기 바랍니다.
 
-이름: 천병국
-이메일: 1000baam@gmail.com
-전화번호: 000-0000-0000
+이름: 
+이메일: 
+전화번호:
 		                </textarea><br>
 		                <input type="checkbox" id="agree">
 		                <label for="agree" id="no-float">이용약관 및 개인정보 수집에 동의합니다.</label>
@@ -174,6 +174,10 @@
 	    </div>
 	    
 	</div>
+	
+	<script>
+	</script>
+	
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

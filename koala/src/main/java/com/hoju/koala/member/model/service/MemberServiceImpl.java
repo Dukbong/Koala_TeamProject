@@ -30,9 +30,9 @@ public class MemberServiceImpl implements MemberService {
 
 	//회원 정보 조회
 	@Override
-	public Member selectMember(int userNo) {
+	public Member selectMember(String userId) {
 
-		Member m = memberDao.selectMember(sqlSession, userNo);
+		Member m = memberDao.selectMember(sqlSession, userId);
 		
 		return m;
 	}
