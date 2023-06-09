@@ -31,7 +31,7 @@
 		SELECT *
 		FROM MEMBER
 		WHERE STATUS = 'Y'
-		AND USER_NO = #{userNo}
+		AND USER_ID = #{userId}
 	</select>
 	
 	<insert id="insertMember">

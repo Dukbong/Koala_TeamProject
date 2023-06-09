@@ -9,7 +9,7 @@ public interface MemberService {
 	Member loginMember(Member m);
 
 	//회원조회 활동내역
-	Member selectMember(int userNo);
+	Member selectMember(String userId);
 
 	//회원가입
 	int insertMember(Member m);

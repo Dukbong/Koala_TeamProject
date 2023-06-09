@@ -16,9 +16,9 @@ public class MemberDao {
 	}
 
 	//회원 정보 조회
-	public Member selectMember(SqlSessionTemplate sqlSession, int userNo) {
+	public Member selectMember(SqlSessionTemplate sqlSession, String userId) {
 		
-		return sqlSession.selectOne("memberMapper.selectMember", userNo);
+		return sqlSession.selectOne("memberMapper.selectMember", userId);
 	}
 
 	//회원가입
