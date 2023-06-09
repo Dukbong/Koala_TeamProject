@@ -5,7 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- [1.0] 캐시 비활 성화  뒤로가기 시 캐시로 인해 제대로 작동 안하는 경우가 많다. -->
+<meta http-equiv="Pragma" content="no-cache">
 <title>Insert title here</title>
+
 </head>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -181,15 +184,10 @@
     <script>
     	$(function(){
     		var mode = "${cookie.mode.value}";
-    		console.log(mode);
-    		if(mode == "dark" || !mode){
-    			$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
-            	$(".topLine").css("background-color", "white")
-            	$(".ii").css("color", "black");
+    		if(mode == "dark"){
+    			darkmode();
     		}else{
-    			$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
-        		$(".topLine").css("background-color", "black");
-        		$(".ii").css("color", "#ffffff");
+    			whitemode();
     		}
     	})
     
@@ -197,17 +195,25 @@
         function changeMode(e){
         	if(e.target.id == "dark" || !e.target){
         		test(e);
-            	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
-            	$(".topLine").css("background-color", "white")
-            	$(".ii").css("color", "black");
+        		darkmode();
             	
         	}else{
         		test(e);
-        		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
-        		$(".topLine").css("background-color", "black");
-        		$(".ii").css("color", "#ffffff");
+        		whitemode();
         	}
         }
+    	
+    	function darkmode(){
+    		$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+        	$(".topLine").css("background-color", "white")
+        	$(".ii").css("color", "black");
+    	}
+    	
+    	function whitemode(){
+    		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+    		$(".topLine").css("background-color", "black");
+    		$(".ii").css("color", "#ffffff");
+    	}
         
         
         // 쿠키를 보내기 위한 함수
@@ -218,7 +224,6 @@
         			mode : e.target.id,
         		},
         		success : (data)=>{
-        			console.log(data);
         		},
         		error : ()=>{
         			console.log("mode check aJax error");

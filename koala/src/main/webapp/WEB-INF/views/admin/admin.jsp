@@ -11,25 +11,39 @@
 		margin: auto;
 		width: 80%;
 		height: 500px;
+		padding: 50px 0px;
 /* 		border: 1px solid red; */
 	}
 	.adminMainTop{
 		width: 100%;
 		height: 40%;
-/* 		border: 1px solid red; */
+/*  		border: 1px solid red;  */
 		box-sizing: border-box;
+	}
+	.adminMainbuttom{
+	margin:auto;
+		width: 100%;
+		height: 60%;
+/*  		border: 1px solid red;  */
+		box-sizing: border-box;	
+	}
+
+	.dint{
+		width: 5.5%;
+		height: 100%;
+/*  		background-color: red;  */
 	}
 	.din{
 		width: 5%;
 		height: 100%;
-/* 		background-color: red; */
+/*  		background-color: red;  */
 	}
 	.waitingLibrary, .supportes{
 		width: 40%;
 		height: 100%;
 /* 		border : 1px solid blue; */
 	}
-	.adminMainTop * {
+	.adminMainTop *, .adminMainbuttom * {
 		box-sizing: border-box;
 		float: left;
 	}
@@ -52,9 +66,7 @@
 		font-weight: bold;
 		color:#ffc90f;
 	}
-	.adminMainTop *{
-		float:left;
-	}
+	
 	.libImg, .supImg{
 		width: 30%;
 		height: 100%;
@@ -85,6 +97,38 @@
 		height: 50%;
 		font-size: 20px;
 		padding-top:10px;
+	}
+	.errorarea, .issuearea, .memberarea{
+		width: 23%;
+		height: 100%;
+/* 		border: 1px solid red; */
+	}
+	.errorStr, .issueStr, .memberStr{
+		width: 33%;
+		height: 100%;
+/* 		border: 1px solid blue; */
+		font-size: 35px;
+/* 		font-size: 3rem; */
+		font-weight: bold;
+		text-align:center;
+		padding-top: 120px;
+	}
+	.errorCount, .issueCount, .memberCount{
+		width: 33%;
+		height: 100%;
+		color:#ffc90f;
+		box-sizing: border-box;
+		font-weight: bold;
+		font-size: 3rem;
+		padding-top: 110px;
+		text-align:center;
+	}
+	.errorImg, .issueImg, .memberImg{
+		width: 34%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		
 	}
 	
 </style>
@@ -126,13 +170,54 @@
 				</div>
 				<div class="din"></div>
 			</div>
-			<hr>
-			error issues user 꺼 만들고  네모신경쓰기
+			
+			<div class="adminMainbuttom ii">
+			<div class="dint"></div>
+				<div class="errorarea">
+					<div class="errorImg">
+						<i class="fa-solid fa-bug fa-7x ii" style="color: #ffffff;"></i>					
+					</div>
+					<div class="errorStr">
+						Error
+					</div>
+					<div class="errorCount">
+						${allCount.errorBoard }
+					</div>
+				</div>
+				<div class="din"></div>
+				<div class="din"></div>
+				<div class="issuearea">
+					<div class="issueImg">
+						<i class="fa-solid fa-triangle-exclamation fa-7x ii" style="color: #ffffff;"></i>
+					</div>
+					<div class="issueStr">
+						Issue
+					</div>
+					<div class="issueCount">
+						${allCount.issue }
+					</div>
+				</div>
+				<div class="din"></div>
+				<div class="din"></div>
+				<div class="memberarea">
+					<div class="memberImg">
+						<i class="fa-solid fa-users fa-6x ii" style="color: #ffffff;"></i>
+					</div>
+					<div class="memberStr">
+						&nbsp;User
+					</div>
+					<div class="memberCount">
+						${allCount.member }
+					</div>
+				</div>
+				<div class="dint"></div>
+			</div>
 		
 	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	<script>
 	$(function(){
+		// Waiting Settings
 		$(".waitingLibrary").on("click", function(){
 			// Settings jsp 파일로 이동
 			location.href="";
@@ -140,8 +225,30 @@
 			$(this).css("cursor","pointer");
 		});
 		
+		// Supporters
 		$(".supportes").on("click", ()=>{
 			location.href = "/koala/admin/supporters.list";
+		}).on("mouseenter", function(){
+			$(this).css("cursor","pointer");
+		});
+		
+		// ErrorBoard
+		$(".errorarea").on("click", ()=>{
+			location.href = "/koala/admin/supporters.list"; // ErrorBoard List View
+		}).on("mouseenter", function(){
+			$(this).css("cursor","pointer");
+		});
+		
+		// Issue
+		$(".issuearea").on("click", ()=>{
+			location.href = "/koala/admin/issuearea.list"; // Issue List View
+		}).on("mouseenter", function(){
+			$(this).css("cursor","pointer");
+		});
+		
+		// member
+		$(".memberarea").on("click", ()=>{
+			location.href = "/koala/admin/member.list"; // member List View
 		}).on("mouseenter", function(){
 			$(this).css("cursor","pointer");
 		});
