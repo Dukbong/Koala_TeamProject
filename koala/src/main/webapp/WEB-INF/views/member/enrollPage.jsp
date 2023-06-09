@@ -93,7 +93,7 @@
 	        <div id="enroll-area">
 	            <form action="insert" method="post" id="insert-form">
 	            	<div id="center">
-	            		<div id=pack">
+	            		<div id="pack">
 			                <label for="userId">ID</label><br>
 			                <input type="text" class="box" id="userId" placeholder="아이디" name="userId" required> <br>
 	            		</div>
