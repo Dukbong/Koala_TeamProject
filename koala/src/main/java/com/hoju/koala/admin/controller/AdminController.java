@@ -125,7 +125,7 @@ public class AdminController {
 		for(Member m : memberList) {
 			System.out.println(m);
 		}
-		return "";
+		return "admin/memberList";
 	}
 	
 	@GetMapping("mode.check")
