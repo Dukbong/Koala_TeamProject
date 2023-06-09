@@ -119,11 +119,12 @@ public class AdminController {
 	@GetMapping("/member.list")
 	public String adminMemberList(PageInfo p, Model model) {
 		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
-		ArrayList<Member> memberList = adminService.selectMemberList(page);
+		ArrayList<Supporters> memberList = adminService.selectMemberList(page);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pi", page);
-		for(Member m : memberList) {
-			System.out.println(m);
+		for(int i = 0; i < memberList.size(); i++) {
+			
+			System.out.println(memberList.get(i).getRefUno());
 		}
 		return "admin/memberList";
 	}
@@ -135,7 +136,6 @@ public class AdminController {
 		cookie.setMaxAge(24*60*60*1000); //24시간
 		cookie.setPath("/");
 		response.addCookie(cookie);
-		System.out.println("쿠키발송");
 		return new Gson().toJson(cookie);
 	}
 }

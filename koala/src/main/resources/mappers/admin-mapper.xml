@@ -114,8 +114,8 @@
 	</update>
 	<!--============================================================-->
 	<!-- 유저 -->
-	<select id="selectMemberList" resultMap="memberMapper.memberResultSet">
-		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE REF_UNO IS NULL
+	<select id="selectMemberList" resultMap="supportResultSet">
+		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE M.STATUS = 'Y'
 	</select>
 	<!--============================================================-->
 <!-- 	

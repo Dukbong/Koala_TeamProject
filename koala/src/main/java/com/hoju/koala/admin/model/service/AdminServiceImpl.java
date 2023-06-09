@@ -53,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public ArrayList<Member> selectMemberList(PageInfo pi) {
+	public ArrayList<Supporters> selectMemberList(PageInfo pi) {
 		return adminDao.selectMemberList(sqlSession, pi);
 	}
 

@@ -23,7 +23,7 @@ public interface AdminService {
 
 	BlockIp selectBlockIpUser(String ip);
 	
-	ArrayList<Member> selectMemberList(PageInfo page);
+	ArrayList<Supporters> selectMemberList(PageInfo page);
 
 	int deleteSupporter(String userNo);
 

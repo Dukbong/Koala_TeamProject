@@ -248,7 +248,7 @@
 		
 		// member
 		$(".memberarea").on("click", ()=>{
-			location.href = "/koala/admin/memberarea.list"; // member List View
+			location.href = "/koala/admin/member.list"; // member List View
 		}).on("mouseenter", function(){
 			$(this).css("cursor","pointer");
 		});
