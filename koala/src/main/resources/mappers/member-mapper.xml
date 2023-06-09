@@ -50,6 +50,13 @@
 		AND STATUS = 'Y'
 	</update>
 	
+	<!-- 팔로우가 되어있는지 확인하는 메소드 -->
+	<select id="selectFollow" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOW
+		WHERE FROM_USER = #{fromUser}
+		AND TO_USER = #{toUser}
+	</select>
 	
 	<!-- 팔로우 하기 -->
 	<insert id="addFollow">
@@ -77,5 +84,13 @@
 		SET USER_PWD = #{userPwd}
 		WHERE USER_NO = #{userNo}
 	</update>
+	
+	<!-- 입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기 -->
+	<select id="selectEmail" resultType="string">
+		SELECT USER_ID
+		FROM MEMBER
+		WHERE EMAIL = #{userEmail}
+		AND STATUS = 'Y'
+	</select>
 
 </mapper>

@@ -105,7 +105,7 @@
         padding: 5px;
         border: 1px solid lightgray;
         border-radius: 5px;
-        height: 30px;
+        height: 50px;
         width: 80%;
         font-size: 16px;
     }
@@ -207,7 +207,7 @@
 							</div>
 		            		
 						</div>
-					<form action="" method="post">
+					<form action="/koala/member/profile" method="post">
 						<div id="area2">
 							<div id="profile">
 								<div align="center">

@@ -153,17 +153,19 @@ public class MemberController {
 	@GetMapping("/follow")
 	public int follow(Follow f) {
 		
-		int result = memberService.addFollow(f);
+		//좋아요가 등록되어있나 조회
+		int cnt = memberService.selectFollow(f);
 		
-		if(result>0) {
-			result = 1;
-		}else {
-			int result2 = memberService.removeFollow(f);
+		int result = 0;
+		
+		if(cnt == 0) { //없다면 추가
+			memberService.addFollow(f);
 			
-			if(result2>0) {
-				result = 2;
-				
-			}
+			result = 1;
+		}else if(cnt == 1) { //있다면 삭제
+			memberService.removeFollow(f);
+			
+			result = 2;
 		}
 		
 		return result;
@@ -177,6 +179,24 @@ public class MemberController {
 		return "member/forgetPage";
 	}
 	
+	
+	// 이메일로 해당 유저의 ID와 임시 패스워드보내기
+	@PostMapping("/sendEmail")
+	public ModelAndView sendEmail(ModelAndView mv,
+									HttpServletRequest request) {
+		
+		//아이디와 비밀번호를 찾고하자는 유저가 입력한 이메일
+		String userEmail = request.getParameter("userEmail");
+		
+		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
+		String userId = memberService.selectEmail(userEmail);
+		
+		
+		
+		
+		return null;
+	}
+
 	//계정설정 페이지 이동
 	@GetMapping("/as")
 	public String as(HttpSession session) {
@@ -214,6 +234,7 @@ public class MemberController {
 		
 		return result;
 	}
+	
 	
 	
 }

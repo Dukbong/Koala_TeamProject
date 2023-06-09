@@ -102,11 +102,11 @@
 		            <span class="small">해당 이메일로 아이디와 변경된 패스워드를 보내드립니다.</span>
 	            </div>
 	            
-	            <form action="login" method="post">
+	            <form action="/koala/member/sendEmail" method="post">
 	
 	                <div id="input-area">
 	                    <label for="email" class="">Email</label>
-	                    <input type="email" class="box" placeholder="이메일 입력" id="email" name="userId" required> <br>
+	                    <input type="text" class="box" placeholder="이메일 입력" id="email" name="userEmail" required> <br>
 	                </div>
 	
 	                
@@ -115,6 +115,7 @@
 	                    <button type="submit" class="box">GO</button>
 	                </div>
 	            </form>
+	            
 	        </div>
 		</div>
 
