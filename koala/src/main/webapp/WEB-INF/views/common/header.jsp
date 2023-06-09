@@ -13,14 +13,15 @@
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-.notosanskr * { 
- font-family: 'Noto Sans KR', sans-serif;
-}
+	.notosanskr * { 
+	 font-family: 'Noto Sans KR', sans-serif;
+	}
+	
     body{
         background-color: rgb(30, 30, 30);
         color: white;
         positon: relative;
-         font-family: 'Noto Sans KR', sans-serif; 
+        font-family: 'Noto Sans KR', sans-serif; 
     }
     #wrap{
         width: 100%;

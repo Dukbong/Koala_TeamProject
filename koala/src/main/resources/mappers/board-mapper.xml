@@ -10,7 +10,7 @@
 	<resultMap type="board" id="boardResultSet">
 		<result column="BOARD_NO" property="boardNo"/>
 		<result column="CATEGORY" property="category"/>
-		<result column="USER_ID" property="boardWriter"/> <!-- USER_ID로 조회 -->
+		<result column="NICKNAME" property="boardWriter"/> <!-- 닉네임으로 조회 -->
 		<result column="TITLE" property="title"/>
 		<result column="CONTENT" property="content"/>
 		<result column="CONTENT_CODE" property="contentCode"/>
@@ -37,7 +37,7 @@
 		<result column="REPLY_NO" property="replyNo"/>
 		<result column="REF_BNO" property="refBno"/>
 		<result column="REPLY_CONTENT" property="replyContent"/>
-		<result column="USER_ID" property="replyWriter"/> <!-- USER_ID로 조회 -->
+		<result column="NICKNAME" property="replyWriter"/> <!-- 닉네임으로 조회 -->
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
 	</resultMap>
