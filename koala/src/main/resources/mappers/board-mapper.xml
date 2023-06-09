@@ -48,4 +48,5 @@
 		<result column="LIKED_TYPE" property="refBno"/>
 	</resultMap>
 	
+	
 </mapper>

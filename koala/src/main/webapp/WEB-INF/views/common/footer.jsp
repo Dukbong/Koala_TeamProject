@@ -100,7 +100,7 @@
                 <a class="footerAtag ii" href="#">Bulletin_Board</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">QnA_Board</a>
+                <a class="footerAtag ii" href="/koala/board/qnaBoard/list">QnA_Board</a>
             </div>
             <div class="item more">
                 <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
