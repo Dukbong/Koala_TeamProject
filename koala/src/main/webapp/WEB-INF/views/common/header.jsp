@@ -120,7 +120,7 @@
     <div id="wrap">
         <div id="header">
             <div id="header_1">
-                <i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i>
+                <a href="menubar.jsp"><i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i></a>
             </div>
             <div id="header_2">
                 <div id="header_2_1">
