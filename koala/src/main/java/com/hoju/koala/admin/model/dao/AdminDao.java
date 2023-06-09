@@ -39,7 +39,7 @@ public class AdminDao {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp",null, pi.rowBounds());
 	}
 	
-	public ArrayList<Member> selectMemberList(SqlSession sqlSession, PageInfo pi) {
+	public ArrayList<Supporters> selectMemberList(SqlSession sqlSession, PageInfo pi) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList",null, pi.rowBounds());
 	}
 

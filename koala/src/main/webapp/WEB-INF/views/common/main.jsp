@@ -108,15 +108,15 @@
 
         <div class="main_body">
             <div class="body1">
-                <span style="font-size: 20px;">2.56.141</span>
+                <span style="font-size: 20px;" class="ii">2.56.141</span>
                 <div class="body_logo1">
                     <img src="resources/common/reload.png" style="width: 50px;" alt="">
                 </div>
                 <div class="item_name">
-                    <span>filter</span>
+                    <span class="ii">filter</span>
                 </div>
                 <div class="item_info">
-                    <p>여기는 설명이 들어가는 부분입니다. 설명을 넣어주세요. 긴 설명이 들어가는 부분. 길게 설명을 넣어주는 부분입니다.
+                    <p class="ii">여기는 설명이 들어가는 부분입니다. 설명을 넣어주세요. 긴 설명이 들어가는 부분. 길게 설명을 넣어주는 부분입니다.
                         여기는 설명이 들어가는 부분입니다. 설명을 넣어주세요. 긴 설명이 들어가는 부분. 길게 설명을 넣어주는 부분입니다.
                     </p>
                 </div>
@@ -126,7 +126,7 @@
                     <img src="resources/common/download.png" style="width: 90px;" alt="">
                 </div>
                 <div class="body_title" style="margin-top: 10px;">
-                    <span>Download</span>
+                    <span class="ii">Download</span>
                 </div>
             </div>
             <div class="body3">
@@ -134,7 +134,7 @@
                     <img src="resources/common/free-icon-cloud-upload-4007710.png" style="width: 120px;" alt="">
                 </div>
                 <div class="body_title">
-                    <span>CreateFile</span>
+                    <span class="ii">CreateFile</span>
                 </div>
             </div>
         </div>

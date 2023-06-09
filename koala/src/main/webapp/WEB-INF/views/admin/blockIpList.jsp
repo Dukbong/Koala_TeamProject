@@ -177,7 +177,6 @@
                 $(function () {
                 	$(".action").on("click", function(){
                 		var str = $(this).parent().parent().children(".left").text().trim(); // ip주소
-                		// 경고 횟수 5회로 변경 후 상태값 변경 (트랜젝션사용)
                 		$.ajax({
                 			 url : "blockip.action",
                 			 data : {
