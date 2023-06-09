@@ -98,6 +98,23 @@
 	#pagingArea {width:fit-content; margin:auto;}
 	
 	
+/* 	        	if(e.target.id == "dark" || !e.target){ */
+/*         		test(e); */
+/*             	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black"); */
+/*             	$(".topLine").css("background-color", "white") */
+/*             	$(".ii").css("color", "black"); */
+            	
+/*         	}else{ */
+/*         		test(e); */
+/*         		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white"); */
+/*         		$(".topLine").css("background-color", "black"); */
+/*         		$(".ii").css("color", "#ffffff"); */
+/*         	} */
+	
+	
+	
+	
+	
 </style>
 <body>
     <div id="wrap">
@@ -162,17 +179,51 @@
     </div>
     
     <script>
+    	$(function(){
+    		var mode = "${cookie.mode.value}";
+    		console.log(mode);
+    		if(mode == "dark" || !mode){
+    			$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+            	$(".topLine").css("background-color", "white")
+            	$(".ii").css("color", "black");
+    		}else{
+    			$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+        		$(".topLine").css("background-color", "black");
+        		$(".ii").css("color", "#ffffff");
+    		}
+    	})
+    
+    
         function changeMode(e){
-        	if(e.target.id == "dark"){        		
+        	if(e.target.id == "dark" || !e.target){
+        		test(e);
             	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
             	$(".topLine").css("background-color", "white")
             	$(".ii").css("color", "black");
             	
         	}else{
+        		test(e);
         		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
         		$(".topLine").css("background-color", "black");
         		$(".ii").css("color", "#ffffff");
         	}
+        }
+        
+        
+        // 쿠키를 보내기 위한 함수
+        function test(e){
+        	$.ajax({
+        		url : "/koala/admin/mode.check",
+        		data : {
+        			mode : e.target.id,
+        		},
+        		success : (data)=>{
+        			console.log(data);
+        		},
+        		error : ()=>{
+        			console.log("mode check aJax error");
+        		}
+        	})
         }
         
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
