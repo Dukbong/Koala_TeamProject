@@ -47,21 +47,40 @@
 	</select>
 	
 	<!-- 게시글 작성 시 수정폼 생성 - 코드 -->
-	<select id="createCodeForm" resultMap="adminMapper.createSettingResultSet">
+	<!-- 박박박 -->
+<!-- 	<select id="createCodeForm" resultMap="adminMapper.createSettingResultSet"> -->
+<!-- 		SELECT SETTING_CODE -->
+<!-- 		FROM CREATE_SETTING -->
+<!-- 		WHERE SETTING_TITLE = #{settingTitle} -->
+<!-- 		AND SETTING_VERSION = #{settingVersion} -->
+<!-- 		AND STATUS IN ('Y','N') -->
+<!-- 	</select> -->
+	<!-- 장장장(테스트) -->
+	<select id="createCodeForm" resultType="string">
 		SELECT SETTING_CODE
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		AND SETTING_VERSION = #{settingVersion}
-		AND STATUS IN ('Y','N')
+<!-- 		AND STATUS IN ('Y','N') -->
 	</select>
 
 	<!-- 게시글 작성 시 수정폼 생성 - 설명서 -->
-	<select id="createInfoForm" resultMap="errorSetResultSet">
+	<!-- 박박박 -->
+<!-- 	<select id="createInfoForm" resultMap="errorSetResultSet"> -->
+<!-- 		SELECT SETTING_INFO -->
+<!-- 		FROM CREATE_SETTING -->
+<!-- 		WHERE SETTING_TITLE = #{settingTitle} -->
+<!-- 		AND SETTING_VERSION = #{settingVersion} -->
+<!-- 		AND STATUS IN ('Y','N') -->
+<!-- 	</select> -->
+	<!-- 장장장 (테스트) -->
+	<select id="createInfoForm" resultType="string">
 		SELECT SETTING_INFO
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		AND SETTING_VERSION = #{settingVersion}
-		AND STATUS IN ('Y','N')
+<!-- 		AND STATUS IN ('Y','N') -->
 	</select>
+	
 	
 </mapper>

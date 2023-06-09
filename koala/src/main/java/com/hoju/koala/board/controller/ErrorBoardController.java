@@ -70,11 +70,11 @@ public class ErrorBoardController {
 		
 		c.setSettingTitle(settingTitle);
 		c.setSettingVersion(settingVersion);
+		String str = ebService.createModifyForm(category, c);
+		return str;
+		// jang : long type 셀렉트 테스트 해봤는데 가능합니다요. (코드 불러서 확인해봤는데..
 		
-//		String str = ebService.createModifyForm(category, c);
-//		return str;
-		
-		return "테스트입니다 테스트입니다 테스트입니다.";
+//		return "테스트입니다 테스트입니다 테스트입니다.";
 	}
 	
 	//게시글 수정폼 이동
