@@ -30,12 +30,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectAllCount(sqlSession);
 	}
 	
-	
 	@Override
 	public ArrayList<Supporters> selectSupporters(PageInfo pi) {
 		return adminDao.selectSupporters(sqlSession, pi);
 	}
-
 
 	@Override
 	public ArrayList<CreateSetting> selectCreateSetting() {
@@ -44,45 +42,57 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public ArrayList<ErrorBoard> selectErrorBoard() {
-		return adminDao.selectErrorBoard(sqlSession);
+	public ArrayList<ErrorBoard> selectErrorBoard(PageInfo pi) {
+		return adminDao.selectErrorBoard(sqlSession, pi);
 	}
 
 
 	@Override
-	public ArrayList<BlockIp> selectBlockIp() {
-		return adminDao.selectBolckIp(sqlSession);
+	public ArrayList<BlockIp> selectBlockIp(PageInfo pi) {
+		return adminDao.selectBolckIp(sqlSession, pi);
 	}
 
+	@Override
+	public ArrayList<Supporters> selectMemberList(PageInfo pi) {
+		return adminDao.selectMemberList(sqlSession, pi);
+	}
 
 	@Override
 	public BlockIp selectBlockIpUser(String ip) {
 		return adminDao.selectBlockIpUser(ip, sqlSession);
 	}
 
-
 	@Override
 	public int insertBlockIpUser(String ip) {
 		return adminDao.insertBlockIpUser(ip, sqlSession);
 	}
-
 
 	@Override
 	public int updateBlockIpUser(String ip) {
 		return adminDao.updateBlockIpUser(ip, sqlSession);
 	}
 
-
 	@Override
 	public int blockBlockIpUser(String ip) {
 		return adminDao.blockBlockIpUser(ip, sqlSession);
 	}
 
+	@Override
+	public int deleteSupporter(String userNo) {
+		return adminDao.deleteSupporter(userNo, sqlSession);
+	}
 
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		return adminDao.selectMemberList(sqlSession);
+	public int updateblockClear(String blackIp) {
+		return adminDao.updateblockClear(blackIp, sqlSession);
 	}
+
+	@Override
+	public int updateblockAction(String blackIp) {
+		return adminDao.updateblockAction(blackIp, sqlSession);
+	}
+
+
 
 
 	/* 보류

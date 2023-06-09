@@ -36,7 +36,7 @@
         align-items: center;
     }
 
-    #login-area{
+    #fotget-area{
         /* background-color: rgb(4, 59, 82); */
         width: 1000px;
         height: 800px;
@@ -60,7 +60,7 @@
         font-size: 15px;
     }
 
-    #login-area button{
+    #fotget-area button{
         width: 100%;
         background-color: rgb(75, 0, 255);
         border-color: transparent;
@@ -69,7 +69,7 @@
         cursor: pointer;
     }
     
-    #login-area button:hover{
+    #fotget-area button:hover{
     	background-color: rgb(60, 0, 200);
     }
 
@@ -84,77 +84,38 @@
         border-radius: 4px;
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
     }
-
-    #keep-area{
-        margin-bottom: 50px;
-        padding-top: 5px;
-    }
-
-    #link-area{
-        text-align: center;
-        margin: 10px;
-    }
-
-    #link-area>a{
-        text-decoration: none;
-        color: white;
-        margin: 10px;
-        
-    }
     
-    /* 애니메이션 효과를 위한 CSS 스타일 지정 */
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    #ex{
+    	padding-top: 15px;
+    	padding-bottom: 40px;
     }
-
-    /* 로그인 영역의 애니메이션 효과를 적용하는 CSS 스타일 지정 */
-    #login-area {
-        animation: fadeInDown 1s;
-    }
-    
-    
-    
     
 </style>
-
-
-
 </head>
 <body>
 	<div id="wrap">
 		<div id="content">
-	        <div id="login-area">
+	        <div id="fotget-area">
 	            <span class="logo">Koala</span>
-	            <form action="login" method="post">
+	            <div id="ex">
+		            <span class="small">회원가입시 입력하신 이메일 주소를 입력하세요.</span><br>
+		            <span class="small">해당 이메일로 아이디와 변경된 패스워드를 보내드립니다.</span>
+	            </div>
+	            
+	            <form action="/koala/member/sendEmail" method="post">
 	
 	                <div id="input-area">
-	                    <label for="userId" class="">ID</label>
-	                    <input type="text" class="box" placeholder="아이디 입력" id="userId" name="userId" required> <br>
-	                    <label for="userPwd" class="">Password</label>
-	                    <input type="password" class="box" placeholder="패스워드 입력" id="userPwd" name="userPwd" required>
+	                    <label for="email" class="">Email</label>
+	                    <input type="text" class="box" placeholder="이메일 입력" id="email" name="userEmail" required> <br>
 	                </div>
 	
-	                <div id="keep-area">
-	                    <input type="checkbox" id="keepId">
-	                    <label for="keepId">아이디 저장</label>
-	                </div>
+	                
 	                
 	                <div id="">
-	                    <button type="submit" class="box">Login</button>
-	                </div>
-	                
-	                <div id="link-area">
-	                    <a href="forget">ID/PWD 찾기</a>
-	                    <a href="enroll">회원가입</a>
+	                    <button type="submit" class="box">GO</button>
 	                </div>
 	            </form>
+	            
 	        </div>
 		</div>
 

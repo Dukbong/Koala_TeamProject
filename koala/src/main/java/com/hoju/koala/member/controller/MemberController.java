@@ -1,6 +1,7 @@
 package com.hoju.koala.member.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	private BCryptPasswordEncoder pwdEncoder;
 	
 	
 	
@@ -45,7 +46,7 @@ public class MemberController {
 		
 		Member loginUser = memberService.loginMember(m);
 		
-		if((loginUser != null) && (bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd()))) {
+		if((loginUser != null) && (pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd()))) {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
@@ -81,7 +82,7 @@ public class MemberController {
 								Member m,
 								ModelAndView mv) {
 		
-		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
+		String encPwd = pwdEncoder.encode(m.getUserPwd());
 		
 		m.setUserPwd(encPwd);
 		
@@ -152,21 +153,86 @@ public class MemberController {
 	@GetMapping("/follow")
 	public int follow(Follow f) {
 		
-		int result = memberService.addFollow(f);
+		//좋아요가 등록되어있나 조회
+		int cnt = memberService.selectFollow(f);
 		
-		if(result>0) {
-			result = 1;
-		}else {
-			int result2 = memberService.removeFollow(f);
+		int result = 0;
+		
+		if(cnt == 0) { //없다면 추가
+			memberService.addFollow(f);
 			
-			if(result2>0) {
-				result = 2;
-				
-			}
+			result = 1;
+		}else if(cnt == 1) { //있다면 삭제
+			memberService.removeFollow(f);
+			
+			result = 2;
 		}
 		
 		return result;
 		
+	}
+	
+	//ID/PWD 찾기 페이지 이동
+	@GetMapping("/forget")
+	public String forget() {
+		
+		return "member/forgetPage";
+	}
+	
+	
+	// 이메일로 해당 유저의 ID와 임시 패스워드보내기
+	@PostMapping("/sendEmail")
+	public ModelAndView sendEmail(ModelAndView mv,
+									HttpServletRequest request) {
+		
+		//아이디와 비밀번호를 찾고하자는 유저가 입력한 이메일
+		String userEmail = request.getParameter("userEmail");
+		
+		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
+		String userId = memberService.selectEmail(userEmail);
+		
+		
+		
+		
+		return null;
+	}
+
+	//계정설정 페이지 이동
+	@GetMapping("/as")
+	public String as(HttpSession session) {
+		
+		return "member/accountSettingPage";
+	}
+	
+	
+	//비밀번호 변경
+	@ResponseBody
+	@PostMapping("/updatePwd")
+	public int updatePwd(HttpServletRequest request) {
+		
+		Member loginUser = (Member)request.getSession().getAttribute("loginUser");
+		
+		//해쉬함수로인해 암호화된 현재 비밀번호
+		String currentPwd = loginUser.getUserPwd();
+
+		//모달창에서 현재 비밀번호 인풋에 사용자 입력값
+		String userPwd = request.getParameter("userPwd");
+		//모달창에서 사용자가 입력한 새로운비밀번호
+		String newPwd = request.getParameter("newPwd");
+		
+		int result = 0;
+		if(pwdEncoder.matches(userPwd, currentPwd) && (!userPwd.equals(newPwd))) { //부합할때 진행
+			
+			loginUser.setUserPwd(pwdEncoder.encode(newPwd));
+			
+			result = memberService.updatePwd(loginUser);
+			
+			if(result>0) { //성공적으로 데이터베이스 업데이트했으면 세션loginUser 바꿔주기
+				request.getSession().setAttribute("loginUser", loginUser);
+			}
+		}
+		
+		return result;
 	}
 	
 	

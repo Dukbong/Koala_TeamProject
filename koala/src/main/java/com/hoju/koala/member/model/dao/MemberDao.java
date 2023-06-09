@@ -33,18 +33,17 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.updateIntroduce", m);
 	}
 
+	//팔로우가 되어있는지 확인하는 메소드
+	public int selectFollow(SqlSessionTemplate sqlSession, Follow f) {
+		
+		return sqlSession.selectOne("memberMapper.selectFollow", f);
+	}
+
+	
 	//팔로우 추가
 	public int addFollow(SqlSessionTemplate sqlSession, Follow f) {
 		
-		int result = 0;
-		
-		try {
-			result = sqlSession.insert("memberMapper.addFollow", f);
-		} catch (Exception e) {
-			result = 0;
-		}
-		
-		return result;
+		return sqlSession.insert("memberMapper.addFollow", f);
 	}
 
 	//팔로우 취소하기
@@ -58,6 +57,19 @@ public class MemberDao {
 		
 		return sqlSession.selectOne("memberMapper.selectFollowCount", userNo);
 	}
+
+	//비밀번호 변경
+	public int updatePwd(SqlSessionTemplate sqlSession, Member loginUser) {
+		
+		return sqlSession.update("memberMapper.updatePwd", loginUser);
+	}
+
+	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
+	public String selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
+
+		return sqlSession.selectOne("memberMapper.selectEmail", userEmail);
+	}
+
 	
 	
 }

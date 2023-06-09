@@ -57,6 +57,15 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	//팔로우가 되어있는지 확인하는 메소드
+	@Override
+	public int selectFollow(Follow f) {
+		
+		int cnt = memberDao.selectFollow(sqlSession, f);
+		
+		return cnt;
+	}
+	
 
 	//팔로우 하기
 	@Override
@@ -68,6 +77,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
+	//팔로우 취소
 	@Override
 	public int removeFollow(Follow f) {
 
@@ -85,5 +95,28 @@ public class MemberServiceImpl implements MemberService {
 		
 		return cnt;
 	}
+
+
+	//비밀번호 변경
+	@Override
+	public int updatePwd(Member loginUser) {
+		
+		int result = memberDao.updatePwd(sqlSession, loginUser);
+		
+		return result;
+	}
+
+
+	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
+	@Override
+	public String selectEmail(String userEmail) {
+
+		String userId = memberDao.selectEmail(sqlSession, userEmail);
+		
+		return userId;
+	}
+
+
+	
 
 }
