@@ -1,9 +1,6 @@
 package com.hoju.koala.common.model.vo;
 
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.hoju.koala.admin.model.service.AdminService;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,14 +29,26 @@ public class PageInfo {
 	private int startPage;
 	private int endPage;
 	
-	// 강사님에게 질문 후 결정
-	// 객체를 계속해서 만들면서 dao에서 제거 할지 어쩔지
-	
 	// ibatis RowBounds
 	public RowBounds rowBounds() {
 		int offset = (currentPage - 1) * this.boardLimit;
 		int limit = this.boardLimit;
 		RowBounds rb = new RowBounds(offset, limit);
 		return rb;
+	}
+	
+	public PageInfo test(Class<?> c) {
+		System.out.println(c.toString().toLowerCase()); // class Name lower
+		String className = c.toString().toLowerCase();
+		
+		/*
+		 * 여기서 객체로 반환시키고
+		 * sercvice에서 의존성 낮추고
+		 * className으로는 해당 메서드를 찾아주고
+		 * 다형성으로 통해 확장성을 부여하고
+		 * 메퍼 실행..... 고럼 완료
+		 * */
+		
+		return this;
 	}
 }

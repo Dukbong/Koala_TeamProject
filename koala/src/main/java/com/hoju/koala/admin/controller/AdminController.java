@@ -80,22 +80,19 @@ public class AdminController {
 		return "";
 	}
 	
-	@GetMapping("/errorboard.list")
+	@GetMapping("/errorcheck.list")
 	public String adminErrorBoard(PageInfo p, Model model) {
 		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
 		ArrayList<ErrorBoard> errorBoardList = adminService.selectErrorBoard(page);
 		model.addAttribute("errorList", errorBoardList);
 		model.addAttribute("pi", page);
-		for(ErrorBoard e : errorBoardList) {
-			System.out.println(e);
-		}
-		return "";
+		return "admin/errorcheckList";
 	}
 	
 	@GetMapping("/blockip.list")
 	public String adminblockip(PageInfo p, Model model) {
 		page = Paging.getPageInfo(allCount().getBlockIp(), p.getCurrentPage(), 10, 9);
-		System.out.println(page);
+		System.out.println("Class c를 매개변수로 " + page.test(this.getClass()));
 		ArrayList<BlockIp> blockIpList = adminService.selectBlockIp(page);
 		model.addAttribute("blackList", blockIpList);
 		model.addAttribute("pi", page);
@@ -122,13 +119,11 @@ public class AdminController {
 		ArrayList<Supporters> memberList = adminService.selectMemberList(page);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pi", page);
-		for(int i = 0; i < memberList.size(); i++) {
-			
-			System.out.println(memberList.get(i).getRefUno());
-		}
 		return "admin/memberList";
 	}
 	
+	
+	// 모드를 쿠키로 저장할 메서드
 	@GetMapping("mode.check")
 	@ResponseBody
 	public String displayMode(String mode, Model model, HttpServletResponse response) {

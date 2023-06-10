@@ -6,7 +6,7 @@
 <mapper namespace="errorBoardMapper">
 	
 	<!-- 오류게시판  -->
-	<resultMap type="errorBoard" id="errorBoardResultSet">
+	<resultMap type="errorBoard" id="errorBoardResultSet" extends="boardMapper.boardResultSet">
 		<result column="REF_BNO" property="refBno"/>
 		<result column="REF_SNO" property="refSno"/>
 		<result column="SOLVED" property="solved"/>
