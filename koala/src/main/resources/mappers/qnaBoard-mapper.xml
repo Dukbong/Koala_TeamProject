@@ -15,7 +15,19 @@
     <result property="createDate" column="CREATE_DATE"/>
     <result property="count" column="COUNT"/>
     <result property="liked" column="LIKED"/>
-</resultMap>
+	</resultMap>
+
+	<resultMap type="boardAttachment" id="qnaBoardAttachmentResultSet">
+	<result column="FILE_NO" property="fileNo"/>
+	<result column="REF_BNO" property="refBno"/>
+	<result column="ORIGIN_NAME" property="originName"/>
+	<result column="CHANGE_NAME" property="changeName"/>
+	<result column="FILE_PATH" property="filePath"/>
+	<result column="UPLOAD_DATE" property="uploadDate"/>
+	<result column="FILE_LEVEL" property="fileLevel"/>
+	<result column="STATUS" property="status"/>
+	</resultMap>
+	
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -36,5 +48,34 @@
 		WHERE B.STATUS = 'Y'
 		AND CATEGORY = 'Q'
 		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<select id="selectBoard" resultMap="qnaBoardResultSet">
+		SELECT BOARD_NO,
+			   TITLE,
+			   NICKNAME,
+			   CONTENT,
+			   TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
+		FROM BOARD B
+		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
+		WHERE BOARD_NO = #{boardNo}
+		AND CATEGORY = 'Q'
+		AND B.STATUS = 'Y' 
+	</select>
+	
+	<update id="increateCount">
+		UPDATE BOARD
+		SET COUNT = COUNT + 1
+		WHERE STATUS = 'Y'
+		AND BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="selectAttachment" resultMap="qnaBoardAttachmentResultSet">
+		SELECT FILE_NO,
+			   ORIGIN_NAME,
+			   FILE_PATH
+		FROM BOARD_ATTACHMENT
+		WHERE REF_BNO = #{boardNo}
+		AND STATUS = 'Y'
 	</select>
 </mapper>
