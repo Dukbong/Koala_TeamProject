@@ -122,7 +122,7 @@
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
                                         	<!-- 주소만 연결 -->
-                                            <a class="ii" href="#">${support.userId }</a> 
+                                            <a class="ii" href="/koala/member/ad?userId=${support.userId }">${support.userId }</a> 
                                             <a class="ii" href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
@@ -172,7 +172,7 @@
                                     </div>
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
-                                            <a href="#">${support.userId }</a> 
+                                            <a href="/koala/member/ad?userId=${support.userId }">${support.userId }</a> 
                                             <a href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
@@ -257,7 +257,7 @@
 	            $(function(){
 	            	$("body").bind("onseletstart", function(){
 	            		return fasle;
-	            	})
+	            	});
 	            	
 	            	$(".demote").click(function(){
 	            		var userId = $(this).parent().parent().parent().children(".supportertwo").children(".left").children("a")[0].innerText

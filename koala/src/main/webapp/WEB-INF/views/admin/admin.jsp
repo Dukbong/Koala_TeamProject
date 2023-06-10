@@ -38,7 +38,7 @@
 		height: 100%;
 /*  		background-color: red;  */
 	}
-	.waitingLibrary, .supportes{
+	.waitingLibrary, .supporters{
 		width: 40%;
 		height: 100%;
 /* 		border : 1px solid blue; */
@@ -98,7 +98,7 @@
 		font-size: 20px;
 		padding-top:10px;
 	}
-	.errorarea, .issuearea, .memberarea{
+	.errorcheck, .issuearea, .member{
 		width: 23%;
 		height: 100%;
 /* 		border: 1px solid red; */
@@ -154,7 +154,7 @@
 				</div>
 				<div class="din"></div>
 				<div class="din"></div>
-				<div class="supportes">
+				<div class="supporters">
 					<div class="supportesTitle">
 						<div class="supImg">
 							<i class="fa-solid fa-people-group fa-7x ii" style="color: #ffffff;"></i>
@@ -173,12 +173,12 @@
 			
 			<div class="adminMainbuttom ii">
 			<div class="dint"></div>
-				<div class="errorarea">
+				<div class="errorcheck">
 					<div class="errorImg">
 						<i class="fa-solid fa-bug fa-7x ii" style="color: #ffffff;"></i>					
 					</div>
 					<div class="errorStr">
-						Error
+						&nbsp;&nbsp;Error
 					</div>
 					<div class="errorCount">
 						${allCount.errorBoard }
@@ -191,7 +191,7 @@
 						<i class="fa-solid fa-triangle-exclamation fa-7x ii" style="color: #ffffff;"></i>
 					</div>
 					<div class="issueStr">
-						Issue
+						&nbsp;&nbsp;Issue
 					</div>
 					<div class="issueCount">
 						${allCount.issue }
@@ -199,12 +199,12 @@
 				</div>
 				<div class="din"></div>
 				<div class="din"></div>
-				<div class="memberarea">
+				<div class="member">
 					<div class="memberImg">
 						<i class="fa-solid fa-users fa-6x ii" style="color: #ffffff;"></i>
 					</div>
 					<div class="memberStr">
-						&nbsp;User
+						&nbsp;&nbsp;User
 					</div>
 					<div class="memberCount">
 						${allCount.member }
@@ -217,42 +217,22 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	<script>
 	$(function(){
-		// Waiting Settings
-		$(".waitingLibrary").on("click", function(){
-			// Settings jsp 파일로 이동
-			location.href="";
-		}).on("mouseenter", function(){
-			$(this).css("cursor","pointer");
-		});
 		
-		// Supporters
-		$(".supportes").on("click", ()=>{
-			location.href = "/koala/admin/supporters.list";
-		}).on("mouseenter", function(){
-			$(this).css("cursor","pointer");
-		});
+		clickAndView(".waitingLibrary");
+		clickAndView(".supporters");
+		clickAndView(".errorcheck");
+		clickAndView(".issuearea");
+		clickAndView(".member");
 		
-		// ErrorBoard
-		$(".errorarea").on("click", ()=>{
-			location.href = "/koala/admin/supporters.list"; // ErrorBoard List View
-		}).on("mouseenter", function(){
-			$(this).css("cursor","pointer");
-		});
-		
-		// Issue
-		$(".issuearea").on("click", ()=>{
-			location.href = "/koala/admin/issuearea.list"; // Issue List View
-		}).on("mouseenter", function(){
-			$(this).css("cursor","pointer");
-		});
-		
-		// member
-		$(".memberarea").on("click", ()=>{
-			location.href = "/koala/admin/member.list"; // member List View
-		}).on("mouseenter", function(){
-			$(this).css("cursor","pointer");
-		});
-	})
+		function clickAndView(str){
+			let made = $("" + str).on("click", function(){
+				location.href="/koala/admin/" + str.substring(1) + ".list";
+			}).on("mouseenter", function(){
+				$(this).css("cursor", "pointer");
+			});
+			return made;
+		}
+	});
 	</script>
 </body>
 </html>

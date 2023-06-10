@@ -9,6 +9,6 @@
 <body>
 	<%@include file="header.jsp"%>
 	<h1>에러가 났네요,, ㅠ ㅠ</h1>
-	<jsp:include page="../../common/footer.jsp" />
+<%-- 	<jsp:include page="../../common/footer.jsp" /> --%>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.hoju.koala.board.handler;
 
-import java.io.StringReader;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,11 +16,7 @@ public class LongHandler implements TypeHandler {
 
 	@Override
 	public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-		String str = (String)parameter;
-		StringReader reader = new StringReader(str);
-//		ps.setCharacterStream(i, reader, str.length());
 		ps.setString(i, (String) parameter);
-		
 	}
 
 	@Override
