@@ -7,8 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@include file="header.jsp"%>
 	<h1>에러가 났네요,, ㅠ ㅠ</h1>
-	<jsp:include page="../../common/footer.jsp" />
+	에러 메세지 : ${errorMsg }<br>
+	
+	${url }를 호출하는 가정에서 에러가 발생
 </body>
 </html>
