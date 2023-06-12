@@ -20,6 +20,7 @@ server.xml
 MANIFEST.MF
 pom.properties
 oracle-config.properties
+email.properties
 
 # External tool builders
 .externalToolBuilders
