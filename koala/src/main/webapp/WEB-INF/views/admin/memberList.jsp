@@ -116,7 +116,7 @@
 /*     } */
 
 </style>
-<body>
+<body >
 <%@include file="/WEB-INF/views/common/header.jsp"%>
     <div class="wrapper">
 
@@ -239,6 +239,8 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	<script>
 		$(function(){
+			// 우클릭 드레그 방지..
+			$("body").attr("oncontextmenu","return false").attr("ondragstart","return false").attr("onselectstart","return false");
 			clickAndEnter("tbody tr");
 			clickAndEnter("#a");
 			
