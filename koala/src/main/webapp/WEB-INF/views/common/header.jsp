@@ -260,9 +260,33 @@
     </script>
     
     <!-- 알림메세지 -->
-  	<c:if test="${not empty msg }">
+  	<c:if test="${not empty msg || not empty param.msgc}">
 		<script>
- 			alert("${msg}");
+			if("${param.msgc}" != ""){
+	 			if(confirm("${param.msgc}")){
+	 				//확인 및 취소
+	 				console.log("승인");
+	 			}else{ // 취소 시 대기중인 상태 풀림.
+	 				$.ajax({
+	 					url : "admin/promote.cancel",
+	 					data : {
+	 						client_No : "${loginUser.userNo}"
+	 					},
+	 					success : function(data){
+			 				if(confirm("main으로 이동하시겠습니까?(y)||이전 페이지로 이동하시겠습니까?(n)")){
+			 					location.href="/koala";
+			 				}else{
+			 					history.back();
+			 				}	 						
+	 					},
+	 					error : function(){
+	 						console.log("ajax error");
+	 					}
+	 				})
+	 			}	
+			}else{
+				alert("${msg}");
+			}
 		</script>
 		<c:remove var="msg" scope="session"/>
 	</c:if>
