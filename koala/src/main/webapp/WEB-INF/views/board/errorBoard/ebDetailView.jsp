@@ -27,7 +27,7 @@
 	
 		게시글 상세페이지
 		
-		<div style="margin-left:100px;margin-top: 200px;width:800px;">
+	<div style="margin-left:100px;margin-top: 200px;width:800px;">
 	        * SQL
 	        <textarea id="batch_content" name="batch_content"></textarea>
         <button type="button" onclick="fn_msg()">확인</button>
