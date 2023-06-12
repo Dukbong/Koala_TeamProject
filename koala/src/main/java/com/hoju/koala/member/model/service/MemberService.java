@@ -35,5 +35,11 @@ public interface MemberService {
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
 	String selectEmail(String userEmail);
 
+	//아이디 중복체크
+	int idCheck(String inputId);
+
+	//닉네임 중복체크
+	int nickCheck(String inputNick);
+
 
 }

@@ -9,7 +9,7 @@
 		
 
 <!-- jang : src/main/webapp/WEB-INF/spring/oracle-config 안에 설정 값들 들어가있습니다. -->
-	<context:property-placeholder location="WEB-INF/spring/oracle-config.properties"/>
+	<context:property-placeholder location="WEB-INF/spring/setting-config.properties"/>
 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
  		<property name="driverClassName" value="${koala.driverClassName}"/>
 		<property name="url" value="${koala.url}"/>
@@ -27,10 +27,33 @@
  		<constructor-arg ref="sqlSessionFactory"/>
  	</bean>
  	
+ 	<!-- setting-config 에 이메일 개인정보 추가 -->
+ 	<context:property-placeholder location="WEB-INF/spring/setting-config.properties"/>
+ 	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="mailSender">
+ 		<property name="host" value="stmp.gmail.com"/>
+ 		<property name="port" value="587"/>
+ 		<property name="username" value="${email.account}"/>
+ 		<property name="password" value="${email.password}"/>
+ 		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<!-- gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용 가능. -->
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
+		</property>
+ 	</bean>
+ 	
  	<!-- jang : servlet-context에서 웹관련 내용을 제외시켰기 때문에 여기서는 제외한 부분만 스캔해서 빈 등록한다. -->
  	<context:component-scan base-package="com.hoju.koala" use-default-filters="false">
  		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
  		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
  	</context:component-scan>
+ 	
+ 	
  	
 </beans>

@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 
 	*{
@@ -53,7 +55,8 @@
 	
 	#center{
 		width: 50%;
-		height: 100%;
+		height: 80%;
+		padding:5% 0;
 	}
 	
 	label,#ToU{
@@ -83,10 +86,138 @@
     	border-radius: 10px;
 	}
 	
+	.hide{
+		display: none;
+	}
 	
 </style>
 </head>
 <body>
+	<script>
+		var code = "";
+		
+		//유효성(정규표현식)
+		var idCheck = true;
+		var pwdCheck = true;
+		var nickCheck = true;
+		var emailCheck = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		
+		$(function(){
+			/* 아이디 중복 쳌크*/
+			if(idCheck){ //유효성통과하면
+				$("#userId").on("keyup", function(){
+					
+					console.log($("#userId").val());
+					
+					$.ajax({
+						url:"/koala/member/idCheck",
+						data:{
+							inputId : $("#userId").val()
+						},
+						success:function(result){
+							if(result>0){
+								//중복
+								$("#id_able").css("display", "none");
+								$("#id_disable").css("display","block");
+							}else{
+								$("#id_disable").css("display","none");
+								$("#id_able").css("display", "block");
+							}
+						},
+						error:function(){
+							alert("통신실패");
+						}
+					});
+				});
+			}
+			
+			/* 비밀번호 재확인이랑 일치하는지*/
+			if(pwdCheck){
+				$("#checkPwd").on("keyup", function(){
+					var userPwd = $("#userPwd").val();
+					var checkPwd = $("#checkPwd").val();
+					
+					if(userPwd == checkPwd){//일치하다면
+						$("#pwd_no").css("display", "none");
+					}else{
+						$("#pwd_no").css("display", "block");
+					}
+				});
+			}
+			
+			
+			/* 닉네임 중복 체크 */
+			if(nickCheck){
+				$("#nickName").on("keyup", function(){
+					
+					console.log($("#nickName").val());
+					
+					$.ajax({
+						url:"/koala/member/nickCheck",
+						data:{
+							inputNick : $("#nickName").val()
+						},
+						success:function(result){
+							if(result>0){
+								//중복
+								$("#nick_disable").css("display","block");
+							}else{
+								$("#nick_disable").css("display","none");
+							}
+						},
+						error:function(){
+							alert("통신실패");
+						}
+					});
+				});
+			}
+			
+			/* 이메일에 인증코드 보내기 */
+			$("#emailSend").on("click", function(){
+				
+				if(emailCheck.test($("#email").val())){
+					
+					$.ajax({
+						url:"/koala/member/emailCheck",
+						data:{
+							inputEmail:$("#email").val()
+						},
+						success:function(result){
+							
+							console.log("code : "+result);
+							code = result;
+							alert("이메일에 인증번호를 보냈습니다.");
+						},
+						error:function(){
+							alert("통신실패");
+						}
+					});
+					
+				}else{
+					alert("이메일을 다시 입력해주세요.");
+				}
+				
+			});
+			
+			/* 보낸 인증번호와 맞는지 확인 */
+			$("#emailCheck").on("click", function () {
+				var inputCode = $("#certiCode").val();
+				
+				if(inputCode === code){
+					$("#certi_no").css("display", "none");
+					$("#certiCode").css("display", "none");
+					$("#certi_yes").css("display", "inline-block");
+					
+				}else{
+					$("#certi_no").css("display", "block");
+				}
+			});
+			
+			
+		});
+		
+		
+	</script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div id="content">
 		<div id="content_1" align="center">
@@ -94,38 +225,48 @@
 	            <form action="insert" method="post" id="insert-form">
 	            	<div id="center">
 	            		<div id="pack">
-			                <label for="userId">ID</label><br>
-			                <input type="text" class="box" id="userId" placeholder="아이디" name="userId" required> <br>
+			                <label for="userId">ID</label>
+			                <input type="text" class="box" id="userId" placeholder="아이디" name="userId" required>
+			                <span class="hide" id="id_able">사용 가능한 아이디입니다.</span>
+			                <span class="hide" id="id_disable">이미 사용중인 아이디입니다.</span>
 	            		</div>
 
 	            		<div class="pack">
-			                <label for="userPwd">Password</label><br>
+			                <label for="userPwd">Password</label>
 			                <input type="password" class="box" id="userPwd" placeholder="비밀번호" name="userPwd" required><span style="font-size: 15px;">보안성</span>
-			                <progress max="4" value="0" id="level"></progress> <br>
+			                <progress max="4" value="0" id="level"></progress>
+			                <span class="hide">비밀번호 양식을 지켜주세요.</span>
 	            		</div>
 						
 	            		<div class="pack">
-			                <label for="checkPwd">Password Check</label><br>
-			                <input type="password" class="box" id="checkPwd" placeholder="비밀번호 재확인" required> <br>
+			                <label for="checkPwd">Password Check</label>
+			                <input type="password" class="box" id="checkPwd" placeholder="비밀번호 재확인" required>
+			                <span class="hide" id="pwd_no">비밀번호가 일치하지 않습니다.</span>
 	            		</div>
 	            		
 	            		<div class="pack">
-			                <label for="nickName">Nickname</label><br>
-			                <input type="text" class="box" id="nickName" placeholder="닉네임" name="nickName" required> <br>
+			                <label for="nickName">Nickname</label>
+			                <input type="text" class="box" id="nickName" placeholder="닉네임" name="nickName" required>
+			                <span class="hide">올바른 닉네임명을 입력해주세요.</span>
+			                <span class="hide" id="nick_disable">이미 사용중인 닉네임입니다.</span>
 	            		</div>
 	            		
 	            		<div class="pack">
-		     	           <label for="email">Email</label><br>
-		        	        <input type="email" class="box" id="email" placeholder="이메일" name="email"><button>send</button> <br>
+		     	           <label for="email">Email</label>
+		        	        <input type="email" class="box" id="email" placeholder="이메일" name="email">
+		        	        <button type="button" id="emailSend">send</button>
 	            		</div>
 	            		
 	            		<div class="pack">
-			                <label for="address">Verification Code</label><br>
-			                <input type="text" class="box" id="" placeholder="인증번호" name=""><button>check</button> <br>
+			                <label for="address">Verification Code</label>
+			                
+			                <input type="text" class="box" id="certiCode" placeholder="인증번호" required><button type="button" id="emailCheck">check</button>
+			                <span class="hide" id="certi_no">인증번호가 일치하지 않습니다.</span>
+			                <input type="text" class="box hide" id="certi_yes" readonly value="인증 완료" style="background-color: blue;">
 	            		</div>
 		
-		                <span id="ToU">Terms of Use</span><br>
-		                <textarea name="" id="" cols="30" rows="10" style="resize:none; height: 200px">
+		                <span id="ToU">Terms of Use</span>
+		                <textarea cols="30" rows="10" style="resize:none; height: 200px">
 [코알라] 회원가입 및 개인정보 수집 및 이용약관
 
 제 1조 (목적)
@@ -163,11 +304,13 @@
 이름: 
 이메일: 
 전화번호:
-		                </textarea><br>
+		                </textarea>
 		                <input type="checkbox" id="agree">
 		                <label for="agree" id="no-float">이용약관 및 개인정보 수집에 동의합니다.</label>
-		                <br><br>
-		                <button type="submit">submit</button>
+		               	
+		               	<div>
+			                <button type="button">submit</button>		               	
+		               	</div>
 	            	</div>
 	            </form>
 	        </div>
