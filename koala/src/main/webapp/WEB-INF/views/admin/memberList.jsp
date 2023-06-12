@@ -167,6 +167,9 @@
 	                            	<!-- 일반 회원 -->
 		                            <td class="ii">Common</td>                            
                             	</c:when>
+                            	<c:when test='${m.githubId.equals(" ")}'>
+                            		<td class="ii">WaitList</td>
+                            	</c:when>
                             	<c:otherwise>
 	                            	<!-- 서포터즈 -->
 		                            <td style="color:Green;">Supporters</td>                            
@@ -176,11 +179,14 @@
                             <c:if test="${m.type == 2}">
                             </c:if>
                             <c:choose>
-                            	<c:when test="${m.type == 2 || m.refUno != 0  }">
+                            	<c:when test='${m.type == 2 || m.refUno != 0 && !m.githubId.equals(" ") }'>
                             		<td>-</td>
                             	</c:when>
+                            	<c:when test='${m.githubId.equals(" ")}'>
+                            		<td onclick="event.stopPropagation()"><button class="btn btn-danger cancelBtn" id="${m.userNo}" type="button">&nbsp;Revoke&nbsp;</button></td>    
+                            	</c:when>
                             	<c:otherwise>
-		                            <td onclick="event.stopPropagation()"><button class="btn btn-success" id="a" type="button">Promote</button></td>                            	
+		                            <td onclick="event.stopPropagation()"><button class="btn btn-success promoteBtn" id="${m.userNo}" type="button">Promote</button></td>                            	
                             	</c:otherwise>
                             </c:choose>
                         </tr>
@@ -241,17 +247,54 @@
 		$(function(){
 			// 우클릭 드레그 방지..
 			$("body").attr("oncontextmenu","return false").attr("ondragstart","return false").attr("onselectstart","return false");
+			// 클릭 이벤트 및 포인터
 			clickAndEnter("tbody tr");
-			clickAndEnter("#a");
+			clickAndEnter(".promoteBtn");
+			clickAndEnter(".cancelBtn");
 			
 			function clickAndEnter(str){
-				if(str.includes("#")){					
-					let made = $("" + str).on("click", function(){
-						console.log($(this));
-					}).on("mouseenter", function(){
-						$(this).css("cursor", "pointer");
-					});
-					return made;
+				if(str.includes(".")){		
+					if(str.includes("promote")){						
+						let made = $("" + str).on("click", function(){
+							$.ajax({
+								url : "promote.waiting",
+								data : {
+									client_No : this.id,
+								},
+								success : function(data){
+									alert("서포터즈로 초대하였습니다.");
+									location.href="member.list";
+								},
+								error : function(){
+									console.log("git hub error")
+								}
+							});
+							console.log(this.id);
+						}).on("mouseenter", function(){
+							$(this).css("cursor", "pointer");
+						});
+						return made;
+					}else{
+						let made = $("" + str).on("click", function(){
+							$.ajax({
+								url : "promote.cancel",
+								data : {
+									client_No : this.id,
+								},
+								success : function(data){
+									alert("초대를 취소하였습니다.");
+									location.href="member.list";
+								},
+								error : function(){
+									console.log("git hub error")
+								}
+							});
+							console.log(this.id);
+						}).on("mouseenter", function(){
+							$(this).css("cursor", "pointer");
+						});
+						return made;
+					}
 				}else{
 					let made = $(""+str).on("click", function(){
 						location.href="/koala/member/ad?userId=" + $(this).children().eq(1).text();

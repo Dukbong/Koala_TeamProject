@@ -31,6 +31,11 @@ public interface AdminService {
 
 	int updateblockAction(String blackIp);
 
+	int InsertSupporters(String client_No);
+	
+	int deleteSupporters(String client_No);
+	
+	Supporters selectOneSupport(int userNo);
 	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
 	/* int boardListCount(String board); */
 	
@@ -44,4 +49,7 @@ public interface AdminService {
 
 	int blockBlockIpUser(String ip);
 	// =======================
+
+
+
 }

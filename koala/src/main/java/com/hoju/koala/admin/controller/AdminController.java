@@ -22,7 +22,6 @@ import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
-import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,13 +38,8 @@ public class AdminController {
 	
 	@GetMapping("/main")
 	public String adminMain(Model model) {
-		all = allCount();
-		if(all != null) {
-			model.addAttribute("allCount", all);
-			return "admin/admin";
-		}else {
-			return "common/nullPoint";
-		}
+		model.addAttribute("allCount", allCount());
+		return "admin/admin";
 	}
 	
 	// 전체 적인 총 게시글 수를 확인할 수 있는 메서드
@@ -122,6 +116,20 @@ public class AdminController {
 		return "admin/memberList";
 	}
 	
+	@GetMapping("/promote.waiting")
+	@ResponseBody
+	public String promoteWait(String client_No) {
+		int result = adminService.InsertSupporters(client_No);
+		return new Gson().toJson(String.valueOf(result));
+	}
+	
+	@GetMapping("/promote.cancel")
+	@ResponseBody
+	public String promoteCancel(String client_No) {
+		System.out.println(client_No);
+		int result = adminService.deleteSupporters(client_No);
+		return new Gson().toJson(String.valueOf(result));
+	}
 	
 	// 모드를 쿠키로 저장할 메서드
 	@GetMapping("mode.check")
