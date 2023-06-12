@@ -117,6 +117,27 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
+	//아이디 중복체크
+	@Override
+	public int idCheck(String inputId) {
+		
+		int result = memberDao.idCheck(sqlSession, inputId);
+		
+		return result;
+	}
+
+
+	//닉네임 중복체크
+	@Override
+	public int nickCheck(String inputNick) {
+		
+		int result = memberDao.nickCheck(sqlSession, inputNick);
+		
+		return result;
+	}
+
+
+	
 	
 
 }
