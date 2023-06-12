@@ -46,40 +46,40 @@
 		ORDER BY BOARD_NO DESC
 	</select>
 	
+	<!-- 라이브러리 리스트 조회 -->
+	<select id="selectLibList" resultMap="adminMapper.createSettingResultSet">
+		SELECT SETTING_TITLE
+		FROM CREATE_SETTING
+		WHERE STATUS IN ('Y','N')
+		GROUP BY SETTING_TITLE
+		ORDER BY SETTING_TITLE
+	</select>
+	
+	<!-- 버전 리스트 조회 -->
+	<select id="selectVersion" resultMap="adminMapper.createSettingResultSet">
+		SELECT SETTING_VERSION
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		AND STATUS IN ('Y','N')
+		ORDER BY 1 DESC
+	</select>
+	
 	<!-- 게시글 작성 시 수정폼 생성 - 코드 -->
-	<!-- 박박박 -->
-<!-- 	<select id="createCodeForm" resultMap="adminMapper.createSettingResultSet"> -->
-<!-- 		SELECT SETTING_CODE -->
-<!-- 		FROM CREATE_SETTING -->
-<!-- 		WHERE SETTING_TITLE = #{settingTitle} -->
-<!-- 		AND SETTING_VERSION = #{settingVersion} -->
-<!-- 		AND STATUS IN ('Y','N') -->
-<!-- 	</select> -->
-	<!-- 장장장(테스트) -->
 	<select id="createCodeForm" resultType="string">
 		SELECT SETTING_CODE
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		AND SETTING_VERSION = #{settingVersion}
-<!-- 		AND STATUS IN ('Y','N') -->
+		AND STATUS IN ('Y','N')
 	</select>
 
 	<!-- 게시글 작성 시 수정폼 생성 - 설명서 -->
-	<!-- 박박박 -->
-<!-- 	<select id="createInfoForm" resultMap="errorSetResultSet"> -->
-<!-- 		SELECT SETTING_INFO -->
-<!-- 		FROM CREATE_SETTING -->
-<!-- 		WHERE SETTING_TITLE = #{settingTitle} -->
-<!-- 		AND SETTING_VERSION = #{settingVersion} -->
-<!-- 		AND STATUS IN ('Y','N') -->
-<!-- 	</select> -->
-	<!-- 장장장 (테스트) -->
 	<select id="createInfoForm" resultType="string">
 		SELECT SETTING_INFO
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		AND SETTING_VERSION = #{settingVersion}
-<!-- 		AND STATUS IN ('Y','N') -->
+		AND STATUS IN ('Y','N')
 	</select>
 	
 	

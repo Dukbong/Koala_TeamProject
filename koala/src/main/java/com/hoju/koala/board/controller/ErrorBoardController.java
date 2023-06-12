@@ -1,5 +1,6 @@
 package com.hoju.koala.board.controller;
 
+import java.awt.List;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,33 @@ public class ErrorBoardController {
 	}
 	
 	//게시글 상세 조회 메소드
+	@GetMapping("/detail")
+	public String enrollForm() {
+		
+		
+		return "board/errorBoard/ebDetailView";
+	}
+	
 	
 	//게시글 작성폼 이동
 	@GetMapping("/enrollForm")
-	public String enrollForm() {
+	public String enrollForm(Model model) {
 		
+		ArrayList<CreateSetting> libList = ebService.selectLibList();  //list로 가져오는법.....
+		
+		model.addAttribute("libList", libList);
 		return "board/errorBoard/ebEnrollForm";
+	}
+	
+	//버전 리스트 조회
+	@ResponseBody
+	@RequestMapping(value="version", produces="text/json; charset=UTF-8")
+	public String selectVersion(String settingTitle) {
+		
+		ArrayList<CreateSetting> vList = ebService.selectVersion(settingTitle);
+		
+		return new Gson().toJson(vList);  //이게 맞나?
+		
 	}
 	
 	//게시글 작성 메소드
@@ -72,9 +94,7 @@ public class ErrorBoardController {
 		c.setSettingVersion(settingVersion);
 		String str = ebService.createModifyForm(category, c);
 		return str;
-		// jang : long type 셀렉트 테스트 해봤는데 가능합니다요. (코드 불러서 확인해봤는데..
 		
-//		return "테스트입니다 테스트입니다 테스트입니다.";
 	}
 	
 	//게시글 수정폼 이동

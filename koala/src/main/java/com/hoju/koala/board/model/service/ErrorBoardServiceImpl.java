@@ -1,5 +1,6 @@
 package com.hoju.koala.board.model.service;
 
+import java.awt.List;
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -34,6 +35,18 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		
 		return ebDao.selectList(sqlSession, pi);
 	}
+	
+	@Override //라이브러리 리스트 조회
+	public ArrayList<CreateSetting> selectLibList() {
+		
+		return ebDao.selectLibList(sqlSession);
+	}
+	
+	@Override//버전 리스트 조회
+	public ArrayList<CreateSetting> selectVersion(String settingTitle) {
+		
+		return ebDao.selectVersion(sqlSession, settingTitle);
+	}
 
 	@Override //게시글 작성 시 수정폼 생성
 	public String createModifyForm(String category, CreateSetting c) {
@@ -45,6 +58,8 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		}
 		
 	}
+
+
 
 
 }
