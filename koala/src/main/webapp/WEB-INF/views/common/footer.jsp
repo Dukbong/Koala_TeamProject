@@ -97,7 +97,7 @@
                 <a class="footerAtag ii" href="#">Error_Board</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Bulletin_Board</a>
+                <a class="footerAtag ii" href="bulletinboard.bo">Bulletin_Board</a>
             </div>
             <div class="item">
                 <a class="footerAtag ii" href="/koala/board/qnaBoard/list">QnA_Board</a>

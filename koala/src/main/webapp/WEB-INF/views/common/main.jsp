@@ -92,6 +92,7 @@
 </style>
 <body>
 	<jsp:include page="header.jsp"/>
+	
     <div class="wrapper">
     <div class="space"></div>
         <div class="main_area">
