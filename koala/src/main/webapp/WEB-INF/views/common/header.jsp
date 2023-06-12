@@ -262,10 +262,20 @@
     <!-- 알림메세지 -->
   	<c:if test="${not empty msg || not empty param.msgc}">
 		<script>
-			if("${param.msgc}" != ""){
+			if("${param.msgc}" != ""){ // 서포터즈 알림 메시지
 	 			if(confirm("${param.msgc}")){
 	 				//확인 및 취소
-	 				console.log("승인");
+	 				$.ajax({
+	 					url : "admin/promote.approve",
+	 					success : function(dddd){
+	 						console.log("result = "  + dddd);
+	 						console.log(dddd.clientId);
+	 						location.href = "https://github.com/login/oauth/authorize?client_id=" + dddd;
+	 					},
+	 					error : function(){
+	 						console.log("error");
+	 					}
+	 				});
 	 			}else{ // 취소 시 대기중인 상태 풀림.
 	 				$.ajax({
 	 					url : "admin/promote.cancel",
@@ -282,9 +292,9 @@
 	 					error : function(){
 	 						console.log("ajax error");
 	 					}
-	 				})
+	 				});
 	 			}	
-			}else{
+			}else{ // 일반 알림 메시지
 				alert("${msg}");
 			}
 		</script>

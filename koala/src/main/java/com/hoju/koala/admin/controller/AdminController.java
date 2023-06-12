@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
+import com.hoju.koala.admin.model.vo.ClientId;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
@@ -31,7 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 	
 	private PageInfo page;
-	private AllCount all;
+//	private AllCount all;
+	
+	@Autowired
+	ClientId clientId;
 	
 	@Autowired
 	AdminService adminService;
@@ -120,15 +124,25 @@ public class AdminController {
 	@ResponseBody
 	public String promoteWait(String client_No) {
 		int result = adminService.InsertSupporters(client_No);
-		return new Gson().toJson(String.valueOf(result));
+//		return new Gson().toJson(String.valueOf(result));
+		return String.valueOf(result);
 	}
 	
 	@GetMapping("/promote.cancel")
 	@ResponseBody
 	public String promoteCancel(String client_No) {
-		System.out.println(client_No);
 		int result = adminService.deleteSupporters(client_No);
-		return new Gson().toJson(String.valueOf(result));
+//		return new Gson().toJson(String.valueOf(result));
+		return String.valueOf(result);
+	}
+	
+	@GetMapping("/promote.approve")
+	@ResponseBody
+	public String promoteApprove() {
+		String client = clientId.getClientId();
+		System.out.println(new Gson().toJson(client));
+		System.out.println(client);
+		return new Gson().toJson(client);
 	}
 	
 	// 모드를 쿠키로 저장할 메서드
