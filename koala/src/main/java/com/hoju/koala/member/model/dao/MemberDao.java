@@ -70,6 +70,18 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.selectEmail", userEmail);
 	}
 
+	//아이디 중복체크
+	public int idCheck(SqlSessionTemplate sqlSession, String inputId) {
+		
+		return sqlSession.selectOne("memberMapper.idCheck", inputId);
+	}
+
+	//닉네임 중복체크
+	public int nickCheck(SqlSessionTemplate sqlSession, String inputNick) {
+		
+		return sqlSession.selectOne("memberMapper.nickCheck", inputNick);
+	}
+
 	
 	
 }

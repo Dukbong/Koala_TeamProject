@@ -92,6 +92,21 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateblockAction(blackIp, sqlSession);
 	}
 
+	@Override
+	public int InsertSupporters(String client_No) {
+		return adminDao.InsertSupporters(client_No, sqlSession);
+	}
+
+	@Override
+	public int deleteSupporters(String client_No) {
+		return adminDao.deleteSupporters(client_No, sqlSession);
+	}
+
+	@Override
+	public Supporters selectOneSupport(int userNo) {
+		return adminDao.selectOneSupport(userNo, sqlSession);
+	}
+
 
 
 

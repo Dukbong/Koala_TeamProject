@@ -29,8 +29,16 @@
 	
 	<interceptors>
 		<interceptor>
+			<!-- 관리자를 제외한 사람은 admin관련 페이지에 접근을 막는다. -->
 			<mapping path="/admin/*"/>
 			<beans:bean class="com.hoju.koala.admin.interceptor.AdminInterceptor" id="AdminInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<!-- 서포터즈로 초대가 된 후 관리자 페이지를 제외한 나머지 페이지에 접근 하는 경우 초대를 받을지 말지 확인 할 수 있도록 한다. -->
+			<mapping path="/**"/>
+			<exclude-mapping path="/admin/**"/>
+			<beans:bean class="com.hoju.koala.admin.interceptor.SupporterInterceptor" id="SupportInterceptor"/>
 		</interceptor>
 	</interceptors>
 	
