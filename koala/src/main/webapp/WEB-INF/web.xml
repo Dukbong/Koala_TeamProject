@@ -35,6 +35,7 @@
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
+		<url-pattern>*.js</url-pattern>
 	</servlet-mapping>
 	
 	<filter>

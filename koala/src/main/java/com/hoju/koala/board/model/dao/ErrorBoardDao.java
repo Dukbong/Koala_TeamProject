@@ -1,5 +1,6 @@
 package com.hoju.koala.board.model.dao;
 
+import java.awt.List;
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -22,6 +23,18 @@ public class ErrorBoardDao {
 	public ArrayList<ErrorSet> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
+	}
+	
+	//라이브러리 리스트 조회
+	public ArrayList<CreateSetting> selectLibList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectLibList");
+	}
+	
+	//버전 리스트 조회
+	public ArrayList<CreateSetting> selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+		
+		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersion", settingTitle);
 	}
 
 	//게시글 작성 시 수정폼 생성 - 코드
