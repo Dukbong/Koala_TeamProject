@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
-import com.hoju.koala.admin.model.vo.ClientId;
+import com.hoju.koala.admin.model.vo.Client;
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
@@ -35,7 +35,7 @@ public class AdminController {
 //	private AllCount all;
 	
 	@Autowired
-	ClientId clientId;
+	Client client;
 	
 	@Autowired
 	AdminService adminService;
@@ -124,7 +124,6 @@ public class AdminController {
 	@ResponseBody
 	public String promoteWait(String client_No) {
 		int result = adminService.InsertSupporters(client_No);
-//		return new Gson().toJson(String.valueOf(result));
 		return String.valueOf(result);
 	}
 	
@@ -132,15 +131,12 @@ public class AdminController {
 	@ResponseBody
 	public String promoteCancel(String client_No) {
 		int result = adminService.deleteSupporters(client_No);
-//		return new Gson().toJson(String.valueOf(result));
 		return String.valueOf(result);
 	}
 	
 	@GetMapping("/promote.approve")
 	@ResponseBody
 	public String promoteApprove() {
-		String client = clientId.getClientId();
-		System.out.println(new Gson().toJson(client));
 		System.out.println(client);
 		return new Gson().toJson(client);
 	}

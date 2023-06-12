@@ -260,17 +260,17 @@
     </script>
     
     <!-- 알림메세지 -->
-  	<c:if test="${not empty msg || not empty param.msgc}">
+  	<c:if test="${not empty msg || not empty msgc}">
 		<script>
-			if("${param.msgc}" != ""){ // 서포터즈 알림 메시지
-	 			if(confirm("${param.msgc}")){
+			if("${msgc}" != ""){ // 서포터즈 알림 메시지
+	 			if(confirm("${msgc}")){
 	 				//확인 및 취소
 	 				$.ajax({
 	 					url : "admin/promote.approve",
-	 					success : function(dddd){
+	 					success : function(dddd){ // 강사님에게 질문하기...
 	 						console.log("result = "  + dddd);
-	 						console.log(dddd.clientId);
-	 						location.href = "https://github.com/login/oauth/authorize?client_id=" + dddd;
+	 						alert(dddd);
+	 						location.href = "https://github.com/login/oauth/authorize?client_id=";
 	 					},
 	 					error : function(){
 	 						console.log("error");
@@ -299,6 +299,7 @@
 			}
 		</script>
 		<c:remove var="msg" scope="session"/>
+		<c:remove var="msgc" scope="session"/>
 	</c:if>
 	
 	<!-- 자동완성 끄기 -->

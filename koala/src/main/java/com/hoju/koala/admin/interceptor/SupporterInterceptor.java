@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -27,7 +26,7 @@ public class SupporterInterceptor  extends HandlerInterceptorAdapter {
 		try {
 			Supporters support = adminService.selectOneSupport(member.getUserNo()); // 여기 된다는 거 자체가 null이 아니라는 뜻.
 			if(support.getGithubId().equals(" ")) 
-				modelAndView.addObject("msgc", support.getUserId() + "님을 koala의 서포터즈로 초대합니다."); // 확인 취소 할 수 있도록 하기.
+				request.getSession().setAttribute("msgc", support.getUserId() + "님을 koala의 서포터즈로 초대합니다.");
 		}catch(NullPointerException e) {
 			return;
 		}

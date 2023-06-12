@@ -49,8 +49,8 @@
  	</bean>
  	
  	<context:property-placeholder location="WEB-INF/spring/setting-config.properties"/>
- 	<bean class="com.hoju.koala.admin.model.vo.ClientId" id="clientId">
- 		<property name="clientId" value="${koala.client}"/>
+ 	<bean class="com.hoju.koala.admin.model.vo.Client" id="clientId">
+ 		<constructor-arg name="clientId" value="${koala.client}"/>
  	</bean>
  	
  	<!-- jang : servlet-context에서 웹관련 내용을 제외시켰기 때문에 여기서는 제외한 부분만 스캔해서 빈 등록한다. -->
