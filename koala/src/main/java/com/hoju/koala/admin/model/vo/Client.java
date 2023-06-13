@@ -1,6 +1,7 @@
 package com.hoju.koala.admin.model.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,6 +12,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class Client {
 	private String clientId; // 이건 고정값이 기때문에 한다.
+	private String clientSecret; // 이건 고정값이 기때문에 한다.
+	private String code;
 }

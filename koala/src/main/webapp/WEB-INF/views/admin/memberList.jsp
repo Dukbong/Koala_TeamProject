@@ -257,7 +257,7 @@
 					if(str.includes("promote")){						
 						let made = $("" + str).on("click", function(){
 							$.ajax({
-								url : "promote.waiting",
+								url : "/koala/promote/promote.waiting",
 								data : {
 									client_No : this.id,
 								},
@@ -277,7 +277,7 @@
 					}else{
 						let made = $("" + str).on("click", function(){
 							$.ajax({
-								url : "promote.cancel",
+								url : "/koala/promote/promote.cancel",
 								data : {
 									client_No : this.id,
 								},

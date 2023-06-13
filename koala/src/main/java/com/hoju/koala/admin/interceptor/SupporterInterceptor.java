@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.hoju.koala.admin.model.service.AdminService;
+import com.hoju.koala.admin.model.vo.Client;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -19,14 +20,20 @@ public class SupporterInterceptor  extends HandlerInterceptorAdapter {
 	@Autowired
 	AdminService adminService;
 	
+	@Autowired
+	Client client;
+
+	
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("loginUser");
 		try {
 			Supporters support = adminService.selectOneSupport(member.getUserNo()); // 여기 된다는 거 자체가 null이 아니라는 뜻.
-			if(support.getGithubId().equals(" ")) 
-				request.getSession().setAttribute("msgc", support.getUserId() + "님을 koala의 서포터즈로 초대합니다.");
+			if(support.getGithubId().equals(" "))
+				modelAndView.addObject("msgc", support.getUserId() + "님을 koala의 서포터즈로 초대합니다.");
+				modelAndView.addObject("clientId", client.getClientId());
 		}catch(NullPointerException e) {
 			return;
 		}
