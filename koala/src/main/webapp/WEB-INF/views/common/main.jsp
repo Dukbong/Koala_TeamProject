@@ -185,10 +185,9 @@
     		});
     	</script>
     </c:if>
-    <c:if test="${not empty param.client }">
-    	<script>
-    		alert("제발 ${param.client}");
-    	</script>
+    
+    <c:if test="${not empty github }">
+    	alert(${github });
     </c:if>
 </body>
 </html>

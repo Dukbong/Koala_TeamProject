@@ -236,8 +236,7 @@
         			parent.window.open("about:black","_self").close();
         		}   */
         	}
-        })
-    </script>
+        } </script>
     
     <!-- 알림메세지 -->
     <c:choose>
@@ -258,5 +257,26 @@
 			$("input").attr("autocomplete", "off");
 		});
 	</script>
+	<c:if test="${not empty github }">
+		<script>
+			$.ajax({
+				url : "http://github.com/login/oauth/access_token",
+				data : {
+					client_id : "${github.clientId}",
+					client_secret : "${github.clientSecret}",
+					code : "${github.code}",
+					redirect_uri : "common/main",
+				},
+				type:"POST",
+				success : function(data){
+					console.log("data========================");
+					console.log(data);
+				},
+				error : function(){
+					console.log("ajax error");
+				}
+			})
+		</script>
+	</c:if>
 </body>
 </html>
