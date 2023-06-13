@@ -91,16 +91,19 @@
 
 </style>
 <body>
-	<jsp:include page="header.jsp"/>
-	
+<%-- 	<jsp:include page="header.jsp"/> --%>
+	<%@include file="header.jsp" %>
+	<%
+		
+	%>
     <div class="wrapper">
     <div class="space"></div>
         <div class="main_area">
             <div class="main_image" style="height: 100%;">
-                <img src="resources/common/털.png" style="height: 100%; width: 100%;"alt="">
+                <img src="/koala/resources/common/털.png" style="height: 100%; width: 100%;"alt="">
             </div>
             <div class="main_image2">
-                <img src="resources/common/코알라로고_문구有.png" id="koala_logo" style="width: 400px;" alt="">
+                <img src="/koala/resources/common/코알라로고_문구有.png" id="koala_logo" style="width: 400px;" alt="">
             </div>
             <div class="main_area_opening">
                 <span>KH Academy</span>&nbsp;&nbsp;&nbsp;<span> 2023.05.30</span>
@@ -111,7 +114,7 @@
             <div class="body1">
                 <span style="font-size: 20px;" class="ii">2.56.141</span>
                 <div class="body_logo1">
-                    <img src="resources/common/reload.png" style="width: 50px;" alt="">
+                    <img src="/koala/resources/common/reload.png" style="width: 50px;" alt="">
                 </div>
                 <div class="item_name">
                     <span class="ii">filter</span>
@@ -124,7 +127,7 @@
             </div>
             <div class="body2">
                 <div class="body_logo2">
-                    <img src="resources/common/download.png" style="width: 90px;" alt="">
+                    <img src="/koala/resources/common/download.png" style="width: 90px;" alt="">
                 </div>
                 <div class="body_title" style="margin-top: 10px;">
                     <span class="ii">Download</span>
@@ -132,7 +135,7 @@
             </div>
             <div class="body3">
                 <div class="body_logo3">
-                    <img src="resources/common/free-icon-cloud-upload-4007710.png" style="width: 120px;" alt="">
+                    <img src="/koala/resources/common/free-icon-cloud-upload-4007710.png" style="width: 120px;" alt="">
                 </div>
                 <div class="body_title">
                     <span class="ii">CreateFile</span>
@@ -142,5 +145,50 @@
 
     </div>
     <jsp:include page="footer.jsp"/>
+    
+    <c:if test="${not empty param.msgc && empty param.client }">
+    	<script>
+    	
+    		$(function(){
+	 			if(confirm("${param.msgc}")){
+	 				//확인 및 취소
+	 				$.ajax({
+	 					url : "/koala/promote/promote.approve",
+	 					success : function(data){ // 강사님에게 질문하기...
+	 						//alert("${param.clientId}"); // 넘어온다. (인터셉터에서 보냈다.)
+	 						//alert("${param.code}");
+	 						//alert("${param.clientSecret}"); // 넘어온다. (인터셉터에서 보냈다.)
+	 						location.href = "http://github.com/login/oauth/authorize?client_id=${param.clientId}";
+	 					},
+	 					error : function(){
+	 						console.log("error");
+	 					}
+	 				});
+	 			}else{ // 취소 시 대기중인 상태 풀림.
+	 				$.ajax({
+	 					url : "/koala/promote/promote.cancel",
+	 					data : {
+	 						client_No : "${loginUser.userNo}"
+	 					},
+	 					success : function(data){
+			 				if(confirm("main으로 이동하시겠습니까?(y)||이전 페이지로 이동하시겠습니까?(n)")){
+			 					location.href="/koala";
+			 				}else{
+			 					history.back();
+			 				}	 						
+	 					},
+	 					error : function(){
+	 						console.log("ajax error");
+	 					}
+	 				});
+	 			}
+    		});
+    	</script>
+    </c:if>
+    <c:if test="${not empty param.client }">
+    	<script>
+    		alert("제발 ${param.client}");
+    	</script>
+    </c:if>
 </body>
 </html>

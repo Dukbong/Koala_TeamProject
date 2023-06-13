@@ -2,6 +2,7 @@ package com.hoju.koala.common.template;
 
 import com.hoju.koala.common.model.vo.PageInfo;
 
+
 public class Paging {
 	public static PageInfo getPageInfo(int listCount, int currentPage, int pageLimit, int boardLimit) {
 		int maxPage = (int)Math.ceil((double)listCount/boardLimit);
