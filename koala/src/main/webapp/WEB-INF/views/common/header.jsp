@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.hoju.koala.admin.model.vo.Client"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -10,7 +10,6 @@
 <title>Insert title here</title>
 
 </head>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
@@ -100,25 +99,6 @@
 	}
 	/* 페이징 버튼 처리 css */
 	#pagingArea {width:fit-content; margin:auto;}
-	
-	
-/* 	        	if(e.target.id == "dark" || !e.target){ */
-/*         		test(e); */
-/*             	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black"); */
-/*             	$(".topLine").css("background-color", "white") */
-/*             	$(".ii").css("color", "black"); */
-            	
-/*         	}else{ */
-/*         		test(e); */
-/*         		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white"); */
-/*         		$(".topLine").css("background-color", "black"); */
-/*         		$(".ii").css("color", "#ffffff"); */
-/*         	} */
-	
-	
-	
-	
-	
 </style>
 <body>
     <div id="wrap">
@@ -260,47 +240,18 @@
     </script>
     
     <!-- 알림메세지 -->
-  	<c:if test="${not empty msg || not empty param.msgc}">
-		<script>
-			if("${param.msgc}" != ""){ // 서포터즈 알림 메시지
-	 			if(confirm("${param.msgc}")){
-	 				//확인 및 취소
-	 				$.ajax({
-	 					url : "admin/promote.approve",
-	 					success : function(dddd){
-	 						console.log("result = "  + dddd);
-	 						
-	 						//location.href = "https://github.com/login/oauth/authorize?client_id=" + dddd;
-	 					},
-	 					error : function(){
-	 						console.log("error");
-	 					}
-	 				});
-	 			}else{ // 취소 시 대기중인 상태 풀림.
-	 				$.ajax({
-	 					url : "admin/promote.cancel",
-	 					data : {
-	 						client_No : "${loginUser.userNo}"
-	 					},
-	 					success : function(data){
-			 				if(confirm("main으로 이동하시겠습니까?(y)||이전 페이지로 이동하시겠습니까?(n)")){
-			 					location.href="/koala";
-			 				}else{
-			 					history.back();
-			 				}	 						
-	 					},
-	 					error : function(){
-	 						console.log("ajax error");
-	 					}
-	 				});
-	 			}	
-			}else{ // 일반 알림 메시지
-				alert("${msg}");
-			}
-		</script>
-		<c:remove var="msg" scope="session"/>
-	</c:if>
-	
+    <c:choose>
+    	<c:when test="${not empty msg && empty param.msgc }">
+    		<script>
+				alert("${msg}");				    	
+    		</script>
+    	</c:when>
+    	<c:otherwise>
+			<c:remove var="msg" scope="session"/>
+    	</c:otherwise>
+    </c:choose>
+    
+    
 	<!-- 자동완성 끄기 -->
 	<script>
 		$(function(){
