@@ -121,9 +121,6 @@ public class AdminController {
 		return "admin/memberList";
 	}
 	
-
-
-
 	// 모드를 쿠키로 저장할 메서드
 	@GetMapping("mode.check")
 	@ResponseBody

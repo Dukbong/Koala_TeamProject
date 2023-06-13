@@ -15,7 +15,7 @@
 	#content{
 		margin: auto;
 		width: 80%;
-		height: 1000px;
+		height: 1200px;
 	}
 	
 	#insert-form{
@@ -46,7 +46,6 @@
 		border: 1px solid #dadada;
 		padding: 10px;
 		border-radius: 5px;
-		margin-bottom: 20px;
 	}
 	
 	textarea{
@@ -54,37 +53,34 @@
 	}
 	
 	#center{
-		width: 50%;
+		width: 60%;
 		height: 80%;
-		padding:5% 0;
+		padding: 5% 0;
 	}
 	
-	label,#ToU{
-		float: left;
-	}
-	
-	#no-float{
-		float: none;
-	}
-	
-	.pack{
-		float: left;
+	/* 테이블 */
+	#insert-table{
 		width: 100%;
+		height: 100%;
 	}
 	
-	.pack>button{
-		float: left;
+	
+	
+	
+	
+	button{
 		height: 40px;
 		width: 80px;
 		padding: 10px;
 		border-radius: 5px;
-		margin-bottom: 20px;
 	}
 	
 	#level{
     	appearance: none;
     	border-radius: 10px;
 	}
+	
+	
 	
 	.hide{
 		display: none;
@@ -97,125 +93,223 @@
 		var code = "";
 		
 		//유효성(정규표현식)
-		var idCheck = true;
-		var pwdCheck = true;
-		var nickCheck = true;
-		var emailCheck = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		var idExp = /^[a-zA-Z0-9]{4,12}$/; //4~12자리 영어숫자만
+		var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; //영문,숫자 8자리 이상
+		var nickExp = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/; // 2자 이상, 12자 이하, 영어또는 숫자 한글로 구성
+		var emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; //이메일
+		
+		var idCheck = false;
+		var pwdCheck = false;
+		var nickCheck = false;
+		var emailCheck = false;
+		var agreeCheck = false;
 		
 		$(function(){
-			/* 아이디 중복 쳌크*/
-			if(idCheck){ //유효성통과하면
-				$("#userId").on("keyup", function(){
-					
-					console.log($("#userId").val());
-					
+			//submit버튼 계속 상태값 바꿔주기
+			$.submitState = function(idCheck, pwdCheck, nickCheck, agreeCheck){
+				if(idCheck && pwdCheck && nickCheck && emailCheck && agreeCheck){
+					$("#submitBtn").attr("disabled", false);
+					console.log("-------통과-------");
+					console.log("id : "+idCheck);
+					console.log("pwd : "+pwdCheck);
+					console.log("nick : "+nickCheck);
+					console.log("email : "+emailCheck);
+					console.log("agree : "+agreeCheck);
+				}else{
+					$("#submitBtn").attr("disabled", true);
+					console.log("-------미통과-------");
+					console.log("id : "+idCheck);
+					console.log("pwd : "+pwdCheck);
+					console.log("nick : "+nickCheck);
+					console.log("email : "+emailCheck);
+					console.log("agree : "+agreeCheck);
+				}
+			}
+				
+			//유저 아이디 입력
+			$("#userId").on("keyup", function(){
+				
+				if(idExp.test($("#userId").val())){ //유효성을 통과하면
+					//아이디 중복체크
 					$.ajax({
 						url:"/koala/member/idCheck",
 						data:{
-							inputId : $("#userId").val()
+							inputId:$("#userId").val()
 						},
 						success:function(result){
 							if(result>0){
-								//중복
-								$("#id_able").css("display", "none");
-								$("#id_disable").css("display","block");
+								//중복(사용불가능)
+								idCheck = false;
+								console.log("중복이야ㅣ");
 							}else{
-								$("#id_disable").css("display","none");
-								$("#id_able").css("display", "block");
+								//사용가능
+								idCheck = true;
+								console.log("사용할수있어!");
 							}
 						},
 						error:function(){
-							alert("통신실패");
+							alert("통신오류");
+						},
+						complete:function(){
+							$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 						}
 					});
-				});
-			}
-			
-			/* 비밀번호 재확인이랑 일치하는지*/
-			if(pwdCheck){
-				$("#checkPwd").on("keyup", function(){
-					var userPwd = $("#userPwd").val();
-					var checkPwd = $("#checkPwd").val();
-					
-					if(userPwd == checkPwd){//일치하다면
-						$("#pwd_no").css("display", "none");
-					}else{
-						$("#pwd_no").css("display", "block");
-					}
-				});
-			}
-			
-			
-			/* 닉네임 중복 체크 */
-			if(nickCheck){
-				$("#nickName").on("keyup", function(){
-					
-					console.log($("#nickName").val());
-					
-					$.ajax({
-						url:"/koala/member/nickCheck",
-						data:{
-							inputNick : $("#nickName").val()
-						},
-						success:function(result){
-							if(result>0){
-								//중복
-								$("#nick_disable").css("display","block");
-							}else{
-								$("#nick_disable").css("display","none");
-							}
-						},
-						error:function(){
-							alert("통신실패");
-						}
-					});
-				});
-			}
-			
-			/* 이메일에 인증코드 보내기 */
-			$("#emailSend").on("click", function(){
-				
-				if(emailCheck.test($("#email").val())){
-					
-					$.ajax({
-						url:"/koala/member/emailCheck",
-						data:{
-							inputEmail:$("#email").val()
-						},
-						success:function(result){
-							
-							console.log("code : "+result);
-							code = result;
-							alert("이메일에 인증번호를 보냈습니다.");
-						},
-						error:function(){
-							alert("통신실패");
-						}
-					});
-					
 				}else{
-					alert("이메일을 다시 입력해주세요.");
+					//적합하지 않는 아이디 형식입니다. -출력해야함.
+					idCheck = false;
+					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 				}
 				
 			});
 			
-			/* 보낸 인증번호와 맞는지 확인 */
-			$("#emailCheck").on("click", function () {
-				var inputCode = $("#certiCode").val();
+			
+			//입력한 비밀번호들에 대한 요소 초기화
+			var userPwd1 ="";
+			var userPwd2 ="";
+			//비밀번호 입력
+			$("#userPwd").on("keyup", function(){
 				
-				if(inputCode === code){
-					$("#certi_no").css("display", "none");
-					$("#certiCode").css("display", "none");
-					$("#certi_yes").css("display", "inline-block");
+				if(pwdExp.test($("#userPwd").val())){
+					
+					userPwd1 = $("#userPwd").val();
 					
 				}else{
-					$("#certi_no").css("display", "block");
+					//적합하지 않는 비밀번호 형식입니다. -출력해야함.
+					
+					pwdCheck = false;
 				}
+				
+				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+			});
+			
+			//비밀번호 재확인 입력
+			$("#checkPwd").on("keyup", function(){
+				
+				userPwd2 = $("#checkPwd").val();
+				
+				if(userPwd1 == userPwd2){
+					//같다면
+					pwdCheck = true;
+				}else{
+					
+					pwdCheck = false;
+				}
+				
+				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+			});
+			
+			
+			
+			//닉네임 입력
+			$("#nickName").on("keyup", function(){
+				
+				if(nickExp.test($("#nickName").val())){
+					
+					//닉네임 중복체크
+					$.ajax({
+						url:"/koala/member/nickCheck",
+						data:{
+							inputNick:$("#nickName").val()
+						},
+						success:function(result){
+							if(result>0){
+								//중복(사용불가능)
+								
+								nickCheck = false;
+								
+							}else{
+								//사용가능
+								
+								nickCheck = true;
+							}
+						},
+						error:function(){
+							alert("통신오류");
+						},
+						complete:function(){
+							$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+						}
+					});
+					
+				}else{
+					//적합하지 않는 닉네임 형식입니다.
+					
+					nickCheck = false;
+					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+				}
+				
+			});
+			
+			
+			//이메일 입력
+			$("#email").on("keyup", function(){
+				
+				if(emailExp.test($("#email").val())){
+					
+					//이메일에 인증코드 보내기
+					$("#emailSend").on("click", function(){
+						
+						$.ajax({
+							url:"/koala/member/emailCheck",
+							method:"get",
+							data:{
+								inputEmail:$("#email").val()
+							},
+							success:function(data){
+								console.log(data);
+								
+								code = data;
+								alert("이메일에 인증번호를 보냈습니다.");
+								
+							},
+							error:function(){
+								alert("통신오류");
+							}
+						});
+					});
+					
+				}else{
+					//적합하지 않는 이메일 형식입니다.
+					
+					emailCheck = false;
+					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+				}
+				
+			});
+			
+			//이메일 인증번호 확인
+			$("#certiCheck").on("click", function(){
+				
+				var certiCode = $("#certiCode").val();
+				
+				if(code === certiCode){
+					//서버에서 보낸 코드와 사용자가 입력한 코드가 같음
+					alert("굳");
+					emailCheck = true;
+				}else{
+					//다름
+					
+					alert("입력한 인증번호가 일치하지 않습니다. 다시한번 확인해주세요.");
+					emailCheck = false;;
+				}
+				
+				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+			});
+			
+			
+			$("#agree").on("change", function(){
+				
+				if($("#agree").prop("checked")){
+					agreeCheck = true;
+				}else{
+					agreeCheck = false;
+				}
+				
+				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 			});
 			
 			
 		});
-		
 		
 	</script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
@@ -224,49 +318,82 @@
 	        <div id="enroll-area">
 	            <form action="insert" method="post" id="insert-form">
 	            	<div id="center">
-	            		<div id="pack">
-			                <label for="userId">ID</label>
-			                <input type="text" class="box" id="userId" placeholder="아이디" name="userId" required>
-			                <span class="hide" id="id_able">사용 가능한 아이디입니다.</span>
-			                <span class="hide" id="id_disable">이미 사용중인 아이디입니다.</span>
-	            		</div>
-
-	            		<div class="pack">
-			                <label for="userPwd">Password</label>
-			                <input type="password" class="box" id="userPwd" placeholder="비밀번호" name="userPwd" required><span style="font-size: 15px;">보안성</span>
-			                <progress max="4" value="0" id="level"></progress>
-			                <span class="hide">비밀번호 양식을 지켜주세요.</span>
-	            		</div>
-						
-	            		<div class="pack">
-			                <label for="checkPwd">Password Check</label>
-			                <input type="password" class="box" id="checkPwd" placeholder="비밀번호 재확인" required>
-			                <span class="hide" id="pwd_no">비밀번호가 일치하지 않습니다.</span>
-	            		</div>
-	            		
-	            		<div class="pack">
-			                <label for="nickName">Nickname</label>
-			                <input type="text" class="box" id="nickName" placeholder="닉네임" name="nickName" required>
-			                <span class="hide">올바른 닉네임명을 입력해주세요.</span>
-			                <span class="hide" id="nick_disable">이미 사용중인 닉네임입니다.</span>
-	            		</div>
-	            		
-	            		<div class="pack">
-		     	           <label for="email">Email</label>
-		        	        <input type="email" class="box" id="email" placeholder="이메일" name="email">
-		        	        <button type="button" id="emailSend">send</button>
-	            		</div>
-	            		
-	            		<div class="pack">
-			                <label for="address">Verification Code</label>
+	            		<table border="1" id="insert-table">
+			                <tr> 
+			                    <td colspan=""><label for="userId">ID</label></td>
+			                </tr>
+			                <tr>
+			                    <td width="400"><input class="box" type="text" name="userId" id="userId" maxlength="12" required placeholder = "영문,숫자만  4~12자리"></td>
+			                    <td width="100">
+			                    	여기에 그거
+			                    </td>
+			                </tr>
 			                
-			                <input type="text" class="box" id="certiCode" placeholder="인증번호" required><button type="button" id="emailCheck">check</button>
-			                <span class="hide" id="certi_no">인증번호가 일치하지 않습니다.</span>
-			                <input type="text" class="box hide" id="certi_yes" readonly value="인증 완료" style="background-color: blue;">
-	            		</div>
-		
-		                <span id="ToU">Terms of Use</span>
-		                <textarea cols="30" rows="10" style="resize:none; height: 200px">
+			                
+			                <tr>
+			                    <td><label for="userPwd">Password</label></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="15" required placeholder = "숫자,영어포함  8자 이상" >
+			                    </td>
+			                    <td>
+			                    	<span>보안성 : </span><progress id="level"></progress>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td><label for="chkPwd">Password Check</label></td>
+			                </tr>
+			                <tr>
+			                    <td><input class="box" type="password" id="checkPwd" name="checkPwd" maxlength="15" required placeholder = "비밀번호 재확인"></td>
+			                    <td>
+			                    	여기에 그거
+			                    </td>
+			                </tr>
+			                
+			                
+			                
+			                <tr>
+			                    <td><label for="nickName">Nickname</label></td>
+			                </tr>
+			                <tr>
+			                    <td><input class="box" type="text" name="nickName" id="nickName" required placeholder="숫자, 영문포함 2~12자리"></td>
+			                    <td>
+			                    	여기에 그거
+			                    </td>
+			                </tr>
+			                
+			                
+			                <tr>
+			                    <td><label for="email">Email</label></td>
+			                </tr>
+			                <tr>
+			                	<td>
+			                		<input class="box" type="text" name="email" id="email" required placeholder="이메일 형식으로 입력"><button type="button" id="emailSend">Send</button>
+			                	</td>
+			                	<td>
+			                    	여기에 그거
+			                    </td>
+			                </tr>
+							
+							<tr>
+								<td><label for="">Certification Code</label>
+							</tr>
+			                <tr>
+								<td>
+									<input class="box" id="certiCode" type ="text" required placeholder="인증코드 입력"><button type="button" id="certiCheck">Check</button>
+								</td>
+								<td>
+			                    	여기에 그거
+			                    </td>
+			                </tr>
+			                
+							<tr>
+			                    <td>Terms of Use</td>
+			                </tr>
+			                <tr>
+			                	<td colspan="2">
+									<textarea cols="30" rows="10" style="resize:none; height: 200px">
 [코알라] 회원가입 및 개인정보 수집 및 이용약관
 
 제 1조 (목적)
@@ -304,22 +431,23 @@
 이름: 
 이메일: 
 전화번호:
-		                </textarea>
+									</textarea>
+								</td>
+			                </tr>
+			            </table>
+		                
 		                <input type="checkbox" id="agree">
-		                <label for="agree" id="no-float">이용약관 및 개인정보 수집에 동의합니다.</label>
+		                <label for="agree">이용약관 및 개인정보 수집에 동의합니다.</label>
 		               	
 		               	<div>
-			                <button type="button">submit</button>		               	
+			                <button type="submit" id="submitBtn" disabled>submit</button>		               	
 		               	</div>
 	            	</div>
 	            </form>
 	        </div>
 	    </div>
-	    
 	</div>
 	
-	<script>
-	</script>
 	
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
