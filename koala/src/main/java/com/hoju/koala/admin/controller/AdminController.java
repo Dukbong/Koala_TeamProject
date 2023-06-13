@@ -140,9 +140,9 @@ public class AdminController {
 	@ResponseBody
 	public String promoteApprove() {
 		String client = clientId.getClientId();
-		System.out.println(new Gson().toJson(client));
+		
 		System.out.println(client);
-		return new Gson().toJson(client);
+		return client;
 	}
 	
 	// 모드를 쿠키로 저장할 메서드
