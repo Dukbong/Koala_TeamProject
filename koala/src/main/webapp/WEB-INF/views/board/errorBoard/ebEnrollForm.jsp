@@ -169,8 +169,9 @@
 			<div class="modifyBtn-area"> <!-- 수정폼 두개 생성되면 안보이게 -->
 				<span style="color: rgb(241, 196, 15);">modify form</span>
 				<select name="category"> <!-- 이 값은 무시해야 하나 / 전송 클릭 시 disabled 되게? -->
-						<option value="code">코드</option>
-						<option value="info">설명서</option>
+					<option value="">--참고자료--</option>
+					<option value="code">코드</option>
+					<option value="info">설명서</option>
 				</select>
 				<button type="button">create</button>
 			</div>
@@ -199,10 +200,14 @@
 									if($category=="code"){
 										$("#beforeCode,#afterCode").html(str);
 										$(".modifyForm-area_code").css("display","block");
+										$("option[value='code']").css("display","none");
 									}else{
 										$("#beforeInfo,#afterInfo").html(str);
 										$(".modifyForm-area_info").css("display","block");
+										$("option[value='info']").css("display","none");
 									}
+									$("select[name='category']").find('option:first').prop('selected', true);
+									
 								},
 								error : function(){
 									console.log("실패");
@@ -217,8 +222,10 @@
 					$(".modifyForm-top ").on("click", "button", function(){
 						if(($(this).prev().text())=="code"){
 							$(this).parents(".modifyForm-area_code").css("display","none");
+							$("option[value='code']").css("display","block");
 						}else{
 							$(this).parents(".modifyForm-area_info").css("display","none");
+							$("option[value='info']").css("display","block");
 						}
 					});
 					
