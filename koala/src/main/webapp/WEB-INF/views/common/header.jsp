@@ -269,8 +269,8 @@
 	 					url : "admin/promote.approve",
 	 					success : function(dddd){
 	 						console.log("result = "  + dddd);
-	 						console.log(dddd.clientId);
-	 						location.href = "https://github.com/login/oauth/authorize?client_id=" + dddd;
+	 						
+	 						//location.href = "https://github.com/login/oauth/authorize?client_id=" + dddd;
 	 					},
 	 					error : function(){
 	 						console.log("error");
