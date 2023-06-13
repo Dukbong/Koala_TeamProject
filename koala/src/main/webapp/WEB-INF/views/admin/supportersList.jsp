@@ -84,15 +84,25 @@
                 	text-decoration: none;
         			color: White;
                 }
+                .binsupport{
+                	text-align: center;
+                	font-size: 3rem;
+                	font-weight: bold;
+                	width: 100%;
+                	height: 500px;
+                	line-height: 500px;
+                }
+             
 /*                 .supporterone .right, .supportertwo .left, .supportertwo .right{ */
 /*                 	text-align: center; */
 /*                 } */
             </style>
         </head>
-
-        <body>
+        <!-- 드래그 우클릭  복사 등등 방지 -->
+        <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
             <jsp:include page="/WEB-INF/views/common/header.jsp" />
             <div class="wrapper">
+            <c:if test="${supporterList.size()!= 0 }">
                 <div id="supporterLine">
                     <div id="showLine">
                         <div id="middleLine"></div>
@@ -112,7 +122,7 @@
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
                                         	<!-- 주소만 연결 -->
-                                            <a class="ii" href="#">${support.userId }</a> 
+                                            <a class="ii" href="/koala/member/ad?userId=${support.userId }">${support.userId }</a> 
                                             <a class="ii" href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
@@ -162,7 +172,7 @@
                                     </div>
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
-                                            <a href="#">${support.userId }</a> 
+                                            <a href="/koala/member/ad?userId=${support.userId }">${support.userId }</a> 
                                             <a href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
@@ -203,6 +213,7 @@
                     <div id="pagingArea">
                         <div class="btnarea">
                             <ul class="pagination">
+                            	
                                 <c:choose>
                                     <c:when test="${pi.currentPage == 1 }">
                                         <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
@@ -228,16 +239,26 @@
                                                 href="/koala/admin/supporters.list?currentPage=${pi.currentPage + 1 }">Next</a>
                                         </li>
                                     </c:otherwise>
-
                                 </c:choose>
+                                
                             </ul>
                         </div>
                     </div>
                 </div>
+                </c:if>
+                <c:if test="${supporterList.size()== 0 }">
+                	<div class="binsupport">
+                		현재 서포터즈 인원이 없습니다.
+                	</div>
+                </c:if>
             </div>
             <jsp:include page="/WEB-INF/views/common/footer.jsp" />
             <script>            
 	            $(function(){
+	            	$("body").bind("onseletstart", function(){
+	            		return fasle;
+	            	});
+	            	
 	            	$(".demote").click(function(){
 	            		var userId = $(this).parent().parent().parent().children(".supportertwo").children(".left").children("a")[0].innerText
 	            		$.ajax({

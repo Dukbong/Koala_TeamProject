@@ -256,6 +256,14 @@
 
         </div>
 
+	<script>
+		$(function(){
+			$("tbody>tr").click(function(){
+				var bno = $(this).children().eq(0).text();
+				location.href="detail.bo?boardNo="+bno;
+			});
+		});
+	</script>
 
     </div>
 

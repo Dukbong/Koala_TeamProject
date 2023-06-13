@@ -39,7 +39,7 @@ public class AdminDao {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectBolckIp",null, pi.rowBounds());
 	}
 	
-	public ArrayList<Member> selectMemberList(SqlSession sqlSession, PageInfo pi) {
+	public ArrayList<Supporters> selectMemberList(SqlSession sqlSession, PageInfo pi) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMemberList",null, pi.rowBounds());
 	}
 
@@ -69,6 +69,18 @@ public class AdminDao {
 	
 	public int deleteSupporter(String userNo, SqlSession sqlSession) {
 		return sqlSession.delete("adminMapper.deleteSupporter", userNo);
+	}
+
+	public int InsertSupporters(String client_No, SqlSession sqlSession) {
+		return sqlSession.insert("adminMapper.InsertSupporters", client_No);
+	}
+
+	public int deleteSupporters(String client_No, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.deleteSupporters", client_No);
+	}
+
+	public Supporters selectOneSupport(int userNo, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectOneSupport", userNo);
 	}
 
 

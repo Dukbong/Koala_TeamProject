@@ -51,12 +51,16 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 					log.info("Existing Block List Count++  >>> {}", ip);
 				}
 			}
-			session.setAttribute("alertMsg", "현재 " + (5 - result.getCount()) + "번 후 IP가 차단됩니다.");
+			if(5 - result.getCount() == 0) {
+				session.setAttribute("msg", "현재 " + (5 - result.getCount()) + "번 후 IP가 차단됩니다.");				
+			}else {
+				session.setAttribute("msg", "IP가 차단되어 이용이 불가능합니다.");
+			}
 //			return false;
 			return true; // TEST
 		}
 		if(member.getType() != 2) { // 회원이지만 관리자 x 
-			session.setAttribute("alertMsg", "관리자 외에는 접근이 불가능합니다.");
+			session.setAttribute("msg", "관리자 외에는 접근이 불가능합니다.");
 			response.sendRedirect("/koala");
 //			return false; 
 			return true; // TEST

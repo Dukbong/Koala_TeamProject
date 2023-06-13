@@ -7,13 +7,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
@@ -76,6 +76,7 @@ public class MemberController {
 	}
 	
 	
+	
 	//회원가입
 	@PostMapping("/insert")
 	public ModelAndView insertMember(HttpSession session,
@@ -103,14 +104,16 @@ public class MemberController {
 	
 	//회원 정보 조회 (활동내역)
 	@GetMapping("/ad")
-	public ModelAndView ad(int userNo,
+	public ModelAndView ad(String userId,
 					 ModelAndView mv) {
 		
-		
+		System.out.println(userId);
 		//조회해온 유저담기
-		Member m = memberService.selectMember(userNo);
+		Member m = memberService.selectMember(userId);
+		
+		System.out.println(m);
 		//해당 유저팔로우수 조회
-		int cnt = memberService.selectFollowCount(userNo);
+		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
 		if(m != null) {
 			mv.addObject("user", m);
@@ -235,6 +238,41 @@ public class MemberController {
 		return result;
 	}
 	
+	//아이디 중복체크
+	@ResponseBody
+	@GetMapping("/idCheck")
+	public int idCheck(String inputId) {
+		
+		
+		int result = memberService.idCheck(inputId);
+		
+		//result가 1이면 중복(사용불가) 2이면 중복x(사용가능)
+		return result;
+	}
+	
+	//닉네임 중복체크
+	@ResponseBody
+	@GetMapping("/nickCheck")
+	public int nickCheck(String inputNick) {
+		
+		int result = memberService.nickCheck(inputNick);
+		
+		return result;
+	}
+	
+	//이메일 인증코드 보내기
+	@ResponseBody
+	@GetMapping("/emailCheck")
+	public String emailCheck(String inputEmail) {
+		
+		EmailCheck ec = new EmailCheck();
+		
+		//이메일전송후 인증번호 반환
+		String certiCode = ec.joinEmail(inputEmail);
+		System.out.println("인증번호 : "+certiCode);
+		
+		return certiCode;
+	}
 	
 	
 }

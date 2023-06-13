@@ -22,7 +22,6 @@ import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
-import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,13 +38,8 @@ public class AdminController {
 	
 	@GetMapping("/main")
 	public String adminMain(Model model) {
-		all = allCount();
-		if(all != null) {
-			model.addAttribute("allCount", all);
-			return "admin/admin";
-		}else {
-			return "common/nullPoint";
-		}
+		model.addAttribute("allCount", allCount());
+		return "admin/admin";
 	}
 	
 	// 전체 적인 총 게시글 수를 확인할 수 있는 메서드
@@ -80,22 +74,19 @@ public class AdminController {
 		return "";
 	}
 	
-	@GetMapping("/errorboard.list")
+	@GetMapping("/errorcheck.list")
 	public String adminErrorBoard(PageInfo p, Model model) {
 		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
 		ArrayList<ErrorBoard> errorBoardList = adminService.selectErrorBoard(page);
 		model.addAttribute("errorList", errorBoardList);
 		model.addAttribute("pi", page);
-		for(ErrorBoard e : errorBoardList) {
-			System.out.println(e);
-		}
-		return "";
+		return "admin/errorcheckList";
 	}
 	
 	@GetMapping("/blockip.list")
 	public String adminblockip(PageInfo p, Model model) {
 		page = Paging.getPageInfo(allCount().getBlockIp(), p.getCurrentPage(), 10, 9);
-		System.out.println(page);
+		System.out.println("Class c를 매개변수로 " + page.test(this.getClass()));
 		ArrayList<BlockIp> blockIpList = adminService.selectBlockIp(page);
 		model.addAttribute("blackList", blockIpList);
 		model.addAttribute("pi", page);
@@ -108,6 +99,7 @@ public class AdminController {
 		int result = adminService.updateblockClear(blackIp);
 		return new Gson().toJson(String.valueOf(result));
 	}
+	
 	@GetMapping("/blockip.action")
 	@ResponseBody
 	public String adminblockipAction(String blackIp) {
@@ -118,22 +110,35 @@ public class AdminController {
 	@GetMapping("/member.list")
 	public String adminMemberList(PageInfo p, Model model) {
 		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
-		ArrayList<Member> memberList = adminService.selectMemberList(page);
+		ArrayList<Supporters> memberList = adminService.selectMemberList(page);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pi", page);
-		for(Member m : memberList) {
-			System.out.println(m);
-		}
-		return "";
+		return "admin/memberList";
 	}
 	
+	@GetMapping("/promote.waiting")
+	@ResponseBody
+	public String promoteWait(String client_No) {
+		int result = adminService.InsertSupporters(client_No);
+		return new Gson().toJson(String.valueOf(result));
+	}
+	
+	@GetMapping("/promote.cancel")
+	@ResponseBody
+	public String promoteCancel(String client_No) {
+		System.out.println(client_No);
+		int result = adminService.deleteSupporters(client_No);
+		return new Gson().toJson(String.valueOf(result));
+	}
+	
+	// 모드를 쿠키로 저장할 메서드
 	@GetMapping("mode.check")
 	@ResponseBody
 	public String displayMode(String mode, Model model, HttpServletResponse response) {
 		Cookie cookie = new Cookie("mode", mode);
-		cookie.setMaxAge(60*60*60);
+		cookie.setMaxAge(24*60*60*1000); //24시간
+		cookie.setPath("/");
 		response.addCookie(cookie);
 		return new Gson().toJson(cookie);
 	}
-	
 }

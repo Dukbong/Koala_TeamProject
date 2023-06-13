@@ -5,7 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- [1.0] 캐시 비활 성화  뒤로가기 시 캐시로 인해 제대로 작동 안하는 경우가 많다. -->
+<meta http-equiv="Pragma" content="no-cache">
 <title>Insert title here</title>
+
 </head>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -13,9 +16,10 @@
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-.notosanskr * { 
- font-family: 'Noto Sans KR', sans-serif;
-}
+	.notosanskr * { 
+	 font-family: 'Noto Sans KR', sans-serif;
+	}
+	
     body{
         background-color: rgb(30, 30, 30);
         color: white;
@@ -159,7 +163,8 @@
                    				$(function(){
                    					$("#myPage").change(function(){
                    						if(this.value == "ad"){
-                   							location.href = "/koala/member/ad?userNo="+${loginUser.userNo};
+                   							console.log("hi");
+                   							location.href = "/koala/member/ad?userId=${loginUser.userId}";
                    						}else if(this.value == "as"){
                    							location.href = "/koala/member/as";
                    						}
@@ -181,15 +186,10 @@
     <script>
     	$(function(){
     		var mode = "${cookie.mode.value}";
-    		console.log(mode);
-    		if(mode == "dark" || !mode){
-    			$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
-            	$(".topLine").css("background-color", "white")
-            	$(".ii").css("color", "black");
+    		if(mode == "dark"){
+    			darkmode();
     		}else{
-    			$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
-        		$(".topLine").css("background-color", "black");
-        		$(".ii").css("color", "#ffffff");
+    			whitemode();
     		}
     	})
     
@@ -197,17 +197,25 @@
         function changeMode(e){
         	if(e.target.id == "dark" || !e.target){
         		test(e);
-            	$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
-            	$(".topLine").css("background-color", "white")
-            	$(".ii").css("color", "black");
+        		darkmode();
             	
         	}else{
         		test(e);
-        		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
-        		$(".topLine").css("background-color", "black");
-        		$(".ii").css("color", "#ffffff");
+        		whitemode();
         	}
         }
+    	
+    	function darkmode(){
+    		$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+        	$(".topLine").css("background-color", "white")
+        	$(".ii").css("color", "black");
+    	}
+    	
+    	function whitemode(){
+    		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+    		$(".topLine").css("background-color", "black");
+    		$(".ii").css("color", "#ffffff");
+    	}
         
         
         // 쿠키를 보내기 위한 함수
@@ -218,7 +226,6 @@
         			mode : e.target.id,
         		},
         		success : (data)=>{
-        			console.log(data);
         		},
         		error : ()=>{
         			console.log("mode check aJax error");
@@ -253,11 +260,42 @@
     </script>
     
     <!-- 알림메세지 -->
-  	<c:if test="${not empty msg }">
+  	<c:if test="${not empty msg || not empty param.msgc}">
 		<script>
- 			alert("${msg}");
+			if("${param.msgc}" != ""){
+	 			if(confirm("${param.msgc}")){
+	 				//확인 및 취소
+	 				console.log("승인");
+	 			}else{ // 취소 시 대기중인 상태 풀림.
+	 				$.ajax({
+	 					url : "admin/promote.cancel",
+	 					data : {
+	 						client_No : "${loginUser.userNo}"
+	 					},
+	 					success : function(data){
+			 				if(confirm("main으로 이동하시겠습니까?(y)||이전 페이지로 이동하시겠습니까?(n)")){
+			 					location.href="/koala";
+			 				}else{
+			 					history.back();
+			 				}	 						
+	 					},
+	 					error : function(){
+	 						console.log("ajax error");
+	 					}
+	 				})
+	 			}	
+			}else{
+				alert("${msg}");
+			}
 		</script>
 		<c:remove var="msg" scope="session"/>
 	</c:if>
+	
+	<!-- 자동완성 끄기 -->
+	<script>
+		$(function(){
+			$("input").attr("autocomplete", "off");
+		});
+	</script>
 </body>
 </html>

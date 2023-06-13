@@ -24,4 +24,5 @@ public class Supporters extends Member{
 	private int refUno;
 	private String githubId;
 	private Date createDate;
+
 }

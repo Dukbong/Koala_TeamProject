@@ -30,12 +30,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectAllCount(sqlSession);
 	}
 	
-	
 	@Override
 	public ArrayList<Supporters> selectSupporters(PageInfo pi) {
 		return adminDao.selectSupporters(sqlSession, pi);
 	}
-
 
 	@Override
 	public ArrayList<CreateSetting> selectCreateSetting() {
@@ -55,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public ArrayList<Member> selectMemberList(PageInfo pi) {
+	public ArrayList<Supporters> selectMemberList(PageInfo pi) {
 		return adminDao.selectMemberList(sqlSession, pi);
 	}
 
@@ -64,40 +62,49 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectBlockIpUser(ip, sqlSession);
 	}
 
-
 	@Override
 	public int insertBlockIpUser(String ip) {
 		return adminDao.insertBlockIpUser(ip, sqlSession);
 	}
-
 
 	@Override
 	public int updateBlockIpUser(String ip) {
 		return adminDao.updateBlockIpUser(ip, sqlSession);
 	}
 
-
 	@Override
 	public int blockBlockIpUser(String ip) {
 		return adminDao.blockBlockIpUser(ip, sqlSession);
 	}
-
 
 	@Override
 	public int deleteSupporter(String userNo) {
 		return adminDao.deleteSupporter(userNo, sqlSession);
 	}
 
-
 	@Override
 	public int updateblockClear(String blackIp) {
 		return adminDao.updateblockClear(blackIp, sqlSession);
 	}
 
-
 	@Override
 	public int updateblockAction(String blackIp) {
 		return adminDao.updateblockAction(blackIp, sqlSession);
+	}
+
+	@Override
+	public int InsertSupporters(String client_No) {
+		return adminDao.InsertSupporters(client_No, sqlSession);
+	}
+
+	@Override
+	public int deleteSupporters(String client_No) {
+		return adminDao.deleteSupporters(client_No, sqlSession);
+	}
+
+	@Override
+	public Supporters selectOneSupport(int userNo) {
+		return adminDao.selectOneSupport(userNo, sqlSession);
 	}
 
 

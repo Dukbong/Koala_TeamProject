@@ -16,9 +16,9 @@ public class MemberDao {
 	}
 
 	//회원 정보 조회
-	public Member selectMember(SqlSessionTemplate sqlSession, int userNo) {
+	public Member selectMember(SqlSessionTemplate sqlSession, String userId) {
 		
-		return sqlSession.selectOne("memberMapper.selectMember", userNo);
+		return sqlSession.selectOne("memberMapper.selectMember", userId);
 	}
 
 	//회원가입
@@ -68,6 +68,18 @@ public class MemberDao {
 	public String selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
 
 		return sqlSession.selectOne("memberMapper.selectEmail", userEmail);
+	}
+
+	//아이디 중복체크
+	public int idCheck(SqlSessionTemplate sqlSession, String inputId) {
+		
+		return sqlSession.selectOne("memberMapper.idCheck", inputId);
+	}
+
+	//닉네임 중복체크
+	public int nickCheck(SqlSessionTemplate sqlSession, String inputNick) {
+		
+		return sqlSession.selectOne("memberMapper.nickCheck", inputNick);
 	}
 
 	

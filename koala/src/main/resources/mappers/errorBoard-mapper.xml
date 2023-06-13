@@ -5,7 +5,8 @@
 
 <mapper namespace="errorBoardMapper">
 	
-	<resultMap type="errorBoard" id="errorBoardResultSet">
+	<!-- 오류게시판  -->
+	<resultMap type="errorBoard" id="errorBoardResultSet" extends="boardMapper.boardResultSet">
 		<result column="REF_BNO" property="refBno"/>
 		<result column="REF_SNO" property="refSno"/>
 		<result column="SOLVED" property="solved"/>
@@ -13,18 +14,26 @@
 		<result column="MODIFIED_INFO" property="modifiedInfo"/>
 	</resultMap>
 
+	<!-- 오류게시판 조회용 -->
 	<resultMap type="errorSet" id="errorSetResultSet">
 		<collection property="board" resultMap="boardMapper.boardResultSet"/>
 		<collection property="errorBoard" resultMap="errorBoardResultSet"/>
 		<collection property="createSetting" resultMap="adminMapper.createSettingResultSet"/>
 	</resultMap>
 	
-	<!-- 게시판 전체 목록 조회 -->
+	<!-- 총 게시글 수  -->
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE CATEGORY = 'E'
+	</select>
+	
+	<!-- 게시글 전체 목록 조회 -->      <!-- 공지사항 여부가 Y인게 가장 위에 오도록 바꾸기 -->
 	<select id="selectList" resultMap="errorSetResultSet">
 		SELECT BOARD_NO,
 		       SETTING_TITLE,
 		       TITLE,
-		       USER_ID,
+		       NICKNAME,
 		       SOLVED,
 		       B.CREATE_DATE,
 		       COUNT
@@ -36,5 +45,42 @@
 		AND B.CATEGORY = 'E'
 		ORDER BY BOARD_NO DESC
 	</select>
+	
+	<!-- 라이브러리 리스트 조회 -->
+	<select id="selectLibList" resultMap="adminMapper.createSettingResultSet">
+		SELECT SETTING_TITLE
+		FROM CREATE_SETTING
+		WHERE STATUS IN ('Y','N')
+		GROUP BY SETTING_TITLE
+		ORDER BY SETTING_TITLE
+	</select>
+	
+	<!-- 버전 리스트 조회 -->
+	<select id="selectVersion" resultMap="adminMapper.createSettingResultSet">
+		SELECT SETTING_VERSION
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		AND STATUS IN ('Y','N')
+		ORDER BY 1 DESC
+	</select>
+	
+	<!-- 게시글 작성 시 수정폼 생성 - 코드 -->
+	<select id="createCodeForm" resultType="string">
+		SELECT SETTING_CODE
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		AND SETTING_VERSION = #{settingVersion}
+		AND STATUS IN ('Y','N')
+	</select>
+
+	<!-- 게시글 작성 시 수정폼 생성 - 설명서 -->
+	<select id="createInfoForm" resultType="string">
+		SELECT SETTING_INFO
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		AND SETTING_VERSION = #{settingVersion}
+		AND STATUS IN ('Y','N')
+	</select>
+	
 	
 </mapper>
