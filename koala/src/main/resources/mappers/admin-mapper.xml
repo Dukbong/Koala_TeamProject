@@ -118,14 +118,25 @@
 	<!--============================================================-->
 	
 	<insert id="InsertSupporters" parameterType="_int">
-		INSERT INTO SUPPORTERS VALUES (${client_No}, ' ', SYSDATE)
+		INSERT INTO SUPPORTERS VALUES (#{client_No}, ' ', SYSDATE)
 	</insert>
 	<delete id="deleteSupporters" parameterType="_int">
-		DELETE FROM SUPPORTERS WHERE REF_UNO = ${client_No}
+		DELETE FROM SUPPORTERS WHERE REF_UNO = #{client_No}
 	</delete>
 	
 	<select id="selectOneSupport" parameterType="_int" resultMap="supportResultSet">
 		SELECT * FROM SUPPORTERS S JOIN MEMBER M ON(S.REF_UNO = M.USER_NO) WHERE S.REF_UNO = ${userNo}
+	</select>
+	
+	<select id="selectMembercondition" parameterType="ms" resultMap="supportResultSet">
+		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE M.STATUS = 'Y' 
+		<if test='searchQna == "id"'>
+			AND M.USER_ID = #{searchInput}
+		</if>
+		<if test='searchQna == "nickName"'>
+			AND M.NICKNAME = #{searchInput}
+		</if>
+		<if test='searchQna == "total"'></if>
 	</select>
 <!-- 	
 	<select id="boardCount" parameterType="string">

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -25,15 +26,17 @@ public interface AdminService {
 	
 	ArrayList<Supporters> selectMemberList(PageInfo page);
 
+	ArrayList<Supporters> selectMembercondition(PageInfo page, MemberSearch ms);
+	
 	int deleteSupporter(String userNo);
 
 	int updateblockClear(String blackIp);
 
 	int updateblockAction(String blackIp);
 
-	int InsertSupporters(String client_No);
+	int InsertSupporters(int client_No);
 	
-	int deleteSupporters(String client_No);
+	int deleteSupporters(int client_No);
 	
 	Supporters selectOneSupport(int userNo);
 	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
@@ -49,6 +52,7 @@ public interface AdminService {
 
 	int blockBlockIpUser(String ip);
 	// =======================
+
 
 
 

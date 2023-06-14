@@ -17,7 +17,6 @@ public class Callback {
 	public String callback(String code, Model model) {
 		client.setCode(code);
 		model.addAttribute("github", client);
-		System.out.println(client);
-		return "common/main";
+		return "common/testing";
 	}
 }

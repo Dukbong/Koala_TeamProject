@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +19,7 @@ import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.Client;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -113,9 +113,14 @@ public class AdminController {
 	}
 
 	@GetMapping("/member.list")
-	public String adminMemberList(PageInfo p, Model model) {
+	public String adminMemberList(PageInfo p, Model model, MemberSearch ms) {
+		ArrayList<Supporters> memberList = null;
 		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
-		ArrayList<Supporters> memberList = adminService.selectMemberList(page);
+		if(ms.getSearchInput() == null || ms.getSearchQna() == null || ms.getSearchQna().equals("total")) {			
+			memberList = adminService.selectMemberList(page); // 전체 리스트 조회
+		}else {
+			memberList = adminService.selectMembercondition(page,ms); // 조건 검색 조회
+		}
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pi", page);
 		return "admin/memberList";

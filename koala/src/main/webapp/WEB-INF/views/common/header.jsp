@@ -18,7 +18,6 @@
 	.notosanskr * { 
 	 font-family: 'Noto Sans KR', sans-serif;
 	}
-	
     body{
         background-color: rgb(30, 30, 30);
         color: white;
@@ -112,13 +111,36 @@
                 </div>
                 <div id="header_2_2">
                 	<!-- /각 카데고리/이후 주소  ex) /admin/supporter/...-->
+                	<!-- 각자 맘에 드는 이름으로 바꾸시면 됩니다. -->
                 	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
                 	<c:choose>
-                		<c:when test="${loginUser.type == 2 && path.indexOf('admin') >= 0 }">                		
-	                		<h4 onclick="adminPage();">Koala Admin</h4>
+                		<c:when test='${path.contains("admin")}'>
+                		<!-- koala/admin/~~~ -->                		
+	                		<h4 class="headerName" onclick="adminPage();">SUPER ADMIN</h4>
+                		</c:when>
+                		<c:when test='${path.contains("errorBoard")}'>
+                		<!-- koala/errorBoard/~~~ >> 설희 -->                		
+	                		<h4 class="headerName" onclick="errorBoardPage();">ErrorBoard</h4>
+                		</c:when>
+                		<c:when test='${path.contains("member")}'>
+                		<!-- koala/member/~~~ >> 병국 -->                		
+	                		<h4 class="headerName" onclick="adminPage();">Member</h4>
+                		</c:when>
+                		<c:when test='${path.contains("qnaBoard")}'>
+                		<!-- koala/qnaBoard/~~~ >> 지수 -->                		
+	                		<h4 class="headerName" onclick="qnaBoardPage();">QnaBoard</h4>
+                		</c:when>
+                		<c:when test='${path.contains("createSetting")}'>
+                		<!-- koala/createSetting/~~~ >> 공통 -->                		
+	                		<h4 class="headerName" onclick="adminPage();">CreateCode && DownloadFile</h4>
+                		</c:when>
+                		<c:when test='${path == "/index.jsp"}'>
+                		<!-- main 페이지 -->                		
+	                		<h4>Koala Main</h4>
                 		</c:when>
                 		<c:otherwise>        		
-	 	                   <h4>CreateCode && DownloadFile</h4> <!-- 조건문 걸기 -->
+                		<!-- 기타 페이지 (에러 등등) -->
+	 	                   <h4 onclick="mainPage();">Koala Help</h4> <!-- 조건문 걸기 -->
                 		</c:otherwise>
                 	</c:choose>
                 </div>
@@ -164,6 +186,7 @@
     </div>
     
     <script>
+
     	$(function(){
     		var mode = "${cookie.mode.value}";
     		if(mode == "dark"){
@@ -173,12 +196,10 @@
     		}
     	})
     
-    
         function changeMode(e){
         	if(e.target.id == "dark" || !e.target){
         		test(e);
         		darkmode();
-            	
         	}else{
         		test(e);
         		whitemode();
@@ -189,12 +210,14 @@
     		$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
         	$(".topLine").css("background-color", "white")
         	$(".ii").css("color", "black");
+        	$(".ic").css("background-color", "white").css("color","black");
     	}
     	
     	function whitemode(){
     		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
     		$(".topLine").css("background-color", "black");
     		$(".ii").css("color", "#ffffff");
+    		$(".ic").css("background-color", "black").css("color","#ffffff");
     	}
         
         
@@ -210,7 +233,7 @@
         		error : ()=>{
         			console.log("mode check aJax error");
         		}
-        	})
+        	});
         }
         
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
@@ -222,6 +245,22 @@
        	function adminPage(){
         	location.href = "/koala/admin/main";
         }
+        // errorBoard page ()
+       	function errorBoardPage(){
+        	location.href = "/koala/errorBoard/list";
+        }
+        // qnaBoard page ()
+       	function qnaBoardPage(){
+        	location.href = "/koala/qnaBoard/list";
+        }
+        // main으로 Page()
+        function mainPage(){
+        	location.href="/koala/";
+        }
+        
+        $(".headerName").on("mouseenter", function(){
+        	$(this).css("cursor", "pointer");
+        })
         
         
         // jang : IP 차단용 코드 입니다.
@@ -235,8 +274,8 @@
         			alert("진짜 꺼져");
         			parent.window.open("about:black","_self").close();
         		}   */
-        	}
-        } </script>
+        	}})
+         </script>
     
     <!-- 알림메세지 -->
     <c:choose>
@@ -244,10 +283,8 @@
     		<script>
 				alert("${msg}");				    	
     		</script>
+    		<c:remove var="msg" scope="session"/>
     	</c:when>
-    	<c:otherwise>
-			<c:remove var="msg" scope="session"/>
-    	</c:otherwise>
     </c:choose>
     
     
@@ -257,26 +294,6 @@
 			$("input").attr("autocomplete", "off");
 		});
 	</script>
-	<c:if test="${not empty github }">
-		<script>
-			$.ajax({
-				url : "http://github.com/login/oauth/access_token",
-				data : {
-					client_id : "${github.clientId}",
-					client_secret : "${github.clientSecret}",
-					code : "${github.code}",
-					redirect_uri : "common/main",
-				},
-				type:"POST",
-				success : function(data){
-					console.log("data========================");
-					console.log(data);
-				},
-				error : function(){
-					console.log("ajax error");
-				}
-			})
-		</script>
-	</c:if>
+
 </body>
 </html>
