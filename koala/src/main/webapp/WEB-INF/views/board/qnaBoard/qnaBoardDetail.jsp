@@ -220,8 +220,8 @@
 		                    <button type="submit" onclick="formSubmit(2)">수정</button>
 	                    </c:when>
 	                    <c:otherwise>
-		                    <button type="reset" disabled>글 삭제</button>
-		                    <button type="submit" disabled>수정</button>
+		                    <button type="reset" style="visibility:hidden;">글 삭제</button>
+		                    <button type="submit" style="visibility:hidden;">수정</button>
 	                    </c:otherwise>
                     </c:choose>
                 </div>
@@ -308,9 +308,20 @@
 						url : "insertReply.bo",
 						data : {
 							replyWriter : "${loginUser.userId}",
-							replyContent : $
+							replyContent : $("#content").val(),
+							refBno : "${b.boardNo}"
+						},
+						success : function(result){
+							if(result==="success"){
+								alert("댓글이 등록되었습니다.");
+								selectReplyList();
+								$("#content").val("");
+							}
+						},
+						error : function(){
+							console.log("댓글 작성 통신 실패")
 						}
-					})
+					});
 				}
 			</script>
             
@@ -323,18 +334,18 @@
                         <td>23.06.02.22:10</td>
                         <td><button class="selectBtn">채택</button></td>
                     </tr>
-                    <tr>
-                        <td>백준왕(작성자)</td>
-                        <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td>
-                        <td>23.06.02.22:10</td>
-                        <td><button class="selectBtn">채택</button></td>
-                    </tr>
-                    <tr>
-                        <td>백준왕(작성자)</td>
-                        <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td>
-                        <td>23.06.02.22:10</td>
-                        <td><button onclick="choice();">채택</button></td>
-                    </tr>
+<!--                     <tr> -->
+<!--                         <td>백준왕(작성자)</td> -->
+<!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->
+<!--                         <td>23.06.02.22:10</td> -->
+<!--                         <td><button class="selectBtn">채택</button></td> -->
+<!--                     </tr> -->
+<!--                     <tr> -->
+<!--                         <td>백준왕(작성자)</td> -->
+<!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->
+<!--                         <td>23.06.02.22:10</td> -->
+<!--                         <td><button onclick="choice();">채택</button></td> -->
+<!--                     </tr> -->
                 </table>
                 <div class="reply_insert">
                 <c:choose>
@@ -350,9 +361,17 @@
                 </div>
 
                 <div class="repBtn_area">
-                    <button type="button">최신글</button>
-                    <button type="submit">글쓰기</button>
+                    <button type="button" id="back">목륵으로</button>
+                    <c:if test="${not empty loginUser }">
+                    <button type="submit">글쓰기</button>                    
+                    </c:if>
                 </div>
+                
+                <script>
+                document.querySelector('#back').onclick = function(){
+                	history.back();
+                }
+                </script>
             </div>
         </div>
     </div>

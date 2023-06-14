@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QnA_list</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
@@ -186,15 +187,26 @@
                         <span>QnA</span>
                     </div>
                 <div class="search_area">
-                    <select name="search_qna" class="search_title">
-                        <option value="writer">작성자</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                    </select>
-                    <input type="search" placeholder="검색할 내용을 입력하세요">
-                    <button>검색</button>
+                	<form action="search" method="get">
+                	<input type="hidden" name="currentPage" value="1">
+	                    <select name="search_qna" id="search_qna" class="search_qna">
+	                        <option value="writer">작성자</option>
+	                        <option value="title">제목</option>
+	                        <option value="content">내용</option>
+	                    </select>
+                    <input type="search" name="keyword" value="${keyword }" placeholder="검색할 내용을 입력하세요">
+                    <button type="submit">검색</button>
+                    </form>
                 </div>
             </div>
+            
+            	<script>
+				$("select[name=search_qna]").change(function(){
+					console.log($(this).val());
+				});
+            	</script>
+
+            
             <div class="middle_area">
                 <table>
                     <thead>
@@ -225,7 +237,7 @@
 
 			<c:if test="${not empty loginUser }">
 			<div class="insertBtn_area">
-                <button type="button"><a href="enrollForm.bo">글쓰기</a></button>
+                <button type="button"><a href="enrollForm">글쓰기</a></button>
             </div>
             </c:if>
             
@@ -241,7 +253,7 @@
             		</c:otherwise>
             	</c:choose>
 				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-                	<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${p }">${p }</a></li>
+                	<li class="pagingSection"><a class="page-link" style="color:'rgb(255, 201,20)'" href="list.bo?currentPage=${p }" >${p }</a></li>
             	</c:forEach>
             	<c:choose>
             		<c:when test="${pi.currentPage eq pi.maxPage }">

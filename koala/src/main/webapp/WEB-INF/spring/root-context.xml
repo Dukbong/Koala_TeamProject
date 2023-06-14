@@ -49,7 +49,7 @@
  	</bean>
  	
  	<context:property-placeholder location="WEB-INF/spring/setting-config.properties"/>
- 	<bean class="com.hoju.koala.admin.model.vo.ClientId" id="clientId">
+ 	<bean class="com.hoju.koala.admin.model.vo.ClientId" id="ClientId">
  		<property name="clientId" value="${koala.client}"/>
  	</bean>
  	
