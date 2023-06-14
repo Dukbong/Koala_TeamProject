@@ -39,6 +39,12 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.selectList(sqlSession, pi);
 	}
 	
+	@Override //게시글  상세조회
+	public ErrorSet selectBoard(int boardNo) {
+		
+		return ebDao.selectBoard(sqlSession, boardNo);
+	}
+	
 	@Override //라이브러리 리스트 조회
 	public ArrayList<CreateSetting> selectLibList() {
 		

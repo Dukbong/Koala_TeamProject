@@ -19,6 +19,9 @@ public interface ErrorBoardService {
 	
 	//라이브러리 리스트 조회 
 	ArrayList<CreateSetting> selectLibList();
+	
+	//게시글 상세 조회
+	ErrorSet selectBoard(int boardNo);
 
 	//버전 리스트 조회
 	ArrayList<String> selectVersion(String settingTitle);

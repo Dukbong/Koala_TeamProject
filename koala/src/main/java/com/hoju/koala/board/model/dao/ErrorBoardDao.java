@@ -29,6 +29,12 @@ public class ErrorBoardDao {
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
 	}
 	
+	//게시글 상세 조회
+	public ErrorSet selectBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.selectOne("errorBoardMapper.selectBoard", boardNo);
+	}
+	
 	//라이브러리 리스트 조회
 	public ArrayList<CreateSetting> selectLibList(SqlSessionTemplate sqlSession) {
 		

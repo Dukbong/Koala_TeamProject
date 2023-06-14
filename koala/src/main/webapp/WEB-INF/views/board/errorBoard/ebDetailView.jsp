@@ -37,9 +37,14 @@
     }
 
     .board-form>div{width: 100%;}
+    .board-form *{
+    	text-align: center;
+    }
+    .board-area{font-size: 15px;}
+    span{font-weight: 700; padding-right: 30px;}
     .bWriterDate>div{float: left;}
-
-
+    .addDetailBtn{position: relative;}
+	.addDetailBtn{position: absolute; margin:auto; right: 120px; bottom:30px;}
 
     .admin-button>div{
         width: 50%;
@@ -59,31 +64,40 @@
 </style>
 
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<%@include file="../../common/header.jsp"%>
     <div class="ebDetailView">
 
         <div class="board-area">
             <div class="lib-info">
-                <div id="libTitle">&nbsp;<span>Lombok</span> version 2.0.7&nbsp;</div>
-                <div id="solved">&nbsp;solved&nbsp;</div>
+                <div id="libTitle">&nbsp;<span><b>${eb.createSetting.settingTitle}</b></span> ${eb.createSetting.settingVersion}&nbsp;</div>
+                <div id="solved">
+                	<c:choose>
+                		<c:when test="${eb.errorBoard.errorType eq 'U'}">&nbsp;user error&nbsp;</c:when>
+                	</c:choose>
+                	<c:choose>
+                		<c:when test="${eb.errorBoard.errorType eq 'S'}">&nbsp;code error&nbsp;</c:when>
+                	</c:choose>
+                </div>
             </div>
             <div class="board-form">
                 <div class="bTitle">
-                    <span>제목</span> 롬복 오류발견 조치해주세요
+                    <span>제목</span> ${eb.board.title }
                 </div>
                 <hr>
                 <div class="bWriterDate">
                     <div class="bWriter" style="width: 50%;">
-                        <span>작성자</span> admin
+                        <span>작성자</span> ${eb.board.boardWriter }
                     </div>
                     <div class="bDate" style="width: 50%;">
-                        <span>작성날짜</span> 2023-05-19
+                        <span>작성날짜</span> ${eb.board.createDate }
                     </div>
                 </div>
                 <hr>
-                <div class="bContent">내용입니다. 내용테스트입니다. 테스트입니다요.</div>
+                <div class="bContent"> ${eb.board.content }</div>
                 <div class="addDetailBtn">
-                    <button type="button">자세히보기</button>
+                	<c:if test="${eb.errorBoard.modifiedCode + eb.errorBoard.modifiedInfo gt 0}">
+	                    <button type="button" id>자세히보기</button>
+                	</c:if>
                 </div>
             </div>
             <div class="admin-button">
@@ -99,6 +113,6 @@
         </div>
 
     </div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	<%@include file="../../common/footer.jsp"%>
 </body>
 </html>

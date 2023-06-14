@@ -87,6 +87,7 @@
         font-size: 12px;
         border-top: 1px solid grey;
         border-bottom: 1px solid grey;
+	    border-collapse : collapse;
 
     }
     .middle_area table>thead{
@@ -100,13 +101,10 @@
     .middle_area table > thead > tr>th{
     border-bottom: 1px solid grey;
     }
-    .middle_area table > tbody > tr > td:nth-child(2){
-        text-align: left;
-    }
     .middle_area table > tbody > tr:hover{
         opacity: 85%;
     }
-    .middle_area table > tbody > tr:nth-child(-n+2){
+    .middle_area table > tbody > tr:nth-child(-n+1){
         color: rgb(206, 145, 120);
         font-weight: bold;
     }
@@ -214,7 +212,12 @@
 								<td>${eb.board.boardWriter }</td>
 								<td>${eb.board.createDate }</td>
 								<td>${eb.board.count }</td>
-								<td>${eb.errorBoard.solved }</td>
+								<td>
+									<c:choose>
+										<c:when test="${eb.errorBoard.solved eq 'Y'}"><span style="color:rgb(86,156,214)">해결완료</span></c:when>
+										<c:when test="${eb.errorBoard.solved eq 'N' and eb.errorBoard.notice eq 'N'}"><span style="color:rgb(106,153,85);">대기중</span></c:when>
+									</c:choose>
+								</td>
 							</tr>
 						</c:forEach>
                     </tbody>

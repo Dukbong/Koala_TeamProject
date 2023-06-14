@@ -53,9 +53,12 @@ public class ErrorBoardController {
 	
 	//게시글 상세 조회 메소드
 	@GetMapping("/detail")
-	public String enrollForm() {
+	public String enrollForm(int boardNo,
+							 Model model) {
 		
+		ErrorSet eb = ebService.selectBoard(boardNo);
 		
+		model.addAttribute("eb", eb);
 		return "board/errorBoard/ebDetailView";
 	}
 	
