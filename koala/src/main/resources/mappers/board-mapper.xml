@@ -5,6 +5,29 @@
 
 <mapper namespace="boardMapper">
 	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE STATUS = 'Y'
+		AND CATEGORY = 'B'
+	</select>
+	
+	<select id="selectList" resultMap="BoardResultSet">
+		SELECT BOARD_NO, TITLE, NICKNAME, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", COUNT, LIKED
+		FROM BOARD B
+		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
+		WHERE B.STATUS = 'Y'
+		AND CATEGORY = 'B'
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<select id="boardDeatailView" resultMap="BoardResultSet">
+		SELECT BOARD_NO, NICKNAME, TITLE, CONTENT, CONTENT_CODE, COUNT, LIKE, CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER ON (USER_NO = BOARD_WRITER)
+		WHERE B.STATUS = 'Y'
+		AND CATEGORY = 'B'
+	</select>
 	<!-- 공통으로 사용할 게시판 관련 resultMap -->
 	
 	<resultMap type="board" id="boardResultSet">
