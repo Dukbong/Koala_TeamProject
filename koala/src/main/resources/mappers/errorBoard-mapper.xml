@@ -56,12 +56,21 @@
 	</select>
 	
 	<!-- 버전 리스트 조회 -->
-	<select id="selectVersion" resultMap="adminMapper.createSettingResultSet">
+	<select id="selectVersion" resultType="string">
 		SELECT SETTING_VERSION
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		AND STATUS IN ('Y','N')
 		ORDER BY 1 DESC
+	</select>
+	
+	<!-- 세팅 글번호 조회 -->
+	<select id="selectSettingNo" resultType="int">
+		SELECT SETTING_NO
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		AND SETTING_VERSION = #{settingVersion}
+		AND STATUS IN ('Y','N')
 	</select>
 	
 	<!-- 게시글 작성 시 수정폼 생성 - 코드 -->
@@ -81,6 +90,32 @@
 		AND SETTING_VERSION = #{settingVersion}
 		AND STATUS IN ('Y','N')
 	</select>
+	
+	<!-- 게시글 등록 - Board -->
+	<insert id="insertBoard">
+		INSERT INTO BOARD (BOARD_NO,
+						   CATEGORY,
+						   BOARD_WRITER,
+						   TITLE,
+						   CONTENT)
+				   VALUES (SEQ_BNO.NEXTVAL,
+				   		   'E',
+				   		   #{boardWriter},
+				   		   #{title},
+				   		   #{content})
+	</insert>
+	
+	<!-- 게시글 등록 - ErrorBoard -->
+	<insert id="insertErrorBoard">
+		INSERT INTO ERROR_BOARD (REF_BNO,
+								 REF_SNO,
+								 MODIFIED_CODE,
+								 MODIFIED_INFO)
+						 VALUES (SEQ_BNO.CURRVAL,
+								 #{refSno},
+								 #{modifiedCode},
+								 #{modifiedInfo})
+	</insert>
 	
 	
 </mapper>

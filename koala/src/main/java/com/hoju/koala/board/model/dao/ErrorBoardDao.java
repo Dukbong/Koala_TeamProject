@@ -1,15 +1,19 @@
 package com.hoju.koala.board.model.dao;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class ErrorBoardDao {
 	
@@ -32,9 +36,16 @@ public class ErrorBoardDao {
 	}
 	
 	//버전 리스트 조회
-	public ArrayList<CreateSetting> selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+	public ArrayList<String> selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
 		
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersion", settingTitle);
+		
+	}
+	
+	//세팅 글번호 조회
+	public int selectSettingNo(SqlSessionTemplate sqlSession, CreateSetting c) {
+		
+		return sqlSession.selectOne("errorBoardMapper.selectSettingNo", c);
 	}
 
 	//게시글 작성 시 수정폼 생성 - 코드
@@ -47,6 +58,17 @@ public class ErrorBoardDao {
 	public String createInfoForm(SqlSessionTemplate sqlSession, CreateSetting c) {
 		
 		return sqlSession.selectOne("errorBoardMapper.createInfoForm", c);
+	}
+
+	//게시글 등록 - Board
+	public int insertBoard(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.insert("errorBoardMapper.insertBoard", b);
+	}
+	//게시글 등록 - ErrorBoard
+	public int insertEbBoard(SqlSessionTemplate sqlSession, ErrorBoard eb) {
+		
+		return sqlSession.insert("errorBoardMapper.insertErrorBoard", eb);		
 	}
 	
 	
