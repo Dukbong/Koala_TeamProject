@@ -102,10 +102,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.InsertSupporters(client_No, sqlSession);
 	}
 
-//	@Override
-//	public int deleteSupporters(int client_No) {
-//		return adminDao.deleteSupporters(client_No, sqlSession);
-//	}
+	@Override
+	public int deleteSupporters(int client_No) {
+		return adminDao.deleteSupporters(client_No, sqlSession);
+	}
 
 	@Override
 	public Supporters selectOneSupport(int userNo) {
