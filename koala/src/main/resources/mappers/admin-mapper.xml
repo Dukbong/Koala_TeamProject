@@ -131,10 +131,49 @@
 	<select id="selectMembercondition" parameterType="ms" resultMap="supportResultSet">
 		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE M.STATUS = 'Y' 
 		<if test='searchQna == "id"'>
-			AND M.USER_ID = #{searchInput}
+			AND M.USER_ID LIKE '%'||#{searchInput}||'%'
 		</if>
 		<if test='searchQna == "nickName"'>
-			AND M.NICKNAME = #{searchInput}
+			AND M.NICKNAME LIKE '%'||#{searchInput}||'%'
+		</if>
+		<if test='searchQna == "etc"'>
+			<if test='searchInput == "admin"'>
+				AND M.TYPE = 2
+			</if>
+			<if test='searchInput == "wait"'>
+				AND s.github_id = ' '
+			</if>
+			<if test='searchInput == "supporter"'>
+				AND s.github_id != ' '
+			</if>
+			<if test='searchInput == "common"'>
+				AND REF_UNO IS NULL
+			</if>
+		</if>
+		<if test='searchQna == "total"'></if>
+	</select>
+	
+	<select id="selectCountMemberCondition" parameterType="ms" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO) WHERE M.STATUS = 'Y' 
+		<if test='searchQna == "id"'>
+			AND M.USER_ID LIKE '%'||#{searchInput}||'%'
+		</if>
+		<if test='searchQna == "nickName"'>
+			AND M.NICKNAME LIKE '%'||#{searchInput}||'%'
+		</if>
+		<if test='searchQna == "etc"'>
+			<if test='searchInput == "admin"'>
+				AND M.TYPE = 2
+			</if>
+			<if test='searchInput == "wait"'>
+				AND s.github_id = ' '
+			</if>
+			<if test='searchInput == "supporter"'>
+				AND s.github_id != ' '
+			</if>
+			<if test='searchInput == "common"'>
+				AND REF_UNO IS NULL
+			</if>
 		</if>
 		<if test='searchQna == "total"'></if>
 	</select>

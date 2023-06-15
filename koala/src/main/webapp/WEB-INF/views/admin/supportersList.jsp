@@ -261,6 +261,7 @@
 	            	
 	            	$(".demote").click(function(){
 	            		var userId = $(this).parent().parent().parent().children(".supportertwo").children(".left").children("a")[0].innerText
+	            		console.log(userId);
 	            		$.ajax({
 	            			url : "supporters.demote",
 	            			data : {

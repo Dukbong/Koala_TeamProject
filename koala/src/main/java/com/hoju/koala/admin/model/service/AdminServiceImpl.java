@@ -112,6 +112,17 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectOneSupport(userNo, sqlSession);
 	}
 
+	@Override
+	public int selectCountMemberCondition(MemberSearch ms) {
+		return adminDao.selectCountMemberCondition(ms, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Supporters> selectSupporterWaitList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

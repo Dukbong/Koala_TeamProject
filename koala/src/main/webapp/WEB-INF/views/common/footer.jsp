@@ -94,16 +94,13 @@
                 <a class="footerAtag ii"  href="#">DownLoad & Copy</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Error_Board</a>
+                <a class="footerAtag ii" href="/koala/errorBoard/list">Error_Board</a>
+            </div>
+            <div class="item">
+                <a class="footerAtag ii" href="/koala/qnaBoard/list">QnA_Board</a>
             </div>
             <div class="item">
                 <a class="footerAtag ii" href="bulletinboard.bo">Bulletin_Board</a>
-            </div>
-            <div class="item">
-                <a class="footerAtag ii" href="/koala/board/qnaBoard/list">QnA_Board</a>
-            </div>
-            <div class="item more">
-                <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
             </div>
         </div>
         <div class="column2">
@@ -151,5 +148,6 @@
             Copyright @ 20230107-20230707 KH academy C lecture room
         </div>
     </div>
+  
 </body>
 </html>
