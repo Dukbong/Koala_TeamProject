@@ -85,6 +85,28 @@
 		WHERE USER_NO = #{userNo}
 	</update>
 	
+	<!-- 계정 삭제 -->
+	<update id="deleteMember">
+		UPDATE MEMBER
+		SET STATUS = 'N',
+			DELETE_DATE = SYSDATE
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 삭제 대기중인 멤버들 조회 -->
+	<select id="selectDeleteMember" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE (SYSDATE-DELETE_DATE)>30
+	</select>
+	
+	<!-- 영구삭제 -->
+	<delete id="outMember">
+		DELETE FROM MEMBER
+		WHERE USER_NO = #{userNo}
+		AND STATUS = 'N'
+	</delete>
+	
 	<!-- 입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기 -->
 	<select id="selectEmail" resultType="string">
 		SELECT USER_ID
@@ -106,5 +128,17 @@
 		FROM MEMBER
 		WHERE NICKNAME = #{inputNick}
 	</select>
-
+	
+	
+	<!-- 유저가쓴 게시글 조회 -->
+	<select id="boardList" resultMap="boardMapper.boardResultSet">
+		SELECT CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
+		WHERE BOARD_WRITER = #{userNo}
+		AND B.STATUS = 'Y'
+		ORDER BY B.CREATE_DATE DESC
+	</select>
+	
+	
 </mapper>

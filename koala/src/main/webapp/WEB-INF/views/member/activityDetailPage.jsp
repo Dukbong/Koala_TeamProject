@@ -12,6 +12,11 @@
         color: darkcyan;
         text-decoration: none;
     }
+    
+    #select-list a{
+    	cursor: pointer;
+    	
+    }
 
 
     #content{
@@ -22,6 +27,12 @@
     #content1>div{
         float: left;
         height:70%;
+    }
+ 
+    
+    #result-area>table>tbody>tr:hover{
+    	color: gray;
+    	cursor: pointer;
     }
 </style>
 <body>
@@ -65,6 +76,7 @@
                 		<tr>
                 	</table>
                 	
+                	<c:if test="${not empty loginUser && not empty user }">
                 	<script>
                 		$(function(){
                 			$("#follow").on("click", function(){
@@ -92,6 +104,7 @@
                 		});
                 	
                 	</script>
+                	</c:if>
                     
                 </div>
                 <div id="introduce-area">
@@ -113,12 +126,85 @@
             <div id="content2">
                 <div id="select-list">
                     <ul>
-                        <li style="list-style-type: none;"><a href="">Board</a></li>
-                        <li style="list-style-type: none;"><a href="">Reply</a></li>
-                        <li style="list-style-type: none;"><a href="">Liked</a></li>
-                        <li style="list-style-type: none;"><a href="">Following</a></li>
+                        <li style="list-style-type: none;"><a id="boardList">Board</a></li>
+                        <li style="list-style-type: none;"><a id="replyList">Reply</a></li>
+                        <li style="list-style-type: none;"><a id="likedList">Liked</a></li>
+                        <li style="list-style-type: none;"><a id="followingList">Following</a></li>
                     </ul>
                 </div>
+                
+                <script>
+                	$(function(){
+                		//리스트 조회
+                		$("#select-list a").on("click", function(){
+                			
+                			var select = $(this).prop("id");
+                			
+                			if(select == "boardList"){ //쓴글 조회
+                				$.ajax({
+                					url:"/koala/member/boardList",
+                					data:{
+                						userNo:${user.userNo}
+                					},
+                					success:function(list){
+                						if(list != null){
+                							alert("잇네있어");
+                							
+                							var str = "";
+                							
+                							for(var i in list){
+                								str += "<tr><td>"+list[i].category+"</td>"
+		              								  +"<td>"+list[i].title+"</td>"
+		              								  +"<td>"+list[i].createDate+"</td>"
+		              								  +"<td>"+list[i].liked+"</td>"
+		              								  +"<td>"+list[i].count+"</td></tr>"
+                							}
+                							
+                							$("#result-area tbody").html(str);
+                							
+                						}
+                					},
+                					error:function(){
+                						alert("불러오기 실패");
+                					}
+                				})
+                			}else if(select == "replyList"){ //쓴댓글 조회
+                				
+                			}else if(select == "likedList"){ //좋아요 누른 게시글 조회
+                				
+                			}else if(select == "followingList"){ //팔로잉 조회
+                				
+                			}
+                		});
+                		
+                	});
+                	
+                	
+                </script>
+                
+                
+                <div id="result-area">
+                	<table border="1" align="center">
+                		<thead>
+                			<tr>
+                				<th>카테고리</th>
+                				<th>제목</th>
+                				<th>작성일</th>
+                				<th>추천수</th>
+                				<th>조회수</th>
+                			<tr>
+                		</thead>
+                		<tbody>
+                			
+                		</tbody>
+                	</table>
+                </div>
+                
+                <script>
+	                $(function(){
+	            		
+	            	});
+                </script>
             </div>
         </div>
 
