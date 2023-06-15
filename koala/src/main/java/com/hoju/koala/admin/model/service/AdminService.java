@@ -36,9 +36,11 @@ public interface AdminService {
 
 	int InsertSupporters(int client_No);
 	
-	int deleteSupporters(int client_No);
+//	int deleteSupporters(int client_No);
 	
 	Supporters selectOneSupport(int userNo);
+	
+	int selectCountMemberCondition(MemberSearch ms);
 	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
 	/* int boardListCount(String board); */
 	
@@ -52,6 +54,9 @@ public interface AdminService {
 
 	int blockBlockIpUser(String ip);
 	// =======================
+
+	ArrayList<Supporters> selectSupporterWaitList();
+
 
 
 

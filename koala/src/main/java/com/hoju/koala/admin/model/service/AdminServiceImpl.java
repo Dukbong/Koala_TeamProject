@@ -102,14 +102,25 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.InsertSupporters(client_No, sqlSession);
 	}
 
-	@Override
-	public int deleteSupporters(int client_No) {
-		return adminDao.deleteSupporters(client_No, sqlSession);
-	}
+//	@Override
+//	public int deleteSupporters(int client_No) {
+//		return adminDao.deleteSupporters(client_No, sqlSession);
+//	}
 
 	@Override
 	public Supporters selectOneSupport(int userNo) {
 		return adminDao.selectOneSupport(userNo, sqlSession);
+	}
+
+	@Override
+	public int selectCountMemberCondition(MemberSearch ms) {
+		return adminDao.selectCountMemberCondition(ms, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Supporters> selectSupporterWaitList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
