@@ -11,6 +11,7 @@ import com.hoju.koala.admin.model.dao.AdminDao;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -46,7 +47,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectErrorBoard(sqlSession, pi);
 	}
 
-
 	@Override
 	public ArrayList<BlockIp> selectBlockIp(PageInfo pi) {
 		return adminDao.selectBolckIp(sqlSession, pi);
@@ -57,6 +57,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectMemberList(sqlSession, pi);
 	}
 
+	@Override
+	public ArrayList<Supporters> selectMembercondition(PageInfo page, MemberSearch ms) {
+		return adminDao.selectMembercondition(ms, page, sqlSession);
+	}
+	
 	@Override
 	public BlockIp selectBlockIpUser(String ip) {
 		return adminDao.selectBlockIpUser(ip, sqlSession);
@@ -93,12 +98,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public int InsertSupporters(String client_No) {
+	public int InsertSupporters(int client_No) {
 		return adminDao.InsertSupporters(client_No, sqlSession);
 	}
 
 	@Override
-	public int deleteSupporters(String client_No) {
+	public int deleteSupporters(int client_No) {
 		return adminDao.deleteSupporters(client_No, sqlSession);
 	}
 
@@ -106,6 +111,7 @@ public class AdminServiceImpl implements AdminService {
 	public Supporters selectOneSupport(int userNo) {
 		return adminDao.selectOneSupport(userNo, sqlSession);
 	}
+
 
 
 
