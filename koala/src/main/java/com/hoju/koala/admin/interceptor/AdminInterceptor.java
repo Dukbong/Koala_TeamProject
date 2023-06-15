@@ -60,7 +60,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 			return true; // TEST
 		}
 		if(member.getType() != 2) { // 회원이지만 관리자 x 
-			session.setAttribute("msg", "관리자 외에는 접근이 불가능합니다.");
+//			session.setAttribute("msg", "관리자 외에는 접근이 불가능합니다."); // 테스트 단계에서 뺴기
 			response.sendRedirect("/koala");
 //			return false; 
 			return true; // TEST

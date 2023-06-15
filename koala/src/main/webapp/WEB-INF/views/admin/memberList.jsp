@@ -70,16 +70,17 @@
     .search_area select,
     .search_area input[type="search"],
     .search_area button {
-        height: 30px;
+        height: 40px;
         background-color: black;
         color: white;
-        font-size: 11px;
+        font-size: 16px;
         border-radius: 3px;
     }
     .search_area button {
         background-color: rgb(156, 220, 254);
         color: black;
         font-weight: bold;
+        border: 2px solid rgb(86, 156,214);
         width: 10%;
     }
 /*     .search_area button:hover{ */
@@ -126,13 +127,17 @@
                         <span>Member List</span>
                     </div>
                 <div class="search_area">
-                    <select name="search_qna" class="search_title">
-                        <option value="writer">작성자</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
+                <form action="member.list" method="get" id="searchForm">
+                    <select name="searchQna" class="search_title ic" id="serachSelect">
+                    	<option value="total" selected>전체보기</option>
+                        <option value="id">아이디</option>
+                        <option value="nickName">닉네임</option>
+                        <option value="etc">권한분류</option> 
+                        <!-- 아직 안했음 -->
                     </select>
-                    <input type="search" placeholder="검색할 내용을 입력하세요" >
-                    <button>검색</button>
+                    <input type="search" name="searchInput" class="ic" id="serachInput" placeholder="검색할 내용을 입력하세요" >
+                    <button id="searchBtn" type="button">검색</button>
+                </form>
                 </div>
             </div>
             <div class="middle_area">
@@ -180,7 +185,7 @@
                             </c:if>
                             <c:choose>
                             	<c:when test='${m.type == 2 || m.refUno != 0 && !m.githubId.equals(" ") }'>
-                            		<td>-</td>
+                            		<td class="ii">-</td>
                             	</c:when>
                             	<c:when test='${m.githubId.equals(" ")}'>
                             		<td onclick="event.stopPropagation()"><button class="btn btn-danger cancelBtn" id="${m.userNo}" type="button">&nbsp;Revoke&nbsp;</button></td>    
@@ -245,6 +250,33 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	<script>
 		$(function(){
+			
+			$("#serachSelect").on("change", function(){
+				if($(this).val() == "etc") {
+					$("#serachInput").attr("placeholder", "   admin | supporter | wait | common");
+				}
+				if($(this).val() == "nickName") {
+					$("#serachInput").attr("placeholder", "   닉네임을 입력하세요.");
+				}
+				if($(this).val() == "id") {
+					$("#serachInput").attr("placeholder", "   아이디를 입력해주세요.");
+				}
+				if($(this).val() == "total") {
+					$("#serachInput").attr("placeholder", "   검색어 없이 조회가 가능합니다.");
+				}
+			});
+			
+			//검색 관련 
+			$("#searchBtn").on("click", function(){
+				var input = $("#serachInput").val();
+				var select = $("#serachSelect").val();
+				if(select != "total"){
+					alert("정확한 검색 결과를 위해 모두 입력 부탁드립니다.");
+					return;
+				}
+				$("#searchForm").submit();
+			})
+			
 			// 우클릭 드레그 방지..
 			$("body").attr("oncontextmenu","return false").attr("ondragstart","return false").attr("onselectstart","return false");
 			// 클릭 이벤트 및 포인터
@@ -266,7 +298,7 @@
 									location.href="member.list";
 								},
 								error : function(){
-									console.log("git hub error")
+									console.log("git hub waiting error")
 								}
 							});
 							console.log(this.id);
