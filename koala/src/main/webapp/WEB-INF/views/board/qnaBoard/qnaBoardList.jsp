@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QnA_list</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
@@ -89,6 +90,7 @@
     .middle_area table{
         width: 100%;
 /*         height: 100%; */
+		border-collapse : collapse;
         font-size: 12px;
         border-top: 1px solid grey;
         border-bottom: 1px solid grey;
@@ -111,10 +113,10 @@
     .middle_area table > tbody > tr:hover{
         opacity: 85%;
     }
-    .middle_area table > tbody > tr:nth-child(-n+2){
-        color: rgb(206, 145, 120);
-        font-weight: bold;
-    }
+/*     .middle_area table > tbody > tr:nth-child(-n+2){ */
+/*         color: rgb(206, 145, 120); */
+/*         font-weight: bold; */
+/*     } */
         .insertBtn_area{
 
         width: 80px;
@@ -186,15 +188,26 @@
                         <span>QnA</span>
                     </div>
                 <div class="search_area">
-                    <select name="search_qna" class="search_title">
-                        <option value="writer">작성자</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                    </select>
-                    <input type="search" placeholder="검색할 내용을 입력하세요">
-                    <button>검색</button>
+                	<form action="search" method="get">
+                	<input type="hidden" name="currentPage" value="1">
+	                    <select name="search_qna" id="search_qna" class="search_qna">
+	                        <option value="qnaWriter">작성자</option>
+	                        <option value="qnaTitle">제목</option>
+	                        <option value="qnaContent">내용</option>
+	                    </select>
+                    <input type="search" name="keyword" value="${keyword }" placeholder="검색할 내용을 입력하세요">
+                    <button type="submit">검색</button>
+                    </form>
                 </div>
             </div>
+            
+            	<script>
+				$("select[name=search_qna]").change(function(){
+					console.log($(this).val());
+				});
+            	</script>
+
+            
             <div class="middle_area">
                 <table>
                     <thead>
@@ -207,54 +220,78 @@
                             <th>추천수</th>
                         </tr>
                     </thead>
-                    <tbody>
-                    	<c:forEach var="b" items="${list }">
-                        <tr style="height: 40px;">
-                            <td>${b.boardNo }</td>
-                            <td>${b.title}</td>
-                            <td>${b.boardWriter}</td>
-                            <td>${b.createDate}</td>
-                            <td>${b.count}</td>
-                            <td>${b.liked}</td>
-                        </tr>
-                    	</c:forEach>
-                      
-                    </tbody>
+                         <tbody>
+				        <!-- 공지사항 -->
+				        <c:forEach var="b" items="${list }">
+				            <c:if test="${b.notice == 'y'}">
+				                <tr style="height: 40px; color: rgb(206, 145, 120); font-weight: bold;">
+				                    <td>${b.boardNo }</td>
+				                    <td>${b.title}</td>
+				                    <td>${b.boardWriter}</td>
+				                    <td>${b.createDate}</td>
+				                    <td>${b.count}</td>
+				                    <td>${b.liked}</td>
+				                </tr>
+				            </c:if>
+				        </c:forEach>
+				        <!-- 일반 게시글 -->
+				        <c:forEach var="b" items="${list }">
+				            <c:if test="${b.notice != 'y'}">
+				                <tr style="height: 40px;">
+				                    <td>${b.boardNo }</td>
+				                    <td>${b.title}</td>
+				                    <td>${b.boardWriter}</td>
+				                    <td>${b.createDate}</td>
+				                    <td>${b.count}</td>
+				                    <td>${b.liked}</td>
+				                </tr>
+				            </c:if>
+				        </c:forEach>
+				    </tbody>
                 </table>
-            </div>
-
 			<c:if test="${not empty loginUser }">
 			<div class="insertBtn_area">
-                <button type="button"><a href="enrollForm.bo">글쓰기</a></button>
+                <button type="button"><a href="enrollForm" style="text-decoration : none">글쓰기</a></button>
             </div>
             </c:if>
+            </div>
+
             
         </div>
         <div class="bottom_area">
-            <ul>
-            	<c:choose>
-            		<c:when test="${pi.currentPage eq 1 }">
-                <li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
-            		</c:when>
-            		<c:otherwise>
+    <ul>
+        <c:choose>
+            <c:when test="${pi.currentPage eq 1}">
+                <li class="pagingSection"><a class="page-link" href="#">&lt;</a></li>
+            </c:when>
+            <c:otherwise>
                 <li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage -1}">&lt;</a></li>	
-            		</c:otherwise>
-            	</c:choose>
-				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-                	<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${p }">${p }</a></li>
-            	</c:forEach>
-            	<c:choose>
-            		<c:when test="${pi.currentPage eq pi.maxPage }">
+            </c:otherwise>
+        </c:choose>
+        <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+            <c:choose>
+                <c:when test="${pi.currentPage eq p}">
+                    <li class="pagingSection">
+                        <a class="page-link current-page" style="color:rgb(255,201,20)" href="list.bo?currentPage=${p}">${p}</a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="pagingSection">
+                        <a class="page-link" href="list.bo?currentPage=${p}">${p}</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:choose>
+            <c:when test="${pi.currentPage eq pi.maxPage}">
                 <li class="pagingSection"><a class="page-link" href="#">&gt;</a></li>
-            		</c:when>
-            		<c:otherwise>
-            	<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage + 1 }">&gt;</a></li>	
-            		</c:otherwise>
-            	</c:choose>
-            </ul>
-            
-
-        </div>
+            </c:when>
+            <c:otherwise>
+                <li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage + 1}">&gt;</a></li>	
+            </c:otherwise>
+        </c:choose>
+    </ul>
+</div>
 
 	<script>
 		$(function(){

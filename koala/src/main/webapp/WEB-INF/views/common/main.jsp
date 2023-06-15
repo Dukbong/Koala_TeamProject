@@ -154,10 +154,7 @@
 	 				//확인 및 취소
 	 				$.ajax({
 	 					url : "/koala/promote/promote.approve",
-	 					success : function(data){ // 강사님에게 질문하기...
-	 						//alert("${param.clientId}"); // 넘어온다. (인터셉터에서 보냈다.)
-	 						//alert("${param.code}");
-	 						//alert("${param.clientSecret}"); // 넘어온다. (인터셉터에서 보냈다.)
+	 					success : function(data){ 
 	 						location.href = "http://github.com/login/oauth/authorize?client_id=${param.clientId}";
 	 					},
 	 					error : function(){
@@ -185,10 +182,27 @@
     		});
     	</script>
     </c:if>
-    <c:if test="${not empty param.client }">
-    	<script>
-    		alert("제발 ${param.client}");
-    	</script>
-    </c:if>
+    
+	<c:if test="${not empty github }">
+		<script>
+			$.ajax({
+				url : "http://github.com/login/oauth/access_token",
+				data : {
+					client_id : "${github.clientId}",
+					client_secret : "${github.clientSecret}",
+					code : "${github.code}",
+// 					redirect_uri : "http://localhost:8888/koala",
+				},
+				type:"POST",
+				success : function(data){
+					console.log("data========================");
+					console.log(data);
+				},
+				error : function(){
+					console.log("ajax error");
+				}
+			})
+		</script>
+	</c:if>
 </body>
 </html>

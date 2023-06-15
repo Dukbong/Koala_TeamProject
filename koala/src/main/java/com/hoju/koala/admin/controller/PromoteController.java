@@ -23,14 +23,14 @@ public class PromoteController {
 	
 	@GetMapping("/promote.waiting")
 	@ResponseBody
-	public String promoteWait(String client_No) {
+	public String promoteWait(int client_No) {
 		int result = adminService.InsertSupporters(client_No);
 		return String.valueOf(result);
 	}
 
 	@GetMapping("/promote.cancel")
 	@ResponseBody
-	public String promoteCancel(String client_No) {
+	public String promoteCancel(int client_No) {
 		int result = adminService.deleteSupporters(client_No);
 		return String.valueOf(result);
 	}
@@ -40,13 +40,5 @@ public class PromoteController {
 	@ResponseBody
 	public String promoteApprove() {
 		return "common/main";
-	}
-
-	@GetMapping("/supporters.test")
-	public ModelAndView supportersTest(String code, ModelAndView model) {
-		client.setCode(code);
-		model.addObject("client", client);
-		model.setViewName("admin/middle");
-		return model;
 	}
 }

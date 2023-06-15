@@ -8,9 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +21,7 @@ import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.Client;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -113,13 +115,24 @@ public class AdminController {
 	}
 
 	@GetMapping("/member.list")
-	public String adminMemberList(PageInfo p, Model model) {
-		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
-		ArrayList<Supporters> memberList = adminService.selectMemberList(page);
+	public String adminMemberList(PageInfo p, Model model,
+								  @RequestParam(value = "searchQna", required=false, defaultValue="") String searchQna,
+								  @RequestParam(value = "searchInput", required=false, defaultValue = "") String searchInput,
+								  @RequestParam(value = "currentPage", required=false, defaultValue="1") int cp) {
+		ArrayList<Supporters> memberList = null;
+		MemberSearch ms = null;
+		if(searchQna.equals("total")) {
+			memberList = adminService.selectMemberList(Paging.getPageInfo(allCount().getMember(), p.getCurrentPage(), 10, 10)); // 전체 리스트 조회
+		}else {
+			ms = MemberSearch.builder().searchQna(searchQna).searchInput(searchInput).build();
+			memberList = adminService.selectMembercondition(Paging.getPageInfo(adminService.selectCountMemberCondition(ms), p.getCurrentPage(), 10, 10),ms); // 조건 검색 조회
+			model.addAttribute("ms", ms);
+		}
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pi", page);
 		return "admin/memberList";
 	}
+	
 	
 	// 모드를 쿠키로 저장할 메서드
 	@GetMapping("mode.check")
