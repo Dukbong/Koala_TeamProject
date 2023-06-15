@@ -30,7 +30,7 @@
 	<interceptors>
 		<interceptor>
 			<!-- 관리자를 제외한 사람은 admin관련 페이지에 접근을 막는다. -->
-			<mapping path="/admin/*"/>
+			<mapping path="/admin/**"/>
 			<beans:bean class="com.hoju.koala.admin.interceptor.AdminInterceptor" id="AdminInterceptor"/>
 		</interceptor>
 		

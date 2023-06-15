@@ -90,6 +90,7 @@
     .middle_area table{
         width: 100%;
 /*         height: 100%; */
+		border-collapse : collapse;
         font-size: 12px;
         border-top: 1px solid grey;
         border-bottom: 1px solid grey;
@@ -237,36 +238,45 @@
 
 			<c:if test="${not empty loginUser }">
 			<div class="insertBtn_area">
-                <button type="button"><a href="enrollForm">글쓰기</a></button>
+                <button type="button"><a href="enrollForm" style="text-decoration : none">글쓰기</a></button>
             </div>
             </c:if>
             
         </div>
         <div class="bottom_area">
-            <ul>
-            	<c:choose>
-            		<c:when test="${pi.currentPage eq 1 }">
-                <li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
-            		</c:when>
-            		<c:otherwise>
+    <ul>
+        <c:choose>
+            <c:when test="${pi.currentPage eq 1}">
+                <li class="pagingSection"><a class="page-link" href="#">&lt;</a></li>
+            </c:when>
+            <c:otherwise>
                 <li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage -1}">&lt;</a></li>	
-            		</c:otherwise>
-            	</c:choose>
-				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-                	<li class="pagingSection"><a class="page-link" style="color:'rgb(255, 201,20)'" href="list.bo?currentPage=${p }" >${p }</a></li>
-            	</c:forEach>
-            	<c:choose>
-            		<c:when test="${pi.currentPage eq pi.maxPage }">
+            </c:otherwise>
+        </c:choose>
+        <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+            <c:choose>
+                <c:when test="${pi.currentPage eq p}">
+                    <li class="pagingSection">
+                        <a class="page-link current-page" style="color:rgb(255,201,20)" href="list.bo?currentPage=${p}">${p}</a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="pagingSection">
+                        <a class="page-link" href="list.bo?currentPage=${p}">${p}</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:choose>
+            <c:when test="${pi.currentPage eq pi.maxPage}">
                 <li class="pagingSection"><a class="page-link" href="#">&gt;</a></li>
-            		</c:when>
-            		<c:otherwise>
-            	<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage + 1 }">&gt;</a></li>	
-            		</c:otherwise>
-            	</c:choose>
-            </ul>
-            
-
-        </div>
+            </c:when>
+            <c:otherwise>
+                <li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage + 1}">&gt;</a></li>	
+            </c:otherwise>
+        </c:choose>
+    </ul>
+</div>
 
 	<script>
 		$(function(){

@@ -140,7 +140,7 @@ public class QnABoardController {
 			}
 		}else {
 			if(m.getUserId().equals("admin")) {
-				result = qnaService.insertNotice(b);//공지 게시글일 때				
+				result = qnaService.insertNotice(b);//어드민만 쓸 수 있게				
 			}else {
 				mv.addObject("errorMsg", "공지 게시글은 운영자만 작성 가능합니다.").setViewName("common/error");
 			}

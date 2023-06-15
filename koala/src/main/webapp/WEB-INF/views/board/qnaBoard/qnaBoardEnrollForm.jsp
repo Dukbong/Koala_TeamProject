@@ -160,6 +160,7 @@
                 <table>
                     <thead>
                         <tr>
+		                	<th><input type="hidden"id="writer" value="${loginUser.userId }" name="boardWriter">
                             <th colspan="4" style="text-align: left;"><input type="text" id="titleArea" name="title" placeholder="제목을 입력하세요"></th>
                         </tr>
                          <tr>

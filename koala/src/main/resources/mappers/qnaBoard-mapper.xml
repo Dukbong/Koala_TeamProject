@@ -142,7 +142,7 @@
 	</select>
 	
 	<insert id="insertReply">
-		INERT INTO REPLY(REPLY_NO,
+		INSERT INTO REPLY(REPLY_NO,
 						REPLY_CONTENT,
 						REF_BNO,
 						REPLY_WRITER)
