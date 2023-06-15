@@ -5,57 +5,114 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/sql/sql.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/lib/codemirror.css">
-<link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/theme/darcula.css">
 </head>
 <style>
-	.ebDetail{
-		margin: auto;
-		width: 80%;
-		height: 500px;
-	}
+    div{ box-sizing: border-box;}
+    .ebDetailView{width: 1200px; height:800px; margin: auto; padding: 80px 0px;}
+    .ebDetailView>div{height: 100%; float: left;}
+    .board-area, .reply-area{ width: 50%;}
+
+    .board-area>div{width: 90%;}
+    .lib-info{height: 10%; position: relative;}
+    .board-form{height: 80%; background-color: black; padding: 10px;}
+    .admin-button{height: 10%;}
+
+    #libTitle{
+        width: max-content;
+        height: 30px;
+        background-color: skyblue;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        bottom: 0;
+    }
+    #solved{
+        width: max-content;
+        border-radius: 5px;
+        background-color: rgb(125, 204, 122);
+        position: absolute;
+        margin: auto;
+        right: 0;
+        bottom: 0;
+    }
+
+    .board-form>div{width: 100%;}
+    .board-form *{
+    	text-align: center;
+    }
+    .board-area{font-size: 15px;}
+    span{font-weight: 700; padding-right: 30px;}
+    .bWriterDate>div{float: left;}
+    .addDetailBtn{position: relative;}
+	.addDetailBtn{position: absolute; margin:auto; right: 120px; bottom:30px;}
+
+    .admin-button>div{
+        width: 50%;
+        height: 100%;
+        margin: auto;
+        position: relative;
+    }
+
+    #codeError, #userError{
+        width: 40%;
+        position: absolute;
+        margin: auto;
+        bottom: 0;
+    }
+
+
 </style>
+
 <body>
+	<%@include file="../../common/header.jsp"%>
+    <div class="ebDetailView">
 
-	
-	<div class="ebDetail">
-	
-	
-		게시글 상세페이지
-		
-	<div style="margin-left:100px;margin-top: 200px;width:800px;">
-	        * SQL
-	        <textarea id="batch_content" name="batch_content"></textarea>
-        <button type="button" onclick="fn_msg()">확인</button>
+        <div class="board-area">
+            <div class="lib-info">
+                <div id="libTitle">&nbsp;<span><b>${eb.createSetting.settingTitle}</b></span> ${eb.createSetting.settingVersion}&nbsp;</div>
+                <div id="solved">
+                	<c:choose>
+                		<c:when test="${eb.errorBoard.errorType eq 'U'}">&nbsp;user error&nbsp;</c:when>
+                	</c:choose>
+                	<c:choose>
+                		<c:when test="${eb.errorBoard.errorType eq 'S'}">&nbsp;code error&nbsp;</c:when>
+                	</c:choose>
+                </div>
+            </div>
+            <div class="board-form">
+                <div class="bTitle">
+                    <span>제목</span> ${eb.board.title }
+                </div>
+                <hr>
+                <div class="bWriterDate">
+                    <div class="bWriter" style="width: 50%;">
+                        <span>작성자</span> ${eb.board.boardWriter }
+                    </div>
+                    <div class="bDate" style="width: 50%;">
+                        <span>작성날짜</span> ${eb.board.createDate }
+                    </div>
+                </div>
+                <hr>
+                <div class="bContent"> ${eb.board.content }</div>
+                <div class="addDetailBtn">
+                	<c:if test="${eb.errorBoard.modifiedCode + eb.errorBoard.modifiedInfo gt 0}">
+	                    <button type="button" id>자세히보기</button>
+                	</c:if>
+                </div>
+            </div>
+            <div class="admin-button">
+                <div>
+                    <button type="button" id="codeError" style="left: 0;">코드오류</button>
+                    <button type="button" id="userError" style="right: 0;">사용자오류</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reply-area" style="border: 1px solid red">
+            댓글영역입니다.
+        </div>
+
     </div>
-    
-    <script>
-        // textarea 태그의 element를 지정
-        var textarea = document.getElementById('batch_content');
-        // 에디터 설정
-        var editor = CodeMirror.fromTextArea(textarea, {
-            lineNumbers: true,  //왼쪽 라인넘버 표기
-            lineWrapping: true, //줄바꿈. 음.. break-word;
-            theme: "darcula",   //테마는 맘에드는 걸로.
-            mode: 'text/x-java', //모드는 sql 모드
-            val: textarea.value
-        });
-    
-        function fn_msg() {
-            // 에디터에 입력된 값은 아래와 같이 가져올 수 있다.
-            var text = editor.getValue();
-            //alert(text);
-            //console.log(text);
-        }
-    
-    </script>
-
-
-	</div>
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	<%@include file="../../common/footer.jsp"%>
 </body>
 </html>

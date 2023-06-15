@@ -28,12 +28,11 @@
     }
 /* ======================================================= 수정폼 영역 */
     div[class*='modifyForm-area']{width: 85%; height: 600px; display: none;}
-    .modifyForm-top{width: 100%; height: 8%;}
+    .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
     .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding : 10px;}
     .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
-    
     textarea{
     	width: 100%;
     	height: 100%;
@@ -43,23 +42,25 @@
     	border: none;
         outline: none;
     }
+    .resetForm{position:absolute; margin:auto; right:0; cursor:pointer;}
 /* ======================================================== 버튼 관련 */
-    button{border-radius: 5px;}
-    button:hover{cursor: pointer;}
-    .buttons{width: 25%; margin: auto;}
-    .buttons>button{ width: 100px; height: 30px;}
+     button{border-radius: 5px;}
+     button:hover{cursor: pointer;} 
+     .buttons{width: 25%; margin: auto;} 
+     .buttons>button{ width: 100px; height: 30px;} 
+
 </style>
 
 <body>
 	<%@include file="../../common/header.jsp"%>
 	
 	<div class="ebEnrollForm">
-		<form action="insert">
+		<form action="insert" method="post">
 		
 		<script>
 			$(function(){
 				
-				//라이브러리 버전 가져오기
+				//라이브러리 버전(+글번호) 가져오기
 				$("select[name='settingTitle']").change(function(){
 					
 					$.ajax({
@@ -69,7 +70,7 @@
 							var str = "";
 							
 							for(var i in vList){
-								str += "<option value="+vList[i].settingVersion+">"+vList[i].settingVersion+"</option>"
+								str += "<option value="+vList[i]+">"+vList[i]+"</option>";
 							}
 							
 							$("select[name='settingVersion']").html(str);
@@ -134,6 +135,7 @@
 				<div class="modifyForm-top">
 					<span>code</span>
 					<button type="button">cancle</button>
+					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
@@ -143,7 +145,7 @@
 						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
-						<textarea name="modifiedCode" id="afterCode" cols="30" rows="10">코드 가져오기</textarea>
+						<textarea name="modifiedCode" id="afterCode" cols="30" rows="10" disabled>코드 가져오기</textarea>
 					</div>
 				</div>
 			</div>
@@ -152,6 +154,7 @@
 				<div class="modifyForm-top">
 					<span>manual</span>
 					<button type="button">cancle</button>
+					<span class="resetForm"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
@@ -161,18 +164,26 @@
 						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
-						<textarea name="modifiedInfo" id="afterInfo" cols="30" rows="10">설명서 가져오기</textarea>
+						<textarea name="modifiedInfo" id="afterInfo" cols="30" rows="10" disabled>설명서 가져오기</textarea>
 					</div>
 				</div>
 			</div>
 			
 			<div class="modifyBtn-area"> <!-- 수정폼 두개 생성되면 안보이게 -->
 				<span style="color: rgb(241, 196, 15);">modify form</span>
-				<select name="category"> <!-- 이 값은 무시해야 하나 / 전송 클릭 시 disabled 되게? -->
-						<option value="code">코드</option>
-						<option value="info">설명서</option>
+				<select name="category"> <!-- 이 값은 무시  -->
+					<option value="">--참고자료--</option>
+					<option value="code">코드</option>
+					<option value="info">설명서</option>
 				</select>
 				<button type="button">create</button>
+			</div>
+			
+			<div class="button-area">
+				<div class="buttons">
+					<button type="reset">cancle</button>
+					<button type="submit" style="background-color: rgb(147, 208, 248);">submit</button>
+				</div>
 			</div>
 			
 			<script>
@@ -198,11 +209,19 @@
 									
 									if($category=="code"){
 										$("#beforeCode,#afterCode").html(str);
+										$("#afterCode").attr("disabled",false);
 										$(".modifyForm-area_code").css("display","block");
-									}else{
+										$("option[value='code']").css("display","none");
+										$('html').animate({scrollTop : $(".modifyForm-area_code").offset().top}, 300);
+									}else if($category=="info"){
 										$("#beforeInfo,#afterInfo").html(str);
+										$("#afterInfo").attr("disabled",false);
 										$(".modifyForm-area_info").css("display","block");
+										$("option[value='info']").css("display","none");
+										$('html').animate({scrollTop : $(".modifyForm-area_info").offset().top}, 300);
 									}
+									$("select[name='category']").find('option:first').prop('selected', true);
+									
 								},
 								error : function(){
 									console.log("실패");
@@ -217,21 +236,24 @@
 					$(".modifyForm-top ").on("click", "button", function(){
 						if(($(this).prev().text())=="code"){
 							$(this).parents(".modifyForm-area_code").css("display","none");
+							$("#afterCode").attr("disabled",true);
+							$("option[value='code']").css("display","block");
 						}else{
 							$(this).parents(".modifyForm-area_info").css("display","none");
+							$("#afterInfo").attr("disabled",true);
+							$("option[value='info']").css("display","block");
 						}
 					});
 					
+					//수정폼 리셋
+					$(".reset").on("click", function(){
+						var str = $(this).parent().next().children().eq(0).find('textarea').val();
+						$(this).parent().next().children().eq(2).find('textarea').val(str);
+					});
+
 				});
 			</script>
 	
-			
-			<div class="button-area">
-				<div class="buttons">
-					<button type="reset">cancle</button>
-					<button type="submit" style="background-color: rgb(147, 208, 248);">submit</button>
-				</div>
-			</div>
 			
 		</form>
 
