@@ -251,6 +251,15 @@
     	</c:otherwise>
     </c:choose>
     
+    <!-- 알림메세지. -->
+    <c:if test="${not empty msg }">
+    	<script>
+    		alert("${msg }");
+    	</script>
+		<c:remove var="msg" scope="session"/>
+    </c:if>
+    
+    
     
 	<!-- 자동완성 끄기 -->
 	<script>
