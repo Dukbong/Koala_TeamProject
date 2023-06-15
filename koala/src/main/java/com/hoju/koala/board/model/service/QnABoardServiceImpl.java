@@ -1,6 +1,7 @@
 package com.hoju.koala.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.hoju.koala.board.model.dao.QnABoardDao;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
 @Service
@@ -53,6 +55,56 @@ public class QnABoardServiceImpl implements QnABoardService{
 	public ArrayList<BoardAttachment> selectAttachment(int boardNo) {
 		
 		return qnaDao.selectAttachment(sqlSession,boardNo);
+	}
+
+
+	//qna 게시글 검색
+	@Override
+	public int selectBoardCount(HashMap<String, String> searchInfo) {
+		
+		return qnaDao.selectBoardCount(sqlSession, searchInfo);
+	}
+
+	//qna 게시글 검색 목록
+	@Override
+	public ArrayList<Board> selectBoardList(HashMap<String, String> searchInfo, PageInfo pi) {
+		
+		return qnaDao.selectBoardList(sqlSession, searchInfo, pi);
+	}
+
+	//qna 댓글 조회
+	@Override
+	public ArrayList<Reply> selectReply(int boardNo) {
+		
+		return qnaDao.selectReply(sqlSession,boardNo);
+	}
+
+	//qna 댓글 삽입
+	@Override
+	public int insertReply(Reply r) {
+		
+		return qnaDao.insertReply(sqlSession,r);
+	}
+
+	//qna 글만
+	@Override
+	public int insertBoard(Board b) {
+		
+		return qnaDao.insertBoard(sqlSession,b);
+	}
+
+	//qna 파일 첨부
+	@Override
+	public int insertBoardFile(BoardAttachment at) {
+		
+		return qnaDao.insertBoardFile(sqlSession,at);
+	}
+
+	//qna 공지 등록
+	@Override
+	public int insertNotice(Board b) {
+		
+		return qnaDao.insertNotice(sqlSession,b);
 	}
 	
 
