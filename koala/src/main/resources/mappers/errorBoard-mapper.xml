@@ -48,22 +48,26 @@
 		AND B.CATEGORY = 'E'
         AND SOLVED||ERROR_TYPE != 'NS'
 		ORDER BY DECODE(NOTICE,'Y',1,'N',2),
-                 DECODE(SOLVED,'N',1,'Y',2)
+                 DECODE(SOLVED,'N',1,'Y',2),
+                 CREATE_DATE DESC
 	</select>
 	
 	<!-- 게시글 상세 조회 -->
 	<select id="selectBoard" resultMap="errorSetResultSet">
-		SELECT BOARD_NO,
+		SELECT 
+			   SETTING_INFO,
+			   SETTING_TITLE,
+			   BOARD_NO,
 			   NICKNAME,
 			   TITLE,
 			   CONTENT,
 			   CREATE_DATE,
 			   SOLVED,
 			   ERROR_TYPE,
-			   NVL2(MODIFIED_CODE,'1','0') AS MODIFIED_CODE,
-			   NVL2(MODIFIED_INFO,'1','0') AS MODIFIED_INFO,
-			   SETTING_TITLE,
-			   SETTING_VERSION
+			   MODIFIED_CODE,
+			   MODIFIED_INFO,
+			   SETTING_VERSION,
+			   SETTING_CODE
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
 		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
