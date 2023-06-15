@@ -115,11 +115,13 @@ public class AdminController {
 	@GetMapping("/member.list")
 	public String adminMemberList(PageInfo p, Model model, MemberSearch ms) {
 		ArrayList<Supporters> memberList = null;
-		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
 		if(ms.getSearchInput() == null || ms.getSearchQna() == null || ms.getSearchQna().equals("total")) {			
+			page = Paging.getPageInfo(allCount().getMember(), p.getCurrentPage(), 10, 10);
 			memberList = adminService.selectMemberList(page); // 전체 리스트 조회
 		}else {
+			page = Paging.getPageInfo(adminService.selectCountMemberCondition(ms), p.getCurrentPage(), 10, 10);
 			memberList = adminService.selectMembercondition(page,ms); // 조건 검색 조회
+			model.addAttribute("ms", ms);
 		}
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pi", page);

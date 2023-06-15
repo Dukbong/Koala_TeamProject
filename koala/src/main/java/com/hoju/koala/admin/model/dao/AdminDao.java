@@ -45,7 +45,6 @@ public class AdminDao {
 	}
 
 	public ArrayList<Supporters> selectMembercondition(MemberSearch ms, PageInfo pi, SqlSession sqlSession) {
-		System.out.println(ms);
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMembercondition",ms, pi.rowBounds());
 	}
 	
@@ -87,6 +86,10 @@ public class AdminDao {
 
 	public Supporters selectOneSupport(int userNo, SqlSession sqlSession) {
 		return sqlSession.selectOne("adminMapper.selectOneSupport", userNo);
+	}
+
+	public int selectCountMemberCondition(MemberSearch ms, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectCountMemberCondition", ms);
 	}
 
 

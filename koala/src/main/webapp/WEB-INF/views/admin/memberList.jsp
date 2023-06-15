@@ -135,7 +135,14 @@
                         <option value="etc">권한분류</option> 
                         <!-- 아직 안했음 -->
                     </select>
-                    <input type="search" name="searchInput" class="ic" id="serachInput" placeholder="검색할 내용을 입력하세요" >
+                    <c:choose>
+                    	<c:when test="${not empty ms.searchInput }">
+		                    <input type="search" name="searchInput" class="ic" id="serachInput" value="${ms.searchInput }" >                    	
+                    	</c:when>
+                    	<c:otherwise>
+	                    	<input type="search" name="searchInput" class="ic" id="serachInput" >                    	
+                    	</c:otherwise>
+                    </c:choose>
                     <button id="searchBtn" type="button">검색</button>
                 </form>
                 </div>
@@ -202,7 +209,7 @@
             
         </div>
         <div class="bottom_area">
-        <c:if test="${memberList.size()!= 0 }">
+        <c:if test="${pi.endPage > 1 }">
          	     <div id="pagingArea">
                         <div class="btnarea">
                             <ul class="pagination">
@@ -250,6 +257,8 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	<script>
 		$(function(){
+
+			
 			
 			$("#serachSelect").on("change", function(){
 				if($(this).val() == "etc") {
@@ -270,7 +279,7 @@
 			$("#searchBtn").on("click", function(){
 				var input = $("#serachInput").val();
 				var select = $("#serachSelect").val();
-				if(select != "total"){
+				if(select != "total" && input == ""){
 					alert("정확한 검색 결과를 위해 모두 입력 부탁드립니다.");
 					return;
 				}
