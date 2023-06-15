@@ -12,6 +12,7 @@
     <result property="category" column="CATEGORY"/>
     <result property="boardWriter" column="NICKNAME"/>
     <result property="title" column="TITLE"/>
+    <result column="content" property="content"/>
     <result property="createDate" column="CREATE_DATE"/>
     <result property="count" column="COUNT"/>
     <result property="liked" column="LIKED"/>
@@ -29,6 +30,16 @@
 	</resultMap>
 	
 	
+	<resultMap type="reply" id="qnaReplyResultSet">
+	<result column="REPLY_NO" property="replyNo"/>
+	<result column="REF_BNO" property="refBno"/>
+	<result column="REPLY_CONTENT" property="replyContent"/>
+	<result column="NICKNAME" property="replyWriter"/> <!-- 닉네임으로 조회 -->
+	<result column="CREATE_DATE" property="createDate"/>
+	<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM BOARD
@@ -42,7 +53,8 @@
 			   NICKNAME,
 			   TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE",
 			   COUNT,
-			   LIKED
+			   LIKED,
+			   NOTICE
 		FROM BOARD B
 		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
 		WHERE B.STATUS = 'Y'
@@ -63,7 +75,7 @@
 		AND B.STATUS = 'Y' 
 	</select>
 	
-	<update id="increateCount">
+	<update id="increaseCount">
 		UPDATE BOARD
 		SET COUNT = COUNT + 1
 		WHERE STATUS = 'Y'
@@ -78,4 +90,107 @@
 		WHERE REF_BNO = #{boardNo}
 		AND STATUS = 'Y'
 	</select>
+	
+	<select id="selectBoardCount" resultType="_int" parameterType="java.util.HashMap">
+		SELECT COUNT(*)
+		FROM BOARD B
+		JOIN MEMBER M ON (USER_NO=BOARD_WRITER)
+		WHERE B.CATEGORY = 'Q'
+		AND B.STATUS = 'Y'
+		<if test="#{searchQna} eq 'qnaWriter'">
+			AND M.NICKNAME LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="#{searchQna} eq 'qnaTitle'">
+			AND TITLE LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="#{searchQna} eq 'qnaContent'">
+		 	AND CONTENT LIKE '%' || #{keyword} || '%'	
+		</if>
+	</select>
+	
+	<select id="selectBoardList" resultMap="qnaBoardResultSet" parameterType="java.util.HashMap">
+		SELECT BOARD_NO,
+			   TITLE,
+			   NICKNAME,
+			   COUNT,
+			   B.CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER M ON(USER_NO = BOARD_WRITER)
+		WHERE B.CATEGORY = 'Q'
+		AND B.STATUS = 'Y'
+		<if test="#{searchQna} eq 'qnaWriter'">
+	        AND M.NICKNAME LIKE '%' || #{keyword} || '%'		
+		</if>
+		<if test="#{searchQna} eq 'qnaTitle'">
+			AND TITLE LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="#{searchQna} eq 'qnaContent'">
+		 	AND CONTENT LIKE '%' || #{keyword} || '%'
+		
+		</if>
+		ORDER BY B.CREATE_DATE DESC			   
+	</select>
+	
+	<select id="selectReply" resultMap="qnaReplyResultSet">
+		SELECT REPLY_NO,
+			   REPLY_CONTENT,
+			   REPLY_WRITER,
+			   TO_CHAR(CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
+		FROM REPLY
+		WHERE REF_BNO = #{boardNo}
+		AND STATUS = 'Y'
+		ORDER BY REPLY_NO DESC
+	</select>
+	
+	<insert id="insertReply">
+		INSERT INTO REPLY(REPLY_NO,
+						REPLY_CONTENT,
+						REF_BNO,
+						REPLY_WRITER)
+		VALUES(SEQ_RNO.NEXTVAL,
+			   #{replyContent},
+			   #{refBno},
+			   #{replyWriter})
+	</insert>
+	
+	<insert id="insertBoard">
+		INSERT INTO BOARD(BOARD_NO,
+						  CATEGORY,
+						  BOARD_WRITER,
+						  TITLE,
+						  CONTENT)
+		VALUES(SEQ_BNO.NEXTVAL,
+			   'Q',
+			   #{boardWriter},
+			   #{title},
+			   #{content})
+	</insert>
+	
+	<insert id="insertBoardFile">
+		INSERT INTO BOARD_ATTACHMENT(FILE_NO,
+									 REF_BNO,
+									 ORIGIN_NAME,
+									 CHANGE_NAME,
+									 FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL,
+			   SEQ_BNO.CURRVAL,
+			   #{originName},
+			   #{changeName},
+			   #{filePath})
+	</insert>
+	
+	<insert id="insertNotice">
+		INSERT INTO BOARD(BOARD_NO,
+						  CATEGORY,
+						  NICKNAME,
+						  TITLE,
+						  CONTENT,
+						  NOTICE)
+		VALUES(SEQ_BNO.NEXTVAL,
+			   'Q',
+			   #{boardWriter},
+			   #{title},
+			   #{content},
+			   'Y')
+	</insert>
 </mapper>
