@@ -136,6 +136,20 @@
 		<if test='searchQna == "nickName"'>
 			AND M.NICKNAME LIKE '%'||#{searchInput}||'%'
 		</if>
+		<if test='searchQna == "etc"'>
+			<if test='searchInput == "admin"'>
+				AND M.TYPE = 2
+			</if>
+			<if test='searchInput == "wait"'>
+				AND s.github_id = ' '
+			</if>
+			<if test='searchInput == "supporter"'>
+				AND s.github_id != ' '
+			</if>
+			<if test='searchInput == "common"'>
+				AND REF_UNO IS NULL
+			</if>
+		</if>
 		<if test='searchQna == "total"'></if>
 	</select>
 	
@@ -146,6 +160,20 @@
 		</if>
 		<if test='searchQna == "nickName"'>
 			AND M.NICKNAME LIKE '%'||#{searchInput}||'%'
+		</if>
+		<if test='searchQna == "etc"'>
+			<if test='searchInput == "admin"'>
+				AND M.TYPE = 2
+			</if>
+			<if test='searchInput == "wait"'>
+				AND s.github_id = ' '
+			</if>
+			<if test='searchInput == "supporter"'>
+				AND s.github_id != ' '
+			</if>
+			<if test='searchInput == "common"'>
+				AND REF_UNO IS NULL
+			</if>
 		</if>
 		<if test='searchQna == "total"'></if>
 	</select>

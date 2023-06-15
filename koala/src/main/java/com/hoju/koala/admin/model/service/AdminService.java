@@ -36,7 +36,7 @@ public interface AdminService {
 
 	int InsertSupporters(int client_No);
 	
-	int deleteSupporters(int client_No);
+//	int deleteSupporters(int client_No);
 	
 	Supporters selectOneSupport(int userNo);
 	
@@ -54,6 +54,8 @@ public interface AdminService {
 
 	int blockBlockIpUser(String ip);
 	// =======================
+
+	ArrayList<Supporters> selectSupporterWaitList();
 
 
 
