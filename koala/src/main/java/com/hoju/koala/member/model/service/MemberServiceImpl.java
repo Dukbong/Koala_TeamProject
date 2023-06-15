@@ -1,9 +1,12 @@
 package com.hoju.koala.member.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.member.model.dao.MemberDao;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
@@ -105,6 +108,15 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+	
+	//계정삭제
+	@Override
+	public int deleteMember(String userId) {
+		
+		int result = memberDao.deleteMember(sqlSession, userId);
+		
+		return result;
+	}
 
 
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
@@ -135,6 +147,20 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+
+	//유저가 쓴 게시글 조회
+	@Override
+	public ArrayList<Board> boardList(String userNo) {
+		
+		ArrayList<Board> blist = memberDao.boardList(sqlSession, userNo);
+		
+		return blist;
+	}
+
+
+	
+	
 
 
 	
