@@ -54,20 +54,19 @@
 	
 	<!-- 게시글 상세 조회 -->
 	<select id="selectBoard" resultMap="errorSetResultSet">
-		SELECT 
-			   SETTING_INFO,
+		SELECT BOARD_NO,
+<!-- 			   SETTING_INFO, -->
 			   SETTING_TITLE,
-			   BOARD_NO,
+			   SETTING_VERSION,
+			   SETTING_CODE,
 			   NICKNAME,
 			   TITLE,
 			   CONTENT,
 			   CREATE_DATE,
 			   SOLVED,
 			   ERROR_TYPE,
-			   MODIFIED_CODE,
-			   MODIFIED_INFO,
-			   SETTING_VERSION,
-			   SETTING_CODE
+			   MODIFIED_CODE
+<!-- 			   MODIFIED_INFO -->
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
 		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)

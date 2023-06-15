@@ -42,7 +42,7 @@
     	border: none;
         outline: none;
     }
-    .resetForm{position:absolute; margin:auto; right:0; cursor:pointer;}
+    .reset{position:absolute; margin:auto; right:0; cursor:pointer;}
 /* ======================================================== 버튼 관련 */
      button{border-radius: 5px;}
      button:hover{cursor: pointer;} 
@@ -154,7 +154,7 @@
 				<div class="modifyForm-top">
 					<span>manual</span>
 					<button type="button">cancle</button>
-					<span class="resetForm"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
+					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">

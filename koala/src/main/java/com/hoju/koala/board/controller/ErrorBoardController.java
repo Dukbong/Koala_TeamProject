@@ -59,7 +59,7 @@ public class ErrorBoardController {
 		ErrorSet eb = ebService.selectBoard(boardNo);
 		
 		model.addAttribute("eb", eb);
-		return "board/errorBoard/ebDetailView";
+		return "board/errorBoard/ebDetailView2";
 	}
 	
 	
