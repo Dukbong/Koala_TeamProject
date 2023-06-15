@@ -87,15 +87,15 @@ public class QnABoardController {
 									ModelAndView mv) {
 		
 		HashMap<String, String> searchInfo = new HashMap<>();
-		searchInfo.put("searchQna",searchQna);
 		searchInfo.put("keyword", keyword);
+		searchInfo.put("searchQna",searchQna);
 		System.out.println("============2번째 확인"+searchInfo);
 		System.out.println("searchQna: " + searchQna);
 		System.out.println("keyword: " + keyword);
 		System.out.println("currentPage: " + currentPage);
 		log.info("=============="+searchInfo.toString());
 		int searchCount = qnaService.selectBoardCount(searchInfo);
-		System.out.println(searchCount);
+		System.out.println("몇개가 들어가는지? : "+searchCount);
 		int currentP = Integer.parseInt(currentPage);
 		System.out.println(currentP);
 		int pageLimit = 10;
@@ -122,14 +122,14 @@ public class QnABoardController {
 	@PostMapping("insert")
 	public ModelAndView insertBoard(BoardAttachment at,
 									Board b,
-									Member m,
 									ModelAndView mv,
 									MultipartFile upFile,
 									HttpSession session) {
 		
 		int result;
-	
-		if(!b.getNotice().equals("Y")) {
+		Member m = (Member)session.getAttribute("loginUser");
+		
+//		if(!b.getNotice().equals("Y")) {
 			if(upFile!=null && !upFile.getOriginalFilename().equals("")) {
 				String changeName = saveFile(upFile,session);
 				at.setOriginName(upFile.getOriginalFilename());
@@ -137,15 +137,16 @@ public class QnABoardController {
 				result = qnaService.insertBoardFile(at);//파일 첨부 있을 때
 			}else {
 				result = qnaService.insertBoard(b);//그냥 글만 있을 때
+				System.out.println(b);
 			}
-		}else {
+//		}else {
 			if(m.getUserId().equals("admin")) {
 				result = qnaService.insertNotice(b);//어드민만 쓸 수 있게				
 			}else {
 				mv.addObject("errorMsg", "공지 게시글은 운영자만 작성 가능합니다.").setViewName("common/error");
+				return mv;
 			}
-			return mv;
-		}
+//		}
 		
 		
 		

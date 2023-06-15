@@ -53,7 +53,8 @@
 			   NICKNAME,
 			   TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE",
 			   COUNT,
-			   LIKED
+			   LIKED,
+			   NOTICE
 		FROM BOARD B
 		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
 		WHERE B.STATUS = 'Y'
@@ -96,13 +97,13 @@
 		JOIN MEMBER M ON (USER_NO=BOARD_WRITER)
 		WHERE B.CATEGORY = 'Q'
 		AND B.STATUS = 'Y'
-		<if test="#{searchQna} eq 'writer'">
+		<if test="#{searchQna} eq 'qnaWriter'">
 			AND M.NICKNAME LIKE '%' || #{keyword} || '%'
 		</if>
-		<if test="#{searchQna} eq 'title'">
+		<if test="#{searchQna} eq 'qnaTitle'">
 			AND TITLE LIKE '%' || #{keyword} || '%'
 		</if>
-		<if test="#{searchQna} eq 'content'">
+		<if test="#{searchQna} eq 'qnaContent'">
 		 	AND CONTENT LIKE '%' || #{keyword} || '%'	
 		</if>
 	</select>
@@ -117,13 +118,13 @@
 		JOIN MEMBER M ON(USER_NO = BOARD_WRITER)
 		WHERE B.CATEGORY = 'Q'
 		AND B.STATUS = 'Y'
-		<if test="#{searchQna} eq 'writer'">
+		<if test="#{searchQna} eq 'qnaWriter'">
 	        AND M.NICKNAME LIKE '%' || #{keyword} || '%'		
 		</if>
-		<if test="#{searchQna} eq 'title'">
+		<if test="#{searchQna} eq 'qnaTitle'">
 			AND TITLE LIKE '%' || #{keyword} || '%'
 		</if>
-		<if test="#{searchQna} eq 'content'">
+		<if test="#{searchQna} eq 'qnaContent'">
 		 	AND CONTENT LIKE '%' || #{keyword} || '%'
 		
 		</if>
@@ -155,7 +156,7 @@
 	<insert id="insertBoard">
 		INSERT INTO BOARD(BOARD_NO,
 						  CATEGORY,
-						  NICKNAME,
+						  BOARD_WRITER,
 						  TITLE,
 						  CONTENT)
 		VALUES(SEQ_BNO.NEXTVAL,

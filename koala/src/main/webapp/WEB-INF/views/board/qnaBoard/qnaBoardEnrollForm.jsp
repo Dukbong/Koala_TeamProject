@@ -160,7 +160,7 @@
                 <table>
                     <thead>
                         <tr>
-		                	<th><input type="hidden"id="writer" value="${loginUser.userId }" name="boardWriter">
+		                	<th><input type="hidden"id="writer" value="${loginUser.userNo }" name=boardWriter>
                             <th colspan="4" style="text-align: left;"><input type="text" id="titleArea" name="title" placeholder="제목을 입력하세요"></th>
                         </tr>
                          <tr>
@@ -171,7 +171,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="4"><textarea name="boardContent" id="textZone" name="editordata" cols="30" rows="10" style="resize: none;" placeholder="내용을 입력하세요"></textarea></td>
+                            <td colspan="4"><textarea name="content" id="textZone" cols="30" rows="10" style="resize: none;" placeholder="내용을 입력하세요"></textarea></td>
                         </tr>
                     </tbody> 
                 </table>

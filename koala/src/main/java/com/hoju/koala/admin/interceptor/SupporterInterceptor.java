@@ -34,6 +34,7 @@ public class SupporterInterceptor  extends HandlerInterceptorAdapter {
 			if(support.getGithubId().equals(" "))
 				modelAndView.addObject("msgc", support.getUserId() + "님을 koala의 서포터즈로 초대합니다.");
 				modelAndView.addObject("clientId", client.getClientId());
+				modelAndView.addObject("clientSecret", client.getClientSecret());
 		}catch(NullPointerException e) {
 			return;
 		}

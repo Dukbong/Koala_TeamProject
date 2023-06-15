@@ -248,13 +248,13 @@
                     <thead>
                         <tr>
                             <th style="width: 10%; text-align: center;">${b.boardNo}</th>
-                            <th colspan="4">${b.title }</th>
+                            <th colspan="3">${b.title }</th>
                         </tr>
                         <tr>
                             <th style="text-align: center;">${b.boardWriter}</th>
                             <th style="width: 10%;">조회 ${b.count}</th>
                             <th style="width: 15%;">${b.createDate}</th>
-                             <th>첨부 파일 &nbsp; <!-- ${at.originName} --></th> 
+                            <th>첨부 파일 &nbsp; <!-- ${at.originName} --></th> 
                             
                         </tr>
                     </thead>
@@ -266,7 +266,7 @@
                 </table>
                 <div class="button_area">
                     <button type="button">댓글 <span id="rcount"></span></button>
-                    <button type="submit">추천 0</button>
+                    <button type="submit">추천 ${b.liked }</button>
                 </div>
             </div>
 
