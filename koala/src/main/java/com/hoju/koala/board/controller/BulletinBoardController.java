@@ -37,6 +37,7 @@ public class BulletinBoardController {
 	//글수정 글삭제 첨부파일 관한 문제
 	//첨부파일 arraylist로 받아오는 문제
 	//자동 객체 생성 문제
+	//안녕
 	@Autowired
 	private Board board;
 	@Autowired
