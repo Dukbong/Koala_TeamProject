@@ -16,22 +16,24 @@ public class SupporterSchedule {
 	// 0 0 0 * * *     >> 매일 자정마다
 	@Scheduled(cron="0 0 0 * * *")
 	public void supporterWaitDelete() {
-		// 조회
 		ArrayList<Supporters> list = adminService.selectSupporterWaitList();
-		if(list.size() > 0) {
-			for(Supporters sup : list) {
-				if(!resultCheck(delete(sup))) {
-					continue;
-				}
-			}
-		}
+		if(list.size() > 0) listDelete(list); 
+	}
+	
+	public void listDelete(ArrayList<Supporters> list) {
+		list.stream().forEach(sup -> resultCheck(delete(sup)));
+//		for(Supporters sup : list) {
+//			if(!resultCheck(delete(sup))) continue;
+//		}
 	}
 	
 	public int delete(Supporters supporter) {
 		return adminService.deleteSupporter(supporter.getUserId());
 	}
+	
 	public boolean resultCheck(int result) {
 		return result>0?true:false;
 	}
+	
 	
 }
