@@ -49,7 +49,7 @@
 	<select id="allCount" resultMap="allTableResultSet">
 		SELECT
 			(SELECT COUNT(*) FROM MEMBER WHERE STATUS = 'Y') member,
-			(SELECT COUNT(*) FROM SUPPORTERS S JOIN MEMBER M ON (S.REF_UNO = M.USER_NO) WHERE M.STATUS = 'Y') supporters,
+			(SELECT COUNT(*) FROM SUPPORTERS S JOIN MEMBER M ON (S.REF_UNO = M.USER_NO) WHERE M.STATUS = 'Y' AND GITHUB_ID != ' ') supporters,
 			(SELECT COUNT(*) FROM CREATE_SETTING WHERE STATUS = 'W') createSetting,
 			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'W' AND B.STATUS = 'Y') errorBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'B') bulletinBoard,
@@ -61,7 +61,7 @@
 	
 	<!-- 서포터즈 회원 조회 -->
 	<select id="selectSupporters" resultMap="supportResultSet">
-		SELECT * FROM SUPPORTERS JOIN MEMBER ON (USER_NO = REF_UNO)
+		SELECT * FROM SUPPORTERS JOIN MEMBER ON (USER_NO = REF_UNO) AND GITHUB_ID != ' '
 	</select>
 	<delete id="deleteSupporter" parameterType="string">
 		DELETE FROM SUPPORTERS
@@ -176,6 +176,14 @@
 			</if>
 		</if>
 		<if test='searchQna == "total"'></if>
+	</select>
+	
+	<!-- 서포터즈 초대 후 7일간 아무 연락 없는 사람은 지운다. -->
+	<select id="selectSupporterWaitList" resultMap="supportResultSet">
+		SELECT * FROM MEMBER M LEFT JOIN SUPPORTERS S ON (M.USER_NO = S.REF_UNO)
+        WHERE M.STATUS = 'Y' 
+		AND S.GITHUB_ID = ' '
+        AND TO_CHAR(s.create_date, 'YYYYMMDD') - TO_CHAR(SYSDATE, 'YYYYMMDD') = 7
 	</select>
 <!-- 	
 	<select id="boardCount" parameterType="string">

@@ -348,12 +348,11 @@
 						return;
 					}
 				}
+				setTimeout(() => {
+					
 				$("#searchForm").submit();
+				}, 3000);
 			});
-			
-			
-			
-			
 			
 			// 우클릭 드레그 방지..
 			$("body").attr("oncontextmenu","return false").attr("ondragstart","return false").attr("onselectstart","return false");

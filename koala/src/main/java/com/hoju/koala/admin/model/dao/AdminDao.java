@@ -92,6 +92,10 @@ public class AdminDao {
 		return sqlSession.selectOne("adminMapper.selectCountMemberCondition", ms);
 	}
 
+	public ArrayList<Supporters> selectSupporterWaitList(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectSupporterWaitList");
+	}
+
 
 
 

@@ -28,6 +28,8 @@ public interface AdminService {
 
 	ArrayList<Supporters> selectMembercondition(PageInfo page, MemberSearch ms);
 	
+	ArrayList<Supporters> selectSupporterWaitList();
+	
 	int deleteSupporter(String userNo);
 
 	int updateblockClear(String blackIp);
@@ -55,7 +57,6 @@ public interface AdminService {
 	int blockBlockIpUser(String ip);
 	// =======================
 
-	ArrayList<Supporters> selectSupporterWaitList();
 
 
 

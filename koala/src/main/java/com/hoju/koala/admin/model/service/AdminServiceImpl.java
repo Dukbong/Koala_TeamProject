@@ -119,8 +119,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<Supporters> selectSupporterWaitList() {
-		// TODO Auto-generated method stub
-		return null;
+		return adminDao.selectSupporterWaitList(sqlSession);
 	}
 
 
