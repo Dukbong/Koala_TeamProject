@@ -46,4 +46,22 @@ public interface QnABoardService {
 	//qna 공지 게시글
 	int insertNotice(Board b);
 
+	//qna 게시글 추천 확인
+	int likeChk(int boardNo, int userNo);
+
+	//qna like테이블 삽입
+	void insertLike(int boardNo, int userNo);
+
+	//qna board테이블 like 추가
+	void updateLike(int boardNo);
+
+	//qna 회원포인트 지급
+	void pointUpdate(String boardWriter);
+
+	//qna like테이블 삭제
+	void deleteLike(int boardNo, int userNo);
+
+	//qna 회원포인트 차감
+	void pointDelete(String boardWriter);
+
 }

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -205,5 +206,31 @@ public class QnABoardController {
 		
 		return (result>0)? "success" : "fail";
 	}
+	
+	//게시글 추천
+	@ResponseBody
+	@RequestMapping(value="updateLike", method=RequestMethod.POST)
+	public int updateLike(int boardNo, int userNo, String boardWriter) {
+		
+		int likeChk = qnaService.likeChk(boardNo, userNo);
+		
+		if(likeChk == 0) {
+			//처음 좋아요를 눌렀을 때
+			qnaService.insertLike(boardNo,userNo); // like테이블 추가
+			qnaService.updateLike(boardNo); //board테이블 업데이트
+			qnaService.pointUpdate(boardWriter); //member테이블 포인트 지급 업데이트
+		}else if(likeChk == 1){
+			//두번째 좋아요를 눌렀을 때
+			qnaService.deleteLike(boardNo, userNo); //like테이블 삭제
+			qnaService.pointDelete(boardWriter); //member테이블 포인트 차감 업데이트
+		}
+		return likeChk;
+	}
+	
+//	//랭킹페이지
+//	@GetMapping("rankingPage")
+//	public String rankingPage() {
+//		return "board/rankingBoard/rankingBoard";
+//	}
 
 }

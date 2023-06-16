@@ -90,6 +90,7 @@
         height: 100%;
         border-top: 1px solid grey;
         border-bottom: 1px solid grey;
+        border-collapse : collapse;
         margin-bottom: 20px;
     }
     .middle_area table > thead > tr>th{
@@ -131,6 +132,7 @@
         text-align: center;
         width: 100%;
         font-size: 11px;
+        /* border-collapse : collapse; */
         padding-bottom: 30px;
     }
     .bottom_area table tr > td{
@@ -266,7 +268,7 @@
                 </table>
                 <div class="button_area">
                     <button type="button">댓글 <span id="rcount"></span></button>
-                    <button type="submit">추천 ${b.liked }</button>
+                    <button type="submit" onclick="updateLike();">추천 ${b.liked }</button>
                 </div>
             </div>
 
@@ -280,7 +282,8 @@
 					$.ajax({
 						url : "selectReply.bo",
 						data : {
-							boardNo : "${b.boardNo}"
+							boardNo : "${b.boardNo}",
+							userNo : "${b.boardWriter}"
 						},
 						success : function(list){
 							var result = "";
@@ -320,6 +323,37 @@
 						},
 						error : function(){
 							console.log("댓글 작성 통신 실패")
+						}
+					});
+				}
+				
+				
+				
+				function updateLike(){
+					console.log("추천");
+					$.ajax({
+						type : "POST",
+						url : "updateLike",
+						dataType : "text",
+						data : {
+							boardNo : "${b.boardNo}",
+							userNo : "${loginUser.userNo}",
+							boardWriter : "${b.boardWriter}"
+						},
+						success : function(likeChk){
+							if(likeChk===0){
+								alert("추천되었습니다!");
+								button.css("background-color", "crimson"); // 버튼의 배경색을 빨간색으로 변경
+								location.reload();
+							}
+							else if(likeChk===1){
+								alert("추천이 취소되었습니다.");
+								button.css("background-color", "background-color: rgb(156, 220, 254)"); // 배경색을 초기값으로 변경 (기본 스타일 적용)
+								location.reload();
+							}
+						},
+						error : function(){
+							console.log("통신 실패");
 						}
 					});
 				}
@@ -363,13 +397,17 @@
                 <div class="repBtn_area">
                     <button type="button" id="back">목륵으로</button>
                     <c:if test="${not empty loginUser }">
-                    <button type="submit">글쓰기</button>                    
+                    <button type="submit" onclick="insertBoard();">글쓰기</button>                    
                     </c:if>
                 </div>
                 
                 <script>
                 document.querySelector('#back').onclick = function(){
                 	history.back();
+                }
+                
+                function insertBoard(){
+                	location.href = "enrollForm";
                 }
                 </script>
             </div>

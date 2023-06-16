@@ -100,6 +100,9 @@
                 <a class="footerAtag ii" href="/koala/qnaBoard/list">QnA_Board</a>
             </div>
             <div class="item">
+                <a class="footerAtag ii" href="#">QnA_Board</a>
+            </div>
+            <div class="item">
                 <a class="footerAtag ii" href="/koala/bulletinBoard/list">Bulletin_Board</a>
             </div>
         </div>

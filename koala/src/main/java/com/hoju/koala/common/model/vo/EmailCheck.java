@@ -27,6 +27,7 @@ public class EmailCheck {
 	
 	//인증번호
 	private int certiNum;
+	private String randomPwd;
 	
 	//램덤숫자(6자리) 생성후 인증번호에 집어넣기
 	public void makeRandomNumber() {
@@ -36,6 +37,38 @@ public class EmailCheck {
 		int checkNum = r.nextInt(899999)+100000;
 		certiNum = checkNum;
 	}
+	
+	//8자리 임시비밀번호 생성
+	public void makeRandomPwd() {
+		
+		//초기 인덱스 초기화
+		int index = 0;
+		
+		//랜덤으로 넣고싶은 char들 세팅
+		char[] charSet = {
+				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+				'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+				'!', '@', '#', '$', '%', '^', '&', '*', '(', ')'
+		};
+		
+		//문자열을 결합할수록 공간이 낭비될 뿐만 아니라 실행 속도도 매우 느려지게 되므로
+		//스트링버퍼를 쓰고 공간의 낭비를 줄이자
+		StringBuffer password = new StringBuffer();
+		
+		Random r = new Random();
+		System.out.println(charSet.length);
+
+		for (int i=0; i<8; i++) {
+			//인덱스 0~71 총72개
+			index = r.nextInt(charSet.length);
+			password.append(charSet[index]);
+		}
+		
+		randomPwd = password.toString();
+		
+	}
+	
 	
 	//이메일 전송 메소드
 	public void mailSend(String setFrom, String toMail, String title, String content) { 
@@ -54,20 +87,48 @@ public class EmailCheck {
 		}
 	}
 	
-	
+	//가입시 이메일
 	public String joinEmail(String email) {
 		makeRandomNumber();
-		String setFrom = ".com"; // email-config에 설정한 자신의 이메일 주소를 입력 
+		String setFrom = ".com"; // config에 설정한 서버 이메일 주소를 입력 
 		String toMail = email;
 		String title = "회원 가입 인증 이메일 입니다."; // 이메일 제목 
-		String content = 
-				"회원 가입 인증 번호를 알려드립니다!!" + 	//html 형식으로 작성 ! 
-                "<br><br>" + 
-			    "인증 번호는 " + certiNum + "입니다." + 
-			    "<br>" + 
-			    "해당 인증번호를 Verification Code에 기입하여 주세요."; //이메일 내용 삽입
+//		String content = 
+//				"회원 가입 인증 번호를 알려드립니다!!" + 
+//                "<br><br>" + 
+//			    "인증 번호는 " + certiNum + "입니다." + 
+//			    "<br>" + 
+//			    "해당 인증번호를 Verification Code에 기입하여 주세요."; //이메일 내용 삽입
+		//이것도 스트링버퍼 처리
+		StringBuffer buf = new StringBuffer();
+		buf.append("<h3>회원 가입 인증 번호를 알려드립니다!!</h3><br><br>인증 번호는 ");
+		buf.append(certiNum);
+		buf.append("입니다.<br>해당 인증번호를 Verification Code에 기입하여 주세요.");
+		
+		String content = buf.toString();
+		
+		
 //		mailSend(setFrom, toMail, title, content);
 		return Integer.toString(certiNum);
+	}
+	
+	//아이디와 임시 비밀번호 보내기
+	public String forgetUserEmail(String email, String userId) {
+		
+		makeRandomPwd();
+		String setFrom = ".com"; // config에 설정한 서버 이메일 주소를 입력 
+		String toMail = email;
+		String title = "Koala사이트에서 회원정보를 보냈습니다."; // 이메일 제목 
+		
+		StringBuffer buf = new StringBuffer();
+		buf.append("<h3>Koala 회원 정보 입니다.</h3><br><br>아이디 : ");
+		buf.append(userId);
+		buf.append("임시비밀번호를 발급받으시려면 버튼을 눌러주세요.	");
+		
+		String content = buf.toString();
+//		mailSend(setFrom, toMail, title, content);
+		
+		return randomPwd;
 	}
 	
 			
