@@ -22,7 +22,6 @@
         }
         .board-content,.comment-content,.comment-area{
           width: 70%;
-          
         }
         #boardTitle,#boardWriter,#boardContent,#boardCode{
             width:100%;
@@ -69,9 +68,13 @@
             padding-top: 20px;
             
         }
+        #editor{
+        	height: 100px;
+        }
     </style>
 </head>
 <body>
+	<%@include file="../../common/header.jsp" %>
     <div class="content-outer">
         <br>
         <br>
@@ -85,7 +88,7 @@
         <div class="comment-content">
             <p id="replyWriter">test02 commented</p>
             <p id="createDate">2023-03-13</p>
-            <textarea name="replyContent" id="replyContent" cols="30" rows="10" readonly></textarea>
+            <textarea name="replyContent" id="replyContent" cols="30" rows="10" style="resize:none" readonly></textarea>
         </div>
         <div class="boardlist">
             <p>게시글</p>
@@ -113,7 +116,7 @@
             </div>
         </div>
     </div>
-        <script>
+    <script>
         const Editor = toastui.Editor;
         const editor = new Editor({
             el: document.querySelector('#editor'),
@@ -136,5 +139,6 @@
             return url;
         };
    </script>
+   <jsp:include page="../../common/footer.jsp"/>
 </body>
 </html>
