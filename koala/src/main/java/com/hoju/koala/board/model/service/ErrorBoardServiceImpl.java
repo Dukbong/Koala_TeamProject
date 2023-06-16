@@ -39,6 +39,12 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.selectList(sqlSession, pi);
 	}
 	
+	@Override //조회수 증가
+	public int increaseCount(int boardNo) {
+		
+		return ebDao.increaseCount(sqlSession, boardNo);
+	}
+	
 	@Override //게시글  상세조회
 	public ErrorSet selectBoard(int boardNo) {
 		
@@ -88,6 +94,15 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	public int deleteBoard(int boardNo) {
 		
 		return ebDao.deleteBoard(sqlSession, boardNo);
+	}
+
+	@Override //게시글 수정
+	public int updateBoard(Board b, ErrorBoard eb) {
+		
+		int result1 = ebDao.updateBoard(sqlSession, b);
+		int result2 = ebDao.updateEbBoard(sqlSession, eb);
+	
+		return result1*result2; //굳이 이렇게 안해도 될듯
 	}
 
 

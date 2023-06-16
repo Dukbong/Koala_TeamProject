@@ -176,7 +176,7 @@
 				</div>
 			</div>
 			
-			<div class="modifyBtn-area"> <!-- 수정폼 두개 생성되면 안보이게 -->
+			<div class="modifyBtn-area">
 				<span style="color: rgb(241, 196, 15);">modify form</span>
 				<select name="category"> <!-- 이 값은 무시  -->
 					<option value="">--참고자료--</option>

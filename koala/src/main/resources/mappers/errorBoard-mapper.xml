@@ -52,10 +52,17 @@
                  CREATE_DATE DESC
 	</select>
 	
-	<!-- 게시글 상세 조회 -->
+	<!-- 조회수 증가 -->
+	<update id="increaseCount">
+		UPDATE BOARD
+		SET COUNT = COUNT + 1
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<!-- 게시글 상세 조회   //오류 찾아야 함 -->
 	<select id="selectBoard" resultMap="errorSetResultSet">
 		SELECT BOARD_NO,
-<!-- 			   SETTING_INFO, -->
 			   SETTING_TITLE,
 			   SETTING_VERSION,
 			   SETTING_CODE,
@@ -65,8 +72,9 @@
 			   CREATE_DATE,
 			   SOLVED,
 			   ERROR_TYPE,
-			   MODIFIED_CODE
-<!-- 			   MODIFIED_INFO -->
+			   MODIFIED_CODE,
+			   MODIFIED_INFO,
+			   SETTING_INFO
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
 		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
@@ -151,6 +159,25 @@
 		DELETE BOARD
 		WHERE BOARD_NO = #{boardNo}
 	</delete>
+	
+	<!-- 게시글 수정 - Board  //확인전 -->
+	<update id="updateBoard">
+		UPDATE BOARD
+		SET TITLE = #{boardTitle},
+			CONTENT = #{boardContent},
+			MODIFY_DATE = SYSDATE
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<!-- 게시글 수정 - ErrorBoard  //확인전 -->
+	<update id="updateErrorBoard">
+		UPDATE ERROR_BOARD
+		SET MODIFIED_CODE = #{modifiedCode},
+			MODIFIED_INFO = #{modifiedInfo}
+		WHERE REF_BNO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
 	
 	
 </mapper>

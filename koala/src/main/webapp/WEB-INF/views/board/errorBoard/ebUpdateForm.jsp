@@ -5,13 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>ErrorBoard_UpdateForm</title>
-<!-- CodeMirror -->
-<script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/sql/sql.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/lib/codemirror.css">
-<link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/theme/darcula.css">
 </head>
 
 <style>
@@ -95,19 +88,6 @@
 							style="width: 85%; height: 90%; padding: 5px 55px;">${eb.board.content }</textarea>
 				</div>
 			</div>
-			
-<!-- 			<script> //다시 해보기 -->
-<!-- // 				// textarea 태그의 element를 지정 -->
-<!-- // 				var textarea = document.getElementById('afterCode'); -->
-				
-<!-- // 				// 에디터 설정 -->
-<!-- // 		        var editor = CodeMirror.fromTextArea(textarea, { -->
-<!-- // 		            lineNumbers: true,  //왼쪽 라인넘버 표기 -->
-<!-- // 		            lineWrapping: true, //줄바꿈. 음.. break-word; -->
-<!-- // 		            theme: "darcula",   //테마는 맘에드는 걸로. -->
-<!-- // 		            mode: 'text/x-java', //모드는 sql 모드 -->
-<!-- // 		            val: textarea.value -->
-<!-- 			</script> -->
 
 			<div class="modifyForm-area_code">
 				<div class="modifyForm-top">
@@ -117,13 +97,13 @@
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
-						<textarea id="beforeCode" cols="30" rows="10" readonly disabled>코드 가져오기</textarea>
+						<textarea id="beforeCode" cols="30" rows="10" readonly disabled>${eb.createSetting.settingCode }</textarea>
 					</div>
 					<div class="modifyForm_2">
 						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
-						<textarea name="modifiedCode" id="afterCode" cols="30" rows="10" disabled>코드 가져오기</textarea>
+						<textarea name="modifiedCode" id="afterCode" cols="30" rows="10" disabled>${eb.errorBoard.modifiedCode }</textarea>
 					</div>
 				</div>
 			</div>
@@ -136,18 +116,18 @@
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
-						<textarea id="beforeInfo" cols="30" rows="10" readonly disabled>설명서 가져오기</textarea>
+						<textarea id="beforeInfo" cols="30" rows="10" readonly disabled>${eb.createSetting.settingInfo }</textarea>
 					</div>
 					<div class="modifyForm_2">
 						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
-						<textarea name="modifiedInfo" id="afterInfo" cols="30" rows="10" disabled>설명서 가져오기</textarea>
+						<textarea name="modifiedInfo" id="afterInfo" cols="30" rows="10" disabled>${eb.errorBoard.modifiedInfo }</textarea>
 					</div>
 				</div>
 			</div>
 			
-			<div class="modifyBtn-area"> <!-- 수정폼 두개 생성되면 안보이게 -->
+			<div class="modifyBtn-area">
 				<span style="color: rgb(241, 196, 15);">modify form</span>
 				<select name="category"> <!-- 이 값은 무시  -->
 					<option value="">--참고자료--</option>
@@ -167,52 +147,46 @@
 			<script>
 				$(function(){
 					
-					if(${eb.errorBoard.modifiedCode == null}){
-						
-					}else{
-						
-					}
-
+					FormCheck();
+					
+					//현재 상태에 따라 수정폼 보여주기
+					function FormCheck(){
+						console.log("바로 실행");
+						if(${eb.errorBoard.modifiedCode ne null}){
+							$(".modifyForm-area_code").css("display","block");
+							$("#afterCode").attr("disabled",false);
+							$("option[value='code']").css("display","none");
+						}
+					 	if(${eb.errorBoard.modifiedInfo ne null}){
+							$(".modifyForm-area_info").css("display","block");
+							$("#afterInfo").attr("disabled",false);
+							$("option[value='info']").css("display","none");
+						}
+					};
+					
 					
 					//수정폼 생성(비동기)
 					$(".modifyBtn-area").on("click", "button", function(){
 						
 						var $category = $("select[name='category']").val();
 						
-						if($("select[name='settingVersion']").val() == null){
-							alert("category를 먼저 선택해주세요 !");
-						}else{
-							$.ajax({
-								
-								url : "modifyForm",
-								data : {
-									settingTitle : $("select[name='settingTitle']").val(),
-									settingVersion : $("select[name='settingVersion']").val(),
-									category : $category
-								},
-								success : function(str){
+					
 									
-									if($category=="code"){
-										$("#beforeCode,#afterCode").html(str);
-										$("#afterCode").attr("disabled",false);
-										$(".modifyForm-area_code").css("display","block");
-										$("option[value='code']").css("display","none");
-										$('html').animate({scrollTop : $(".modifyForm-area_code").offset().top}, 300);
-									}else if($category=="info"){
-										$("#beforeInfo,#afterInfo").html(str);
-										$("#afterInfo").attr("disabled",false);
-										$(".modifyForm-area_info").css("display","block");
-										$("option[value='info']").css("display","none");
-										$('html').animate({scrollTop : $(".modifyForm-area_info").offset().top}, 300);
-									}
-									$("select[name='category']").find('option:first').prop('selected', true);
-									
-								},
-								error : function(){
-									console.log("실패");
-								}
-							});
+						if($category=="code"){
+							$("#afterCode").attr("disabled",false);
+							$(".modifyForm-area_code").css("display","block");
+							$("option[value='code']").css("display","none");
+							$('html').animate({scrollTop : $(".modifyForm-area_code").offset().top}, 300);
+						}else if($category=="info"){
+							$("#afterInfo").attr("disabled",false);
+							$(".modifyForm-area_info").css("display","block");
+							$("option[value='info']").css("display","none");
+							$('html').animate({scrollTop : $(".modifyForm-area_info").offset().top}, 300);
 						}
+						$("select[name='category']").find('option:first').prop('selected', true);
+							
+							
+						
 					});
 					
 					//수정폼 선택 삭제

@@ -28,6 +28,12 @@ public class ErrorBoardDao {
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
 	}
 	
+	//조회수 증가
+	public int increaseCount(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.update("errorBoardMapper.increaseCount", boardNo);
+	}
+	
 	//게시글 상세 조회
 	public ErrorSet selectBoard(SqlSessionTemplate sqlSession, int boardNo) {
 		
@@ -80,6 +86,18 @@ public class ErrorBoardDao {
 	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
 		
 		return sqlSession.delete("errorBoardMapper.deleteBoard", boardNo);
+	}
+
+	//게시글 수정 - Board
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.update("errorBoardMapper.updateBoard", b);
+	}
+
+	//게시긜 수정 - ErrorBoard
+	public int updateEbBoard(SqlSessionTemplate sqlSession, ErrorBoard eb) {
+		
+		return sqlSession.update("errorBoardMapper.updateErrorBoard", eb);
 	}
 	
 	

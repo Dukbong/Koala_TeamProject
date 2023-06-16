@@ -191,8 +191,7 @@
 	        <script>
 		        function updateBoard(){
 		        	if('${eb.errorBoard.solved}'=='N' && '${eb.errorBoard.errorType}'=='N'){ //사용자 오류일 경우에 게시글 수정할 수 있게 할지
-		        		console.log("들어왔냐");
-		        		location.href="updateBoard?boardNo="+${eb.board.boardNo};
+		        		location.href="updateForm?boardNo="+${eb.board.boardNo};
 		        	}else{
 		        		alert("해당 게시글은 관리자 확인이 완료되어 수정이 불가능합니다.");
 		        	}

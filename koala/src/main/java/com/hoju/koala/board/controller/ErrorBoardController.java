@@ -57,10 +57,21 @@ public class ErrorBoardController {
 	public String enrollForm(int boardNo,
 							 Model model) {
 		
-		ErrorSet eb = ebService.selectBoard(boardNo);
+		//조회수 증가 메소드
+		int result = ebService.increaseCount(boardNo);
 		
-		model.addAttribute("eb", eb);
-		return "board/errorBoard/ebDetailView";
+		if(result>0) {
+			
+			ErrorSet eb = ebService.selectBoard(boardNo);
+			
+			model.addAttribute("eb", eb);
+			return "board/errorBoard/ebDetailView";
+			
+		}else {
+			
+			model.addAttribute("errorMsg", "게시글 조회에 실패했습니다."); //이게 맞나
+			return "common/error";
+		}
 	}
 	
 	
@@ -132,8 +143,8 @@ public class ErrorBoardController {
 	}
 	
 	//게시글 수정폼 이동
-	@GetMapping("updateBoard")
-	public String updateBoard(int boardNo,
+	@GetMapping("updateForm")
+	public String updateForm(int boardNo,
 							  Model model) {
 		
 		ErrorSet eb = ebService.selectBoard(boardNo);
@@ -143,6 +154,21 @@ public class ErrorBoardController {
 	}
 	
 	//게시글 수정 메소드
+	@PostMapping("updateBoard")
+	public String updateBoard(Board b,
+							  ErrorBoard eb,
+							  HttpSession session) {
+		
+		int result = ebService.updateBoard(b,eb);
+		
+		if(result>0) {
+			session.setAttribute("msg", "게시글이 성공적으로 수정되었습니다.");
+			return "redirect:detail?boardNo="+b.getBoardNo(); //이게 맞나..
+		}else {	
+			session.setAttribute("errorMsg", "게시글 수정에 실패했습니다.");
+			return "common/error";
+		}
+	}
 	
 	//게시글 삭제 메소드
 	@GetMapping("deleteBoard")
