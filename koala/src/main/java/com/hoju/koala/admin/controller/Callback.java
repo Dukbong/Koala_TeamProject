@@ -20,8 +20,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -36,7 +36,7 @@ public class Callback {
 	
 	// 특정 repo의 커밋 기록을 보는 방법은 
 	// https://api.github.com/repos/[user_name]/[repo_name]/commits >> 공공 데이터와 같다.
-	
+	// repos_url":"https://api.github.com/users/Dukbong/repos"
 	
 	@Autowired
 	Client client;
@@ -45,29 +45,33 @@ public class Callback {
 	AdminService adminService;
 	
 	@GetMapping("/callback")
-	public String callback(String code, ModelAndView mav, HttpServletRequest request) {
+	public String callback(String code, Model model, HttpServletRequest request) {
+		System.out.println("여기 제발");
 		System.out.println(code);
 		client.code(code);
 		String accessToken = getAccessToken(code);
 		JsonObject userInfo = getUserInfo(accessToken);
-//		String referer = request.getHeader("Referer");
-		
 		
 		HttpSession session = request.getSession();
 		// 해당 UserNo와 받아온 GitHub_Id를 이용해서 Supporters 테이블에 Insert 해준다.
 		int loginUserNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		String githubId = "";
-		
+		String repoUrl = "";
+		Supporters supporter = null;
 		try {
+			System.out.println(1);
 			githubId = getUserId(userInfo);
-			Supporters supporter = Supporters.builder().githubId(githubId).userNo(loginUserNo).build();
-			int result = adminService.insertSupporterGithubId(supporter);
+			System.out.println(2);
+			repoUrl = getRepoUrl(userInfo);
+			System.out.println(3);
+			supporter = Supporters.builder().githubId(githubId).refUno(loginUserNo).repoUrl(repoUrl).build();
+			System.out.println(4);
+			System.out.println("여긴요?");
 		}catch(Exception e) {
 			
 		}
-//		String userId = getUserId()
-		mav.addObject("git", userInfo);
-//		mav.setViewName(referer);
+		adminService.insertSupporterGithubId(supporter);
+		model.addAttribute("git", userInfo);
 		return "common/main";
 	}
 	
@@ -116,7 +120,7 @@ public class Callback {
 			beginUserInfo = EntityUtils.toString(entity);
 			// 문자열로 넘어오기 때문에 Json 처리해준다.
 			EndUserInfo = new Gson().fromJson(beginUserInfo, JsonObject.class);
-			
+		
 			/*
 			 * 여기서 하고 싶은거
 			 * 1. 아이디(login) 받아서 저장 시키기
@@ -134,5 +138,8 @@ public class Callback {
 	
 	private String getUserId(JsonObject userInfo) {
 		return userInfo.get("login").getAsString();
+	}
+	private String getRepoUrl(JsonObject userInfo) {
+		return userInfo.get("repos_url").getAsString();
 	}
 }

@@ -143,15 +143,18 @@
     </div>
     <jsp:include page="footer.jsp"/>
     
-    <c:if test="${not empty param.msgc && empty param.client }">
+    <c:if test="${not empty msgc}">
     	<script>
     		$(function(){
-	 			if(confirm("${param.msgc}")){
+	 			if(confirm("${msgc}")){
 	 				//확인 및 취소
 	 				$.ajax({
 	 					url : "/koala/promote/promote.approve",
+	 					data : {
+	 						scope : "read:user"
+	 					},
 	 					success : function(data){ 
-	 						location.href = "https://github.com/login/oauth/authorize?client_id=${param.clientId}&scope=read:user";
+	 						location.href="https://github.com/login/oauth/authorize?client_id="+data;
 	 					},
 	 					error : function(){
 	 						console.log("error");
@@ -171,8 +174,10 @@
 	 					}
 	 				});
 	 			}
+	 			
     		});
     	</script>
+    	<c:remove var="msgc" scope="session"/>
     </c:if>
 </body>
 </html>

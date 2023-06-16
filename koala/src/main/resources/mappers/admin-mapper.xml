@@ -21,6 +21,7 @@
 		<result column="REF_UNO" property="refUno"/>
 		<result column="GITHUB_ID" property="githubId"/>
 		<result column="CREATE_DATE" property="createDate"/>
+		<result column="REPO_URL" property="repoUrl"/>
 	</resultMap>
 	<!-- 대기 중인 라이브러리 및 세팅 개수 조회 VO -->
 	<resultMap type="createSetting" id="createSettingResultSet">
@@ -118,7 +119,7 @@
 	<!--============================================================-->
 	
 	<insert id="InsertSupporters" parameterType="_int">
-		INSERT INTO SUPPORTERS VALUES (#{client_No}, ' ', SYSDATE)
+		INSERT INTO SUPPORTERS VALUES (#{client_No}, ' ', SYSDATE, DEFAULT)
 	</insert>
 	<delete id="deleteSupporters" parameterType="_int">
 		DELETE FROM SUPPORTERS WHERE REF_UNO = #{client_No}
@@ -186,9 +187,10 @@
         AND TO_CHAR(s.create_date, 'YYYYMMDD') - TO_CHAR(SYSDATE, 'YYYYMMDD') = 7
 	</select>
 	
-	<update id="insertSupporterGithubId">
+	<update id="insertSupporterGithubId" parameterType="supporters">
 		UPDATE SUPPORTERS
-		SET GITHUB_ID = #{githubId}
+		SET GITHUB_ID = #{githubId},
+			REPO_URL = #{repoUrl}
 		WHERE REF_UNO = #{refUno} 
 	</update>
 <!-- 	

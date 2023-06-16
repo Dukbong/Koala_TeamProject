@@ -26,5 +26,5 @@ public class Supporters extends Member{
 	private int refUno;
 	private String githubId;
 	private Date createDate;
-	private String repos_url; // 06-16  새로 추가 잔디를 위해
+	private String repoUrl; // 06-16  새로 추가 잔디를 위해
 }

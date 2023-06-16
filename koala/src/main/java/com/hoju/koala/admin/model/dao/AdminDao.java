@@ -97,6 +97,7 @@ public class AdminDao {
 	}
 
 	public int insertSupporterGithubId(Supporters supporter, SqlSession sqlSession) {
+		System.out.println(supporter);
 		return sqlSession.update("adminMapper.insertSupporterGithubId", supporter);
 	}
 

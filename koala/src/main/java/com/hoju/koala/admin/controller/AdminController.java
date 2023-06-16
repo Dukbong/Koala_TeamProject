@@ -67,6 +67,7 @@ public class AdminController {
 	@ResponseBody
 	public String adminSupportersDelete(String userId, Model model) {
 		int result = adminService.deleteSupporter(userId);
+		System.out.println("demote");
 		return new Gson().toJson(String.valueOf(result));
 	}
 
