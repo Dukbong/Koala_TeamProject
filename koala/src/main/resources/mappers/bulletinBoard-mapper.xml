@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bulletinBoardMapper">
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE STATUS = 'Y'
+		AND CATEGORY = 'B'
+	</select>
+	
+	<select id="selectList" resultMap="boardResultSet">
+		SELECT BOARD_NO, TITLE, NICKNAME, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", COUNT, LIKED
+		FROM BOARD B
+		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
+		WHERE B.STATUS = 'Y'
+		AND CATEGORY = 'B'
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<select id="boardDetailView" resultMap="boardResultSet">
+		SELECT BOARD_NO, NICKNAME, TITLE, CONTENT, CONTENT_CODE, COUNT, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", LIKED 
+		FROM BOARD B
+		JOIN MEMBER M ON (USER_NO = BOARD_WRITER)
+		WHERE B.STATUS = 'Y'
+		AND BOARD_NO = #{boardNo}
+		AND CATEGORY = 'B'
+	</select>
+	
+	<update id="increaseCount">
+		UPDATE BOARD
+		SET COUNT = COUNT+1
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<insert id="insertBoard">
+		INSERT INTO BOARD (BOARD_NO, CATEGORY, BOARD_WRITER, TITLE, CONTENT, CONTENT_CODE)
+		VALUES(SEQ_BNO.NEXTVAL,#{boardNo},#{category},#{boardWriter},#{title},#{content}, #{contentCode})
+	</insert>
+	
+	<insert id="insertBoardAttachment">
+		INSERT INTO BOARD (FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL)
+		VALUES(SEQ_FNO.NEXTVAL,#{fileNo},#{refBno},#{originName},#{changeName},#{filePaht}, #{fileLevel})
+	</insert>
+	
+	<update id="increaseLike">
+		UPDATE BOARD
+		SET LIKE = LIKE+1
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<update id="decreaseLike">
+		UPDATE BOARD
+		SET LIKE = LIKE+1
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<select id="selectSearchCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD B
+		JOIN MEMBER M ON(BOARD_WRITER=USER_NO)
+		WHERE B.STATUS = 'Y'
+		<if test="types == 'writer'">
+			AND USER_ID		
+		</if>
+		<if test="types == 'content'">
+			AND BOARD_CONTENT
+		</if>
+		<if test="types == 'title'">
+			AND BOARD_TITLE
+		</if>
+		LIKE '%'||#{keyword}||'%'
+	</select>
+	
+	<select id="selectSearchList" resultMap="boardResultSet" parameterType="hashmap">
+		SELECT BOARD_NO, TITLE, NICKNAME, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", COUNT, LIKED
+		FROM BOARD B
+		JOIN MEMBER M ON (BOARD_WRITER = USER_NO)
+		WHERE B.STATUS='Y'
+		<choose>
+			<when test="types == 'writer'">
+				AND	NICKNAME
+			</when>
+			<when test="types == 'content'">
+				AND CONTENT
+			</when>
+			<otherwise>
+				AND TITLE
+			</otherwise>
+		</choose>
+		LIKE '%'||#{keyword}||'%'
+		ORDER BY B.CREATE_DATE DESC
+	</select>
+	
+	<select id="selectReply" resultMap="replyResultSet">
+		SELECT REPLY_NO, REPLY_CONTENT, REPLY_WRITER, TO_CHAR(R.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
+		FROM REPLY R
+		JOIN MEMBER ON(USER_NO = REPLY_WRITER)
+		WHERE R.STATUS = 'Y'
+		AND REF_BNO = #{boardNo}
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<select id="countLike" resultType="_int">
+		SELECT LIKE
+		FROM BOARD
+		WHERE BOARDNO = #{boardNo}
+		AND STATUS = 'Y'
+	</select>
+	
+	<insert id="insertReply">
+		INSERT INTO REPLY(REPLY_NO, REF_BNO, REPLY_CONTENT, REPLY_WRITER)
+	 	VALUES(SEQ_RNO.NEXTVAL,#{refBno},#{replyContent},#{replyWriter})
+	</insert>
+	
+	<update id="updateReply">
+		UPDATE REPLY
+		SET REPLY_CONTENT = #{replyContent},
+			REPLY_WRITER = #{replyWriter},
+		WHERE REPLY_NO =#{replyNo},
+		AND STATUS = 'Y'
+	</update>
+	
+	<update id="deleteReply">
+		UPDATE REPLY
+		SET STATUS = 'N'
+		WHERE REPLY_NO = #{replyNo}
+	</update>
+	
+	<update id="deleteBoard">
+		UPDATE BOARD
+		SET STATUS = 'Y'
+		WHERE BOARDNO = #{boardNo}
+	</update>
+	
+	<select id="selectBoard" resultMap="boardResultSet">
+		SELECT BOARD_NO, CATEGORY, NICKNAME, TITLE, CONTENT, CONTENT_CODE, COUNT, LIKED, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
+		FROM BOARD
+		WHERE CATEGORY = 'B',
+		AND BOARD_NO = #{boardNo}
+	</select>
+	
+	<insert id="insertBoardCategory">
+		INSERT INTO BULLETINBOARD
+		VALUES (#{boardNo},#{boardType))
+	</insert>
+	
+	<select id="boardCategoryDetailView" resultMap="bulletinBoardResultSet">
+		SELECT BOARD_TYPE
+		FROM BULLETIN_BOARD
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<select id="selectBoardAttachment" resultMap="boardAttachmentResultSet">
+		SELECT FILE_NO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, UPLOAD_DATE, FILE_LEVEL
+		FROM BOARD_ATTACHMENT
+		WHERE REF_BNO = #{boardNo}
+		AND STATUS = 'Y'
+	</select>
+	
+	<!-- 공통으로 사용할 게시판 관련 resultMap -->
+	
+	<resultMap type="board" id="boardResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="CATEGORY" property="category"/>
+		<result column="NICKNAME" property="boardWriter"/> <!-- 닉네임으로 조회 -->
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="CONTENT_CODE" property="contentCode"/>
+		<result column="COUNT" property="count"/>
+		<result column="LIKED" property="liked"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="MODIFIED_DATE" property="modifyDate"/>
+		<result column="NOTICE" property="notice"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	<resultMap type="boardAttachment" id="boardAttachmentResultSet">
+		<result column="FILE_NO" property="fileNo"/>
+		<result column="REF_BNO" property="refBno"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="UPLOAD_DATE" property="uploadDate"/>
+		<result column="FILE_LEVEL" property="fileLevel"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REF_BNO" property="refBno"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="NICKNAME" property="replyWriter"/> <!-- 닉네임으로 조회 -->
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	<resultMap type="liked" id="likedResultSet">
+		<result column="REF_UNO" property="refUno"/>
+		<result column="REF_BNO" property="refBno"/>
+		<result column="LIKED_TYPE" property="refBno"/>
+	</resultMap>
+	
+	<resultMap type="bulletinBoard" id="bulletinBoardResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TYPE" property="boardType"/>
+	</resultMap>	
+</mapper>

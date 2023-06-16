@@ -2,6 +2,9 @@ package com.hoju.koala.board.model.vo;
 
 import java.sql.Date;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +28,5 @@ public class Board {
 	private Date modifyDate; //수정일
 	private String notice; //공지사항여부
 	private String status; //상태값(Y/N)
-	
+
 }

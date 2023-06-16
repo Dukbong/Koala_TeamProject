@@ -17,4 +17,11 @@ public class Client {
 	private String clientId; // 이건 고정값이 기때문에 한다.
 	private String clientSecret; // 이건 고정값이 기때문에 한다.
 	private String code;
+	
+	
+	
+	public void code(String code) {
+		this.code = code;
+		System.out.println("client class");
+	}
 }

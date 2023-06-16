@@ -94,16 +94,16 @@
                 <a class="footerAtag ii"  href="#">DownLoad & Copy</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Error_Board</a>
+                <a class="footerAtag ii" href="/koala/errorBoard/list">Error_Board</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Bulletin_Board</a>
+                <a class="footerAtag ii" href="/koala/qnaBoard/list">QnA_Board</a>
             </div>
             <div class="item">
                 <a class="footerAtag ii" href="#">QnA_Board</a>
             </div>
-            <div class="item more">
-                <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
+            <div class="item">
+                <a class="footerAtag ii" href="/koala/bulletinBoard/list">Bulletin_Board</a>
             </div>
         </div>
         <div class="column2">
@@ -140,7 +140,7 @@
                 Multi Quiz
             </div>
             <div class="QuizPlay">
-                <a class="footerAtag" href="#">Play</a>
+                <a class="footerAtag" href="/koala/multi/play">Play</a>
             </div>
         </div>
     </div>
@@ -151,5 +151,6 @@
             Copyright @ 20230107-20230707 KH academy C lecture room
         </div>
     </div>
+  
 </body>
 </html>
