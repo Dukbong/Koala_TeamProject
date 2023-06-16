@@ -31,6 +31,9 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder pwdEncoder;
 	
+	@Autowired
+	private EmailCheck ec;
+	
 	
 	
 	//로그인 페이지 이동
@@ -186,8 +189,8 @@ public class MemberController {
 	
 	
 	// 이메일로 해당 유저의 ID와 임시 패스워드보내기
-	@PostMapping("/sendEmail")
-	public ModelAndView sendEmail(ModelAndView mv,
+	@PostMapping("/forget")
+	public ModelAndView forget(ModelAndView mv,
 									HttpServletRequest request) {
 		
 		//아이디와 비밀번호를 찾고하자는 유저가 입력한 이메일
@@ -196,8 +199,9 @@ public class MemberController {
 		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
 		String userId = memberService.selectEmail(userEmail);
 		
+		String newPwd = ec.forgetUserEmail(userEmail, userId);
 		
-		
+		System.out.println(newPwd);
 		
 		return null;
 	}
@@ -245,6 +249,7 @@ public class MemberController {
 	@PostMapping("/deleteMember")
 	public int deleteMember(String userId) {
 
+		System.out.println(userId);
 		//상태값만 N변경, DELETE_DATE 추가 최종삭제는 DELETE_DATE로부터 스케줄러를 통해 30일 이후에 삭제될 예정
 		int result = memberService.deleteMember(userId);
 		
@@ -278,7 +283,6 @@ public class MemberController {
 	@GetMapping("/emailCheck")
 	public String emailCheck(String inputEmail) {
 		
-		EmailCheck ec = new EmailCheck();
 		
 		//이메일전송후 인증번호 반환(현재 전송 막아논 상태)
 		String certiCode = ec.joinEmail(inputEmail);
