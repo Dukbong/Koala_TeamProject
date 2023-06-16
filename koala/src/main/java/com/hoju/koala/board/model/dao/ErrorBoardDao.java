@@ -13,7 +13,6 @@ import com.hoju.koala.common.model.vo.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Repository
 public class ErrorBoardDao {
 	
@@ -27,6 +26,12 @@ public class ErrorBoardDao {
 	public ArrayList<ErrorSet> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
+	}
+	
+	//조회수 증가
+	public int increaseCount(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.update("errorBoardMapper.increaseCount", boardNo);
 	}
 	
 	//게시글 상세 조회
@@ -75,6 +80,24 @@ public class ErrorBoardDao {
 	public int insertEbBoard(SqlSessionTemplate sqlSession, ErrorBoard eb) {
 		
 		return sqlSession.insert("errorBoardMapper.insertErrorBoard", eb);		
+	}
+
+	//게시글 삭제
+	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.delete("errorBoardMapper.deleteBoard", boardNo);
+	}
+
+	//게시글 수정 - Board
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.update("errorBoardMapper.updateBoard", b);
+	}
+
+	//게시긜 수정 - ErrorBoard
+	public int updateEbBoard(SqlSessionTemplate sqlSession, ErrorBoard eb) {
+		
+		return sqlSession.update("errorBoardMapper.updateErrorBoard", eb);
 	}
 	
 	
