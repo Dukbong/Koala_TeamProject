@@ -92,6 +92,15 @@ public class AdminDao {
 		return sqlSession.selectOne("adminMapper.selectCountMemberCondition", ms);
 	}
 
+	public ArrayList<Supporters> selectSupporterWaitList(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectSupporterWaitList");
+	}
+
+	public int insertSupporterGithubId(Supporters supporter, SqlSession sqlSession) {
+		System.out.println(supporter);
+		return sqlSession.update("adminMapper.insertSupporterGithubId", supporter);
+	}
+
 
 
 

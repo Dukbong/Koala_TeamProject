@@ -100,7 +100,10 @@
                 <a class="footerAtag ii" href="/koala/qnaBoard/list">QnA_Board</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Bulletin_Board</a>
+                <a class="footerAtag ii" href="#">QnA_Board</a>
+            </div>
+            <div class="item">
+                <a class="footerAtag ii" href="/koala/bulletinBoard/list">Bulletin_Board</a>
             </div>
         </div>
         <div class="column2">
@@ -137,7 +140,7 @@
                 Multi Quiz
             </div>
             <div class="QuizPlay">
-                <a class="footerAtag" href="#">Play</a>
+                <a class="footerAtag" href="/koala/multi/play">Play</a>
             </div>
         </div>
     </div>

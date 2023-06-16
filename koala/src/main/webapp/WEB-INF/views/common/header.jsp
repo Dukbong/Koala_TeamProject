@@ -138,7 +138,7 @@
     <div id="wrap">
         <div id="header">
             <div id="header_1">
-                <a href="menubar.jsp"><i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i></a>
+                <a href="../common/menubar.jsp"><i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i></a>
             </div>
             <div id="header_2">
                 <div id="header_2_1">
@@ -344,13 +344,13 @@
     	</c:when>
     </c:choose>
     
-    <!-- 알림메세지. -->
-    <c:if test="${not empty msg }">
-    	<script>
-    		alert("${msg }");
-    	</script>
-		<c:remove var="msg" scope="session"/>
-    </c:if>
+<!--     알림메세지. -->
+<%--     <c:if test="${not empty msg }"> --%>
+<!--     	<script> -->
+<%-- //     		alert("${msg }"); --%>
+<!--     	</script> -->
+<%-- 		<c:remove var="msg" scope="session"/> --%>
+<%--     </c:if> --%>
     
     
     

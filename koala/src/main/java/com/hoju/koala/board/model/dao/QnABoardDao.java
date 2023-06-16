@@ -2,6 +2,7 @@ package com.hoju.koala.board.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -96,5 +97,63 @@ public class QnABoardDao {
 		
 		return sqlSession.insert("qnaBoardMapper.insertNotice",b);
 	}
+
+	//qna 게시글 추천 확인
+	public int likeChk(SqlSessionTemplate sqlSession, int boardNo, int userNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userNo", userNo);
+		map.put("boardNo", boardNo);
+		
+		return sqlSession.selectOne("qnaBoardMapper.likeChk",map);
+	}
+
+	//qna like테이블 삽입
+	public void insertLike(SqlSessionTemplate sqlSession, int boardNo, int userNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userNo", userNo);
+		map.put("boardNo", boardNo);
+		
+		sqlSession.insert("qnaBoardMapper.insertLike",map);
+		
+	}
+
+	//qna board테이블 like 추가
+	public void updateLike(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		sqlSession.update("qnaBoardMapper.updateLike",boardNo);
+		
+	}
+
+
+	//qna 회원포인트 지급
+	public void pointUpdate(SqlSessionTemplate sqlSession, String boardWriter) {
+		
+		sqlSession.update("qnaBoardMapper.pointUpdate",boardWriter);
+		
+	}
+
+
+	//qna like테이블 삭제
+	public void deleteLike(SqlSessionTemplate sqlSession, int boardNo, int userNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userNo", userNo);
+		map.put("boardNo", boardNo);
+		
+		sqlSession.update("qnaBoardMapper.deleteLike",map);
+		
+	}
+
+	//qna 회원포인트 차감
+	public void pointDelete(SqlSessionTemplate sqlSession, String boardWriter) {
+		
+		sqlSession.update("qnaBoardMapper.pointDelete", boardWriter);
+		
+	}
+	
+	
+	
 
 }

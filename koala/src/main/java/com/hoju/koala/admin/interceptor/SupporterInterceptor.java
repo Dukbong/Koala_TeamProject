@@ -32,9 +32,7 @@ public class SupporterInterceptor  extends HandlerInterceptorAdapter {
 		try {
 			Supporters support = adminService.selectOneSupport(member.getUserNo()); // 여기 된다는 거 자체가 null이 아니라는 뜻.
 			if(support.getGithubId().equals(" "))
-				modelAndView.addObject("msgc", support.getUserId() + "님을 koala의 서포터즈로 초대합니다.");
-				modelAndView.addObject("clientId", client.getClientId());
-				modelAndView.addObject("clientSecret", client.getClientSecret());
+				session.setAttribute("msgc", "서포트즈 초대");
 		}catch(NullPointerException e) {
 			return;
 		}
