@@ -149,10 +149,16 @@
                     <span>QnA</span>
                 </div>
                 <div class="button_area">
-                    <button type="reset">취소</button>
+                    <button type="reset" id="back">취소</button>
                     <button type="submit">등록</button>
                 </div>
             </div>
+            
+            <script>
+            	document.querySelector("#back").onclick = function(){
+            		history.back();
+            	}
+            </script>
 
 
             <div class="middle_area">
@@ -199,7 +205,7 @@
                          codeEditor = CodeMirror.fromTextArea(textArea,{
                             lineNumbers:true,
                             lineWrapping:true,
-                            theme:"dracula",
+                            theme:"3024-night",
                             mode:"text/x-sql",
                             val:textArea.value
                         });

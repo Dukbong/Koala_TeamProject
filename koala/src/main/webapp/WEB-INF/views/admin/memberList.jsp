@@ -235,7 +235,6 @@
          	     <div id="pagingArea">
                         <div class="btnarea">
                             <ul class="pagination">
-                            	
                                 <c:choose>
                                     <c:when test="${pi.currentPage == 1 }">
                                         <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
@@ -350,10 +349,6 @@
 				}
 				$("#searchForm").submit();
 			});
-			
-			
-			
-			
 			
 			// 우클릭 드레그 방지..
 			$("body").attr("oncontextmenu","return false").attr("ondragstart","return false").attr("onselectstart","return false");

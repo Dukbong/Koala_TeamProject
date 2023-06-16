@@ -75,7 +75,7 @@
             <div id="menubar">
                 <ul id="navi">
                     <li><a href="">CreateCode && DownloadFile</a></li>
-                    <li><a href="">Community(All user);</a></li>
+                    <li><a href="bulletinboard.bo">Community(All user);</a></li>
                     <li><a href="">try{} catch(Error){}</a>
                         <ul>
                             <li><a href="">ex1CreateCodeCode</a></li>
