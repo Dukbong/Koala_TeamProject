@@ -102,7 +102,7 @@
 		            <span class="small">해당 이메일로 아이디와 변경된 패스워드를 보내드립니다.</span>
 	            </div>
 	            
-	            <form action="/koala/member/sendEmail" method="post">
+	            <form action="/koala/member/forget" method="post">
 	
 	                <div id="input-area">
 	                    <label for="email" class="">Email</label>
