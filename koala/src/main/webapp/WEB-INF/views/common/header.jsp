@@ -344,13 +344,13 @@
     	</c:when>
     </c:choose>
     
-    <!-- 알림메세지. -->
-    <c:if test="${not empty msg }">
-    	<script>
-    		alert("${msg }");
-    	</script>
-		<c:remove var="msg" scope="session"/>
-    </c:if>
+<!--     알림메세지. -->
+<%--     <c:if test="${not empty msg }"> --%>
+<!--     	<script> -->
+<%-- //     		alert("${msg }"); --%>
+<!--     	</script> -->
+<%-- 		<c:remove var="msg" scope="session"/> --%>
+<%--     </c:if> --%>
     
     
     
