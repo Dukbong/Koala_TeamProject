@@ -96,6 +96,10 @@ public class AdminDao {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectSupporterWaitList");
 	}
 
+	public int insertSupporterGithubId(Supporters supporter, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.insertSupporterGithubId", supporter);
+	}
+
 
 
 

@@ -57,6 +57,8 @@ public interface AdminService {
 	int blockBlockIpUser(String ip);
 	// =======================
 
+	int insertSupporterGithubId(Supporters supporter);
+
 
 
 

@@ -93,9 +93,6 @@
 <body>
 <%-- 	<jsp:include page="header.jsp"/> --%>
 	<%@include file="header.jsp" %>
-	<%
-		
-	%>
     <div class="wrapper">
     <div class="space"></div>
         <div class="main_area">
@@ -148,14 +145,13 @@
     
     <c:if test="${not empty param.msgc && empty param.client }">
     	<script>
-    	
     		$(function(){
 	 			if(confirm("${param.msgc}")){
 	 				//확인 및 취소
 	 				$.ajax({
 	 					url : "/koala/promote/promote.approve",
 	 					success : function(data){ 
-	 						location.href = "http://github.com/login/oauth/authorize?client_id=${param.clientId}";
+	 						location.href = "https://github.com/login/oauth/authorize?client_id=${param.clientId}&scope=read:user";
 	 					},
 	 					error : function(){
 	 						console.log("error");
@@ -168,11 +164,7 @@
 	 						client_No : "${loginUser.userNo}"
 	 					},
 	 					success : function(data){
-			 				if(confirm("main으로 이동하시겠습니까?(y)||이전 페이지로 이동하시겠습니까?(n)")){
-			 					location.href="/koala";
-			 				}else{
-			 					history.back();
-			 				}	 						
+	 						alert("아쉽습니다...");
 	 					},
 	 					error : function(){
 	 						console.log("ajax error");
@@ -182,27 +174,5 @@
     		});
     	</script>
     </c:if>
-    
-	<c:if test="${not empty github }">
-		<script>
-			$.ajax({
-				url : "http://github.com/login/oauth/access_token",
-				data : {
-					client_id : "${github.clientId}",
-					client_secret : "${github.clientSecret}",
-					code : "${github.code}",
-// 					redirect_uri : "http://localhost:8888/koala",
-				},
-				type:"POST",
-				success : function(data){
-					console.log("data========================");
-					console.log(data);
-				},
-				error : function(){
-					console.log("ajax error");
-				}
-			})
-		</script>
-	</c:if>
 </body>
 </html>

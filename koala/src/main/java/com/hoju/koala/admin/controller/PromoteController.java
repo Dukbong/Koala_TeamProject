@@ -35,7 +35,6 @@ public class PromoteController {
 		return String.valueOf(result);
 	}
 
-	// 아직 미해결....06/13
 	@GetMapping("/promote.approve")
 	@ResponseBody
 	public String promoteApprove() {

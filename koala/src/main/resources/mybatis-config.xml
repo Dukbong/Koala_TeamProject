@@ -30,9 +30,7 @@
   	</typeAliases>
   
 	<typeHandlers>
-
         <typeHandler handler="com.hoju.koala.board.handler.LongHandler" javaType="String" jdbcType="LONGVARCHAR"/>
-
     </typeHandlers>
   
 </configuration>

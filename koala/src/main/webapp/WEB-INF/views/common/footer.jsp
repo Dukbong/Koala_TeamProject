@@ -137,7 +137,7 @@
                 Multi Quiz
             </div>
             <div class="QuizPlay">
-                <a class="footerAtag" href="#">Play</a>
+                <a class="footerAtag" href="/koala/multi/play">Play</a>
             </div>
         </div>
     </div>

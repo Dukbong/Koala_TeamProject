@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 
 @NoArgsConstructor
@@ -18,11 +19,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@SuperBuilder
 public class Supporters extends Member{
 	/*
 	 * Member 상속을 통해 별도의 vo 필드 추가 없이 사용이 가능하다.*/
 	private int refUno;
 	private String githubId;
 	private Date createDate;
-
+	private String repos_url; // 06-16  새로 추가 잔디를 위해
 }

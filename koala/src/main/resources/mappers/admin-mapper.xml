@@ -185,6 +185,12 @@
 		AND S.GITHUB_ID = ' '
         AND TO_CHAR(s.create_date, 'YYYYMMDD') - TO_CHAR(SYSDATE, 'YYYYMMDD') = 7
 	</select>
+	
+	<update id="insertSupporterGithubId">
+		UPDATE SUPPORTERS
+		SET GITHUB_ID = #{githubId}
+		WHERE REF_UNO = #{refUno} 
+	</update>
 <!-- 	
 	<select id="boardCount" parameterType="string">
 		SELECT COUNT(*)
