@@ -1,6 +1,8 @@
 package com.hoju.koala.member.controller;
 
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Follow;
@@ -107,11 +110,10 @@ public class MemberController {
 	public ModelAndView ad(String userId,
 					 ModelAndView mv) {
 		
-		System.out.println(userId);
+		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 		
-		System.out.println(m);
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
@@ -238,6 +240,17 @@ public class MemberController {
 		return result;
 	}
 	
+	//계정삭제
+	@ResponseBody
+	@PostMapping("/deleteMember")
+	public int deleteMember(String userId) {
+
+		//상태값만 N변경, DELETE_DATE 추가 최종삭제는 DELETE_DATE로부터 스케줄러를 통해 30일 이후에 삭제될 예정
+		int result = memberService.deleteMember(userId);
+		
+		return result;
+	}
+	
 	//아이디 중복체크
 	@ResponseBody
 	@GetMapping("/idCheck")
@@ -267,11 +280,26 @@ public class MemberController {
 		
 		EmailCheck ec = new EmailCheck();
 		
-		//이메일전송후 인증번호 반환
+		//이메일전송후 인증번호 반환(현재 전송 막아논 상태)
 		String certiCode = ec.joinEmail(inputEmail);
 		System.out.println("인증번호 : "+certiCode);
 		
 		return certiCode;
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("/boardList")
+	public ArrayList<Board> boardList(String userNo
+								  ) {
+		
+		ArrayList<Board> bList = memberService.boardList(userNo);
+		
+		for(Board b : bList) {
+			System.out.println(b);
+		}
+		
+		return bList;
 	}
 	
 	

@@ -163,8 +163,12 @@
 		width: 100px;
 	}
 	
-	#updatePwdModal *{
+	.modal{
 		color: black;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 	
 	
@@ -173,12 +177,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	<div id="outer">
-		<div id="select-mypage">
-	        <ul>
-	            <li><a href="">Activity Details</a></li>
-	            <li><a href="">Account Settings</a></li>
-	        </ul>
-	    </div>
+		
 	    
 		<div id="content">
 			<div id="content1">
@@ -235,7 +234,7 @@
 					<div id="">
 						<!-- Button trigger modal -->
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updatePwdModal">
-						  change
+						  Change
 						</button>
 					</div>
 				</div>
@@ -243,7 +242,7 @@
 			
 			
 			<!-- Modal -->
-			<div class="modal fade" id="updatePwdModal" tabindex="-1" aria-labelledby="changePwdLabel" aria-hidden="true">
+			<div class="modal fade" id="updatePwdModal" tabindex="-1">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -252,7 +251,7 @@
 			      </div>
 			      <div class="modal-body">
 			        	현재 비밀번호 : <input type="password" name="userPwd" required><br>
-			        	변경할 비밀번호 : <input type="password" name="newPwd" required><br>
+			        	변경할 비밀번호 : <input type="password" name="newPwd" id="newPwd" required><br>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" id="updatePwd" class="btn btn-primary">Update</button>
@@ -262,33 +261,40 @@
 			</div>
 			
 			<script>
+				var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; //영문,숫자 8자리 이상
+				
 				$(function(){
 					$("#updatePwd").on("click", function(){
-						$.ajax({
-							url:"/koala/member/updatePwd",
-							method:"post",
-							data:{
-								userPwd:$("#updatePwdModal input[name=userPwd]").val(),
-								newPwd:$("#updatePwdModal input[name=newPwd]").val()
-							},
-							success:function(result){
-								if(result==1){
-									alert("성공적으로 변경되었습니다.");
-									
-									$("#updatePwdModal").modal("hide");
-								}else if(result==0){
-									alert("다시 입력해주세요.");
-									
-									$("#updatePwdModal input[name=userPwd]").val("");
-									$("#updatePwdModal input[name=newPwd]").val("");
-									
-									$("#updatePwdModal input[name=userPwd]").focus();
+						if(pwdExp.test($("#newPwd").val())){
+							$.ajax({
+								url:"/koala/member/updatePwd",
+								method:"post",
+								data:{
+									userPwd:$("#updatePwdModal input[name=userPwd]").val(),
+									newPwd:$("#updatePwdModal input[name=newPwd]").val()
+								},
+								success:function(result){
+									if(result==1){
+										alert("성공적으로 변경되었습니다.");
+										
+										$("#updatePwdModal").modal("hide");
+									}else if(result==0){
+										alert("다시 입력해주세요.");
+										
+										$("#updatePwdModal input[name=userPwd]").val("");
+										$("#updatePwdModal input[name=newPwd]").val("");
+										
+										$("#updatePwdModal input[name=userPwd]").focus();
+									}
+								},
+								error:function(){
+									alert("통신오류~!");
 								}
-							},
-							error:function(){
-								alert("통신오류~!");
-							}
-						});
+							});
+						}else{
+							alert("비밀번호 양식을 확인해주세요.");
+							$("#newPwd").focus();
+						}
 					});
 				});
 			</script>
@@ -307,10 +313,86 @@
 						</p>
 					</div>
 					<div id="warning-btn">
-						<button class="btn-size">delete</button>
+						<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete</button>
 					</div>
 				</div>
 			</div>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+			  <div class="modal-dialog modal-dialog-centered modal-lg">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h1 class="modal-title fs-5" id="changePwdLabel" style="color: red;">정말로 삭제하시겠습니까?</h1>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        	<p>
+			        		-계정 삭제 후에도 관련 데이터는 30일 동안 서버에 보관되고, 이후 영구적으로 계정이 삭제됩니다.<br>
+			        		-삭제된 계정으로의 접근 및 서비스 이용은 불가능합니다.<br>
+			        		-삭제 이후 데이터 복구가 불가능하니 사전에 필요한 정보를 백업해주세요.<br>
+			        	</p>
+			      </div>
+			      <div class="modal-footer">
+			      	<span style="color: orange;">계정 삭제를 진행하시려면 delete_account_${loginUser.userId }를 입력하시고 Delete버튼을 클릭하세요.</span><br>
+			      	<div class="input-group" style="width:80%;">
+				      	<input type="text" id="inputText" class="form-control" placeholder="delete_account_nickname" onselect="return: null;">
+				      	<button class="btn btn-danger" type="button" id="deleteAccount">Button</button>
+			      	</div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
+			<script>
+				$(function(){
+					//모달창이 닫히면 안에 값을 초기화
+					$(".modal").on("hidden.bs.modal", function(){
+						$(".modal input").val("");
+					});
+					
+					//모달창안에서 delete버튼 누르면
+					$("#deleteAccount").on("click", function(){
+						
+						var inputText = $("#deleteAccountModal #inputText").val();
+						
+						if(inputText === "delete_account_${loginUser.userId}"){
+							
+							if(window.confirm("정말로 삭제하시겠습니까?")){
+								//예 누르면 비동기통신으로 삭제 진행
+								$.ajax({
+									url:"/koala/member/deleteMember",
+									method:"post",
+									data:{
+										userId:${loginUser.userId}
+									},
+									success:function(result){
+										if(result>0){
+											alert("계정 삭제완료");
+											
+											$("#deleteAccountModal").modal("hide");
+										}else{
+											alert("계정 처리중 오류발생!");
+										}
+									},
+									error:function(){
+										alert("통신오류");
+									}
+								});
+	
+							}else{
+								alert("봐줌ㅋ");
+							}
+							
+						}else{
+							//입력값 틀림
+							alert("다시 입력해주세요.");
+							$("#inputText").val("");
+							$("#inputText").focus();							
+						}
+					});
+				});
+			</script>
 		</div>
 	</div>
 	    
