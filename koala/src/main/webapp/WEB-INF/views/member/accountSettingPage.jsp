@@ -177,12 +177,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	<div id="outer">
-		<div id="select-mypage">
-	        <ul>
-	            <li><a href="">Activity Details</a></li>
-	            <li><a href="">Account Settings</a></li>
-	        </ul>
-	    </div>
+		
 	    
 		<div id="content">
 			<div id="content1">
