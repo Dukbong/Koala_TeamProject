@@ -13,7 +13,6 @@ import com.hoju.koala.common.model.vo.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Repository
 public class ErrorBoardDao {
 	
@@ -75,6 +74,12 @@ public class ErrorBoardDao {
 	public int insertEbBoard(SqlSessionTemplate sqlSession, ErrorBoard eb) {
 		
 		return sqlSession.insert("errorBoardMapper.insertErrorBoard", eb);		
+	}
+
+	//게시글 삭제
+	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.delete("errorBoardMapper.deleteBoard", boardNo);
 	}
 	
 	

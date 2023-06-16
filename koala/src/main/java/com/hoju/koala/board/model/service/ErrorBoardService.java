@@ -35,6 +35,9 @@ public interface ErrorBoardService {
 	//게시글 등록
 	int insertBoard(Board b, ErrorBoard eb);
 
+	//게시글 삭제
+	int deleteBoard(int boardNo);
+
 
 
 

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ErrorBoard_EnrollForm</title>
+<title>ErrorBoard_UpdateForm</title>
 <!-- CodeMirror -->
 <script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
 <script src="/koala/resources/codemirror-5.53.2/mode/sql/sql.js"></script>
@@ -66,27 +66,6 @@
 		<script>
 			$(function(){
 				
-				//라이브러리 버전 가져오기
-				$("select[name='settingTitle']").change(function(){
-					
-					$.ajax({
-						url : "version",
-						data : {settingTitle : $("select[name='settingTitle']").val()},
-						success : function(vList){
-							var str = "";
-							
-							for(var i in vList){
-								str += "<option value="+vList[i]+">"+vList[i]+"</option>";
-							}
-							
-							$("select[name='settingVersion']").html(str);
-						},
-						error : function(){
-							console.log("실패");
-						}
-					})
-				})
-				
 				//수정폼 카테고리 옵션 변경    //계속 실행되는건데 괜찮은지?
 				$(window).scroll(function(){
 					if($(".modifyForm-area_code").css("display")=="block" && ($(".modifyForm-area_info").css("display")=="block")){
@@ -100,20 +79,12 @@
 		
 			<div class="enrollForm-area">
 				<div class="option-area">
-					<span>category</span>
-					<select name="settingTitle" required>
-							<option value="">--라이브러리 선택--</option>
-						<c:forEach var="c" items="${libList}">
-							<option value="${c.settingTitle }">${c.settingTitle}</option>
-						</c:forEach>
-					</select>
-					<span>version</span>
-					<select name="settingVersion">
-					</select>
+					<span>category</span> ${eb.createSetting.settingTitle }
+					<span>version</span> ${eb.createSetting.settingVersion }
 				</div>
 				<div class="title_b" style="height: 30px;">
 					<span>title</span> <input type="text" name="title" id="eb_title"
-						style="width: 85%;" placeholder="제목을 작성하세요" required>
+						style="width: 85%;" placeholder="제목을 작성하세요" value="${eb.board.title }" required>
 				</div>
 				<div style="height: 5px;"></div><!-- 간격용 -->
 				<div class="content_1_b">
@@ -121,7 +92,7 @@
 				</div>
 				<div class="content_2_b" style="height: 150px;">
 					<textarea name="content" id="eb_content" placeholder="내용을 작성하세요" required
-							style="width: 85%; height: 90%; padding: 5px 55px;"></textarea>
+							style="width: 85%; height: 90%; padding: 5px 55px;">${eb.board.content }</textarea>
 				</div>
 			</div>
 			
@@ -195,6 +166,13 @@
 			
 			<script>
 				$(function(){
+					
+					if(${eb.errorBoard.modifiedCode == null}){
+						
+					}else{
+						
+					}
+
 					
 					//수정폼 생성(비동기)
 					$(".modifyBtn-area").on("click", "button", function(){

@@ -22,6 +22,7 @@ import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
+import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,8 +40,8 @@ public class ErrorBoardController {
 			 				 Model model) {
 		
 		int listCount = ebService.selectListCount();
-		int pageLimit = 5;
-		int boardLimit = 5;
+		int pageLimit = 10;
+		int boardLimit = 10;
 		
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
@@ -59,7 +60,7 @@ public class ErrorBoardController {
 		ErrorSet eb = ebService.selectBoard(boardNo);
 		
 		model.addAttribute("eb", eb);
-		return "board/errorBoard/ebDetailView2";
+		return "board/errorBoard/ebDetailView";
 	}
 	
 	
@@ -101,9 +102,8 @@ public class ErrorBoardController {
 		int settingNo = ebService.selectSettingNo(c);
 		eb.setRefSno(settingNo);
 		
-		//세션에 저장된 userNo -- 수정하기
-		//String userNo =  (String)session.getAttribute("userNo"); - 확인 필요
-		String userNo = "7";
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		
 		b.setBoardWriter(userNo);
 		
 		
@@ -132,10 +132,33 @@ public class ErrorBoardController {
 	}
 	
 	//게시글 수정폼 이동
+	@GetMapping("updateBoard")
+	public String updateBoard(int boardNo,
+							  Model model) {
+		
+		ErrorSet eb = ebService.selectBoard(boardNo);
+		
+		model.addAttribute("eb", eb);
+		return "board/errorBoard/ebUpdateForm";
+	}
 	
 	//게시글 수정 메소드
 	
 	//게시글 삭제 메소드
+	@GetMapping("deleteBoard")
+	public String deleteBoard(int boardNo,
+							  HttpSession session) {
+		
+		int result = ebService.deleteBoard(boardNo);
+		
+		if(result>0) {
+			session.setAttribute("msg", "게시글이 삭제되었습니다.");
+			return "redirect:list";
+		}else {	
+			session.setAttribute("errorMsg", "게시글 삭제에 실패했습니다.");
+			return "common/error";
+		}
+	}
 	
 	
 	

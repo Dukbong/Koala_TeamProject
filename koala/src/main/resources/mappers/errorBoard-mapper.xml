@@ -146,5 +146,11 @@
 								 #{modifiedInfo})
 	</insert>
 	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard">
+		DELETE BOARD
+		WHERE BOARD_NO = #{boardNo}
+	</delete>
+	
 	
 </mapper>

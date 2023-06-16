@@ -81,7 +81,13 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		int result1 = ebDao.insertBoard(sqlSession, b);
 		int result2 = ebDao.insertEbBoard(sqlSession, eb);
 	
-		return result1*result2;
+		return result1*result2; //굳이 이렇게 안해도 될듯
+	}
+
+	@Override //게시글 삭제
+	public int deleteBoard(int boardNo) {
+		
+		return ebDao.deleteBoard(sqlSession, boardNo);
 	}
 
 
