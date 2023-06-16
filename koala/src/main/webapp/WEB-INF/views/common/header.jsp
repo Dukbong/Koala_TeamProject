@@ -58,6 +58,8 @@
         color: rgb(40, 151, 223);
     }
     
+    
+    
     #header_2_1:hover{
     	cursor: pointer;
     }
@@ -70,7 +72,7 @@
     }
     
     #header_3_1{
-    	border: 1px solid red;
+    	
     	height: 100%;
     	width: 100%;
     	top: 0;
@@ -82,12 +84,45 @@
     	justify-content: center;
         flex-direction: column;
     }
+    #header_3_1>div{width: 100%; height: 100%;}
+    #header_3_1 li{width: 200px; height: 30px;} 
+    #myPage{width: 100%; height: 100%;}
     
-    #header_3_1>a{
-    	text-decoration: none;
-    	color: rgb(40, 151, 223);
-    	padding: 10px;
+    .ac-wrap{
+    	margin: auto;
+    	width: 80%;
     }
+    
+    .ac-wrap>ul{
+    	list-style-type: none;
+    	padding: 0;
+    	padding-top: 40px;
+    }
+    
+    .ac-wrap>ul>li{
+    	height: 100%;
+    	width: 100%;
+		border-radius: 50px;
+    	background-color: rgb(50, 50, 50);
+    	margin-bottom: 10px;
+    	/* margin: 10px; */
+    }
+    
+    /* *{box-sizing: border-box;} */
+    
+    .ac-wrap>ul>li:hover{
+    	background-color: rgb(40, 40, 40);
+    }
+    
+    .ac-wrap>ul>li>a{
+    	display: block;
+    	/* padding: 10px; */
+    	text-decoration: none;
+    	text-align: center;
+    	color: white;
+    	
+    }
+    
     
 	#darkmode{
 		position: absolute;
@@ -123,8 +158,21 @@
 	                		<h4 class="headerName" onclick="errorBoardPage();">ErrorBoard</h4>
                 		</c:when>
                 		<c:when test='${path.contains("member")}'>
-                		<!-- koala/member/~~~ >> 병국 -->                		
-	                		<h4 class="headerName" onclick="adminPage();">Member</h4>
+                		<!-- koala/member/~~~ >> 병국 -->
+                			<c:choose>
+                				<c:when test="${path.contains('enroll')}">
+			                		<h4 class="">Enroll</h4>					
+                				</c:when>
+                				
+                				<c:when test="${path.contains('ad')}">
+                					<h4 class="">Activity Details</h4>
+                				</c:when>
+                				
+                				<c:when test="${path.contains('as')}">
+                					<h4 class="">Account Settings</h4>
+                				</c:when>
+                				
+                			</c:choose>     		
                 		</c:when>
                 		<c:when test='${path.contains("qnaBoard")}'>
                 		<!-- koala/qnaBoard/~~~ >> 지수 -->                		
@@ -149,17 +197,26 @@
                 <div id="header_3_1">
                 	<c:choose>
                 		<c:when test="${empty loginUser }">
-		                	<a href="/koala/member/login">로그인</a>
-		                	<a href="/koala/member/enroll">회원가입</a>
+               				<div class="ac-wrap">
+            	    			<ul>
+        	        				<li><a href="/koala/member/login">로그인</a></li>
+    	            				<li><a href="/koala/member/enroll">회원가입</a></li>                				
+	                			</ul>
+               				</div>
                    		</c:when>
                    		<c:otherwise>
-                   			<span>${loginUser.userId }</span><br><br>
-                   			<select id="myPage">
-                   				<option selected>My Page<option>
-                   				<option value="ad">Activity Details</option>
-                   				<option value="as">Account Settings</option>
-                   			</select>
-                   			<a href="/koala/member/logout">로그아웃</a>
+                   			<div class="ac-wrap">
+                   				<ul>
+                   					<li>
+		                	   			<select id="myPage">
+		            	       				<option>My Page<option>
+		        	           				<option value="ad">Activity Details</option>
+		    	               				<option value="as">Account Settings</option>
+			                   			</select>
+                   					</li>
+                   					<li><a href="/koala/member/logout">로그아웃</a></li>
+                   				</ul>
+                   			</div>
                    			
                    			<script>
                    				$(function(){
