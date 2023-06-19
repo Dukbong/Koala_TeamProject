@@ -8,6 +8,17 @@
 <title>Insert title here</title>
 </head>
 <style>
+    #outer{
+        height: 1300px;
+        width: 80%;
+    	margin: auto;
+    }
+    
+    #content{
+    	height: 100%;
+    	width: 100%;
+    }
+	
 	#select-mypage a{
         color: darkcyan;
         text-decoration: none;
@@ -34,17 +45,13 @@
     	color: gray;
     	cursor: pointer;
     }
+    
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-	<div id="select-mypage">
-        <ul>
-            <li><a href="">Activity Details</a></li>
-            <li><a href="">Account Settings</a></li>
-        </ul>
-    </div>
-    <hr>
-    <div style="height: 500px;" >
+	
+	
+    <div id="outer" >
 
         <div id="content">
             <div id="content1">
@@ -53,7 +60,7 @@
                         <img src="피치.png" alt="">
                     </div>
                     <div id="nickname">
-                        <span></span>
+                        <span>${user.nickName }</span>
                     </div>
                 </div>
                 <div id="con2-area">
@@ -150,7 +157,7 @@
                 </script>
                 
                 
-                <div id="result-area">
+                <div id="result-area" >
                 	<table border="1" align="center">
                 		<thead>
                 			<tr>
@@ -165,6 +172,38 @@
                 			
                 		</tbody>
                 	</table>
+                	
+					<table class="table caption-top">
+					<caption>List of users</caption>
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">First</th>
+							<th scope="col">Last</th>
+							<th scope="col">Handle</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">1</th>
+							<td>Mark</td>
+							<td>Otto</td>
+							<td>@mdo</td>
+						</tr>
+						<tr>
+							<th scope="row">2</th>
+							<td>Jacob</td>
+							<td>Thornton</td>
+							<td>@fat</td>
+						</tr>
+						<tr>
+							<th scope="row">3</th>
+							<td>Larry</td>
+							<td>the Bird</td>
+							<td>@twitter</td>
+						</tr>
+					</tbody>
+					</table>
                 </div>
                 
                 <script>
@@ -175,9 +214,6 @@
             </div>
         </div>
 
-        <div id="list-area" style="width:80%; height: 70%;">
-            
-        </div>
 
     </div>
     
