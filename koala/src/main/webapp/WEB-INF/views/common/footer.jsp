@@ -137,7 +137,7 @@
         </div>
         <div class="column4">
             <div class="Quiz">
-                Multi Quiz
+                SQL Cloud
             </div>
             <div class="QuizPlay">
                 <a class="footerAtag" href="/koala/multi/play">Play</a>
