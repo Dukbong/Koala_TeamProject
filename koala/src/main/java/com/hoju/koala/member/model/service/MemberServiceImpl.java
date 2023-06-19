@@ -121,11 +121,11 @@ public class MemberServiceImpl implements MemberService {
 
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
 	@Override
-	public String selectEmail(String userEmail) {
+	public Member selectEmail(String userEmail) {
 
-		String userId = memberDao.selectEmail(sqlSession, userEmail);
+		Member m = memberDao.selectEmail(sqlSession, userEmail);
 		
-		return userId;
+		return m;
 	}
 
 
