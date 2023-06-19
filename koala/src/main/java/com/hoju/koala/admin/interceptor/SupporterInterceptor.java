@@ -23,10 +23,9 @@ public class SupporterInterceptor  extends HandlerInterceptorAdapter {
 	@Autowired
 	Client client;
 
-	
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("loginUser");
 		try {
@@ -36,5 +35,20 @@ public class SupporterInterceptor  extends HandlerInterceptorAdapter {
 		}catch(NullPointerException e) {
 			return;
 		}
+		
 	}
+//	
+//	@Override
+//	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+//			ModelAndView modelAndView) throws Exception {
+//		HttpSession session = request.getSession();
+//		Member member = (Member) session.getAttribute("loginUser");
+//		try {
+//			Supporters support = adminService.selectOneSupport(member.getUserNo()); // 여기 된다는 거 자체가 null이 아니라는 뜻.
+//			if(support.getGithubId().equals(" "))
+//				session.setAttribute("msgc", "서포트즈 초대");
+//		}catch(NullPointerException e) {
+//			return;
+//		}
+//	}
 }
