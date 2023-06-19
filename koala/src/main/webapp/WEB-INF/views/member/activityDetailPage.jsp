@@ -146,9 +146,8 @@
                 		$("#select-list a").on("click", function(){
                 			
                 			var select = $(this).prop("id");
-                			console.log(select);
                 			
-                			//location.href = "/koala/member/ad?userId=${user.userId}/"+select;
+                			location.href = "/koala/member/"+select+"?userId=${user.userId}";
                 		});
                 		
                 	});
@@ -173,37 +172,108 @@
                 		</tbody>
                 	</table>
                 	
-					<table class="table caption-top">
-					<caption>List of users</caption>
-					<thead>
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">First</th>
-							<th scope="col">Last</th>
-							<th scope="col">Handle</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
-					</tbody>
+                	<c:if test="${not empty bList || not empty rList || not empty lList }">
+                	
+					<table class="table table-hover"  style="color: white;">
+						<thead>
+							<tr>
+								<th scope="col"> </th>
+								<th scope="col">카테고리</th>
+								<th scope="col">제목</th>
+								<th scope="col">작성일</th>
+								<th scope="col">추천수</th>
+								<th scope="col">조회수</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:choose>
+								<c:when test="${not empty bList }">
+									<c:forEach  var="b" items="${bList }" varStatus="status">	
+									<tr>
+										<th scope="row">${status.count }</th>
+										<c:choose>
+											<c:when test="${b.category eq 'Q' }">
+												<td>질문게시판</td>
+											</c:when>
+											<c:when test="${b.category eq 'E' }">
+												<td>에러게시판</td>
+											</c:when>
+											<c:when test="${b.category eq 'B' }">
+												<td>자유게시판</td>
+											</c:when>
+										</c:choose>
+										<td>${b.title }</td>
+										<td>${b.createDate }</td>
+										<td>${b.liked }</td>
+										<td>${b.count }</td>
+									</tr>
+									</c:forEach>
+								</c:when>
+								
+								<c:when test="${not empty rList }">
+									<c:forEach  var="r" items="${rList }" varStatus="status">	
+										<tr>
+											<th scope="row">${status.count }</th>
+											<c:choose>
+												<c:when test="${r.category eq 'Q' }">
+													<td>질문게시판</td>
+												</c:when>
+												<c:when test="${r.category eq 'E' }">
+													<td>에러게시판</td>
+												</c:when>
+												<c:when test="${r.category eq 'B' }">
+													<td>자유게시판</td>
+												</c:when>
+											</c:choose>
+											<td>${r.title }</td>
+											<td>${r.createDate }</td>
+											<td>${r.liked }</td>
+											<td>${r.count }</td>
+										</tr>
+									</c:forEach>
+								</c:when>
+								
+								<c:when test="${not empty lList }">
+									<c:forEach  var="l" items="${lList }" varStatus="status">	
+										<tr>
+											<th scope="row">${status.count }</th>
+											<c:choose>
+												<c:when test="${l.category eq 'Q' }">
+													<td>질문게시판</td>
+												</c:when>
+												<c:when test="${l.category eq 'E' }">
+													<td>에러게시판</td>
+												</c:when>
+												<c:when test="${l.category eq 'B' }">
+													<td>자유게시판</td>
+												</c:when>
+											</c:choose>
+											<td>${l.title }</td>
+											<td>${l.createDate }</td>
+											<td>${l.liked }</td>
+											<td>${l.count }</td>
+										</tr>
+									</c:forEach>
+								</c:when>
+								
+								
+							</c:choose>
+							
+						</tbody>
 					</table>
+					</c:if>
+					
+					<c:if test="${not empty fList }">
+						<c:forEach var="f" items="${fList }" varStatus="status">
+							<tr>
+								<td>${status.count }</td>
+								<td>프로필이미지</td>
+								<td>닉네임${f.nickName }</td>
+								
+							</tr>
+						</c:forEach>
+					</c:if>
+					
                 </div>
                 
                 <script>

@@ -3,6 +3,7 @@ package com.hoju.koala.member.model.service;
 import java.util.ArrayList;
 
 import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -48,7 +49,16 @@ public interface MemberService {
 	int nickCheck(String inputNick);
 
 	//유저가 쓴 게시글 조회
-	ArrayList<Board> boardList(String userNo);
+	ArrayList<Board> boardList(String userId);
+
+	//유저가 쓴 댓글 조회
+	ArrayList<Board> replyList(String userId);
+
+	//유저가 추천누른 게시글 조회
+	ArrayList<Board> likedList(String userId);
+
+	//해당 유저의 팔로잉 조회
+	ArrayList<Member> followingList(String userId);
 
 	
 
