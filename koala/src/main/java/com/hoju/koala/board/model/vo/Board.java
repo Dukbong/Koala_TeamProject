@@ -28,5 +28,6 @@ public class Board {
 	private Date modifyDate; //수정일
 	private String notice; //공지사항여부
 	private String status; //상태값(Y/N)
+	private int fileNo;
 
 }
