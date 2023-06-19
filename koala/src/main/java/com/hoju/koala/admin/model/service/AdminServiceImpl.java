@@ -54,6 +54,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<Supporters> selectMemberList(PageInfo pi) {
+		System.out.println(pi);
 		return adminDao.selectMemberList(sqlSession, pi);
 	}
 
@@ -110,6 +111,21 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Supporters selectOneSupport(int userNo) {
 		return adminDao.selectOneSupport(userNo, sqlSession);
+	}
+
+	@Override
+	public int selectCountMemberCondition(MemberSearch ms) {
+		return adminDao.selectCountMemberCondition(ms, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Supporters> selectSupporterWaitList() {
+		return adminDao.selectSupporterWaitList(sqlSession);
+	}
+
+	@Override
+	public int insertSupporterGithubId(Supporters supporter) {
+		return adminDao.insertSupporterGithubId(supporter, sqlSession);
 	}
 
 

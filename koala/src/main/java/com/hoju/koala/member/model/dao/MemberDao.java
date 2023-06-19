@@ -1,8 +1,11 @@
 package com.hoju.koala.member.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -64,6 +67,12 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.updatePwd", loginUser);
 	}
 
+	//계정 삭제
+	public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.update("memberMapper.deleteMember", userId);
+	}
+	
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
 	public String selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
 
@@ -81,6 +90,13 @@ public class MemberDao {
 		
 		return sqlSession.selectOne("memberMapper.nickCheck", inputNick);
 	}
+
+	//유저가쓴 게시글 조회
+	public ArrayList<Board> boardList(SqlSessionTemplate sqlSession, String userNo) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.boardList", userNo);
+	}
+
 
 	
 	

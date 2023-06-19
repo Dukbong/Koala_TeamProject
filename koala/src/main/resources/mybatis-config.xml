@@ -22,6 +22,7 @@
   		
   		
   		<typeAlias type="com.hoju.koala.board.model.vo.Board" alias="board"/>
+  		<typeAlias type="com.hoju.koala.board.model.vo.BulletinBoard" alias="bulletinBoard"/>
   		<typeAlias type="com.hoju.koala.board.model.vo.BoardAttachment" alias="boardAttachment"/>
   		<typeAlias type="com.hoju.koala.board.model.vo.Liked" alias="liked"/>
   		<typeAlias type="com.hoju.koala.board.model.vo.Reply" alias="reply"/>		
@@ -30,9 +31,7 @@
   	</typeAliases>
   
 	<typeHandlers>
-
         <typeHandler handler="com.hoju.koala.board.handler.LongHandler" javaType="String" jdbcType="LONGVARCHAR"/>
-
     </typeHandlers>
   
 </configuration>

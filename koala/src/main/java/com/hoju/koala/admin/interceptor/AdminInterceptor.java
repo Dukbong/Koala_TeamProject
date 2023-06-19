@@ -1,5 +1,7 @@
 package com.hoju.koala.admin.interceptor;
 
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -51,11 +53,11 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 					log.info("Existing Block List Count++  >>> {}", ip);
 				}
 			}
-			if(5 - result.getCount() != 0) {
-				session.setAttribute("msg", "현재 " + (5 - result.getCount()) + "번 후 IP가 차단됩니다.");				
-			}else {
-				session.setAttribute("msg", "IP가 차단되어 이용이 불가능합니다.");
-			}
+//			if(5 - result.getCount() != 0) {
+//				session.setAttribute("msg", "현재 " + (5 - result.getCount()) + "번 후 IP가 차단됩니다.");				
+//			}else {
+//				session.setAttribute("msg", "IP가 차단되어 이용이 불가능합니다.");
+//			}
 //			return false;
 			return true; // TEST
 		}

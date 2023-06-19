@@ -267,8 +267,9 @@
 	            				userId : userId,
 	            			},
 	            			success : function(data){
-	            				alert(userId + "님의 등급이 강등되었습니다.");
-	            				location.href = "/koala/admin/supporters.list"
+	            					console.log(data);
+		            				alert(userId + "님의 등급이 강등되었습니다.");
+		            				location.href = "/koala/admin/supporters.list"
 	            			},
 	            			error : function(){
 	            				console.log("dmote button ajax error");

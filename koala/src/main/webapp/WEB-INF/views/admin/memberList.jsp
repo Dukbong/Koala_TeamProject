@@ -127,15 +127,44 @@
                         <span>Member List</span>
                     </div>
                 <div class="search_area">
-                <form action="member.list" method="get" id="searchForm">
+                <form action="member.list" method="get" id="searchForm" >
                     <select name="searchQna" class="search_title ic" id="serachSelect">
-                    	<option value="total" selected>전체보기</option>
-                        <option value="id">아이디</option>
-                        <option value="nickName">닉네임</option>
-                        <option value="etc">권한분류</option> 
+                 		<c:choose>
+                 			<c:when test="${empty ms.searchQna }">
+		                    	<option value="total" selected>전체보기</option>                 			
+		                        <option value="id">아이디</option>
+		                        <option value="nickName">닉네임</option>
+		                        <option value="etc">권한분류</option> 
+                 			</c:when>
+                 			<c:when test='${ms.searchQna == "id"}'>
+                 				<option value="total">전체보기</option>                 			
+		                        <option value="id" selected>아이디</option>
+		                        <option value="nickName">닉네임</option>
+		                        <option value="etc">권한분류</option> 
+                 			</c:when>
+                 			<c:when test='${ms.searchQna == "nickName"}'>
+                 				<option value="total">전체보기</option>                 			
+		                        <option value="id" >아이디</option>
+		                        <option value="nickName" selected>닉네임</option>
+		                        <option value="etc">권한분류</option> 
+                 			</c:when>
+                 			<c:when test='${ms.searchQna == "etc"}'>
+                 				<option value="total">전체보기</option>                 			
+		                        <option value="id" selected>아이디</option>
+		                        <option value="nickName">닉네임</option>
+		                        <option value="etc" selected>권한분류</option> 
+                 			</c:when>
+                 		</c:choose>
                         <!-- 아직 안했음 -->
                     </select>
-                    <input type="search" name="searchInput" class="ic" id="serachInput" placeholder="검색할 내용을 입력하세요" >
+                    <c:choose>
+                    	<c:when test="${not empty ms.searchInput }">
+		                    <input type="search" name="searchInput" class="ic" id="serachInput" value="${ms.searchInput }" >                    	
+                    	</c:when>
+                    	<c:otherwise>
+	                    	<input type="search" name="searchInput" class="ic" id="serachInput" >                    	
+                    	</c:otherwise>
+                    </c:choose>
                     <button id="searchBtn" type="button">검색</button>
                 </form>
                 </div>
@@ -202,25 +231,41 @@
             
         </div>
         <div class="bottom_area">
-        <c:if test="${memberList.size()!= 0 }">
+        <c:if test="${pi.endPage > 1 }">
          	     <div id="pagingArea">
                         <div class="btnarea">
                             <ul class="pagination">
-                            	
                                 <c:choose>
                                     <c:when test="${pi.currentPage == 1 }">
                                         <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li class="page-item"><a class="page-link"
-                                                href="/koala/admin/member.list?currentPage=${pi.currentPage - 1 }">Prev</a>
-                                        </li>
+                                    <c:choose>
+                                    	<c:when test="${empty ms.searchQna && empty ms.searchInput }">
+                                    		<li class="page-item"><a class="page-link"
+	                                                href="/koala/admin/member.list?currentPage=${pi.currentPage - 1 }">Prev</a>
+	                                        </li>
+                                    	</c:when>
+                                    	<c:otherwise>                                    	
+	                                        <li class="page-item"><a class="page-link"
+	                                                href="/koala/admin/member.list?searchQna=${ms.searchQna }&searchInput=${ms.searchInput }&currentPage=${pi.currentPage - 1 }">Prev</a>
+	                                        </li>
+                                    	</c:otherwise>
+                                    </c:choose>
                                     </c:otherwise>
                                 </c:choose>
 
                                 <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-                                    <li class="page-item"><a class="page-link"
-                                            href="/koala/admin/member.list?currentPage=${p }">${p }</a></li>
+                                <c:choose>
+                                	<c:when test="${p == pi.currentPage }">
+	                                    <li class="page-item"><a class="page-link" style="font-weight:bold;"
+	                                            href="/koala/admin/member.list?searchQna=${ms.searchQna }&searchInput=${ms.searchInput }&currentPage=${p }">${p }</a></li>                                		
+                                	</c:when>
+                                	<c:otherwise>                                	
+	                                    <li class="page-item"><a class="page-link"
+	                                            href="/koala/admin/member.list?searchQna=${ms.searchQna }&searchInput=${ms.searchInput }&currentPage=${p }">${p }</a></li>
+                                	</c:otherwise>
+                                </c:choose>
                                 </c:forEach>
 
                                 <c:choose>
@@ -228,9 +273,19 @@
                                         <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li class="page-item"><a class="page-link"
-                                                href="/koala/admin/member.list?currentPage=${pi.currentPage + 1 }">Next</a>
-                                        </li>
+                                    
+                                    <c:choose>
+                                    	<c:when test="${empty ms.searchQna && empty ms.searchInput }">
+                                    		<li class="page-item"><a class="page-link"
+	                                                href="/koala/admin/member.list?currentPage=${pi.currentPage + 1 }">Next</a>
+	                                        </li>
+                                    	</c:when>
+                                    	<c:otherwise>                                    	
+	                                        <li class="page-item"><a class="page-link"
+	                                                href="/koala/admin/member.list?searchQna=${ms.searchQna }&searchInput=${ms.searchInput }&currentPage=${pi.currentPage + 1 }">Next</a>
+	                                        </li>
+                                    	</c:otherwise>
+                                    </c:choose>
                                     </c:otherwise>
                                 </c:choose>
                             </ul>
@@ -251,6 +306,17 @@
 	<script>
 		$(function(){
 			
+			// 부득이하게 엔터를 막았다...
+			$(document).ready(function() {
+			  $(window).keydown(function(event){
+			    if(event.keyCode == 13) {
+			      event.preventDefault();
+			      return false;
+			    }
+			  });
+			});
+			
+			
 			$("#serachSelect").on("change", function(){
 				if($(this).val() == "etc") {
 					$("#serachInput").attr("placeholder", "   admin | supporter | wait | common");
@@ -267,15 +333,22 @@
 			});
 			
 			//검색 관련 
-			$("#searchBtn").on("click", function(){
+			$("#searchBtn").on("click", function(e){
 				var input = $("#serachInput").val();
 				var select = $("#serachSelect").val();
-				if(select != "total"){
+				if(select != "total" && input == ""){
 					alert("정확한 검색 결과를 위해 모두 입력 부탁드립니다.");
 					return;
 				}
+				if(select == "etc"){
+					const etcArr = ["admin", "supporter", "wait", "common"];
+					if(!etcArr.includes(input)){
+						alert("권한의 경우 admin/supporter/wait/common 중에 선택하셔야 합니다.");
+						return;
+					}
+				}
 				$("#searchForm").submit();
-			})
+			});
 			
 			// 우클릭 드레그 방지..
 			$("body").attr("oncontextmenu","return false").attr("ondragstart","return false").attr("onselectstart","return false");
