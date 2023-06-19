@@ -9,9 +9,8 @@ import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Repository
 public class ErrorBoardDao {
@@ -99,6 +98,34 @@ public class ErrorBoardDao {
 		
 		return sqlSession.update("errorBoardMapper.updateErrorBoard", eb);
 	}
+
+	//댓글 리스트 조회
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectReplyList", boardNo);
+	}
+
+	//댓글 작성
+	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
+		
+		return sqlSession.insert("errorBoardMapper.insertReply", r);
+	}
+
+	//댓글 수정
+	public int updateReply(SqlSessionTemplate sqlSession, Reply r) {
+		
+		return sqlSession.update("errorBoardMapper.updateReply", r);
+	}
+
+	//댓글 삭제
+	public int deleteReply(SqlSessionTemplate sqlSession, int replyNo) {
+		
+		return sqlSession.delete("errorBoardMapper.deleteReply", replyNo);
+	}
+	
+	
+	
+	
 	
 	
 }

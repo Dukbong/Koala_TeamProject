@@ -72,9 +72,9 @@
 			   CREATE_DATE,
 			   SOLVED,
 			   ERROR_TYPE,
-			   MODIFIED_CODE,
-			   MODIFIED_INFO,
-			   SETTING_INFO
+			   MODIFIED_CODE
+<!-- 			   MODIFIED_INFO, -->
+<!-- 			   SETTING_INFO -->
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
 		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
@@ -178,6 +178,44 @@
 		WHERE REF_BNO = #{boardNo}
 		AND STATUS = 'Y'
 	</update>
+	
+	<!-- 댓글 리스트 조회 -->
+	<select id="selectReplyList" resultMap="boardMapper.replyResultSet">
+		SELECT REPLY_NO,
+		       REPLY_CONTENT,
+		       NICKNAME,
+		       TO_CHAR(R.CREATE_DATE, 'YY/MM/DD AMHH:MI') AS CREATE_DATE,
+		       FILE_PATH||CHANGE_NAME AS MEMBER_IMAGE
+		FROM REPLY R
+		JOIN MEMBER M ON(R.REPLY_WRITER = M.USER_NO)
+		JOIN MEMBER_IMAGE I ON(M.USER_NO = I.REF_UNO)
+		WHERE R.REF_BNO = #{boardNo}
+		AND R.STATUS = 'Y'
+		ORDER BY 1 DESC
+	</select>
+	
+	<!-- 댓글 작성   //확인전 -->
+	<insert id="insertReply">
+		INSERT INTO REPLY VALUES(SEQ_RNO.NEXTVAL,
+								 #{boardNo},
+								 #{replyContent},
+								 #{nickName},
+								 SYSDATE,
+								 'W')
+	</insert>
+	
+	<!-- 댓글 수정   //확인전 -->
+	<update id="updateReply">
+		UPDATE REPLY
+		SET REPLY_CONTENT = #{replyContent}
+		WHERE REPLY_NO = #{replyNo}
+	</update>
+	
+	<!-- 댓글 삭제  //확인전  -->
+	<delete id="deleteReply">
+		DELETE REPLY
+		WHERE REPLY_NO = #{replyNo}
+	</delete>
 	
 	
 </mapper>

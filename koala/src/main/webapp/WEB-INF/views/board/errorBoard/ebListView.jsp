@@ -202,7 +202,7 @@
 							<th style=" width: 80px;">해결여부</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>  <!-- 게시글 없을 때 조건문 -->
                     	<c:forEach var="eb" items="${ebList}">
 							<tr style="height: 40px;">
 								<td>${eb.board.boardNo }</td>

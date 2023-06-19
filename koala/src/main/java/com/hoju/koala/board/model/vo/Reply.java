@@ -17,7 +17,9 @@ public class Reply {
 	private int refBno; //참조게시글번호
 	private String replyContent; //댓글내용
 	private String replyWriter; //댓글작성자아이디 > 편의상 String으로 변경
-	private Date createDate; //댓글작성날짜
+	private String createDate; //댓글작성날짜
 	private String status; //댓글상태값
+	
+	private String memberImage; //프로필사진
 
 }

@@ -1,6 +1,5 @@
 package com.hoju.koala.board.model.service;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,6 +12,7 @@ import com.hoju.koala.board.model.dao.ErrorBoardDao;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -103,6 +103,30 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		int result2 = ebDao.updateEbBoard(sqlSession, eb);
 	
 		return result1*result2; //굳이 이렇게 안해도 될듯
+	}
+
+	@Override //댓글 리스트 조회
+	public ArrayList<Reply> selectReplyList(int boardNo) {
+		
+		return ebDao.selectReplyList(sqlSession, boardNo);
+	}
+
+	@Override //댓글 작성
+	public int insertReply(Reply r) {
+		
+		return ebDao.insertReply(sqlSession, r);
+	}
+
+	@Override //댓글 수정
+	public int updateReply(Reply r) {
+		
+		return ebDao.updateReply(sqlSession, r);
+	}
+
+	@Override //댓글 삭제
+	public int deleteReply(int replyNo) {
+		
+		return ebDao.deleteReply(sqlSession, replyNo);
 	}
 
 

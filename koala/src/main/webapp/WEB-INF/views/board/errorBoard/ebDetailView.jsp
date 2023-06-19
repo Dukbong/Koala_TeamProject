@@ -211,116 +211,38 @@
 	        		</form>
 	        	</div>
 	        	<div class="replyList-area">
-	        		<table>
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;"><i class="fa-solid fa-user-secret fa-2xl" style="color: #ffffff;"></i></td>
-	        				<td style="height: 25px;">orange077</td>
-	        				<td>2023-06-15</td>
-	        			</tr>
-	        			<tr>
-	        				<td></td>
-	        				<td></td> <!-- 시간도 하려면 데이터 변경하기 -->
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">저도 설치 중 오류가 발생하네요..</td>
-	        			</tr>
-	        		</table>
-	        		<table border="1">
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;">사진</td>
-	        				<td style="height: 20px;"></td>
-	        				<td></td>
-	        			</tr>
-	        			<tr>
-	        				<td>닉네임</td>
-	        				<td>날짜</td>
-	        				
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용v댓글내용</td>
-	        			</tr>
-	        		</table>
-	        		<table border="1">
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;">사진</td>
-	        				<td style="height: 20px;"></td>
-	        				<td></td>
-	        			</tr>
-	        			<tr>
-	        				<td>닉네임</td>
-	        				<td>날짜</td>
-	        				
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용v댓글내용</td>
-	        			</tr>
-	        		</table>
-	        		<table border="1">
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;">사진</td>
-	        				<td style="height: 20px;"></td>
-	        				<td></td>
-	        			</tr>
-	        			<tr>
-	        				<td>닉네임</td>
-	        				<td>날짜</td>
-	        				
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용v댓글내용</td>
-	        			</tr>
-	        		</table>
-	        		<table border="1">
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;">사진</td>
-	        				<td style="height: 20px;"></td>
-	        				<td></td>
-	        			</tr>
-	        			<tr>
-	        				<td>닉네임</td>
-	        				<td>날짜</td>
-	        				
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용v댓글내용</td>
-	        			</tr>
-	        		</table>
-	        		<table border="1">
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;">사진</td>
-	        				<td style="height: 20px;"></td>
-	        				<td></td>
-	        			</tr>
-	        			<tr>
-	        				<td>닉네임</td>
-	        				<td>날짜</td>
-	        				
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용v댓글내용</td>
-	        			</tr>
-	        		</table>
-	        		<table border="1">
-	        			<tr>
-	        				<td rowspan="2" style="width: 50px; height: 50px;">사진</td>
-	        				<td style="height: 20px;"></td>
-	        				<td></td>
-	        			</tr>
-	        			<tr>
-	        				<td>닉네임</td>
-	        				<td>날짜</td>
-	        				
-	        			</tr>
-	        			<tr>
-	        				<td colspan="3">댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용v댓글내용</td>
-	        			</tr>
-	        		</table>
+        			<c:forEach var="re" items="${reList }">
+	        			<table>
+	        				<tr>
+		        				<td style="width: 50px; height: 50px;"><i class="fa-solid fa-user-secret fa-2xl" style="color: #ffffff;"></i></td>
+		        				<td style="width: max-content;">${re.replyWriter }</td>
+		        				<td style="width: 150px;">${re.createDate }</td>
+		        				<td style="width: 100px; text-align: center;">
+		        					<c:if test="${re.replyWriter eq loginUser.nickName }">
+			        					<button id="updateReply">수정</button><button id="deleteReply">삭제</button>
+		        					</c:if>
+		        				</td>
+		        			</tr>
+		        			<tr style="display: ;">
+		        				<td></td>
+		        				<td colspan="3" style="padding-right: 50px;">${re.replyContent }</td>
+		        			</tr>
+		        			<tr style="display: none;">
+		        				<td></td>
+		        				<td colspan="3" style="padding-right: 50px;"><textarea style="border: 1px solid white; padding: 5px;">${re.replyContent }</textarea></td>
+		        			</tr>
+		        		</table>
+        			</c:forEach>
 	        	</div>
 	        </div>
-	
 	    </div>
-	    
     </div>
+    <script>
+    	//댓글 관련
+    	$(function(){
+    		
+    	});
+    </script>
     
     <div class="modal-wrap">
         <div class="modal_close" id="cancle"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>

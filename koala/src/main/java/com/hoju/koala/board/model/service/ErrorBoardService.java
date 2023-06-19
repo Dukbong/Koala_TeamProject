@@ -1,12 +1,12 @@
 package com.hoju.koala.board.model.service;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
 public interface ErrorBoardService {
@@ -44,6 +44,17 @@ public interface ErrorBoardService {
 	//게시글 수정
 	int updateBoard(Board b, ErrorBoard eb);
 
+	//댓글 리스트 조회
+	ArrayList<Reply> selectReplyList(int boardNo);
+	
+	//댓글 작성
+	int insertReply(Reply r);
+	
+	//댓글 수정
+	int updateReply(Reply r);
+	
+	//댓글 삭제
+	int deleteReply(int replyNo);
 
 
 

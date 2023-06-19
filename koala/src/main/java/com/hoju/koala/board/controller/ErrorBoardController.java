@@ -20,6 +20,7 @@ import com.hoju.koala.board.model.service.ErrorBoardService;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
 import com.hoju.koala.member.model.vo.Member;
@@ -64,7 +65,14 @@ public class ErrorBoardController {
 			
 			ErrorSet eb = ebService.selectBoard(boardNo);
 			
+			//댓글 목록 조회 메소드
+			ArrayList<Reply> reList = ebService.selectReplyList(boardNo);
+			
+			
+			log.info(""+reList);
+			
 			model.addAttribute("eb", eb);
+			model.addAttribute("reList", reList);
 			return "board/errorBoard/ebDetailView";
 			
 		}else {
@@ -186,16 +194,46 @@ public class ErrorBoardController {
 		}
 	}
 	
-	
-	
-	
-	//댓글 목록 조회 메소드
-	
 	//댓글 작성 메소드
+	@PostMapping("insertReply")
+	public String insertReply(Reply r,
+							  HttpSession session) {
+		
+		int result = ebService.insertReply(r);
+		
+		if(result>0) {
+			session.setAttribute("msg", "댓글이 성공적으로 작성되었습니다.");
+			return "redirect:detail";
+		}else {	
+			session.setAttribute("errorMsg", "댓글 작성에 실패했습니다.");
+			return "common/error";
+		}
+	}
 	
 	//댓글 수정 메소드
+	@PostMapping("updateReply")
+	public String updateReply(Reply r) {
+		
+		int result = ebService.updateReply(r);
+		
+		return "";
+	}
 	
 	//댓글 삭제 메소드
+	@GetMapping("deleteReply")
+	public String deleteReply(int boardNo,
+							  HttpSession session) {
+		
+		int result = ebService.deleteBoard(boardNo);
+		
+		if(result>0) {
+			session.setAttribute("msg", "게시글이 삭제되었습니다.");
+			return "redirect:list";
+		}else {	
+			session.setAttribute("errorMsg", "게시글 삭제에 실패했습니다.");
+			return "common/error";
+		}
+	}
 	
 	
 }
