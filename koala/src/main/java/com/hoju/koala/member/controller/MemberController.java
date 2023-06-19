@@ -51,8 +51,9 @@ public class MemberController {
 						ModelAndView mv) {
 		
 		Member loginUser = memberService.loginMember(m);
+		System.out.println("loginUser" +loginUser);
 		
-		if((loginUser != null) && (pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd()))) {
+		if((loginUser != null) && ((pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) || m.getUserPwd().equals(loginUser.getUserPwd())) ) {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
@@ -196,14 +197,41 @@ public class MemberController {
 		//아이디와 비밀번호를 찾고하자는 유저가 입력한 이메일
 		String userEmail = request.getParameter("userEmail");
 		
-		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
-		String userId = memberService.selectEmail(userEmail);
+		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 회원정보 가져오기
+		Member m = memberService.selectEmail(userEmail);
 		
-		String newPwd = ec.forgetUserEmail(userEmail, userId);
+		System.out.println(m);
 		
-		System.out.println(newPwd);
+		String newPwd = null;
 		
-		return null;
+		if(m != null) {
+			//이메일에대한 아이디가 존재하면 임시비밀번호 생성하고 아이디와 함꼐 이메일보내기
+			newPwd = ec.forgetUserEmail(userEmail, m.getUserId());
+			
+			System.out.println("newPwd : "+newPwd);
+			//임시비밀번호 암호화
+			String encPwd = pwdEncoder.encode(newPwd);
+			
+			m.setUserPwd(encPwd);
+			
+			//회원정보도 업데이트
+			int result = memberService.updatePwd(m);
+			
+			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
+				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요. 임시 확인용 : "+newPwd);
+				mv.setViewName("redirect:/member/login");
+			}else {
+				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
+				mv.setViewName("redirect:/member/login");
+			}
+		}else {
+			//없다면
+			request.getSession().setAttribute("msg", "존재하지 않는 이메일입니다.");
+			
+			mv.setViewName("redirect:/member/forget");
+		}
+		
+		return mv;
 	}
 
 	//계정설정 페이지 이동

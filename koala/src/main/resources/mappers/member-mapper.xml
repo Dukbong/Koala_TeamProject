@@ -108,8 +108,8 @@
 	</delete>
 	
 	<!-- 입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기 -->
-	<select id="selectEmail" resultType="string">
-		SELECT USER_ID
+	<select id="selectEmail" resultMap="memberResultSet">
+		SELECT *
 		FROM MEMBER
 		WHERE EMAIL = #{userEmail}
 		AND STATUS = 'Y'

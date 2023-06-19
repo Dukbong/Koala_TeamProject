@@ -74,7 +74,7 @@ public class MemberDao {
 	}
 	
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
-	public String selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
+	public Member selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
 
 		return sqlSession.selectOne("memberMapper.selectEmail", userEmail);
 	}
