@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Follow;
@@ -147,7 +148,7 @@ public class MemberController {
 			session.setAttribute("user", m);
 			session.setAttribute("msg", "소개글이 수정되었습니다.");
 			
-			mv.setViewName("redirect:/member/ad?userNo="+m.getUserNo());
+			mv.setViewName("redirect:/member/ad?userId="+m.getUserId());
 		}else {
 			session.setAttribute("msg", "소개글 수정이 실패하였습니다.");
 			mv.setViewName("member/activityDetailPage");
@@ -320,19 +321,95 @@ public class MemberController {
 	}
 	
 	
-	@ResponseBody
+	//활동내역 boardList
 	@GetMapping("/boardList")
-	public ArrayList<Board> boardList(String userNo
-								  ) {
+	public ModelAndView boardList(ModelAndView mv,
+								  String userId) {
 		
-		ArrayList<Board> bList = memberService.boardList(userNo);
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
 		
-		for(Board b : bList) {
-			System.out.println(b);
-		}
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
-		return bList;
+		ArrayList<Board> bList = memberService.boardList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("bList", bList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
 	}
+	
+	//활동내역 replyList
+	@GetMapping("/replyList")
+	public ModelAndView replyList(ModelAndView mv,
+								  String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Board> rList = memberService.replyList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("rList", rList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
+	}
+	
+	//활동내역 LikedList
+	@GetMapping("/likedList")
+	public ModelAndView likedList(ModelAndView mv,
+								  String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Board> lList = memberService.likedList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("lList", lList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
+	}
+	
+	
+	//활동내역 Following
+	@GetMapping("/followingList")
+	public ModelAndView followingList(ModelAndView mv,
+								  String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Member> fList = memberService.followingList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("fList", fList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
+	}
+	
 	
 	
 }
