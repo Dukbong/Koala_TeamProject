@@ -42,6 +42,7 @@
 		<result column="NICKNAME" property="replyWriter"/> <!-- 닉네임으로 조회 -->
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
+		<result column="MEMBER_IMAGE" property="memberImage"/> <!-- 프로필사진 추가 -->
 	</resultMap>
 	
 	<resultMap type="liked" id="likedResultSet">
