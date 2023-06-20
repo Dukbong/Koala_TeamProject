@@ -17,7 +17,7 @@
   		<typeAlias type="com.hoju.koala.admin.model.vo.BlockIp" alias="blockIp"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.CreateSetting" alias="createSetting"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.MemberSearch" alias="ms"/>
-  		
+  		<typeAlias type="com.hoju.koala.admin.model.vo.Issues" alias="issues"/>
   		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  
   		
   		

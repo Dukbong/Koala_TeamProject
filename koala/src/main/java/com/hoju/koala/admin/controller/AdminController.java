@@ -20,6 +20,7 @@ import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.Client;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.Issues;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
@@ -60,6 +61,16 @@ public class AdminController {
 		mav = new ModelAndView("admin/supportersList");
 		mav.addObject("supporterList", supporters);
 		mav.addObject("pi", page);
+		return mav;
+	}
+	
+	@GetMapping("/issuearea.list")
+	public ModelAndView adminIssues(ModelAndView mav) {
+		ArrayList<Issues> issues = adminService.selectIssues();
+		System.out.println(issues);
+		mav.addObject("issues", issues);
+		mav.setViewName("admin/issues");
+//		mav.addObject("listCount", )
 		return mav;
 	}
 
@@ -133,6 +144,17 @@ public class AdminController {
 		model.addAttribute("pi", page);
 		return "admin/memberList";
 	}
+	
+	@GetMapping("/issuesDetail")
+	public ModelAndView adminIssuesDetail(String settingTitle, ModelAndView mav) {
+		ErrorBoard errorBoard = adminService.selectIssueDetail(settingTitle);
+		mav.addObject("issueDetail", errorBoard);
+		mav.setViewName("admin/issueDetail");
+		return mav;
+	}
+	
+	
+
 	
 	
 	// 모드를 쿠키로 저장할 메서드
