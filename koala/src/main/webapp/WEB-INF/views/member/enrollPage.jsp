@@ -139,10 +139,14 @@
 						success:function(result){
 							if(result>0){
 								//중복(사용불가능)
+								$("#formId").css("display", "none");
+								$("#useId").css("display", "block");
 								idCheck = false;
 								console.log("중복이야ㅣ");
 							}else{
 								//사용가능
+								$("#formId").css("display", "none");
+								$("#useId").css("display", "none");
 								idCheck = true;
 								console.log("사용할수있어!");
 							}
@@ -156,6 +160,8 @@
 					});
 				}else{
 					//적합하지 않는 아이디 형식입니다. -출력해야함.
+					$("#useId").css("display", "none");
+					$("#formId").css("display", "block");
 					idCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 				}
@@ -167,14 +173,16 @@
 			var userPwd1 ="";
 			var userPwd2 ="";
 			//비밀번호 입력
-			$("#userPwd").on("keyup", function(){
+			$("#userPwd").on("focusout", function(){
 				
 				if(pwdExp.test($("#userPwd").val())){
 					
 					userPwd1 = $("#userPwd").val();
+					$("#formPwd").css("display", "none");
 					
 				}else{
 					//적합하지 않는 비밀번호 형식입니다. -출력해야함.
+					$("#formPwd").css("display", "block");
 					
 					pwdCheck = false;
 				}
@@ -189,8 +197,10 @@
 				
 				if(userPwd1 == userPwd2){
 					//같다면
+					$("#notEqualPwd").css("display", "none");
 					pwdCheck = true;
 				}else{
+					$("#notEqualPwd").css("display", "block");
 					
 					pwdCheck = false;
 				}
@@ -214,12 +224,10 @@
 						success:function(result){
 							if(result>0){
 								//중복(사용불가능)
-								
 								nickCheck = false;
 								
 							}else{
 								//사용가능
-								
 								nickCheck = true;
 							}
 						},
@@ -240,43 +248,36 @@
 				
 			});
 			
-			
-			//이메일 입력
-			$("#email").on("keyup", function(){
+			//이메일에 인증코드 보내기
+			$("#emailSend").on("click", function(){
 				
 				if(emailExp.test($("#email").val())){
-					
-					//이메일에 인증코드 보내기
-					$("#emailSend").on("click", function(){
-						
-						$.ajax({
-							url:"/koala/member/emailCheck",
-							method:"get",
-							data:{
-								inputEmail:$("#email").val()
-							},
-							success:function(data){
-								console.log(data);
-								
-								code = data;
-								alert("이메일에 인증번호를 보냈습니다.");
-								
-							},
-							error:function(){
-								alert("통신오류");
-							}
-						});
+					$.ajax({
+						url:"/koala/member/emailCheck",
+						method:"get",
+						data:{
+							inputEmail:$("#email").val()
+						},
+						success:function(data){
+							console.log(data);
+							
+							code = data;
+							alert("이메일에 인증번호를 보냈습니다.");
+							
+						},
+						error:function(){
+							alert("통신오류");
+						}
 					});
-					
 				}else{
-					//적합하지 않는 이메일 형식입니다.
+					//적합하지않으므
+					alert("올바른 이메일형식으로 다시 입력해주세요.");
 					
 					emailCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 				}
-				
 			});
-			
+				
 			//이메일 인증번호 확인
 			$("#certiCheck").on("click", function(){
 				
@@ -285,6 +286,11 @@
 				if(code === certiCode){
 					//서버에서 보낸 코드와 사용자가 입력한 코드가 같음
 					alert("굳");
+					$("#email-success").css("display", "block");
+					$("#checkCode-group").css("display", "none");
+					$("#email").prop("readonly", true);
+					$("#emailSend").prop("disabled", true);
+					
 					emailCheck = true;
 				}else{
 					//다름
@@ -323,9 +329,10 @@
 			                    <td colspan=""><label for="userId">ID</label></td>
 			                </tr>
 			                <tr>
-			                    <td width="400"><input class="box" type="text" name="userId" id="userId" maxlength="12" required placeholder = "영문,숫자만  4~12자리"></td>
-			                    <td width="100">
-			                    	여기에 그거
+			                    <td width="70%"><input class="box" type="text" name="userId" id="userId" maxlength="12" required placeholder = "영문,숫자만  4~12자리"></td>
+			                    <td width="30%">
+			                    	<span class="hide" id="useId">이미 사용중인 아이디입니다.</span>
+			                    	<span class="hide" id="formId">양식에 맞게 작성해주세요.</span>
 			                    </td>
 			                </tr>
 			                
@@ -336,9 +343,13 @@
 			                <tr>
 			                    <td>
 			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="15" required placeholder = "숫자,영어포함  8자 이상" >
+			                    	<div style="text-align: center;">
+				                    	<span>보안성</span>
+				                    	<progress id="level"></progress>
+			                    	</div>
 			                    </td>
 			                    <td>
-			                    	<span>보안성 : </span><progress id="level"></progress>
+			                    	<span class="hide" id="formPwd">비밀번호 양식을 확인해 주세요.</span>
 			                    </td>
 			                </tr>
 			                <tr>
@@ -347,7 +358,7 @@
 			                <tr>
 			                    <td><input class="box" type="password" id="checkPwd" name="checkPwd" maxlength="15" required placeholder = "비밀번호 재확인"></td>
 			                    <td>
-			                    	여기에 그거
+			                    	<span class="hide" id="notEqualPwd">비밀번호가 일치하지 않습니다.</span>
 			                    </td>
 			                </tr>
 			                
@@ -359,7 +370,8 @@
 			                <tr>
 			                    <td><input class="box" type="text" name="nickName" id="nickName" required placeholder="숫자, 영문포함 2~12자리"></td>
 			                    <td>
-			                    	여기에 그거
+			                    	<span class="hide">이미 사용중인 닉네임입니다.</span>
+			                    	<span class="hide">양식에 맞게 작성해주세요.</span>
 			                    </td>
 			                </tr>
 			                
@@ -369,10 +381,13 @@
 			                </tr>
 			                <tr>
 			                	<td>
-			                		<input class="box" type="text" name="email" id="email" required placeholder="이메일 형식으로 입력"><button type="button" id="emailSend">Send</button>
+			                		<div class="input-group" id="email-group">
+				                		<input class="box" type="text" name="email" id="email" required placeholder="이메일 형식으로 입력">
+				                		<button type="button" class="btn btn-success" id="emailSend">Send</button>
+			                		</div>
 			                	</td>
 			                	<td>
-			                    	여기에 그거
+			                    	<span class="hide"><i></i></span>
 			                    </td>
 			                </tr>
 							
@@ -381,11 +396,13 @@
 							</tr>
 			                <tr>
 								<td>
-									<input class="box" id="certiCode" type ="text" required placeholder="인증코드 입력"><button type="button" id="certiCheck">Check</button>
+									<div class="input-group" id="checkCode-group">
+										<input class="box" id="certiCode" type ="text" required placeholder="인증코드 입력">
+										<button type="button" class="btn btn-success" id="certiCheck">Check</button>
+									</div>
+									<input type="text" class="box hide" id="email-success" readonly value="인증 완료">
 								</td>
-								<td>
-			                    	여기에 그거
-			                    </td>
+								
 			                </tr>
 			                
 							<tr>
@@ -440,7 +457,7 @@
 		                <label for="agree">이용약관 및 개인정보 수집에 동의합니다.</label>
 		               	
 		               	<div>
-			                <button type="submit" id="submitBtn" disabled>submit</button>		               	
+			                <button type="submit" id="submitBtn" class="btn btn-primary" disabled>submit</button>		               	
 		               	</div>
 	            	</div>
 	            </form>
