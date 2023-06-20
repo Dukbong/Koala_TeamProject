@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.text.*" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,96 +160,134 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><img src="/koala/resources/common/rank_new.gif" alt=""></td>
-                            <td><img class="rank_img" src="/koala/resources/common/비브라늄.png" alt=""></td>
-                            <td>광수</td>
-                            <td>qlqmfksba</td>
-                            <td>비브라늄</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><i class="fa-solid fa-up-long"></i></td>
-                            <td><img class="rank_img" src="/koala/resources/common/비브라늄.png" alt=""></td>
-                            <td>공대생</td>
-                            <td>dkdleldlq</td>
-                            <td>비브라늄</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><i class="fa-solid fa-down-long"></i></td>
-                            <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td>
-                            <td>roswoa</td>
-                            <td>dkdlwl</td>
-                            <td>플래티넘</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><i class="fa-solid fa-down-long"></i></td>
-                            <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td>
-                            <td>코딩외길인생</td>
-                            <td>asdflkj</td>
-                            <td>플래티넘</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>-</td>
-                            <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td>
-                            <td>dlrpslr</td>
-                            <td>dlrpwlsWkslr</td>
-                            <td>플래티넘</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td><i class="fa-solid fa-down-long"></i></td>
-                            <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td>
-                            <td>sdflksdf</td>
-                            <td>aslkjf</td>
-                            <td>플래티넘</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>-</td>
-                            <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td>
-                            <td>에에올</td>
-                            <td>eeall</td>
-                            <td>골드</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td><img src="/koala/resources/common/rank_new.gif" alt=""></td>
-                            <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td>
-                            <td>닉할게없다</td>
-                            <td>nickharlge</td>
-                            <td>골드</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>-</td>
-                            <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td>
-                            <td>거의끝나간다</td>
-                            <td>almostdone</td>
-                            <td>골드</td>
-                            <td>129,000</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>-</td>
-                            <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td>
-                            <td>나는솔로</td>
-                            <td>iamSolo</td>
-                            <td>골드</td>
-                            <td>129,000</td>
-                        </tr>
+                    <c:forEach var="m" items="${list}" varStatus="status">
+                        <tr>                    
+                            <td>${m.rank}</td>
+                            <td>${m.rankChange }</td>
+                            <td>
+                            	<c:if test="${m.userLevel == 6}">
+                            	<img class="rank_img" src="/koala/resources/common/비브라늄.png" alt="">
+                            	</c:if>
+                            	<c:if test="${m.userLevel == 5}">
+                            	<img class="rank_img" src="/koala/resources/common/플래티넘.png" alt="">
+	                            </c:if>
+                            	<c:if test="${m.userLevel == 4}">
+                            	<img class="rank_img" src="/koala/resources/common/골드.png" alt="">
+	                            </c:if>
+	                            <c:if test="${m.userLevel == 3}">
+                            	<img class="rank_img" src="/koala/resources/common/실버.png" alt="">
+	                            </c:if>
+	                            <c:if test="${m.userLevel == 2}">
+                            	<img class="rank_img" src="/koala/resources/common/브론즈.png" alt="">
+	                            </c:if>
+	                            
+                            </td>
+                            <td>${m.nickName}</td>
+                            <td>${m.userId}</td>
+                            <td>
+                            	<c:if test="${m.userLevel == 6}">
+                            	<span>비브라늄</span>
+                            	</c:if>
+                            	<c:if test="${m.userLevel == 5}">
+                            	<span>플래티넘</span>
+	                            </c:if>
+                            	<c:if test="${m.userLevel == 4}">
+                            	<span>골드</span>
+	                            </c:if>
+	                            <c:if test="${m.userLevel == 3}">
+                            	<span>실버</span>
+	                            </c:if>
+	                            <c:if test="${m.userLevel == 2}">
+                            	<span>브론즈</span>
+	                            </c:if>
+                            </td>
+                            <td>
+                            <!-- 숫자 콤마로 만들어주기 -->
+                             	<fmt:formatNumber value="${m.point}" pattern="#,###"></fmt:formatNumber>
+                            </td>
+                        </tr>                    	
+                    </c:forEach>
+<!--                         <tr> -->
+<!--                             <td>2</td> -->
+<!--                             <td><i class="fa-solid fa-up-long"></i></td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/비브라늄.png" alt=""></td> -->
+<!--                             <td>공대생</td> -->
+<!--                             <td>dkdleldlq</td> -->
+<!--                             <td>비브라늄</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>3</td> -->
+<!--                             <td><i class="fa-solid fa-down-long"></i></td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
+<!--                             <td>roswoa</td> -->
+<!--                             <td>dkdlwl</td> -->
+<!--                             <td>플래티넘</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>4</td> -->
+<!--                             <td><i class="fa-solid fa-down-long"></i></td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
+<!--                             <td>코딩외길인생</td> -->
+<!--                             <td>asdflkj</td> -->
+<!--                             <td>플래티넘</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>5</td> -->
+<!--                             <td>-</td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
+<!--                             <td>dlrpslr</td> -->
+<!--                             <td>dlrpwlsWkslr</td> -->
+<!--                             <td>플래티넘</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>6</td> -->
+<!--                             <td><i class="fa-solid fa-down-long"></i></td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
+<!--                             <td>sdflksdf</td> -->
+<!--                             <td>aslkjf</td> -->
+<!--                             <td>플래티넘</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>7</td> -->
+<!--                             <td>-</td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
+<!--                             <td>에에올</td> -->
+<!--                             <td>eeall</td> -->
+<!--                             <td>골드</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>8</td> -->
+<!--                             <td><img src="/koala/resources/common/rank_new.gif" alt=""></td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
+<!--                             <td>닉할게없다</td> -->
+<!--                             <td>nickharlge</td> -->
+<!--                             <td>골드</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>9</td> -->
+<!--                             <td>-</td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
+<!--                             <td>거의끝나간다</td> -->
+<!--                             <td>almostdone</td> -->
+<!--                             <td>골드</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
+<!--                         <tr> -->
+<!--                             <td>10</td> -->
+<!--                             <td>-</td> -->
+<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
+<!--                             <td>나는솔로</td> -->
+<!--                             <td>iamSolo</td> -->
+<!--                             <td>골드</td> -->
+<!--                             <td>129,000</td> -->
+<!--                         </tr> -->
                     </tbody>
                 </table>
             </div>
