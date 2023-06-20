@@ -45,6 +45,8 @@
 				<tr>
 					<th>글번호</th>
 					<th width="400">제목</th>
+					<th>코드</th>
+					<th>첨부파일</th>
 					<th>작성자</th>
 					<th>조회수</th>
 					<th>작성일</th>
@@ -55,6 +57,22 @@
 					<tr onclick="location.href='detail?boardNo=${b.boardNo}'">
 						<td>${b.boardNo }</td>
 						<td>${b.title }</td>
+						<c:choose>
+							<c:when test="${not empty b.contentCode }">
+								<td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>code-tags</title><path d="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z" /></svg></td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${not empty b.fileNo }">
+								<td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>file-document-outline</title><path d="M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z" /></svg></td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
 						<td>${b.boardWriter }</td>
 						<td>${b.count }</td>
 						<td>${b.createDate }</td>

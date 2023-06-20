@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Follow;
@@ -51,8 +52,9 @@ public class MemberController {
 						ModelAndView mv) {
 		
 		Member loginUser = memberService.loginMember(m);
+		System.out.println("loginUser" +loginUser);
 		
-		if((loginUser != null) && (pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd()))) {
+		if((loginUser != null) && ((pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) || m.getUserPwd().equals(loginUser.getUserPwd())) ) {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
@@ -146,7 +148,7 @@ public class MemberController {
 			session.setAttribute("user", m);
 			session.setAttribute("msg", "소개글이 수정되었습니다.");
 			
-			mv.setViewName("redirect:/member/ad?userNo="+m.getUserNo());
+			mv.setViewName("redirect:/member/ad?userId="+m.getUserId());
 		}else {
 			session.setAttribute("msg", "소개글 수정이 실패하였습니다.");
 			mv.setViewName("member/activityDetailPage");
@@ -196,14 +198,41 @@ public class MemberController {
 		//아이디와 비밀번호를 찾고하자는 유저가 입력한 이메일
 		String userEmail = request.getParameter("userEmail");
 		
-		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
-		String userId = memberService.selectEmail(userEmail);
+		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 회원정보 가져오기
+		Member m = memberService.selectEmail(userEmail);
 		
-		String newPwd = ec.forgetUserEmail(userEmail, userId);
+		System.out.println(m);
 		
-		System.out.println(newPwd);
+		String newPwd = null;
 		
-		return null;
+		if(m != null) {
+			//이메일에대한 아이디가 존재하면 임시비밀번호 생성하고 아이디와 함꼐 이메일보내기
+			newPwd = ec.forgetUserEmail(userEmail, m.getUserId());
+			
+			System.out.println("newPwd : "+newPwd);
+			//임시비밀번호 암호화
+			String encPwd = pwdEncoder.encode(newPwd);
+			
+			m.setUserPwd(encPwd);
+			
+			//회원정보도 업데이트
+			int result = memberService.updatePwd(m);
+			
+			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
+				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요. 임시 확인용 : "+newPwd);
+				mv.setViewName("redirect:/member/login");
+			}else {
+				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
+				mv.setViewName("redirect:/member/login");
+			}
+		}else {
+			//없다면
+			request.getSession().setAttribute("msg", "존재하지 않는 이메일입니다.");
+			
+			mv.setViewName("redirect:/member/forget");
+		}
+		
+		return mv;
 	}
 
 	//계정설정 페이지 이동
@@ -292,19 +321,95 @@ public class MemberController {
 	}
 	
 	
-	@ResponseBody
+	//활동내역 boardList
 	@GetMapping("/boardList")
-	public ArrayList<Board> boardList(String userNo
-								  ) {
+	public ModelAndView boardList(ModelAndView mv,
+								  String userId) {
 		
-		ArrayList<Board> bList = memberService.boardList(userNo);
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
 		
-		for(Board b : bList) {
-			System.out.println(b);
-		}
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
-		return bList;
+		ArrayList<Board> bList = memberService.boardList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("bList", bList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
 	}
+	
+	//활동내역 replyList
+	@GetMapping("/replyList")
+	public ModelAndView replyList(ModelAndView mv,
+								  String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Board> rList = memberService.replyList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("rList", rList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
+	}
+	
+	//활동내역 LikedList
+	@GetMapping("/likedList")
+	public ModelAndView likedList(ModelAndView mv,
+								  String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Board> lList = memberService.likedList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("lList", lList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
+	}
+	
+	
+	//활동내역 Following
+	@GetMapping("/followingList")
+	public ModelAndView followingList(ModelAndView mv,
+								  String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Member> fList = memberService.followingList(userId);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("fList", fList);
+		mv.setViewName("member/activityDetailPage");
+		
+		
+		return mv;
+	}
+	
 	
 	
 }
