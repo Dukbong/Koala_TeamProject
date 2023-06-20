@@ -20,6 +20,9 @@ public interface ErrorBoardService {
 	//라이브러리 리스트 조회 
 	ArrayList<CreateSetting> selectLibList();
 	
+	//조회수 증가
+	int increaseCount(int boardNo);
+	
 	//게시글 상세 조회
 	ErrorSet selectBoard(int boardNo);
 
@@ -34,6 +37,12 @@ public interface ErrorBoardService {
 
 	//게시글 등록
 	int insertBoard(Board b, ErrorBoard eb);
+
+	//게시글 삭제
+	int deleteBoard(int boardNo);
+
+	//게시글 수정
+	int updateBoard(Board b, ErrorBoard eb);
 
 
 

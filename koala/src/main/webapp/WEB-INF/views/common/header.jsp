@@ -8,6 +8,9 @@
 <!-- [1.0] 캐시 비활 성화  뒤로가기 시 캐시로 인해 제대로 작동 안하는 경우가 많다. -->
 <meta http-equiv="Pragma" content="no-cache">
 <title>Insert title here</title>
+<!-- 부트스트랩cdn -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
 </head>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -209,7 +212,7 @@
                    				<ul>
                    					<li>
 		                	   			<select id="myPage">
-		            	       				<option>My Page<option>
+		            	       				<option>My Page</option>
 		        	           				<option value="ad">Activity Details</option>
 		    	               				<option value="as">Account Settings</option>
 			                   			</select>
@@ -343,16 +346,6 @@
     		<c:remove var="msg" scope="session"/>
     	</c:when>
     </c:choose>
-    
-<!--     알림메세지. -->
-<%--     <c:if test="${not empty msg }"> --%>
-<!--     	<script> -->
-<%-- //     		alert("${msg }"); --%>
-<!--     	</script> -->
-<%-- 		<c:remove var="msg" scope="session"/> --%>
-<%--     </c:if> --%>
-    
-    
     
 	<!-- 자동완성 끄기 -->
 	<script>

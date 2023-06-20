@@ -46,8 +46,6 @@ public class Callback {
 	
 	@GetMapping("/callback")
 	public String callback(String code, Model model, HttpServletRequest request) {
-		System.out.println("여기 제발");
-		System.out.println(code);
 		client.code(code);
 		String accessToken = getAccessToken(code);
 		JsonObject userInfo = getUserInfo(accessToken);
@@ -59,20 +57,17 @@ public class Callback {
 		String repoUrl = "";
 		Supporters supporter = null;
 		try {
-			System.out.println(1);
 			githubId = getUserId(userInfo);
-			System.out.println(2);
 			repoUrl = getRepoUrl(userInfo);
-			System.out.println(3);
 			supporter = Supporters.builder().githubId(githubId).refUno(loginUserNo).repoUrl(repoUrl).build();
-			System.out.println(4);
-			System.out.println("여긴요?");
+			adminService.insertSupporterGithubId(supporter);
 		}catch(Exception e) {
 			
 		}
-		adminService.insertSupporterGithubId(supporter);
 		model.addAttribute("git", userInfo);
-		return "common/main";
+		session.removeAttribute("msgc");
+		session.setAttribute("msg", "서포터즈가 되신 걸 환영 합니다.");
+		return "redirect:/";
 	}
 	
 	private String getAccessToken(String code) {

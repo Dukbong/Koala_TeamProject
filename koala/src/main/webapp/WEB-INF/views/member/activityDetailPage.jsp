@@ -139,42 +139,9 @@
                 		$("#select-list a").on("click", function(){
                 			
                 			var select = $(this).prop("id");
+                			console.log(select);
                 			
-                			if(select == "boardList"){ //쓴글 조회
-                				$.ajax({
-                					url:"/koala/member/boardList",
-                					data:{
-                						userNo:${user.userNo}
-                					},
-                					success:function(list){
-                						if(list != null){
-                							alert("잇네있어");
-                							
-                							var str = "";
-                							
-                							for(var i in list){
-                								str += "<tr><td>"+list[i].category+"</td>"
-		              								  +"<td>"+list[i].title+"</td>"
-		              								  +"<td>"+list[i].createDate+"</td>"
-		              								  +"<td>"+list[i].liked+"</td>"
-		              								  +"<td>"+list[i].count+"</td></tr>"
-                							}
-                							
-                							$("#result-area tbody").html(str);
-                							
-                						}
-                					},
-                					error:function(){
-                						alert("불러오기 실패");
-                					}
-                				})
-                			}else if(select == "replyList"){ //쓴댓글 조회
-                				
-                			}else if(select == "likedList"){ //좋아요 누른 게시글 조회
-                				
-                			}else if(select == "followingList"){ //팔로잉 조회
-                				
-                			}
+                			//location.href = "/koala/member/ad?userId=${user.userId}/"+select;
                 		});
                 		
                 	});

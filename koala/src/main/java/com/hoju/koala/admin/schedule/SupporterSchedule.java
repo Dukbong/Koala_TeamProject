@@ -23,7 +23,7 @@ public class SupporterSchedule {
 	AdminService adminService;
 	
 	@Scheduled(cron="0 0 0 * * *")
-//	@Scheduled(fixedDelay = 1000) // 테스트 1~2초 마다 실행
+//	@Scheduled(fixedDelay = 1000) // 테스트
 	public void supporterWaitDelete() {
 		log.info("삭제 스케줄러");
 		ArrayList<Supporters> list = adminService.selectSupporterWaitList();
@@ -43,6 +43,4 @@ public class SupporterSchedule {
 	public boolean resultCheck(int result) {
 		return result>0?true:false;
 	}
-	
-	
 }

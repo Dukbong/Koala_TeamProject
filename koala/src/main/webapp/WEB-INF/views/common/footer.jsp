@@ -99,15 +99,12 @@
             <div class="item">
                 <a class="footerAtag ii" href="/koala/qnaBoard/list">QnA_Board</a>
             </div>
-            <div class="item">
-<<<<<<< HEAD
-                <a class="footerAtag ii" href="#">QnA_Board</a>
-            </div>
+
             <div class="item more">
                 <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
-=======
+            </div>
+            <div class="item">
                 <a class="footerAtag ii" href="/koala/bulletinBoard/list">Bulletin_Board</a>
->>>>>>> aecaee34824ec0f882c1ec404e25c8fe1a6aa3ae
             </div>
         </div>
         <div class="column2">
@@ -141,7 +138,7 @@
         </div>
         <div class="column4">
             <div class="Quiz">
-                Multi Quiz
+                SQL Cloud
             </div>
             <div class="QuizPlay">
                 <a class="footerAtag" href="/koala/multi/play">Play</a>

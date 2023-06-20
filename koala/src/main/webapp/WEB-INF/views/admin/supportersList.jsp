@@ -121,9 +121,9 @@
                                     </div>
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
-                                        	<!-- 주소만 연결 -->
-                                            <a class="ii" href="/koala/member/ad?userId=${support.userId }">${support.userId }</a> 
-                                            <a class="ii" href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
+                                           <a class="ii" href="/koala/member/ad?userId=${support.userId }">${support.userId }</a>
+                                            <a>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : </a>
+                                            <a class="ii" href="https://github.com/${support.githubId }" target='_blank'>&nbsp;${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
                                             
@@ -138,7 +138,10 @@
                                             <!-- 빈 공간 -->
                                         </div>
                                         <div class="num3" style="width: 40%; height: 100%">
-                                            Point : ${support.point }
+<%--                                             Point : ${support.point } --%>
+<!-- 												<a class="ii" href="#" style="">Koala Style GitHub</a> -->
+											일단 대기... 뭐할지 모름
+											<!-- 1. 레파지토리 구경  -->
                                         </div>
                                     </div>
                                     <div class="supporterlast">
@@ -172,8 +175,9 @@
                                     </div>
                                     <div class="supportertwo">
                                         <div class="left" style="width: 99%; height: 100%; font-size: 18px; font-weight: bold;">
-                                            <a href="/koala/member/ad?userId=${support.userId }">${support.userId }</a> 
-                                            <a href="https://github.com/${support.githubId }" target='_blank'>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : ${support.githubId }</a>
+                                            <a class="ii" href="/koala/member/ad?userId=${support.userId }">${support.userId }</a>
+                                            <a>&nbsp;&nbsp; / &nbsp;&nbsp;Github_ID : </a>
+                                            <a class="ii" href="https://github.com/${support.githubId }" target='_blank'>&nbsp;${support.githubId }</a>
                                         </div>
                                         <div class="right" style="width: 1%; height: 100%; font-size: 18px; font-weight: bold; text-align: right;">
                                             
@@ -213,7 +217,7 @@
                     <div id="pagingArea">
                         <div class="btnarea">
                             <ul class="pagination">
-                            	
+                            	<c:if test="${pi.endPage > 1 }">
                                 <c:choose>
                                     <c:when test="${pi.currentPage == 1 }">
                                         <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
@@ -240,7 +244,7 @@
                                         </li>
                                     </c:otherwise>
                                 </c:choose>
-                                
+                                </c:if>
                             </ul>
                         </div>
                     </div>
