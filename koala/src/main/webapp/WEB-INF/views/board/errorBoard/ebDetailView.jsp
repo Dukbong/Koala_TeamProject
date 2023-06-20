@@ -15,58 +15,62 @@
     .total-area>div{height: 100%; float: left;}
     .board-area, .reply-area{width: 50%;}
 
-    .board-area>div{width: 90%;}
+    .board-area>*{width: 90%;}
     .lib-info{height: 10%; position: relative;}
-    .board-form{height: 70%; background-color: black; padding: 10px;}
+    .board-table{height: 70%; background-color: black; padding: 10px; border: 1px solid rgb(10, 40, 90);}
     .addDetailBtn{height: 10%;}
-    .updateDeleteBtn{height: 10%;}
+    .updateDeleteBtn{height: 10%; position: relative;}
 
-    #libTitle{
-        width: max-content;
-        height: 30px;
-        border-radius: 6px 6px 0px 0px;
-        background-color: skyblue;
-        position: absolute;
-        margin: auto;
-        left: 0;
-        bottom: 0;
-    }
-    #solved{
-        width: max-content;
-        border-radius: 6px 6px 0px 0px;
-        background-color: rgb(125, 204, 122);
-        position: absolute;
-        margin: auto;
-        right: 0;
-        bottom: 0;
-    }
+	#libTitle, #solved{
+		width: max-content;
+		border-radius: 6px 6px 0px 0px;
+		border: 1px solid rgb(10, 40, 90);
+		position: absolute;
+		margin: auto;
+		bottom: 0;
+	}
+    #libTitle{background-color: rgb(35, 100, 233); left: 0;}
+    #solved{background-color: rgb(40, 151, 223); right: 0;}
 
-    .board-form>div{width: 100%;}
-    .board-form *{text-align: center;}
-    .board-area{font-size: 15px;}
-    span{font-weight: 700; padding-right: 30px;}
-    .bWriterDate>div{float: left;}
+
+    .board-area{font-size: 16px;}
+    .board-table *{text-align: left; padding-left: 20px;}
+    .board-table th{text-decoration: underline;} 
 
     .addDetailBtn>div{ 
-        width: 30%; 
+        width: 50%; 
         height: 100%; 
-        margin: auto; 
-        position: relative; 
+        margin-top: 10px;
+        margin-left: 260px;
     }
-    .addDetailBtn button{
-    	position: absolute;
-    	margin: auto;
-    	bottom: 0;
-    	left: 0;
-    	right: 0;
+    #codeDetailBtn, #infoDetailBtn{
+        background-color: rgb(255, 201,20);
+    	width: 120px;
+    	height: 30px;
+    	margin-left: 10px;
+    	float: right;
+    	border-radius: 5px;
+    	border: 2px solid gray;
     }
+    
+    #updateBtn, #deleteBtn{
+    	width:130px; 
+    	height: 40px; 
+    	position: absolute; 
+    	margin: auto; 
+    	bottom: 5px;
+    	border-radius: 6px;
+    }
+    #updateBtn{left: 130px;}
+    #deleteBtn{right: 130px;}
+
     
 /* ======================================================= 댓글 영역 */
 	.reply-area>div{width: 100%;}
-	.replyWrite-area{height: 20%;}
-	.replyList-area{height: 80%;}
+	.replyWrite-area{height: 15%;}
+	.replyList-area{height: 85%;}
 	
-	#reply-form{width:90%; height: 100%; margin: auto; border-bottom: 1px solid gray;}
+	#reply-form{width:90%; height: 100%; margin: auto;}
 	#reply-form>*{
 		height: 80%;
 		border: 0;
@@ -79,22 +83,26 @@
 	
 	.replyList-area{overflow-y:scroll;}
 	.replyList-area>table{
-		background-color: black;
 		width: 90%;
 		margin: auto;
-		margin-top: 30px;
+		margin-top: 50px;
+		border-radius: 5px;
+		border-top: 1px solid gray;
+		border-bottom: 1px solid rgb(10, 40, 90);
 	}
-	::-webkit-scrollbar {display: none;}
+	.replyList-area::-webkit-scrollbar {width: 4px;}
+	.replyList-area::-webkit-scrollbar-thumb {background: rgba(105, 105, 105); border-radius: 10px;}
+	.replyList-area::-webkit-scrollbar-track {background: rgba(105, 105, 105, .2);}
     
 /* ======================================================= 모달창  */
     .modal-wrap{
         display: none;
-        width: 950px;
-        height: 550px;
+        width: 1000px;
+        height: 600px;
         position: absolute;
         top:50%;
         left: 50%;
-        margin: -100px 0 0 -475px;
+        margin: -100px 0 0 -500px;
         background-color: rgb(30, 30, 30);
         border: 2px solid gray;
         color: white;
@@ -135,6 +143,7 @@
     	height: 100%;
     }
 
+
 </style>
 
 <body>
@@ -144,7 +153,7 @@
 	    <div class="total-area">
 	        <div class="board-area">
 	            <div class="lib-info">
-	                <div id="libTitle">&nbsp;<span><b>${eb.createSetting.settingTitle}</b></span> ${eb.createSetting.settingVersion}&nbsp;</div>
+	                <div id="libTitle">&nbsp;<span style="font-size: 18px;"><b>${eb.createSetting.settingTitle}</b></span>&nbsp;&nbsp;${eb.createSetting.settingVersion}&nbsp;</div>
 	                <div id="solved">
 	                	<c:choose>
 	                		<c:when test="${eb.errorBoard.errorType eq 'U'}">&nbsp;user error&nbsp;</c:when>
@@ -154,37 +163,37 @@
 	                	</c:choose>
 	                </div>
 	            </div>
-	            <div class="board-form">
-	                <div class="bTitle">
-	                    <span>제목</span> ${eb.board.title }
-	                </div>
-	                <hr>
-	                <div class="bWriterDate">
-	                    <div class="bWriter" style="width: 50%;">
-	                        <span>작성자</span> ${eb.board.boardWriter }
-	                    </div>
-	                    <div class="bDate" style="width: 50%;">
-	                        <span>작성날짜</span> ${eb.board.createDate }
-	                    </div>
-	                </div>
-	                <hr>
-	                <div class="bContent"> ${eb.board.content }</div>
-	            </div>
+				<table class="board-table">
+					<tr>
+						<th style="width: 20%; height: 60px;">Title</th>
+						<td colspan="3">${eb.board.title }</td>
+					</tr>
+					<tr>
+						<th style="width: 20%; height: 60px;">Writer</th>
+						<td style="width: 30%;">${eb.board.boardWriter }</td>
+						<th style="width: 20%;">Date</th>
+						<td>${eb.board.createDate }</td>
+					</tr>
+					<tr>
+						<th style="width: 20%;">Content</th>
+						<td colspan="3">${eb.board.content }</td>
+					</tr>
+				</table>
 	            <div class="addDetailBtn">
 	            	<div>
-	            		<c:if test="${!empty eb.errorBoard.modifiedCode and empty eb.errorBoard.modifiedInfo}">
-	            			<button type="button" id="codeDetailBtn">코드 비교폼</button>
+	            		<c:if test="${!empty eb.errorBoard.modifiedInfo}">
+	            			<button type="button" id="infoDetailBtn" value="info">설명서 비교폼</button>
 	            		</c:if>
-	            		<c:if test="${empty eb.errorBoard.modifiedCode and !empty eb.errorBoard.modifiedInfo}">
-	            			<button type="button" id="codeDetailBtn">설명서 비교폼</button>
+	            		<c:if test="${!empty eb.errorBoard.modifiedCode}">
+	            			<button type="button" id="codeDetailBtn" value="code">코드 비교폼</button>
 	            		</c:if>
 	               	</div>
 	            </div>
 	            <div class="updateDeleteBtn">
 	            <!-- 작성자 로그인유저 조건걸기 -->
 	            	<c:if test="${eb.board.boardWriter.equals(loginUser.nickName) }">
-		            	<button type="button" id="" onclick="updateBoard();">수정하기</button>
-		            	<button type="button" id="" onclick="deleteBoard();">삭제하기</button>
+		            	<button type="button" id="updateBtn" onclick="updateBoard();">수정하기</button>
+		            	<button type="button" id="deleteBtn" onclick="deleteBoard();">삭제하기</button>
 	            	</c:if>
 	            </div>
 	        </div>
@@ -205,10 +214,10 @@
 	
 	        <div class="reply-area">
 	        	<div class="replyWrite-area">
-	        		<form action="insertReply" id="reply-form">
-	        			<textarea rows="" cols="">댓글을 작성해주세요.</textarea>
-	        			<button type="submit">작성</button>
-	        		</form>
+	        		<div id="reply-form" method="post">
+	        			<textarea rows="" cols="" name="replyContent" placeholder="댓글을 작성해주세요."></textarea>
+	        			<button id="insertReply">작성</button>
+	        		</div>
 	        	</div>
 	        	<div class="replyList-area">
         			<c:forEach var="re" items="${reList }">
@@ -216,12 +225,13 @@
 	        				<tr>
 		        				<td style="width: 50px; height: 50px;"><i class="fa-solid fa-user-secret fa-2xl" style="color: #ffffff;"></i></td>
 		        				<td style="width: max-content;">${re.replyWriter }</td>
-		        				<td style="width: 150px;">${re.createDate }</td>
 		        				<td style="width: 100px; text-align: center;">
 		        					<c:if test="${re.replyWriter eq loginUser.nickName }">
+		        						<input type="hidden" value="${re.replyNo }">
 			        					<button id="updateReply">수정</button><button id="deleteReply">삭제</button>
 		        					</c:if>
 		        				</td>
+		        				<td style="width: 150px;">${re.createDate }</td>
 		        			</tr>
 		        			<tr style="display: ;">
 		        				<td></td>
@@ -240,6 +250,44 @@
     <script>
     	//댓글 관련
     	$(function(){
+    		//댓글 작성
+    		$("#insertReply").on("click", function(){
+    			$.ajax({
+    				url : "insertReply",
+    				type : "POST",
+					data : {
+						refBno: ${eb.board.boardNo},
+						replyWriter: ${loginUser.userNo},
+						replyContent: $("textarea[name='replyContent']").val()
+					},
+					success : function(result){
+						if(result>0){
+							alert("댓글이 성공적으로 등록되었습니다.");
+							location.reload();
+						}else{
+							alert("댓글 작성에 실패했습니다.")
+						}
+					}
+    			});
+    		});
+    		
+    		//댓글 삭제
+    		$(".replyList-area").on("click", "button[id='deleteReply']", function(){
+    			
+    			$.ajax({
+    				url : "deleteReply",
+    				type : "GET",
+					data : { replyNo: $(this).siblings(':eq(0)').val() },
+					success : function(result){
+						if(result>0){
+							alert("댓글이 성공적으로 삭제되었습니다.");
+							location.reload();
+						}else{
+							alert("댓글 삭제에 실패했습니다.")
+						}
+					}
+    			});
+    		});
     		
     	});
     </script>
@@ -247,6 +295,33 @@
     <div class="modal-wrap">
         <div class="modal_close" id="cancle"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>
         <div class="modal-area">
+        
+        <script>
+        	//모달창 열고 닫기
+			$(function(){
+				var str1 = '${eb.errorBoard.modifiedCode}';
+				var str2 = '${eb.createSetting.settingCode}';
+				var str3 = '${eb.errorBoard.modifiedInfo}';
+				var str4 = '${eb.createSetting.settingInfo}';
+				
+				
+				$("button[id*='DetailBtn']").on("click", function(){
+					$('html').animate({scrollTop : $(".ebDetailView").offset().top}, 300);
+					$(".modal-wrap").css("display", "block");
+					if($(this).val() == 'code'){
+						$("#before").html(str2);
+						$("#after").html(str1);
+					}else{
+						$("#before").html(str4);
+						$("#after").html(str3);
+					}
+				});
+				$("#cancle").on("click", function(){
+					$('html').animate({scrollTop : $(".ebDetailView").offset().top}, 300);
+					$(".modal-wrap").css("display", "none");
+				});
+			});
+		</script>
         
         	<div class="modifyForm-area">
 				<div class="modifyForm-top">
@@ -267,19 +342,6 @@
         
         </div>
         
-        <script>
-        	//모달창 열고 닫기
-			$(function(){
-				$("button[id*='DetailBtn']").on("click", function(){
-					$('html').animate({scrollTop : $(".ebDetailView").offset().top}, 300);
-					$(".modal-wrap").css("display", "block");
-				});
-				$("#cancle").on("click", function(){
-					$('html').animate({scrollTop : $(".ebDetailView").offset().top}, 300);
-					$(".modal-wrap").css("display", "none");
-				});
-			});
-		</script>
 
     </div>
     

@@ -68,9 +68,6 @@ public class ErrorBoardController {
 			//댓글 목록 조회 메소드
 			ArrayList<Reply> reList = ebService.selectReplyList(boardNo);
 			
-			
-			log.info(""+reList);
-			
 			model.addAttribute("eb", eb);
 			model.addAttribute("reList", reList);
 			return "board/errorBoard/ebDetailView";
@@ -101,7 +98,6 @@ public class ErrorBoardController {
 		ArrayList<String> vList = ebService.selectVersion(settingTitle);
 		
 		return new Gson().toJson(vList);  //이게 맞나?
-		
 	}
 	
 	//게시글 작성 메소드
@@ -113,6 +109,10 @@ public class ErrorBoardController {
 							  ModelAndView mv,
 							  HttpSession session) {
 		
+		//로그인 유저 번호 가져오기
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		b.setBoardWriter(userNo);
+		
 		//세팅테이블 글번호 조회하기
 		CreateSetting c = new CreateSetting();
 		c.setSettingTitle(settingTitle);
@@ -121,15 +121,10 @@ public class ErrorBoardController {
 		int settingNo = ebService.selectSettingNo(c);
 		eb.setRefSno(settingNo);
 		
-		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
-		
-		b.setBoardWriter(userNo);
-		
-		
 		int result = ebService.insertBoard(b,eb);
 		
 		if(result>0) {
-			//session.setAttribute("alertMsg", "게시글 작성 완료");
+			session.setAttribute("alertMsg", "게시글 작성 완료");
 			return "redirect:list";
 		}else { //실패
 			return "common/error";
@@ -139,15 +134,17 @@ public class ErrorBoardController {
 	//게시글 작성 시 수정폼 생성
 	@ResponseBody
 	@RequestMapping(value="modifyForm", produces="text/html; charset=UTF-8")
-	public String createModifyForm(String settingTitle, String settingVersion, String category) {
+	public String createModifyForm(String settingTitle, 
+								   String settingVersion,
+								   String category) {
 		
 		CreateSetting c = new CreateSetting();
-		
 		c.setSettingTitle(settingTitle);
 		c.setSettingVersion(settingVersion);
-		String str = ebService.createModifyForm(category, c);
-		return str;
 		
+		String str = ebService.createModifyForm(category, c);
+		
+		return str;
 	}
 	
 	//게시글 수정폼 이동
@@ -193,21 +190,14 @@ public class ErrorBoardController {
 			return "common/error";
 		}
 	}
-	
+
 	//댓글 작성 메소드
+	@ResponseBody
 	@PostMapping("insertReply")
-	public String insertReply(Reply r,
+	public int insertReply(Reply r,
 							  HttpSession session) {
-		
-		int result = ebService.insertReply(r);
-		
-		if(result>0) {
-			session.setAttribute("msg", "댓글이 성공적으로 작성되었습니다.");
-			return "redirect:detail";
-		}else {	
-			session.setAttribute("errorMsg", "댓글 작성에 실패했습니다.");
-			return "common/error";
-		}
+
+		return ebService.insertReply(r);
 	}
 	
 	//댓글 수정 메소드
@@ -220,19 +210,12 @@ public class ErrorBoardController {
 	}
 	
 	//댓글 삭제 메소드
+	@ResponseBody
 	@GetMapping("deleteReply")
-	public String deleteReply(int boardNo,
+	public int deleteReply(int replyNo,
 							  HttpSession session) {
 		
-		int result = ebService.deleteBoard(boardNo);
-		
-		if(result>0) {
-			session.setAttribute("msg", "게시글이 삭제되었습니다.");
-			return "redirect:list";
-		}else {	
-			session.setAttribute("errorMsg", "게시글 삭제에 실패했습니다.");
-			return "common/error";
-		}
+		return ebService.deleteReply(replyNo);
 	}
 	
 	

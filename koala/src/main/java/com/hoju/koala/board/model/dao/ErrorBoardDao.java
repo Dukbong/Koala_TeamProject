@@ -12,6 +12,9 @@ import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class ErrorBoardDao {
 	
@@ -49,7 +52,6 @@ public class ErrorBoardDao {
 	public ArrayList<String> selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
 		
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersion", settingTitle);
-		
 	}
 	
 	//세팅 글번호 조회
@@ -81,22 +83,22 @@ public class ErrorBoardDao {
 		return sqlSession.insert("errorBoardMapper.insertErrorBoard", eb);		
 	}
 
-	//게시글 삭제
-	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
-		
-		return sqlSession.delete("errorBoardMapper.deleteBoard", boardNo);
-	}
-
 	//게시글 수정 - Board
 	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
 		
 		return sqlSession.update("errorBoardMapper.updateBoard", b);
 	}
 
-	//게시긜 수정 - ErrorBoard
+	//게시글 수정 - ErrorBoard
 	public int updateEbBoard(SqlSessionTemplate sqlSession, ErrorBoard eb) {
 		
 		return sqlSession.update("errorBoardMapper.updateErrorBoard", eb);
+	}
+	
+	//게시글 삭제
+	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.delete("errorBoardMapper.deleteBoard", boardNo);
 	}
 
 	//댓글 리스트 조회
@@ -122,10 +124,5 @@ public class ErrorBoardDao {
 		
 		return sqlSession.delete("errorBoardMapper.deleteReply", replyNo);
 	}
-	
-	
-	
-	
-	
 	
 }

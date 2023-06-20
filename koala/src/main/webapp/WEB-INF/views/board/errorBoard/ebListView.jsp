@@ -179,11 +179,11 @@
                     </div>
                 <div class="search_area">
                     <select name="search_qna" class="search_title">
-                    	<option value="writer">전체</option>
+                    	<option value="">전체</option>
                         <option value="writer">작성자</option>
                         <option value="title">제목</option>
                         <option value="content">내용</option>
-                        <option value="writer">라이브러리</option>
+                        <option value="setting">라이브러리</option>
                     </select>
                     <input type="search" placeholder="검색할 내용을 입력하세요">
                     <button>검색</button>
@@ -196,13 +196,14 @@
                             <th style=" width: 80px;">글번호</th>
 							<th style=" width: 120px;">라이브러리</th>
 							<th>제목</th>
-							<th style=" width: 80px;">작성자</th>
-							<th style=" width: 90px;">작성일</th>
-							<th style=" width: 80px;">조회수</th>
-							<th style=" width: 80px;">해결여부</th>
+							<th style=" width: 90px;">작성자</th>
+							<th style=" width: 100px;">작성일</th>
+							<th style=" width: 90px;">조회수</th>
+							<th style=" width: 90px;">해결여부</th>
                         </tr>
                     </thead>
-                    <tbody>  <!-- 게시글 없을 때 조건문 -->
+                    <tbody>
+                    	<!-- 게시글 없을 때 조건문 -->
                     	<c:forEach var="eb" items="${ebList}">
 							<tr style="height: 40px;">
 								<td>${eb.board.boardNo }</td>
@@ -213,8 +214,8 @@
 								<td>${eb.board.count }</td>
 								<td>
 									<c:choose>
-										<c:when test="${eb.errorBoard.solved eq 'Y'}"><span style="color:rgb(86,156,214)">해결완료</span></c:when>
-										<c:when test="${eb.errorBoard.solved eq 'N' and eb.errorBoard.notice eq 'N'}"><span style="color:rgb(106,153,85);">대기중</span></c:when>
+										<c:when test="${eb.errorBoard.solved eq 'Y'}"><span style="color:gray">해결완료</span></c:when>
+										<c:when test="${eb.errorBoard.solved eq 'N' and eb.errorBoard.notice eq 'N'}"><span style="color:rgb(255,116,96);">대기중</span></c:when>
 									</c:choose>
 								</td>
 							</tr>
