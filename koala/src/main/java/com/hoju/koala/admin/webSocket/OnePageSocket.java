@@ -28,6 +28,7 @@ public class OnePageSocket extends TextWebSocketHandler {
 		for(WebSocketSession member : list) {
 			member.sendMessage(newMessage);
 		}
+		System.out.println(newMessage);
 	}
 
 	@Override

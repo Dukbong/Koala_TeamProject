@@ -1,7 +1,13 @@
 package com.hoju.koala.board.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.service.BulletinBoardService;
@@ -18,6 +25,7 @@ import com.hoju.koala.board.model.vo.BulletinBoard;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
+import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +52,7 @@ public class BulletinBoardController {
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<Board> bbList = bbService.selectList(pi);
-		
+
 		model.addAttribute("pi",pi);
 		model.addAttribute("bbList", bbList);
 		return "board/freeBoard/boardListView";
@@ -133,38 +141,40 @@ public class BulletinBoardController {
 //		return count;
 // 	}
 //	
-//	//게시글 입력 메소드
-//	public String insertBoard(int category, Model model,Board b,BoardAttachment ba,ArrayList<MultipartFile> upfiles,HttpSession session) {
-//		
-//		for(int i=0; i<upfiles.size(); i++) {
-//			if(!upfiles.get(i).getOriginalFilename().equals("")) {
-//				
-//				String changeName = saveFile(upfiles.get(i),session);
-//				String originName = (upfiles.get(i)).getOriginalFilename();
-//				String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
-//				ba.builder().originName(originName).changeName(changeName).refBno(b.getBoardNo()).fileLevel(i).filePath(savePath).build();
-//				int result = bbService.insertBoardAttachment(ba);
-//				
-//				if(result<=0) {
-//					model.addAttribute("errorMsg","첨부파일 저장 실패");
-//					return "common/errorPage";
-//				}
-//			}
-//		}
-//		
-//		b.builder().boardWriter(String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo())).build();
-//		int result = bbService.insertBoard(b);
-//		bulletinBoard.builder().boardNo(b.getBoardNo()).boardType(category).build();
-//		int result2 = bbService.insertBoardCategory(bulletinBoard);
-//		
-//		if(result*result2!=0) {
-//			model.addAttribute("alertMsg","게시글 작성 성공");
-//			return "redirect:bulletinboard.bo";
-//		}else {
-//			model.addAttribute("errorMsg","게시글 작성 실패");
-//			return "common/errorPage";
-//		}
-//	}
+	//게시글 입력 메소드
+	@RequestMapping("insert")
+	public String insertBoard(int category, Model model,Board b,MultipartFile[] upfiles,HttpSession session) {
+		//다시 하기
+		for(int i=0; i<upfiles.length; i++) {
+			if(!upfiles[i].getOriginalFilename().equals("")) {
+				
+				String changeName = saveFile(upfiles[i],session);
+				String originName = (upfiles[i]).getOriginalFilename();
+				String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
+				BoardAttachment ba = BoardAttachment.builder().originName(originName).changeName(changeName).refBno(b.getBoardNo()).fileLevel(i).filePath(savePath).build();
+				int result = bbService.insertBoardAttachment(ba);
+				
+				if(result<=0) {
+					new File(session.getServletContext().getRealPath(ba.getFilePath())).delete();
+					model.addAttribute("errorMsg","첨부파일 저장 실패");
+					return "common/errorPage";
+				}
+			}
+		}
+		
+		b.builder().boardWriter(String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo())).build();
+		int result = bbService.insertBoard(b);
+		BulletinBoard bulletinBoard = BulletinBoard.builder().boardNo(b.getBoardNo()).boardType(category).build();
+		int result2 = bbService.insertBoardCategory(bulletinBoard);
+		
+		if(result*result2!=0) {
+			model.addAttribute("alertMsg","게시글 작성 성공");
+			return "redirect:bulletinboard.bo";
+		}else {
+			model.addAttribute("errorMsg","게시글 작성 실패");
+			return "common/errorPage";
+		}
+	}
 		
 	//글쓰기 페이지
 	@RequestMapping("enroll")
@@ -218,28 +228,28 @@ public class BulletinBoardController {
 //		return new Gson().toJson(rList);
 //	}
 //	
-//	//파일 이름 바꾸는 메소드
-//	public String saveFile(MultipartFile upfile,HttpSession session) {
-//
-//		String originName = upfile.getOriginalFilename();
-//		
-//		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-//		
-//		int ranNum = (int)(Math.random()*90000+10000); //5자리 랜덤값
-//		
-//		String ext = originName.substring(originName.lastIndexOf("."));
-//		
-//		String changeName = currentTime + ranNum + ext;
-//		
-//		String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
-//		
-//		try {
-//			upfile.transferTo(new File(savePath+changeName));
-//		} catch (IllegalStateException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return changeName;
-//	}
+	//파일 이름 바꾸는 메소드
+	public String saveFile(MultipartFile upfile,HttpSession session) {
+
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		
+		int ranNum = (int)(Math.random()*90000+10000); //5자리 랜덤값
+		
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
+		
+		try {
+			upfile.transferTo(new File(savePath+changeName));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return changeName;
+	}
 }

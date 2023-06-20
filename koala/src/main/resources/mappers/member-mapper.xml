@@ -108,8 +108,8 @@
 	</delete>
 	
 	<!-- 입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기 -->
-	<select id="selectEmail" resultType="string">
-		SELECT USER_ID
+	<select id="selectEmail" resultMap="memberResultSet">
+		SELECT *
 		FROM MEMBER
 		WHERE EMAIL = #{userEmail}
 		AND STATUS = 'Y'
@@ -135,10 +135,50 @@
 		SELECT CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
-		WHERE BOARD_WRITER = #{userNo}
+		WHERE M.USER_ID = #{userId}
 		AND B.STATUS = 'Y'
 		ORDER BY B.CREATE_DATE DESC
 	</select>
 	
+	<!-- 유저가 댓글쓴 게시글 조회 -->
+	<select id="replyList" resultMap="boardMapper.boardResultSet">
+		SELECT BOARD_NO, CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
+		JOIN REPLY R ON (B.BOARD_NO = R.REF_BNO)
+		WHERE R.REPLY_WRITER = (SELECT USER_NO
+		                        FROM MEMBER
+		                        WHERE USER_ID = #{userId})
+		AND B.STATUS = 'Y'
+		GROUP BY BOARD_NO, CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
+		ORDER BY B.CREATE_DATE DESC
+	</select>
+	
+	<!-- 유저가 추천누른 게시글 조회 -->
+	<select id="likedList" resultMap="boardMapper.boardResultSet">
+		SELECT CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
+		JOIN LIKED L ON (B.BOARD_NO = L.REF_BNO)
+		WHERE L.REF_UNO = (SELECT USER_NO
+		                   FROM MEMBER
+		                   WHERE USER_ID = #{userId})
+		AND B.STATUS = 'Y'
+		AND LIKED_TYPE = 1
+		GROUP BY CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
+		ORDER BY B.CREATE_DATE DESC
+	</select>
+	
+	<!-- 해당유저의 팔로잉리스트 조회 -->
+	<select id="followingList" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE USER_NO IN (SELECT TO_USER
+                          FROM FOLLOW
+                          WHERE FROM_USER = (SELECT USER_NO
+                                             FROM MEMBER
+                                             WHERE USER_ID = #{userID}))
+		ORDER BY NICKNAME ASC
+	</select>
 	
 </mapper>

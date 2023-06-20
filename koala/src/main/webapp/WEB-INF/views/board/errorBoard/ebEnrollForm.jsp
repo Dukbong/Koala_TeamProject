@@ -9,9 +9,11 @@
 <script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
 <script src="/koala/resources/codemirror-5.53.2/mode/sql/sql.js"></script>
 <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
 <link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/lib/codemirror.css">
 <link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/theme/darcula.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <style>
@@ -38,23 +40,30 @@
     .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
-    .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding : 10px;}
+    .modifyForm_1, .modifyForm_3{width: 47%; background-color: black;}
+    .modifyForm-area_info .modifyForm_1, .modifyForm-area_info .modifyForm_3{padding: 10px;}
     .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
     textarea{
     	width: 100%;
     	height: 100%;
     	background-color: black;
     	color : white;
-    	resize: none;
     	border: none;
         outline: none;
+    	resize: none; /*왜 안되는지 확인해보기*/
     }
     .reset{position:absolute; margin:auto; right:0; cursor:pointer;}
 /* ======================================================== 버튼 관련 */
-     button{border-radius: 5px;}
+     .ebEnrollForm button{border-radius: 5px;}
      button:hover{cursor: pointer;} 
      .buttons{width: 25%; height: 50px; margin: auto; position: relative;} 
-     .buttons>button{ width: 120px; height: 40px; position:absolute; margin: auto;} 
+     .buttons>button{ width: 120px; height: 40px; position:absolute; margin: auto;}
+     
+     .CodeMirror {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
 </style>
 
 <body>
@@ -124,19 +133,6 @@
 							style="width: 85%; height: 90%; padding: 5px 55px;"></textarea>
 				</div>
 			</div>
-			
-<!-- 			<script> //다시 해보기 -->
-<!-- // 				// textarea 태그의 element를 지정 -->
-<!-- // 				var textarea = document.getElementById('afterCode'); -->
-				
-<!-- // 				// 에디터 설정 -->
-<!-- // 		        var editor = CodeMirror.fromTextArea(textarea, { -->
-<!-- // 		            lineNumbers: true,  //왼쪽 라인넘버 표기 -->
-<!-- // 		            lineWrapping: true, //줄바꿈. 음.. break-word; -->
-<!-- // 		            theme: "darcula",   //테마는 맘에드는 걸로. -->
-<!-- // 		            mode: 'text/x-java', //모드는 sql 모드 -->
-<!-- // 		            val: textarea.value -->
-<!-- 			</script> -->
 
 			<div class="modifyForm-area_code">
 				<div class="modifyForm-top">
@@ -146,16 +142,59 @@
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
-						<textarea id="beforeCode" cols="30" rows="10" readonly disabled>코드 가져오기</textarea>
+						<textarea id="beforeCode" class="codeMirror" cols="30" rows="10" readonly disabled></textarea>
 					</div>
 					<div class="modifyForm_2">
 						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
-						<textarea name="modifiedCode" id="afterCode" cols="30" rows="10" disabled>코드 가져오기</textarea>
+						<textarea name="modifiedCode" class="codeMirror" id="afterCode" cols="30" rows="10" disabled></textarea>
 					</div>
 				</div>
 			</div>
+			
+			<script>
+		
+		$(function() {
+			$(".codeMirror").on("change keyup paste", function() {
+				var text = $(".codeMirror").val();
+				console.log(text);
+			});
+			
+            var codeEditor = null;
+            var showCodeEditor = false;
+            
+            
+            
+            var textArea = document.getElementById("beforeCode");
+            
+            console.log(textArea.value);
+            
+			function initializeCodeMirror(){
+                //textarea 태그의 element 지정
+               // var textArea = document.getElementById("textZone");
+                //에디터 설정
+                 codeEditor = CodeMirror.fromTextArea(textArea,{
+                    lineNumbers:true,
+                    lineWrapping:true,
+                    theme:"darcula",
+                    mode:"text/x-sql",
+                    val:textArea.value
+                });
+
+
+            }
+			function openCodeEditor(){
+                if (!codeEditor) {
+                    initializeCodeMirror();//코드미러 생성
+                    }
+
+                var codeEditorWrapper = codeEditor.getWrapperElement();
+            }
+			
+			openCodeEditor();
+		})
+	</script>
 			
 			<div class="modifyForm-area_info">
 				<div class="modifyForm-top">
@@ -184,6 +223,9 @@
 					<option value="info">설명서</option>
 				</select>
 				<button type="button">create</button>
+				<br><br>
+				 <p>code 혹은 menual 수정이 필요한 경우 사용할 수 있는 수정폼입니다.</p>
+				 
 			</div>
 			
 			<div class="button-area">

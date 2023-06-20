@@ -16,6 +16,12 @@
 		<result column="blockIp" property="blockIp"/>
 		<result column="issue" property="issue"/>
 	</resultMap>
+	
+	<resultMap type="issues" id="issuesResultSet">
+		<result column="SETTING_TITLE" property="settingTitle"/>
+		<result column="CC" property="count"/>
+		<result column="SORT_DESCRIPTION" property="sortDescription"/>
+	</resultMap>
 	<!-- 서포터즈 회원 조회 VO >> 특이사항 : resultMap을 상속 -->
 	<resultMap type="supporters" id="supportResultSet" extends="memberMapper.memberResultSet">
 		<result column="REF_UNO" property="refUno"/>
@@ -45,18 +51,26 @@
 		<result column="STATUS" property="status"/>
 	</resultMap>
 	
-	
+	<select id="selectIssues" resultMap="issuesResultSet">
+		SELECT SETTING_TITLE, COUNT(*) CC, SORT_DESCRIPTION
+		FROM BOARD B
+		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
+		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
+		JOIN CREATE_SETTING C ON(E.REF_SNO = C.SETTING_NO)
+        WHERE E.SOLVED = 'N' AND B.STATUS = 'S'
+        GROUP BY SETTING_TITLE, SORT_DESCRIPTION
+	</select>
 	<!-- 관리가 필요한 게시글 개수 및 회원수 -->
 	<select id="allCount" resultMap="allTableResultSet">
 		SELECT
 			(SELECT COUNT(*) FROM MEMBER WHERE STATUS = 'Y') member,
 			(SELECT COUNT(*) FROM SUPPORTERS S JOIN MEMBER M ON (S.REF_UNO = M.USER_NO) WHERE M.STATUS = 'Y' AND GITHUB_ID != ' ') supporters,
 			(SELECT COUNT(*) FROM CREATE_SETTING WHERE STATUS = 'W') createSetting,
-			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'W' AND B.STATUS = 'Y') errorBoard,
+			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'N' AND B.STATUS = 'Y') errorBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'B') bulletinBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'Q') qnaBoard,
 			(SELECT COUNT(*) FROM BLOCK_IP) blockIp,
-			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'E' AND B.STATUS = 'Y') issue
+			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'N' AND B.STATUS = 'S') issue
 		FROM DUAL
 	</select>
 	
@@ -70,6 +84,8 @@
     			SELECT USER_NO FROM MEMBER WHERE USER_ID = #{uesrId}
 			)
 	</delete>
+	
+
 	
 	<!-- 아직 상태가 대기중인 라이브러리 및 세팅 -->
 	<select id="selectWaitingLibrary" resultMap="createSettingResultSet">
@@ -193,20 +209,7 @@
 			REPO_URL = #{repoUrl}
 		WHERE REF_UNO = #{refUno} 
 	</update>
-<!-- 	
-	<select id="boardCount" parameterType="string">
-		SELECT COUNT(*)
-		<choose>
-			<when test='board.equalsIgnoreCase("member")'>
-				FROM MEMBER
-			</when>
-			<when test='board.equalsIgnoreCase("errorBoard")'>
-				FROM ERROR_BOARD
-			</when>
-			<when test='board.equalsIgnoreCase("qnaBaord")'>
-				FROM MEMBER
-			</when>
-		</choose>
-		WHERE STATUS = 'Y'
-	</select> -->
+	<select id="selectIssueDetail" resultMap="errorBoardMapper.errorSetResultSet">
+	
+	</select>
 </mapper>

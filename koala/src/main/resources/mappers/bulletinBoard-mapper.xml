@@ -13,11 +13,13 @@
 	</select>
 	
 	<select id="selectList" resultMap="boardResultSet">
-		SELECT BOARD_NO, TITLE, NICKNAME, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", COUNT, LIKED
+		SELECT BOARD_NO, TITLE, NICKNAME, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", COUNT, LIKED, COUNT(FILE_NO)
 		FROM BOARD B
 		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
+		JOIN BOARD_ATTACHMENT A ON(BOARD_NO = REF_BNO)
 		WHERE B.STATUS = 'Y'
 		AND CATEGORY = 'B'
+		GROUP BY BOARD_NO, TITLE, NICKNAME, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD'), COUNT, LIKED
 		ORDER BY BOARD_NO DESC
 	</select>
 	
@@ -179,6 +181,7 @@
 		<result column="MODIFIED_DATE" property="modifyDate"/>
 		<result column="NOTICE" property="notice"/>
 		<result column="STATUS" property="status"/>
+		<result column="FILE_NO" property="fileNo"/>
 	</resultMap>
 	
 	<resultMap type="boardAttachment" id="boardAttachmentResultSet">

@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -74,7 +75,7 @@ public class MemberDao {
 	}
 	
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
-	public String selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
+	public Member selectEmail(SqlSessionTemplate sqlSession, String userEmail) {
 
 		return sqlSession.selectOne("memberMapper.selectEmail", userEmail);
 	}
@@ -92,9 +93,27 @@ public class MemberDao {
 	}
 
 	//유저가쓴 게시글 조회
-	public ArrayList<Board> boardList(SqlSessionTemplate sqlSession, String userNo) {
+	public ArrayList<Board> boardList(SqlSessionTemplate sqlSession, String userId) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.boardList", userNo);
+		return (ArrayList)sqlSession.selectList("memberMapper.boardList", userId);
+	}
+
+	//유저가 댓글쓴 게시글 조회
+	public ArrayList<Board> replyList(SqlSessionTemplate sqlSession, String userId) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.replyList", userId);
+	}
+
+	//유저가 추천누른 게시글조회
+	public ArrayList<Board> likedList(SqlSessionTemplate sqlSession, String userId) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.likedList", userId);
+	}
+
+	//해당 유저의 팔로잉 리스트 조회
+	public ArrayList<Member> followingList(SqlSessionTemplate sqlSession, String userId) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.followingList", userId);
 	}
 
 

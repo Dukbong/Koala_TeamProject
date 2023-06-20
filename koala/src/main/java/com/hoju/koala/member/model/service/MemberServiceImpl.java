@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.dao.MemberDao;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
@@ -121,11 +122,11 @@ public class MemberServiceImpl implements MemberService {
 
 	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
 	@Override
-	public String selectEmail(String userEmail) {
+	public Member selectEmail(String userEmail) {
 
-		String userId = memberDao.selectEmail(sqlSession, userEmail);
+		Member m = memberDao.selectEmail(sqlSession, userEmail);
 		
-		return userId;
+		return m;
 	}
 
 
@@ -151,11 +152,41 @@ public class MemberServiceImpl implements MemberService {
 
 	//유저가 쓴 게시글 조회
 	@Override
-	public ArrayList<Board> boardList(String userNo) {
+	public ArrayList<Board> boardList(String userId) {
 		
-		ArrayList<Board> blist = memberDao.boardList(sqlSession, userNo);
+		ArrayList<Board> blist = memberDao.boardList(sqlSession, userId);
 		
 		return blist;
+	}
+
+
+	//유저가 쓴 댓글쓴 게시글 조회
+	@Override
+	public ArrayList<Board> replyList(String userId) {
+		
+		ArrayList<Board> rlist = memberDao.replyList(sqlSession, userId);
+		
+		return rlist;
+	}
+
+
+	//유저가 추천누른 게시글 조회
+	@Override
+	public ArrayList<Board> likedList(String userId) {
+		
+		ArrayList<Board> lList = memberDao.likedList(sqlSession, userId);
+		
+		return lList;
+	}
+
+
+	//해당 유저의 팔로잉 조회
+	@Override
+	public ArrayList<Member> followingList(String userId) {
+		
+		ArrayList<Member> fList = memberDao.followingList(sqlSession, userId);
+		
+		return fList;
 	}
 
 
