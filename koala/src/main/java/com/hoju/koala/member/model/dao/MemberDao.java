@@ -116,6 +116,12 @@ public class MemberDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.followingList", userId);
 	}
 
+	//닉네임 변경
+	public int updateNick(SqlSessionTemplate sqlSession, Member m) {
+		
+		return sqlSession.update("memberMapper.updateNick", m);
+	}
+
 
 	
 	

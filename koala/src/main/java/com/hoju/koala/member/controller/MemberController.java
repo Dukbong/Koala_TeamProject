@@ -1,6 +1,8 @@
 package com.hoju.koala.member.controller;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,14 +15,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
-import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.member.model.vo.Profile;
 
 @Controller
 @RequestMapping("/member")
@@ -48,12 +51,17 @@ public class MemberController {
 	//로그인
 	@PostMapping("/login")
 	public ModelAndView login(HttpSession session,
-						Member m,
-						ModelAndView mv) {
+							  HttpServletRequest request,
+							  Member m,
+							  ModelAndView mv) {
 		
+		
+		//아이디 값에 대한 유저 정보 가져오기
 		Member loginUser = memberService.loginMember(m);
+		
 		System.out.println("loginUser" +loginUser);
 		
+		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
 		if((loginUser != null) && ((pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) || m.getUserPwd().equals(loginUser.getUserPwd())) ) {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
@@ -219,7 +227,7 @@ public class MemberController {
 			int result = memberService.updatePwd(m);
 			
 			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
-				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요. 임시 확인용 : "+newPwd);
+				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요.");
 				mv.setViewName("redirect:/member/login");
 			}else {
 				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
@@ -240,6 +248,30 @@ public class MemberController {
 	public String as(HttpSession session) {
 		
 		return "member/accountSettingPage";
+	}
+	
+	//닉네임 변경
+	@ResponseBody
+	@GetMapping("/updateNick")
+	public int updateNick(String inputNick,
+						  HttpServletRequest request) {
+		
+		//변경전
+		Member m = (Member)request.getSession().getAttribute("loginUser");
+		
+		m.setNickName(inputNick);
+	
+		int result = memberService.updateNick(m);
+		
+		if(result>0) {
+			//변경후 로그인유저 세션업데이트
+			Member loginUser = memberService.selectMember(m.getUserId());
+			request.getSession().setAttribute("loginUser", loginUser);
+		}
+		
+		System.out.println(result);
+		
+		return result;
 	}
 	
 	
@@ -410,6 +442,52 @@ public class MemberController {
 		return mv;
 	}
 	
-	
-	
+	//프로필 관련
+	@ResponseBody
+	@PostMapping("/profile")
+	public int profile(MultipartFile upFile,
+					   HttpServletRequest request
+					   ) {
+		//세션에서 로그인유저 꺼내기
+		Member loginUser = (Member)request.getSession().getAttribute("loginUser");
+		
+		if (!upFile.isEmpty()) {
+			//넘어온 파일이 있다면
+			
+			String filePath = "/resources/memberImage";
+			//실제 저장경로
+			String savePath = request.getSession().getServletContext().getRealPath(filePath);
+			System.out.println(savePath);
+			
+			//원본 파일명
+			String originName = upFile.getOriginalFilename();
+			
+			//확장자 떼오기
+			String extension = originName.substring(originName.lastIndexOf("."));
+			System.out.println(extension);
+			
+			//변경된 파일명
+			String changeName = System.currentTimeMillis()+extension;
+			System.out.println("change:"+changeName);
+			
+			
+			Profile p = Profile.builder().refUno(loginUser.getUserNo()).originName(originName).changeName(changeName).filePath(filePath).build();
+			
+			int result = memberService.insertProfile(p);
+			
+			if(result>0) { //DB에 등록이 됐으면
+				try {
+					//MultipartFile을 이용해 실제 경로에 파일 저장
+					upFile.transferTo(new File(savePath+changeName));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+                
+        } else {
+            System.out.println("hi");
+        }
+		
+		return 0;
+	}
 }

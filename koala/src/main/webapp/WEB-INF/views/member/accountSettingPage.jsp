@@ -58,10 +58,6 @@
     	height: 80%;
     }
     
-    form{
-    	height: 100%;
-    	width: 100%;
-    }
     
     #area1,#area2{
     	height: 100%;
@@ -110,9 +106,6 @@
     	width: 40%;
     }
     
-    #profile{
-    	height:80%;
-    }
     
     #ubt{
     	height:15%;
@@ -162,6 +155,36 @@
 		user-select: none;
 	}
 	
+	#profile-area{
+    	height:80%;
+    	width: 80%;
+    	background-color: rgb(40, 40, 40);
+    }
+    
+	
+	#profile-title{
+		width: 200px;
+		height: 60px;
+		font-size: 30px;
+	}
+	
+	#profile-box{
+	    width: 200px;
+	    height: 200px;
+	    border-radius: 70%;
+	    overflow: hidden;
+	}
+	
+	.profile{
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	}
+	
+	.profile:hover{
+		cursor: pointer;
+	}
+	
 	
 </style>
 <body>
@@ -176,44 +199,109 @@
 					<span>Account Info</span>
 				</div>
 				<div id="info-area">
-						<div id="area1">
-							<div class="noneChange">				
-								<div class="pack">
-					                <label for="userId">ID</label><br>
-					                <input type="text" class="box readonly" id="userId"name="userId" value="aaaa${loginUser.userId }" readonly>
-			            		</div>
-			            		
-			            		<div class="pack">
-									<label for="email">Email</label><br>
-				        	        <input type="email" class="box readonly" id="email" name="email" value="${loginUser.email }" readonly>
-			            		</div>
-							</div>
-							
-							<div class="changeAble">
-								<div class="pack">
-				                	<label for="nickName">Nickname</label><br>
-									<input type="text" class="box" id="nickName" placeholder="닉네임" name="nickName" required value="${loginUser.nickName }">
-		            			</div>
-							</div>
+					<div id="area1">
+						<div class="noneChange">				
+							<div class="pack">
+				                <label for="userId">ID</label><br>
+				                <input type="text" class="box readonly" id="userId"name="userId" value="${loginUser.userId }" readonly>
+		            		</div>
 		            		
+		            		<div class="pack">
+								<label for="email">Email</label><br>
+			        	        <input type="email" class="box readonly" id="email" name="email" value="${loginUser.email }" readonly>
+		            		</div>
 						</div>
-					<form action="/koala/member/profile" method="post">
-						<div id="area2">
-							<div id="profile">
-								<div align="center">
-									<span>Profile Image</span>
+						
+						<div class="changeAble">
+							<div class="pack">
+			                	<label for="nickName">Nickname</label><br>
+								<div class="input-group">
+							      	<input type="text" id="inputNick" class="box" placeholder="닉네임" name="nickName" required value="${loginUser.nickName }">
+							      	<button class="btn btn-primary" type="button" id="nickUpdate">Change</button>
+						      	</div>
+	            			</div>
+						</div>
+						
+						<script>
+							$(function(){
+								$("#nickUpdate").on("click", function(){
+									$.ajax({
+										url:"/koala/member/updateNick",
+										data:{
+											inputNick:$("#inputNick").val()
+										},
+										success:function(result){
+											if(result>0){
+												alert("닉네임 변경 완료");
+											}else{
+												alert("닉네임 변경 실패");
+											}
+										},
+										error:function(){
+											alert("닉네임변경 통신과정 오류");
+										}
+									});
+								});
+							});
+						</script>
+	            		
+					</div>
+					<div id="area2">
+						<div id="profile-area" align="center">
+							<div id="profile-title">
+								<span>Profile Image</span>
+							</div>
+							<div id="profile-box">
+							    <img class="profile" src="" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
+							</div>
+						</div>
+					</div>
+					
+					<div class="modal fade" id="profileUpdateModal">
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="modalTitle">프로필 사진 변경</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
-								<div align="center" style="margin-top: 30%;">
-									<img alt="" src="">
-									<span style="font-size:40px;">이미지</span>
+								<div class="modal-body">
+									<form id="uploadForm" enctype="multipart/form-data">
+										<div class="form-group">
+											<label for="upload">새로운 사진 업로드</label>
+											<input type="file" class="form-control-file" id="upFile" accept="image/*" name="upFile"/>
+										</div>
+										<button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
+									</form>
 								</div>
 							</div>
-							
-							<div id="ubt">
-								<button class="btn-size">Change</button>
-							</div>
 						</div>
-					</form>
+					</div>
+					
+					<script>
+						$(function(){
+							$("#uploadBtn").on("click", function(){
+								
+								
+								//폼데이터생성 -> 폼 넣어주기
+								var formData = new FormData($("#uploadForm")[0]);
+								
+								$.ajax({
+									url:"/koala/member/profile",
+									method:"post",
+									cache:false,
+									contentType:false,
+									processData:false,
+									data:formData,
+									success:function(result){
+										console.log(result);
+									},
+									error:function(){
+										alert("업로드 통신 오류");
+									}
+								});
+							});
+						}); 
+					</script>
 				</div>
 			</div>
 			
@@ -324,9 +412,9 @@
 			        		-삭제 이후 데이터 복구가 불가능하니 사전에 필요한 정보를 백업해주세요.<br>
 			        	</p>
 			      </div>
-			      <div class="modal-footer">
-			      	<span style="color: orange;">계정 삭제를 진행하시려면 delete_account_${loginUser.userId }를 입력하시고 Delete버튼을 클릭하세요.</span><br>
-			      	<div class="input-group" style="width:80%;">
+			      <div class="modal-footer text-center">
+			      	<span class="mx-auto" style="color: orange;">계정 삭제를 진행하시려면 delete_account_${loginUser.userId }를 입력하시고 Delete버튼을 클릭하세요.</span>
+			      	<div class="input-group mx-auto" style="width:80%;">
 				      	<input type="text" id="inputText" class="form-control" placeholder="delete_account_nickname" onselect="return: null;">
 				      	<button class="btn btn-danger" type="button" id="deleteAccount">Button</button>
 			      	</div>
