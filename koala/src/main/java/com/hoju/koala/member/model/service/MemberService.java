@@ -6,6 +6,7 @@ import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.member.model.vo.Profile;
 
 public interface MemberService {
 
@@ -59,6 +60,12 @@ public interface MemberService {
 
 	//해당 유저의 팔로잉 조회
 	ArrayList<Member> followingList(String userId);
+
+	//닉네임 변경
+	int updateNick(Member m);
+
+	//프로필 등록
+	int insertProfile(Profile p);
 
 	
 
