@@ -194,7 +194,7 @@
 		ORDER BY 1 DESC
 	</select>
 	
-	<!-- 댓글 작성   //확인전 -->
+	<!-- 댓글 작성  -->
 	<insert id="insertReply">
 		INSERT INTO REPLY VALUES(SEQ_RNO.NEXTVAL,
 								 #{refBno},
@@ -204,14 +204,14 @@
 								 'W')
 	</insert>
 	
-	<!-- 댓글 수정   //확인전 -->
-	<update id="updateReply">
+	<!-- 댓글 수정  -->
+	<update id="updateReply" parameterType="reply">
 		UPDATE REPLY
 		SET REPLY_CONTENT = #{replyContent}
 		WHERE REPLY_NO = #{replyNo}
 	</update>
 	
-	<!-- 댓글 삭제  //확인전  -->
+	<!-- 댓글 삭제  -->
 	<delete id="deleteReply">
 		DELETE REPLY
 		WHERE REPLY_NO = #{replyNo}

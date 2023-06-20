@@ -124,7 +124,7 @@ public class ErrorBoardController {
 		int result = ebService.insertBoard(b,eb);
 		
 		if(result>0) {
-			session.setAttribute("alertMsg", "게시글 작성 완료");
+			session.setAttribute("msg", "게시글 작성이 완료되었습니다.");
 			return "redirect:list";
 		}else { //실패
 			return "common/error";
@@ -194,26 +194,23 @@ public class ErrorBoardController {
 	//댓글 작성 메소드
 	@ResponseBody
 	@PostMapping("insertReply")
-	public int insertReply(Reply r,
-							  HttpSession session) {
+	public int insertReply(Reply r) {
 
 		return ebService.insertReply(r);
 	}
 	
 	//댓글 수정 메소드
+	@ResponseBody
 	@PostMapping("updateReply")
-	public String updateReply(Reply r) {
+	public int updateReply(Reply r) {
 		
-		int result = ebService.updateReply(r);
-		
-		return "";
+		return ebService.updateReply(r); 
 	}
 	
 	//댓글 삭제 메소드
 	@ResponseBody
 	@GetMapping("deleteReply")
-	public int deleteReply(int replyNo,
-							  HttpSession session) {
+	public int deleteReply(int replyNo) {
 		
 		return ebService.deleteReply(replyNo);
 	}
