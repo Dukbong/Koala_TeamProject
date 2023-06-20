@@ -23,12 +23,6 @@
     	margin: auto;
     }
     
-	#select-mypage a{
-		height: 10%;
-        color: darkcyan;
-        text-decoration: none;
-    }
-    
     #content{
     	height: 100%;
     	width: 100%;

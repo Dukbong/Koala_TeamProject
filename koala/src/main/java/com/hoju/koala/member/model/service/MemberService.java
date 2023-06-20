@@ -3,6 +3,7 @@ package com.hoju.koala.member.model.service;
 import java.util.ArrayList;
 
 import com.hoju.koala.board.model.vo.Board;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -38,8 +39,8 @@ public interface MemberService {
 	//계정 삭제
 	int deleteMember(String userId);
 
-	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 아이디만 가져오기
-	String selectEmail(String userEmail);
+	//입력한 이메일에 대한 데이터가 있는지 조회 있다면 회원정보 가져오기
+	Member selectEmail(String userEmail);
 
 	//아이디 중복체크
 	int idCheck(String inputId);
@@ -48,7 +49,16 @@ public interface MemberService {
 	int nickCheck(String inputNick);
 
 	//유저가 쓴 게시글 조회
-	ArrayList<Board> boardList(String userNo);
+	ArrayList<Board> boardList(String userId);
+
+	//유저가 쓴 댓글 조회
+	ArrayList<Board> replyList(String userId);
+
+	//유저가 추천누른 게시글 조회
+	ArrayList<Board> likedList(String userId);
+
+	//해당 유저의 팔로잉 조회
+	ArrayList<Member> followingList(String userId);
 
 	
 

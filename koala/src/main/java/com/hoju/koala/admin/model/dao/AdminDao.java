@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.Issues;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
@@ -46,6 +47,10 @@ public class AdminDao {
 
 	public ArrayList<Supporters> selectMembercondition(MemberSearch ms, PageInfo pi, SqlSession sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMembercondition",ms, pi.rowBounds());
+	}
+	
+	public ArrayList<Issues> selectIssues(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectIssues");
 	}
 	
 	public BlockIp selectBlockIpUser(String ip, SqlSession sqlSession) {
@@ -97,9 +102,13 @@ public class AdminDao {
 	}
 
 	public int insertSupporterGithubId(Supporters supporter, SqlSession sqlSession) {
-		System.out.println(supporter);
 		return sqlSession.update("adminMapper.insertSupporterGithubId", supporter);
 	}
+
+	public ErrorBoard selectIssueDetail(String settingTitle, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectIssueDetail", settingTitle);
+	}
+
 
 
 

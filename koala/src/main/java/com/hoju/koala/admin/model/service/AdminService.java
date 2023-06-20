@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.Issues;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.common.model.vo.PageInfo;
-import com.hoju.koala.member.model.vo.Member;
 
 public interface AdminService {
 	AllCount selectAllCount();
@@ -29,6 +29,8 @@ public interface AdminService {
 	ArrayList<Supporters> selectMembercondition(PageInfo page, MemberSearch ms);
 	
 	ArrayList<Supporters> selectSupporterWaitList();
+	
+	ArrayList<Issues> selectIssues();
 	
 	int deleteSupporter(String userNo);
 
@@ -58,6 +60,9 @@ public interface AdminService {
 	// =======================
 
 	int insertSupporterGithubId(Supporters supporter);
+
+	ErrorBoard selectIssueDetail(String settingTitle);
+
 
 
 
