@@ -175,6 +175,9 @@
                 			<c:when test='${path.contains("blockip.list")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala Black List</h4>     
                 			</c:when>
+                			<c:when test='${path.contains("errorDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
+                			</c:when>
                 		</c:choose>        		
                 		</c:when>
                 		<c:when test='${path.contains("multi/play") || path.contains("together/ssss")}'>
