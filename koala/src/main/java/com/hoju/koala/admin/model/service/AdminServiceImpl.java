@@ -11,6 +11,7 @@ import com.hoju.koala.admin.model.dao.AdminDao;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.Issues;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
@@ -126,6 +127,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertSupporterGithubId(Supporters supporter) {
 		return adminDao.insertSupporterGithubId(supporter, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Issues> selectIssues() {
+		return adminDao.selectIssues(sqlSession);
+	}
+
+	@Override
+	public ErrorBoard selectIssueDetail(String settingTitle) {
+		return adminDao.selectIssueDetail(settingTitle, sqlSession);
 	}
 
 
