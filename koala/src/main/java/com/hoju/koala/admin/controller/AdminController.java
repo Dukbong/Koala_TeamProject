@@ -20,9 +20,12 @@ import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.Client;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.ErrorDivision;
+import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
 
@@ -33,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class AdminController {
 
+	private int i = 0;
 	private PageInfo page;
 
 	@Autowired
@@ -62,6 +66,16 @@ public class AdminController {
 		mav.addObject("pi", page);
 		return mav;
 	}
+	
+	@GetMapping("/issuearea.list")
+	public ModelAndView adminIssues(ModelAndView mav) {
+		ArrayList<IssuesAndError> issues = adminService.selectIssues();
+		System.out.println(issues);
+		mav.addObject("issues", issues);
+		mav.setViewName("admin/issues");
+//		mav.addObject("listCount", )
+		return mav;
+	}
 
 	@GetMapping("/supporters.demote")
 	@ResponseBody
@@ -81,11 +95,9 @@ public class AdminController {
 	}
 
 	@GetMapping("/errorcheck.list")
-	public String adminErrorBoard(PageInfo p, Model model) {
-		page = Paging.getPageInfo(allCount().getSupporters(), p.getCurrentPage(), 10, 10);
-		ArrayList<ErrorBoard> errorBoardList = adminService.selectErrorBoard(page);
+	public String adminErrorBoard(Model model) {
+		ArrayList<IssuesAndError> errorBoardList = adminService.selectErrorBoardCount(); // 해결 되지 않은 라이브러리, 개수, 설명을 가지고 있다.
 		model.addAttribute("errorList", errorBoardList);
-		model.addAttribute("pi", page);
 		return "admin/errorcheckList";
 	}
 
@@ -134,6 +146,38 @@ public class AdminController {
 		return "admin/memberList";
 	}
 	
+	@GetMapping("/issuesDetail")
+	public ModelAndView adminIssuesDetail(String settingTitle, ModelAndView mav) {
+		ErrorBoard errorBoard = adminService.selectIssueDetail(settingTitle);
+		mav.addObject("issueDetail", errorBoard);
+		mav.setViewName("admin/issueDetail");
+		return mav;
+	}
+	
+	
+	@GetMapping("/errorDetail")
+	public String adminErrorDetail(String settingTitle, Model m,
+								   @RequestParam(value = "page", required=false, defaultValue="1") int page) {
+		ArrayList<ErrorSet> pickError = adminService.selectErrorDetail(settingTitle);
+		try {			
+			m.addAttribute("errorSet", pickError.get(page-1));
+			m.addAttribute("size", pickError.size());
+			return "admin/errorDetail";
+		}catch(Exception e) {
+			m.addAttribute("size", pickError.size());
+			return "redirect:errorcheck.list";
+		}
+	}
+	
+	@GetMapping("/errorDivision")
+	@ResponseBody
+	public int adminErrorDivision(String tag, int bno) {
+		System.out.println(tag);
+		System.out.println(bno);
+		ErrorDivision ed = ErrorDivision.builder().tagName(tag).boardNo(bno).build();
+		int result = adminService.updateErrorType(ed);
+		return result; 
+	}
 	
 	// 모드를 쿠키로 저장할 메서드
 	@GetMapping("mode.check")

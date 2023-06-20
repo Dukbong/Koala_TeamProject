@@ -55,6 +55,14 @@
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
 	
+	<beans:bean id="websocketContainer"
+		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+		<beans:property name="maxTextMessageBufferSize"
+			value="9999999" />
+		<beans:property name="maxBinaryMessageBufferSize"
+			value="9999999" />
+		<beans:property name="asyncSendTimeout" value="3000" />
+	</beans:bean>
 	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="UTF-8"/>

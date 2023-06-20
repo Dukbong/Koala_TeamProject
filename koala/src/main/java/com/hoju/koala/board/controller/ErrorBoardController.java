@@ -20,6 +20,7 @@ import com.hoju.koala.board.model.service.ErrorBoardService;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
 import com.hoju.koala.member.model.vo.Member;
@@ -64,7 +65,11 @@ public class ErrorBoardController {
 			
 			ErrorSet eb = ebService.selectBoard(boardNo);
 			
+			//댓글 목록 조회 메소드
+			ArrayList<Reply> reList = ebService.selectReplyList(boardNo);
+			
 			model.addAttribute("eb", eb);
+			model.addAttribute("reList", reList);
 			return "board/errorBoard/ebDetailView";
 			
 		}else {
@@ -93,7 +98,6 @@ public class ErrorBoardController {
 		ArrayList<String> vList = ebService.selectVersion(settingTitle);
 		
 		return new Gson().toJson(vList);  //이게 맞나?
-		
 	}
 	
 	//게시글 작성 메소드
@@ -105,6 +109,10 @@ public class ErrorBoardController {
 							  ModelAndView mv,
 							  HttpSession session) {
 		
+		//로그인 유저 번호 가져오기
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		b.setBoardWriter(userNo);
+		
 		//세팅테이블 글번호 조회하기
 		CreateSetting c = new CreateSetting();
 		c.setSettingTitle(settingTitle);
@@ -113,15 +121,10 @@ public class ErrorBoardController {
 		int settingNo = ebService.selectSettingNo(c);
 		eb.setRefSno(settingNo);
 		
-		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
-		
-		b.setBoardWriter(userNo);
-		
-		
 		int result = ebService.insertBoard(b,eb);
 		
 		if(result>0) {
-			//session.setAttribute("alertMsg", "게시글 작성 완료");
+			session.setAttribute("msg", "게시글 작성이 완료되었습니다.");
 			return "redirect:list";
 		}else { //실패
 			return "common/error";
@@ -131,15 +134,17 @@ public class ErrorBoardController {
 	//게시글 작성 시 수정폼 생성
 	@ResponseBody
 	@RequestMapping(value="modifyForm", produces="text/html; charset=UTF-8")
-	public String createModifyForm(String settingTitle, String settingVersion, String category) {
+	public String createModifyForm(String settingTitle, 
+								   String settingVersion,
+								   String category) {
 		
 		CreateSetting c = new CreateSetting();
-		
 		c.setSettingTitle(settingTitle);
 		c.setSettingVersion(settingVersion);
-		String str = ebService.createModifyForm(category, c);
-		return str;
 		
+		String str = ebService.createModifyForm(category, c);
+		
+		return str;
 	}
 	
 	//게시글 수정폼 이동
@@ -185,17 +190,30 @@ public class ErrorBoardController {
 			return "common/error";
 		}
 	}
-	
-	
-	
-	
-	//댓글 목록 조회 메소드
-	
+
 	//댓글 작성 메소드
+	@ResponseBody
+	@PostMapping("insertReply")
+	public int insertReply(Reply r) {
+
+		return ebService.insertReply(r);
+	}
 	
 	//댓글 수정 메소드
+	@ResponseBody
+	@PostMapping("updateReply")
+	public int updateReply(Reply r) {
+		
+		return ebService.updateReply(r); 
+	}
 	
 	//댓글 삭제 메소드
+	@ResponseBody
+	@GetMapping("deleteReply")
+	public int deleteReply(int replyNo) {
+		
+		return ebService.deleteReply(replyNo);
+	}
 	
 	
 }

@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.ErrorDivision;
+import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
-import com.hoju.koala.member.model.vo.Member;
 
 public interface AdminService {
 	AllCount selectAllCount();
@@ -18,7 +20,7 @@ public interface AdminService {
 
 	ArrayList<CreateSetting> selectCreateSetting();
 
-	ArrayList<ErrorBoard> selectErrorBoard(PageInfo page);
+	ArrayList<IssuesAndError> selectErrorBoardCount();
 
 	ArrayList<BlockIp> selectBlockIp(PageInfo page);
 
@@ -29,6 +31,8 @@ public interface AdminService {
 	ArrayList<Supporters> selectMembercondition(PageInfo page, MemberSearch ms);
 	
 	ArrayList<Supporters> selectSupporterWaitList();
+	
+	ArrayList<IssuesAndError> selectIssues();
 	
 	int deleteSupporter(String userNo);
 
@@ -43,10 +47,10 @@ public interface AdminService {
 	Supporters selectOneSupport(int userNo);
 	
 	int selectCountMemberCondition(MemberSearch ms);
-	// 좀더 쉽게 페이징 처리를 위한 함수 (보류)
-	/* int boardListCount(String board); */
 	
+	int insertSupporterGithubId(Supporters supporter);
 	
+	ErrorBoard selectIssueDetail(String settingTitle);
 	
 	
 	// intercepter에서  행해지는 curd
@@ -57,7 +61,11 @@ public interface AdminService {
 	int blockBlockIpUser(String ip);
 	// =======================
 
-	int insertSupporterGithubId(Supporters supporter);
+	ArrayList<ErrorSet> selectErrorDetail(String settingTitle);
+
+	int updateErrorType(ErrorDivision ed);
+
+
 
 
 

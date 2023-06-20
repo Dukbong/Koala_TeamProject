@@ -11,9 +11,12 @@ import com.hoju.koala.admin.model.dao.AdminDao;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.ErrorDivision;
+import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -43,8 +46,8 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public ArrayList<ErrorBoard> selectErrorBoard(PageInfo pi) {
-		return adminDao.selectErrorBoard(sqlSession, pi);
+	public ArrayList<IssuesAndError> selectErrorBoardCount() {
+		return adminDao.selectErrorBoardCount(sqlSession);
 	}
 
 	@Override
@@ -128,6 +131,25 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.insertSupporterGithubId(supporter, sqlSession);
 	}
 
+	@Override
+	public ArrayList<IssuesAndError> selectIssues() {
+		return adminDao.selectIssues(sqlSession);
+	}
+
+	@Override
+	public ErrorBoard selectIssueDetail(String settingTitle) {
+		return adminDao.selectIssueDetail(settingTitle, sqlSession);
+	}
+
+	@Override
+	public ArrayList<ErrorSet> selectErrorDetail(String settingTitle) {
+		return adminDao.selectErrorDetail(settingTitle, sqlSession);
+	}
+
+	@Override
+	public int updateErrorType(ErrorDivision ed) {
+		return adminDao.updateErrorType(ed, sqlSession);
+	}
 
 
 

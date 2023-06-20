@@ -153,8 +153,35 @@
                 	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
                 	<c:choose>
                 		<c:when test='${path.contains("admin")}'>
-                		<!-- koala/admin/~~~ -->                		
-	                		<h4 class="headerName" onclick="adminPage();">SUPER ADMIN</h4>
+                		<c:choose>
+                			<c:when test='${path.contains("main")}'>
+		                		<h4 class="headerName" onclick="adminPage();">Admin Page</h4>                			
+                			</c:when>
+                			<c:when test='${path.contains("supporters.list")}'>
+                				<h4 class="headerName" onclick="adminPage();">Admin Supporter Management</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("issuearea.list")}'>
+                				<h4 class="headerName" onclick="adminPage();">Admin Issues Management</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("member.list")}'>
+                				<h4 class="headerName" onclick="adminPage();">Admin Member Management</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("errorcheck.list")}'>
+                				<h4 class="headerName" onclick="adminPage();">Admin Error Management</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("waitingLibrary.list")}'>
+                				<h4 class="headerName" onclick="adminPage();">Admin WaitingLibrary</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("blockip.list")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala Black List</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("errorDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
+                			</c:when>
+                		</c:choose>        		
+                		</c:when>
+                		<c:when test='${path.contains("multi/play") || path.contains("together/ssss")}'>
+                			<h4 class="headerName" onclick="adminPage();">Koala SQL Cloud</h4>     
                 		</c:when>
                 		<c:when test='${path.contains("errorBoard")}'>
                 		<!-- koala/errorBoard/~~~ >> 설희 -->                		

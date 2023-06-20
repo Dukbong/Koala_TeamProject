@@ -1,6 +1,5 @@
 package com.hoju.koala.board.model.service;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,6 +12,7 @@ import com.hoju.koala.board.model.dao.ErrorBoardDao;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +57,7 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.selectLibList(sqlSession);
 	}
 	
-	@Override//버전 리스트 조회
+	@Override //버전 리스트 조회
 	public ArrayList<String> selectVersion(String settingTitle) {
 		
 		return ebDao.selectVersion(sqlSession, settingTitle);
@@ -77,7 +77,6 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		}else { //설명서라면
 			return ebDao.createInfoForm(sqlSession, c);
 		}
-		
 	}
 
 	@Override //게시글 등록
@@ -89,6 +88,15 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	
 		return result1*result2; //굳이 이렇게 안해도 될듯
 	}
+	
+	@Override //게시글 수정
+	public int updateBoard(Board b, ErrorBoard eb) {
+		
+		int result1 = ebDao.updateBoard(sqlSession, b);
+		int result2 = ebDao.updateEbBoard(sqlSession, eb);
+		
+		return result1*result2; //굳이 이렇게 안해도 될듯
+	}
 
 	@Override //게시글 삭제
 	public int deleteBoard(int boardNo) {
@@ -96,17 +104,28 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.deleteBoard(sqlSession, boardNo);
 	}
 
-	@Override //게시글 수정
-	public int updateBoard(Board b, ErrorBoard eb) {
+	@Override //댓글 리스트 조회
+	public ArrayList<Reply> selectReplyList(int boardNo) {
 		
-		int result1 = ebDao.updateBoard(sqlSession, b);
-		int result2 = ebDao.updateEbBoard(sqlSession, eb);
-	
-		return result1*result2; //굳이 이렇게 안해도 될듯
+		return ebDao.selectReplyList(sqlSession, boardNo);
 	}
 
+	@Override //댓글 작성
+	public int insertReply(Reply r) {
+		
+		return ebDao.insertReply(sqlSession, r);
+	}
 
+	@Override //댓글 수정
+	public int updateReply(Reply r) {
+		
+		return ebDao.updateReply(sqlSession, r);
+	}
 
-
+	@Override //댓글 삭제
+	public int deleteReply(int replyNo) {
+		
+		return ebDao.deleteReply(sqlSession, replyNo);
+	}
 
 }

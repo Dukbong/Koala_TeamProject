@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.CreateSetting;
+import com.hoju.koala.admin.model.vo.ErrorDivision;
+import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
+import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -32,8 +35,8 @@ public class AdminDao {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectWaitingLibrary");
 	}
 
-	public ArrayList<ErrorBoard> selectErrorBoard(SqlSession sqlSession, PageInfo pi) {
-		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoard",null, pi.rowBounds());
+	public ArrayList<IssuesAndError> selectErrorBoardCount(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorBoardCount");
 	}
 
 	public ArrayList<BlockIp> selectBolckIp(SqlSession sqlSession, PageInfo pi) {
@@ -46,6 +49,10 @@ public class AdminDao {
 
 	public ArrayList<Supporters> selectMembercondition(MemberSearch ms, PageInfo pi, SqlSession sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectMembercondition",ms, pi.rowBounds());
+	}
+	
+	public ArrayList<IssuesAndError> selectIssues(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectIssues");
 	}
 	
 	public BlockIp selectBlockIpUser(String ip, SqlSession sqlSession) {
@@ -97,16 +104,18 @@ public class AdminDao {
 	}
 
 	public int insertSupporterGithubId(Supporters supporter, SqlSession sqlSession) {
-		System.out.println(supporter);
 		return sqlSession.update("adminMapper.insertSupporterGithubId", supporter);
 	}
 
+	public ErrorBoard selectIssueDetail(String settingTitle, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectIssueDetail", settingTitle);
+	}
 
+	public ArrayList<ErrorSet> selectErrorDetail(String settingTitle, SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectErrorDetail", settingTitle);
+	}
 
-
-
-	/* 페이징 처리 보류 
-	 * public int boardListCount(SqlSession sqlSession, String board) { return
-	 * sqlSession.selectOne("adminMapper.boardCount", board); }
-	 */
+	public int updateErrorType(ErrorDivision ed, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateErrorType", ed);
+	}
 }

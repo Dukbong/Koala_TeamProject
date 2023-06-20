@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>[Koala] ErrorCheck</title>
+<title>[Koala] Issues</title>
 </head>
 <style>
 	.tagName{
@@ -13,7 +13,7 @@
 		height: 50px;
 	}
 	.wrap{
-		width: 80%;
+		width: 65%;
 		height:1500px;
 		margin: auto;
 		box-sizing: border-box;
@@ -47,7 +47,7 @@
 		font-size: 25px;
 		font-weight: bold;
 		text-align: right;
-		color: rgb(255, 201,20);
+		color: red;
 	}
 	.lidescrip{
 		width: 100%;
@@ -72,37 +72,34 @@
 		font-weight: bold;
 	}
 	.tit{
-/* 		padding-left: 50px; */
 		color: rgb(255, 201,20);
-		font-weight: bold;
+		font-weight:bold;
 	}
 </style>
 <body>
 	<%@include file="../common/header.jsp" %>
 	<br>
-		<div class="tagName">		
-			<h1 class="tit">@ErrorCheck</h1>
-		</div>	
-		<br>
+	<div class="tagName">
+		<h1 class="tit">@Issues</h1>
+	</div>
+	<br>
 		<div class="wrap">
 			<c:choose>
-			<c:when test="${not empty errorList }">
-				<c:forEach var="i" begin="0" end="${errorList.size() }" step="2" >
+			<c:when test="${not empty issues }">
+				<c:forEach var="i" begin="0" end="${issues.size() }" step="2" >
 					<div class="twoArea">
-						<c:if test="${errorList.size() > i+1 }">
 						<div class="binArea"></div>
 						<div class="nobinArea ic">
-							<div class="liName ii">&nbsp;${errorList.get(i).settingTitle }</div>
-							<div class="liCount">[ ${errorList.get(i).count} ]</div>
-							<div class="lidescrip ii">${errorList.get(i).sortDescription}</div>
+							<div class="liName ii">&nbsp;${issues.get(i).settingTitle }</div>
+							<div class="liCount">[ ${issues.get(i).count} ]</div>
+							<div class="lidescrip ii">${issues.get(i).sortDescription}</div>
 						</div>
-						</c:if>
 						<div class="binArea"></div>
-						<c:if test="${errorList.size() > i+1 }">
+						<c:if test="${issues.size() > i+1 }">
 							<div class="nobinArea ic">
-								<div class="liName ii">&nbsp;${errorList.get(i+1).settingTitle }</div>
-								<div class="liCount">[ ${errorList.get(i+1).count} ]</div>
-								<div class="lidescrip ii">${errorList.get(i+1).sortDescription}</div>
+								<div class="liName ii">&nbsp;${issues.get(i+1).settingTitle }</div>
+								<div class="liCount">[ ${issues.get(i+1).count} ]</div>
+								<div class="lidescrip ii">${issues.get(i+1).sortDescription}</div>
 							</div>
 							<div class="binArea"></div>
 						</c:if>
@@ -110,6 +107,9 @@
 					<br>
 				</c:forEach>
 			</c:when>
+			<c:otherwise>
+				<div class="noIssues" style="display: block">Not Found Issue...!</div>
+			</c:otherwise>
 			</c:choose>
 		</div>
 		<br>
@@ -118,13 +118,12 @@
 	<script>
 		$(function(){
 			$(".nobinArea").on("click", function(){
-				var count = ($(this).children().eq(1).text()).split(" ")[1];
-				if(count != 0){					
-					var settingTitle = $(this).children().eq(0).text().trim();
-					location.href = "/koala/admin/errorDetail?settingTitle="+settingTitle+"&page=1";
-				}else{
-					alert("현재 요청 들어온 에러가 없습니다.")
-				}
+				$.ajax({
+					url : "/koala/admin/issuesDetail",
+					data : {
+						settingTitle : $(this).children().eq(0).text().trim(),
+					}
+				});
 			})
 		})
 	</script>
