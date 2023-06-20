@@ -76,7 +76,7 @@
     .main_image{
         position: absolute;
         width: 100%;
-        opacity: 10%;
+        opacity: 15%;
     }
     .main_image2,.main_area_opening{
         position: absolute;

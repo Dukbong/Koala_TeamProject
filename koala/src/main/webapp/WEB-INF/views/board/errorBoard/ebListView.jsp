@@ -12,7 +12,7 @@
 <style>
 
     div{ box-sizing: border-box;}
-    .ebListView{width: 1200px; margin:auto;}
+    .ebListView{width: 1300px; margin:auto; padding: 30px 0px 50px 0px;}
     .body_content{
         display: flex;
         flex-wrap: wrap;
@@ -60,7 +60,7 @@
         height: 30px;
         background-color: black;
         color: white;
-        font-size: 11px;
+        font-size: 13px;
         border-radius: 3px;
     }
     .search_area button {
@@ -83,7 +83,7 @@
     }
     .middle_area table{
         width: 100%;
-        font-size: 12px;
+        font-size: 14px;
         border-top: 1px solid grey;
         border-bottom: 1px solid grey;
 	    border-collapse : collapse;
@@ -107,7 +107,7 @@
         color: rgb(206, 145, 120);
         font-weight: bold;
     }
-        .insertBtn_area{
+    .insertBtn_area{
 
         width: 80px;
         margin-left: 40px;
@@ -192,7 +192,7 @@
             <div class="middle_area">
                 <table>
                     <thead>
-                        <tr style="height: 40px;">
+                        <tr style="height: 45px;">
                             <th style=" width: 80px;">글번호</th>
 							<th style=" width: 120px;">라이브러리</th>
 							<th>제목</th>
@@ -203,7 +203,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    	<!-- 게시글 없을 때 조건문 -->
+                    	<c:if test="${empty ebList}">아직 작성된 게시글이 없습니다 !</c:if>
                     	<c:forEach var="eb" items="${ebList}">
 							<tr style="height: 40px;">
 								<td>${eb.board.boardNo }</td>
@@ -223,33 +223,37 @@
                     </tbody>
                 </table>
             </div>
-
-			<c:if test="${not empty loginUser }">
-				<div class="insertBtn_area">
-	                <button type="button"><a href="enrollForm">글쓰기</a></button>
-	            </div>
-            </c:if>
         </div>
-        
-        <div class="bottom_area">
+		<c:if test="${not empty loginUser }">
+			<div class="insertBtn_area">
+				<button type="button"><a href="enrollForm">글쓰기</a></button>
+			</div>
+		</c:if>
+
+		<div class="bottom_area">
             <ul>
             	<c:choose>
             		<c:when test="${pi.currentPage eq 1 }">
-                <li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
+                		<li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
             		</c:when>
             		<c:otherwise>
-                <li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage -1}">&lt;</a></li>	
+                		<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage -1}">&lt;</a></li>	
             		</c:otherwise>
             	</c:choose>
 				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-                	<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${p }">${p }</a></li>
+					<c:if test="${p eq pi.currentPage }">
+                		<li class="pagingSection"><a class="page-link" style="color: rgb(255, 201,20);">${p }</a></li>
+                	</c:if>
+					<c:if test="${p ne pi.currentPage }">
+                		<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${p }">${p }</a></li>
+                	</c:if>
             	</c:forEach>
             	<c:choose>
             		<c:when test="${pi.currentPage eq pi.maxPage }">
-                <li class="pagingSection"><a class="page-link" href="#">&gt;</a></li>
+                		<li class="pagingSection"><a class="page-link" href="#">&gt;</a></li>
             		</c:when>
             		<c:otherwise>
-            	<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage + 1 }">&gt;</a></li>	
+            			<li class="pagingSection"><a class="page-link" href="list.bo?currentPage=${pi.currentPage + 1 }">&gt;</a></li>	
             		</c:otherwise>
             	</c:choose>
             </ul>
