@@ -99,6 +99,23 @@
 	}
 	
 	
+	
+	
+	@keyframes slideIn {
+	  0% {
+	    opacity: 0;
+	    transform: translateX(-100%);
+	  }
+	  100% {
+	    opacity: 1;
+	    transform: translateX(0);
+	  }
+	}
+	
+	.on{
+		animation: slideIn 0.5s ease-in-out forwards;
+	}
+
 </style>
 </head>
 <body>
@@ -169,6 +186,11 @@
 						},
 						complete:function(){
 							$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+							if(idCheck == true){
+								$("#ci-icon").addClass("on fa-solid fa-check fa-xl");
+							}else{
+								$("#ci-icon").removeClass("on fa-solid fa-check fa-xl");
+							}
 						}
 					});
 				}else{
@@ -177,7 +199,13 @@
 					$("#formId").css("display", "block");
 					idCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+					if(idCheck == true){
+						$("#ci-icon").addClass("on fa-solid fa-check fa-xl");
+					}else{
+						$("#ci-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
 				}
+				
 				
 			});
 			
@@ -193,6 +221,11 @@
 					$("#formPwd").css("display", "none");
 					userPwd1 = $("#userPwd").val();
 					
+				}else if($("#userPwd").val() == ""){
+					//비어있다면 다 지우기
+					$("#formPwd").css("display", "none");
+					
+					pwdCheck = false;
 				}else{
 					//적합하지 않는 비밀번호 형식입니다. -출력해야함.
 					$("#formPwd").css("display", "block");
@@ -201,6 +234,11 @@
 				}
 				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+				if(pwdCheck == true){
+					$("#pwd-icon").addClass("on fa-solid fa-check fa-xl");
+				}else{
+					$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+				}
 			});
 			
 			//비밀번호 재확인 입력
@@ -212,6 +250,9 @@
 					//같다면
 					$("#notEqualPwd").css("display", "none");
 					pwdCheck = true;
+				}else if($("#userPwd").val() == ""){
+					$("#notEqualPwd").css("display", "none");
+					pwdCheck = false;
 				}else{
 					$("#notEqualPwd").css("display", "block");
 					
@@ -219,6 +260,13 @@
 				}
 				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+				
+				
+				if(pwdCheck == true){
+					$("#pwd-icon").addClass("on fa-solid fa-check fa-xl");
+				}else{
+					$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+				}
 			});
 			
 			
@@ -249,6 +297,11 @@
 						},
 						complete:function(){
 							$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+							if(nickCheck == true){
+								$("#nick-icon").addClass("on fa-solid fa-check fa-xl");
+							}else{
+								$("#nick-icon").removeClass("on fa-solid fa-check fa-xl");
+							}
 						}
 					});
 					
@@ -257,7 +310,14 @@
 					
 					nickCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+					if(nickCheck == true){
+						$("#nick-icon").addClass("on fa-solid fa-check fa-xl");
+					}else{
+						$("#nick-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
 				}
+				
+				
 				
 			});
 			
@@ -312,6 +372,12 @@
 					emailCheck = false;;
 				}
 				
+				if(emailCheck == true){
+					$("#email-icon").addClass("on fa-solid fa-check fa-xl");
+				}else{
+					$("#email-icon").removeClass("on fa-solid fa-check fa-xl");
+				}
+				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 			});
 			
@@ -351,8 +417,7 @@
        				strength += $("#userPwd").val().match(exp) ? 1 : 0;
        			});
        		 	
-       		 	$("#level").val(strength);
-       		 	console.log(strength);
+       		 	
        		 	
        		 	switch(strength){
 					case 1:$("#level").css("--color", "red");
@@ -366,10 +431,13 @@
        		 	}
        		 	
        		 	if($("#userPwd").val().length<6){
-       		 		//사용자가 입력한 패스워드길이가 6보다 작으면 뻘건색
+       		 		//사용자가 입력한 패스워드길이가 6보다 작으면 빨건색
        		 		$("#level").val(1);
        		 		$("#level").css("--color", "red");
        		 	}
+       		 	
+       			$("#level").val(strength);
+    		 	console.log(strength);
 	       		 	
        		});
        		
@@ -383,7 +451,7 @@
 	            	<div id="center">
 	            		<table border="1" id="insert-table">
 			                <tr> 
-			                    <td colspan=""><label for="userId">ID</label></td>
+			                    <td colspan=""><label for="userId">ID</label>&nbsp;<i id="ci-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td width="70%"><input class="box" type="text" name="userId" id="userId" maxlength="12" required placeholder = "영문,숫자만  4~12자리"></td>
@@ -394,7 +462,7 @@
 			                </tr>
 			                
 			                <tr>
-			                    <td><label for="userPwd">Password</label></td>
+			                    <td><label for="userPwd">Password</label>&nbsp;<i id="pwd-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td>
@@ -421,7 +489,7 @@
 			                
 			                
 			                <tr>
-			                    <td><label for="nickName">Nickname</label></td>
+			                    <td><label for="nickName">Nickname</label>&nbsp;<i id="nick-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td><input class="box" type="text" name="nickName" id="nickName" required placeholder="숫자, 영문포함 2~12자리"></td>
@@ -433,7 +501,7 @@
 			                
 			                
 			                <tr>
-			                    <td><label for="email">Email</label></td>
+			                    <td><label for="email">Email</label>&nbsp;<i id="email-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                	<td>
