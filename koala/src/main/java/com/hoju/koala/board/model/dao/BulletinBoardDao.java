@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
 import com.hoju.koala.board.model.vo.BulletinBoard;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -98,7 +99,7 @@ public class BulletinBoardDao {
 	//좋아요 개수 메소드
 	public int countLike(int boardNo, SqlSessionTemplate sqlSession) {
 		
-		return sqlSession.insert("bulletinBoardMapper.countLike",boardNo);
+		return sqlSession.selectOne("bulletinBoardMapper.countLike",boardNo);
 	}
 
 	//댓글 수정 메소드
@@ -141,6 +142,18 @@ public class BulletinBoardDao {
 	public ArrayList<BoardAttachment> selectBoardAttachment(int boardNo, SqlSessionTemplate sqlSession) {
 		
 		return (ArrayList)sqlSession.selectList("bulletinBoardMapper.selectBoardAttachment",boardNo);
+	}
+
+	//게시글 좋아요 기록 메소드
+	public int boardLike(Liked liked, SqlSessionTemplate sqlSession) {
+
+		return sqlSession.insert("bulletinBoardMapper.boardLike",liked);
+	}
+
+	//게시글 좋아요 취소 기록 메소드
+	public int boardDisLike(Liked liked, SqlSessionTemplate sqlSession) {
+
+		return sqlSession.delete("bulletinBoardMapper.boardDisLike",liked);
 	}
 
 }

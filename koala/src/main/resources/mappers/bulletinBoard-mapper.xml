@@ -24,12 +24,14 @@
 	</select>
 	
 	<select id="boardDetailView" resultMap="boardResultSet">
-		SELECT BOARD_NO, NICKNAME, TITLE, CONTENT, CONTENT_CODE, COUNT, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", LIKED 
+		SELECT BOARD_NO, NICKNAME, TITLE, CONTENT, CONTENT_CODE, COUNT, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE", LIKED, COUNT(FILE_NO) 
 		FROM BOARD B
 		JOIN MEMBER M ON (USER_NO = BOARD_WRITER)
-		WHERE B.STATUS = 'Y'
+		JOIN BOARD_ATTACHMENT A ON (BOARD_NO = REF_BNO)
+        WHERE B.STATUS = 'Y'
 		AND BOARD_NO = #{boardNo}
 		AND CATEGORY = 'B'
+        GROUP BY BOARD_NO, NICKNAME, TITLE, CONTENT, CONTENT_CODE, COUNT, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD'), LIKED
 	</select>
 	
 	<update id="increaseCount">
@@ -51,14 +53,14 @@
 	
 	<update id="increaseLike">
 		UPDATE BOARD
-		SET LIKE = LIKE+1
+		SET LIKED = LIKED+1
 		WHERE BOARD_NO = #{boardNo}
 		AND STATUS = 'Y'
 	</update>
 	
 	<update id="decreaseLike">
 		UPDATE BOARD
-		SET LIKE = LIKE+1
+		SET LIKED = LIKED-1
 		WHERE BOARD_NO = #{boardNo}
 		AND STATUS = 'Y'
 	</update>
@@ -101,7 +103,7 @@
 	</select>
 	
 	<select id="selectReply" resultMap="replyResultSet">
-		SELECT REPLY_NO, REPLY_CONTENT, REPLY_WRITER, TO_CHAR(R.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
+		SELECT REPLY_NO, REPLY_CONTENT, NICKNAME, TO_CHAR(R.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
 		FROM REPLY R
 		JOIN MEMBER ON(USER_NO = REPLY_WRITER)
 		WHERE R.STATUS = 'Y'
@@ -110,9 +112,9 @@
 	</select>
 	
 	<select id="countLike" resultType="_int">
-		SELECT LIKE
+		SELECT LIKED
 		FROM BOARD
-		WHERE BOARDNO = #{boardNo}
+		WHERE BOARD_NO = #{boardNo}
 		AND STATUS = 'Y'
 	</select>
 	
@@ -165,6 +167,17 @@
 		WHERE REF_BNO = #{boardNo}
 		AND STATUS = 'Y'
 	</select>
+	
+	<insert id="boardLike">
+		INSERT INTO LIKED
+		VALUES (#{refUno},#{refBno},1)
+	</insert> 
+	
+	<delete id="boardDisLike">
+		DELETE FROM LIKED
+		WHERE REF_BNO = #{refBno}
+		AND REF_UNO = #{refUno}
+	</delete>
 	
 	<!-- 공통으로 사용할 게시판 관련 resultMap -->
 	
