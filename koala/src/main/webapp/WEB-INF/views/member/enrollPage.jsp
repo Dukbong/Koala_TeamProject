@@ -75,17 +75,47 @@
 		border-radius: 5px;
 	}
 	
-	#level{
-    	appearance: none;
-    	border-radius: 10px;
-	}
-	
-	
 	
 	.hide{
 		display: none;
 	}
 	
+	#level {
+    	appearance: none;
+    	border-radius: 10px;
+	}
+	
+	#level::-webkit-progress-bar {
+	    background: #f0f0f0;
+	    border-radius: 10px;
+	}
+	#level::-webkit-progress-value {
+	    border-radius: 10px;
+	    /* 의사 클래스에 js로 접근하기 위해서는 변수화 하여 접근하도록 해야함 */
+	    background-color: var(--color, red)
+	}
+	#level[value]::-webkit-progress-value {
+	    transition: width 0.5s;
+	}
+	
+	
+	
+	
+	@keyframes slideIn {
+	  0% {
+	    opacity: 0;
+	    transform: translateX(-100%);
+	  }
+	  100% {
+	    opacity: 1;
+	    transform: translateX(0);
+	  }
+	}
+	
+	.on{
+		animation: slideIn 0.5s ease-in-out forwards;
+	}
+
 </style>
 </head>
 <body>
@@ -94,7 +124,7 @@
 		
 		//유효성(정규표현식)
 		var idExp = /^[a-zA-Z0-9]{4,12}$/; //4~12자리 영어숫자만
-		var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; //영문,숫자 8자리 이상
+		var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; //영문,숫자 6자리 이상
 		var nickExp = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/; // 2자 이상, 12자 이하, 영어또는 숫자 한글로 구성
 		var emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; //이메일
 		
@@ -156,6 +186,11 @@
 						},
 						complete:function(){
 							$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+							if(idCheck == true){
+								$("#ci-icon").addClass("on fa-solid fa-check fa-xl");
+							}else{
+								$("#ci-icon").removeClass("on fa-solid fa-check fa-xl");
+							}
 						}
 					});
 				}else{
@@ -164,7 +199,13 @@
 					$("#formId").css("display", "block");
 					idCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+					if(idCheck == true){
+						$("#ci-icon").addClass("on fa-solid fa-check fa-xl");
+					}else{
+						$("#ci-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
 				}
+				
 				
 			});
 			
@@ -177,9 +218,14 @@
 				
 				if(pwdExp.test($("#userPwd").val())){
 					
+					$("#formPwd").css("display", "none");
 					userPwd1 = $("#userPwd").val();
+					
+				}else if($("#userPwd").val() == ""){
+					//비어있다면 다 지우기
 					$("#formPwd").css("display", "none");
 					
+					pwdCheck = false;
 				}else{
 					//적합하지 않는 비밀번호 형식입니다. -출력해야함.
 					$("#formPwd").css("display", "block");
@@ -188,6 +234,11 @@
 				}
 				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+				if(pwdCheck == true){
+					$("#pwd-icon").addClass("on fa-solid fa-check fa-xl");
+				}else{
+					$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+				}
 			});
 			
 			//비밀번호 재확인 입력
@@ -199,6 +250,9 @@
 					//같다면
 					$("#notEqualPwd").css("display", "none");
 					pwdCheck = true;
+				}else if($("#userPwd").val() == ""){
+					$("#notEqualPwd").css("display", "none");
+					pwdCheck = false;
 				}else{
 					$("#notEqualPwd").css("display", "block");
 					
@@ -206,6 +260,13 @@
 				}
 				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+				
+				
+				if(pwdCheck == true){
+					$("#pwd-icon").addClass("on fa-solid fa-check fa-xl");
+				}else{
+					$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+				}
 			});
 			
 			
@@ -236,6 +297,11 @@
 						},
 						complete:function(){
 							$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+							if(nickCheck == true){
+								$("#nick-icon").addClass("on fa-solid fa-check fa-xl");
+							}else{
+								$("#nick-icon").removeClass("on fa-solid fa-check fa-xl");
+							}
 						}
 					});
 					
@@ -244,7 +310,14 @@
 					
 					nickCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+					if(nickCheck == true){
+						$("#nick-icon").addClass("on fa-solid fa-check fa-xl");
+					}else{
+						$("#nick-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
 				}
+				
+				
 				
 			});
 			
@@ -299,6 +372,12 @@
 					emailCheck = false;;
 				}
 				
+				if(emailCheck == true){
+					$("#email-icon").addClass("on fa-solid fa-check fa-xl");
+				}else{
+					$("#email-icon").removeClass("on fa-solid fa-check fa-xl");
+				}
+				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 			});
 			
@@ -318,6 +397,52 @@
 		});
 		
 	</script>
+	
+	<script>
+       	$(function(){
+       		//정규표현식
+       		var exps = [
+       	        /[a-z]+/,
+       	        /[A-Z]+/,
+       	        /[0-9]+/,
+       	        /[$@#&!]+/,
+       	    ];
+       		
+       		console.log(exps);
+       		
+       		$("#userPwd").on("keyup", function(){
+       			var strength = 0;
+       			
+       		 	$.each(exps, function(index, exp){
+       				strength += $("#userPwd").val().match(exp) ? 1 : 0;
+       			});
+       		 	
+       		 	
+       		 	
+       		 	switch(strength){
+					case 1:$("#level").css("--color", "red");
+						break;
+					case 2:$("#level").css("--color", "orange");
+						break;
+					case 3:$("#level").css("--color", "green");
+						break;
+					case 4:$("#level").css("--color", "blue");
+						break;
+       		 	}
+       		 	
+       		 	if($("#userPwd").val().length<6){
+       		 		//사용자가 입력한 패스워드길이가 6보다 작으면 빨건색
+       		 		$("#level").val(1);
+       		 		$("#level").css("--color", "red");
+       		 	}
+       		 	
+       			$("#level").val(strength);
+    		 	console.log(strength);
+	       		 	
+       		});
+       		
+   		});
+	</script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div id="content">
 		<div id="content_1" align="center">
@@ -326,7 +451,7 @@
 	            	<div id="center">
 	            		<table border="1" id="insert-table">
 			                <tr> 
-			                    <td colspan=""><label for="userId">ID</label></td>
+			                    <td colspan=""><label for="userId">ID</label>&nbsp;<i id="ci-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td width="70%"><input class="box" type="text" name="userId" id="userId" maxlength="12" required placeholder = "영문,숫자만  4~12자리"></td>
@@ -336,16 +461,15 @@
 			                    </td>
 			                </tr>
 			                
-			                
 			                <tr>
-			                    <td><label for="userPwd">Password</label></td>
+			                    <td><label for="userPwd">Password</label>&nbsp;<i id="pwd-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td>
-			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="15" required placeholder = "숫자,영어포함  8자 이상" >
+			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="16" required placeholder = "숫자,영어포함  6자 이상" >
 			                    	<div style="text-align: center;">
 				                    	<span>보안성</span>
-				                    	<progress id="level"></progress>
+				                    	<progress id="level" value="0" max="4"></progress>
 			                    	</div>
 			                    </td>
 			                    <td>
@@ -365,7 +489,7 @@
 			                
 			                
 			                <tr>
-			                    <td><label for="nickName">Nickname</label></td>
+			                    <td><label for="nickName">Nickname</label>&nbsp;<i id="nick-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td><input class="box" type="text" name="nickName" id="nickName" required placeholder="숫자, 영문포함 2~12자리"></td>
@@ -377,7 +501,7 @@
 			                
 			                
 			                <tr>
-			                    <td><label for="email">Email</label></td>
+			                    <td><label for="email">Email</label>&nbsp;<i id="email-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                	<td>
