@@ -11,7 +11,7 @@ import com.hoju.koala.board.model.dao.BulletinBoardDao;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
 import com.hoju.koala.board.model.vo.BulletinBoard;
-import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -141,6 +141,18 @@ public class BulletinBoardServiceImpl implements BulletinBoardService{
 	public ArrayList<BoardAttachment> selectBoardAttachment(int boardNo) {
 		
 		return bbDao.selectBoardAttachment(boardNo,sqlSession);
+	}
+
+	@Override
+	public int boardLike(Liked liked) {
+		
+		return bbDao.boardLike(liked,sqlSession);
+	}
+
+	@Override
+	public int boardDisLike(Liked liked) {
+
+		return bbDao.boardDisLike(liked,sqlSession);
 	}
 
 }
