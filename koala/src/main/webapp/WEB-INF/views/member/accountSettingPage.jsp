@@ -183,6 +183,7 @@
 	
 	.profile:hover{
 		cursor: pointer;
+		opacity: 0.7;
 	}
 	
 	
@@ -252,7 +253,15 @@
 								<span>Profile Image</span>
 							</div>
 							<div id="profile-box">
-							    <img class="profile" src="" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
+								<c:choose>
+									<c:when test="${not empty loginUser.profile }">
+									
+									    <img class="profile" src="${pageContext.request.contextPath}${loginUser.profile.filePath}${loginUser.profile.changeName}" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
+									</c:when>
+									<c:otherwise>
+									    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">									
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</div>
 					</div>
@@ -293,7 +302,17 @@
 									processData:false,
 									data:formData,
 									success:function(result){
-										console.log(result);
+										switch(result){
+											case -1:alert("성공적으로 삭제가 완료되었습니다."); break;
+											case 1:alert("성공적으로 변경이 완료되었습니다."); break;
+											case 2:alert("db저장 o 서버저장x"); break;
+											case 3:alert("db저장 x 서버저장x"); break;
+										}
+										
+										$("#profileUpdateModal").modal("hide");
+										
+										location.reload();
+										
 									},
 									error:function(){
 										alert("업로드 통신 오류");
