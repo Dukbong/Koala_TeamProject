@@ -7,7 +7,8 @@
 
 	<select id="loginMember" resultMap="memberResultSet">
 		SELECT *
-		FROM MEMBER
+		FROM MEMBER M
+		JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
 		WHERE STATUS = 'Y'
 		AND USER_ID = #{userId}
 	</select>
@@ -25,11 +26,13 @@
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="DELETE_DATE" property="deleteDate"/>
 		<result column="STATUS" property="status"/>
+		<collection resultMap="profileResultSet" property="profile"/>
 	</resultMap>
 	
 	<select id="selectMember" resultMap="memberResultSet">
 		SELECT *
-		FROM MEMBER
+		FROM MEMBER M
+		JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
 		WHERE STATUS = 'Y'
 		AND USER_ID = #{userId}
 	</select>
@@ -188,5 +191,32 @@
 		WHERE USER_NO = #{userNo}
 		AND STATUS = 'Y'
 	</update>
+	
+	<!-- 프로필 등록 -->
+	<insert id="insertProfile">
+		INSERT INTO MEMBER_IMAGE(PROFILE_NO, REF_UNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_PFNO.NEXTVAL, #{refUno}, #{originName}, #{changeName}, #{filePath})
+	</insert>
+	
+	<!-- 프로필 조회 -->
+	<select id="selectProfile" resultMap="profileResultSet">
+		SELECT *
+		FROM MEMBER_IMAGE
+		WHERE REF_UNO = #{userNo}
+	</select>
+	
+	<resultMap type="profile" id="profileResultSet">
+		<result column="PROFILE_NO" property="profileNo"/>
+		<result column="REF_UNO" property="refUno"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="FILE_PATH" property="filePath"/>
+	</resultMap>
+	
+	<!-- 프로필 삭제 -->
+	<delete id="deleteProfile">
+		DELETE FROM MEMBER_IMAGE
+		WHERE REF_UNO = #{refUno}
+	</delete>
 	
 </mapper>

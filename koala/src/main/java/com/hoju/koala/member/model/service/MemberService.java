@@ -67,6 +67,13 @@ public interface MemberService {
 	//프로필 등록
 	int insertProfile(Profile p);
 
+	//프로필 조회
+	Profile selectProfile(int userNo);
+	
+	//프로필 삭제
+	int deleteProfile(Profile delProfile);
+
+
 	
 
 }

@@ -9,6 +9,7 @@ import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.member.model.vo.Profile;
 
 @Repository
 public class MemberDao {
@@ -121,6 +122,25 @@ public class MemberDao {
 		
 		return sqlSession.update("memberMapper.updateNick", m);
 	}
+
+	//프로필 등록
+	public int insertProfile(SqlSessionTemplate sqlSession, Profile p) {
+
+		return sqlSession.insert("memberMapper.insertProfile", p);
+	}
+
+	//프로필 조회
+	public Profile selectProfile(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapper.selectProfile", userNo);
+	}
+	
+	//프로필 삭제
+	public int deleteProfile(SqlSessionTemplate sqlSession, Profile delProfile) {
+		
+		return sqlSession.delete("memberMapper.deleteProfile", delProfile);
+	}
+
 
 
 	

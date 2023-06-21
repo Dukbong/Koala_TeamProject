@@ -59,10 +59,18 @@ public class MemberController {
 		//아이디 값에 대한 유저 정보 가져오기
 		Member loginUser = memberService.loginMember(m);
 		
+		
 		System.out.println("loginUser" +loginUser);
 		
 		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
 		if((loginUser != null) && ((pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) || m.getUserPwd().equals(loginUser.getUserPwd())) ) {
+			
+			//loginUser세션에 그 유저에 대한 프로필정보도 넣기
+//			Profile profile = memberService.selectProfile(loginUser.getUserNo());
+//			//System.out.println(profile);
+//			
+//			loginUser.setProfile(profile);
+			
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
@@ -247,6 +255,10 @@ public class MemberController {
 	@GetMapping("/as")
 	public String as(HttpSession session) {
 		
+		//다시 보내기전에 세션값 최신화하고 보내기
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		System.out.println("로그인 유저임니다."+loginUser);
+		
 		return "member/accountSettingPage";
 	}
 	
@@ -258,7 +270,8 @@ public class MemberController {
 		
 		//변경전
 		Member m = (Member)request.getSession().getAttribute("loginUser");
-		
+		System.out.println("=============");
+		System.out.println(m);
 		m.setNickName(inputNick);
 	
 		int result = memberService.updateNick(m);
@@ -266,6 +279,7 @@ public class MemberController {
 		if(result>0) {
 			//변경후 로그인유저 세션업데이트
 			Member loginUser = memberService.selectMember(m.getUserId());
+			System.out.println("변경하고 세션담을때");
 			request.getSession().setAttribute("loginUser", loginUser);
 		}
 		
@@ -451,10 +465,14 @@ public class MemberController {
 		//세션에서 로그인유저 꺼내기
 		Member loginUser = (Member)request.getSession().getAttribute("loginUser");
 		
+		int result = 0;
+		int result1 = 0;
+		int result2 = 0;
+		
 		if (!upFile.isEmpty()) {
 			//넘어온 파일이 있다면
 			
-			String filePath = "/resources/memberImage";
+			String filePath = "/resources/memberImage/";
 			//실제 저장경로
 			String savePath = request.getSession().getServletContext().getRealPath(filePath);
 			System.out.println(savePath);
@@ -473,21 +491,56 @@ public class MemberController {
 			
 			Profile p = Profile.builder().refUno(loginUser.getUserNo()).originName(originName).changeName(changeName).filePath(filePath).build();
 			
-			int result = memberService.insertProfile(p);
+			result1 = memberService.insertProfile(p);
 			
-			if(result>0) { //DB에 등록이 됐으면
+			if(result1>0) { //DB에 등록이 됐으면
 				try {
 					//MultipartFile을 이용해 실제 경로에 파일 저장
 					upFile.transferTo(new File(savePath+changeName));
+					//다 성공적으로 되었으면 최종결과에 1 대입
+					result = 1;
+					
 				} catch (IOException e) {
 					e.printStackTrace();
+					result = 2; //2는 db에 등록은 햇지만 서버에 파일등록을 못한경우
 				}
+			}else {
+				result = 3; //3은 db에 등록조차 안되었을때
 			}
                 
         } else {
-            System.out.println("hi");
+            System.out.println("넘어온 파일이없음");
+            //넘어온파일이 없으면 유저번호로 프로필 삭제를 해버리자
+            System.out.println("유저번호 : "+loginUser.getUserNo());
+            
+            Profile delProfile = memberService.selectProfile(loginUser.getUserNo());
+            
+            System.out.println("delProfile 불러오기"+delProfile);
+            
+            result2 = memberService.deleteProfile(delProfile);
+            
+            if(result2>0) { //DB파일 삭제햇으면
+            	System.out.println("db삭제완료해씀");
+            	File file = new File(request.getSession().getServletContext().getRealPath(delProfile.getFilePath())+delProfile.getChangeName());
+            	
+            	//서버에서도 파일 삭제
+            	file.delete();
+            	
+            	// -1은 넘어온파일이 없어 db에서 delte수행하고 서버에서도 파일삭제를 했을때
+            	result = -1;
+            }else {
+            	System.out.println("db삭제완료 안해씀");
+            	result = -2; // -2는 db삭제과정에서 오류
+            }
+            
         }
+		//다시 보내기전에 세션값 최신화하고 보내기
+		Profile p = memberService.selectProfile(loginUser.getUserNo());
 		
-		return 0;
+		loginUser.setProfile(p);
+		
+		request.setAttribute("loginUser", loginUser);
+		
+		return result;
 	}
 }
