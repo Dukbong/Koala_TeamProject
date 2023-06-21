@@ -16,5 +16,4 @@ public class ErrorSet { //에러게시판 조회용
 	private Board board;
 	private ErrorBoard errorBoard;
 	private CreateSetting createSetting;
-
 }

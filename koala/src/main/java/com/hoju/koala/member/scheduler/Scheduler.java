@@ -1,4 +1,4 @@
-package com.hoju.koala.common.scheduler;
+package com.hoju.koala.member.scheduler;
 
 import java.util.ArrayList;
 

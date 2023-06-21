@@ -181,4 +181,12 @@
 		ORDER BY NICKNAME ASC
 	</select>
 	
+	<!-- 닉네임 업데이트  -->
+	<update id="updateNick" parameterType="member">
+		UPDATE MEMBER
+		SET NICKNAME = #{nickName}
+		WHERE USER_NO = #{userNo}
+		AND STATUS = 'Y'
+	</update>
+	
 </mapper>

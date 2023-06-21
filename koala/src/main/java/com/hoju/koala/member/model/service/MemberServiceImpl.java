@@ -190,6 +190,16 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
+	//닉네임 변경
+	@Override
+	public int updateNick(Member m) {
+
+		int result = memberDao.updateNick(sqlSession, m);
+		
+		return result;
+	}
+
+
 	
 	
 
