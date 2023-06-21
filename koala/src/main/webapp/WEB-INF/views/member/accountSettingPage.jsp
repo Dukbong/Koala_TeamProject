@@ -330,7 +330,7 @@
 			      </div>
 			      <div class="modal-body">
 			        	현재 비밀번호 : <input type="password" name="userPwd" required><br>
-			        	변경할 비밀번호 : <input type="password" name="newPwd" id="newPwd" required><br>
+			        	변경할 비밀번호 : <input type="password" name="newPwd" id="newPwd" required placeholder="영문,숫자 6자리 이상"><br>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" id="updatePwd" class="btn btn-primary">Update</button>
@@ -340,7 +340,7 @@
 			</div>
 			
 			<script>
-				var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; //영문,숫자 8자리 이상
+				var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; //영문,숫자 6자리 이상
 				
 				$(function(){
 					$("#updatePwd").on("click", function(){

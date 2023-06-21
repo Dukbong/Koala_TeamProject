@@ -75,16 +75,29 @@
 		border-radius: 5px;
 	}
 	
-	#level{
-    	appearance: none;
-    	border-radius: 10px;
-	}
-	
-	
 	
 	.hide{
 		display: none;
 	}
+	
+	#level {
+    	appearance: none;
+    	border-radius: 10px;
+	}
+	
+	#level::-webkit-progress-bar {
+	    background: #f0f0f0;
+	    border-radius: 10px;
+	}
+	#level::-webkit-progress-value {
+	    border-radius: 10px;
+	    /* 의사 클래스에 js로 접근하기 위해서는 변수화 하여 접근하도록 해야함 */
+	    background-color: var(--color, red)
+	}
+	#level[value]::-webkit-progress-value {
+	    transition: width 0.5s;
+	}
+	
 	
 </style>
 </head>
@@ -94,7 +107,7 @@
 		
 		//유효성(정규표현식)
 		var idExp = /^[a-zA-Z0-9]{4,12}$/; //4~12자리 영어숫자만
-		var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; //영문,숫자 8자리 이상
+		var pwdExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; //영문,숫자 6자리 이상
 		var nickExp = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/; // 2자 이상, 12자 이하, 영어또는 숫자 한글로 구성
 		var emailExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; //이메일
 		
@@ -177,8 +190,8 @@
 				
 				if(pwdExp.test($("#userPwd").val())){
 					
-					userPwd1 = $("#userPwd").val();
 					$("#formPwd").css("display", "none");
+					userPwd1 = $("#userPwd").val();
 					
 				}else{
 					//적합하지 않는 비밀번호 형식입니다. -출력해야함.
@@ -318,6 +331,50 @@
 		});
 		
 	</script>
+	
+	<script>
+       	$(function(){
+       		//정규표현식
+       		var exps = [
+       	        /[a-z]+/,
+       	        /[A-Z]+/,
+       	        /[0-9]+/,
+       	        /[$@#&!]+/,
+       	    ];
+       		
+       		console.log(exps);
+       		
+       		$("#userPwd").on("keyup", function(){
+       			var strength = 0;
+       			
+       		 	$.each(exps, function(index, exp){
+       				strength += $("#userPwd").val().match(exp) ? 1 : 0;
+       			});
+       		 	
+       		 	$("#level").val(strength);
+       		 	console.log(strength);
+       		 	
+       		 	switch(strength){
+					case 1:$("#level").css("--color", "red");
+						break;
+					case 2:$("#level").css("--color", "orange");
+						break;
+					case 3:$("#level").css("--color", "green");
+						break;
+					case 4:$("#level").css("--color", "blue");
+						break;
+       		 	}
+       		 	
+       		 	if($("#userPwd").val().length<6){
+       		 		//사용자가 입력한 패스워드길이가 6보다 작으면 뻘건색
+       		 		$("#level").val(1);
+       		 		$("#level").css("--color", "red");
+       		 	}
+	       		 	
+       		});
+       		
+   		});
+	</script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div id="content">
 		<div id="content_1" align="center">
@@ -336,16 +393,15 @@
 			                    </td>
 			                </tr>
 			                
-			                
 			                <tr>
 			                    <td><label for="userPwd">Password</label></td>
 			                </tr>
 			                <tr>
 			                    <td>
-			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="15" required placeholder = "숫자,영어포함  8자 이상" >
+			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="16" required placeholder = "숫자,영어포함  6자 이상" >
 			                    	<div style="text-align: center;">
 				                    	<span>보안성</span>
-				                    	<progress id="level"></progress>
+				                    	<progress id="level" value="0" max="4"></progress>
 			                    	</div>
 			                    </td>
 			                    <td>
