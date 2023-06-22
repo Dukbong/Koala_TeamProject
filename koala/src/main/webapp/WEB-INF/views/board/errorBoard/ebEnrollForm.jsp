@@ -9,7 +9,7 @@
 
 <style>
 	div{ box-sizing: border-box;}
-    .ebEnrollForm{width: 1200px; margin: auto; padding-top: 50px;}
+    .ebEnrollForm{width: 1200px; margin: auto; padding: 100px 0px;}
     .ebEnrollForm>form>*{width: 85%; margin: auto; padding-bottom: 50px;}
     .option-area{padding-bottom: 20px; padding-left: 290px;}
     div[class*='_b']{width: 100%; background-color: black;}
