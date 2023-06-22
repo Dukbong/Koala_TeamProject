@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,6 +23,7 @@ import com.hoju.koala.board.model.service.BulletinBoardService;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
 import com.hoju.koala.board.model.vo.BulletinBoard;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
@@ -90,13 +92,12 @@ public class BulletinBoardController {
 			Board board = bbService.boardDetailView(boardNo);
 			BulletinBoard bulletinBoard = bbService.boardCategoryDetailView(boardNo);
 			ArrayList<Reply> rList = bbService.selectBoardReply(boardNo);
-			model.addAttribute("board",board);
+			model.addAttribute("b",board);
 			model.addAttribute("bulletinBoard",bulletinBoard);
 			model.addAttribute("rList",rList);
-			
-			ArrayList<BoardAttachment> baList = bbService.selectBoardAttachment(boardNo);
-			
-			if(baList.isEmpty()) {
+
+			if(board.getFileNo()!=0) {
+				ArrayList<BoardAttachment> baList = bbService.selectBoardAttachment(boardNo);
 				model.addAttribute(baList);
 			}
 			
@@ -125,22 +126,29 @@ public class BulletinBoardController {
 //		}
 //	}
 //	
-//	//좋아요 
-//	@ResponseBody
-// 	@RequestMapping(value="",produces="application/json;charset=UTF-8")
-// 	public int Like(int boardNo,int select) {
-// 		
-//		if(select==1) {
-//			bbService.increaseLike(boardNo);
-//		}else {
-//			bbService.decreaseLike(boardNo);
-//		}
-//		
-//		int count = bbService.countLike(boardNo);
-//		
-//		return count;
-// 	}
-//	
+	//좋아요 
+	@ResponseBody
+ 	@RequestMapping(value="like",produces="application/json;charset=UTF-8")
+ 	public int Like(int boardNo,int select,int loginUser) {	
+		System.out.println(boardNo);
+		System.out.println(select);
+		System.out.println(loginUser);
+		Liked liked = Liked.builder().refUno(loginUser).refBno(boardNo).build();
+		
+		if(select==1) {
+			int result = bbService.increaseLike(boardNo);
+			System.out.println(result);
+			int result2 = bbService.boardLike(liked);
+		}else {
+			int result = bbService.decreaseLike(boardNo);
+			int result2 = bbService.boardDisLike(liked);
+		}
+		
+		int count = bbService.countLike(boardNo);
+	
+		return count;
+ 	}
+	
 	//게시글 입력 메소드
 	@RequestMapping("insert")
 	public String insertBoard(int category, Model model,Board b,MultipartFile[] upfiles,HttpSession session) {

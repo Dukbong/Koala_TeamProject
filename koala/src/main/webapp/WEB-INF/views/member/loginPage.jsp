@@ -156,6 +156,11 @@
 	                </div>
 	            </form>
 	        </div>
+	        <script>
+	        	$(function(){
+	        		
+	        	});
+	        </script>
 		</div>
 
     </div>

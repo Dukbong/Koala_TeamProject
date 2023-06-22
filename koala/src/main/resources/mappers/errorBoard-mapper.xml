@@ -17,6 +17,7 @@
 
 	<!-- 오류게시판 조회용 -->
 	<resultMap type="errorSet" id="errorSetResultSet">
+		<result column="REPLY_COUNT" property="replyCount"/>
 		<collection property="board" resultMap="boardMapper.boardResultSet"/>
 		<collection property="errorBoard" resultMap="errorBoardResultSet"/>
 		<collection property="createSetting" resultMap="adminMapper.createSettingResultSet"/>
@@ -28,6 +29,29 @@
 		FROM BOARD
 		WHERE CATEGORY = 'E'
 		AND STATUS = 'Y'
+	</select>
+	
+	<!-- 검색된 게시글 수  -->
+	<select id="searchListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD B
+		JOIN MEMBER M ON (BOARD_WRITER = USER_NO)
+		JOIN ERROR_BOARD E ON (BOARD_NO = E.REF_BNO)
+		JOIN CREATE_SETTING C ON (E.REF_SNO = C.SETTING_NO)
+        <if test="category == 'writer'">
+		AND M.NICKNAME LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="category == 'title'">
+		AND B.TITLE LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="category == 'content'">
+		AND B.CONTENT LIKE '%'||#{keyword}||'%'
+		</if>
+		<if test="category == 'library'">
+		AND UPPER(C.SETTING_TITLE) LIKE UPPER('%'||#{keyword}||'%')
+		</if>
+		WHERE B.CATEGORY = 'E'
+		AND B.STATUS = 'Y'
 	</select>
 	
 	<!-- 게시글 전체 목록 조회 -->
@@ -52,6 +76,41 @@
                  CREATE_DATE DESC
 	</select>
 	
+	<!-- 검색된 게시글 목록 조회 -->
+	<select id="searchList" resultMap="errorSetResultSet" parameterType="hashMap">
+		SELECT BOARD_NO,
+		       SETTING_TITLE,
+		       TITLE,
+		       NICKNAME,
+		       SOLVED,
+		       NOTICE,
+		       B.CREATE_DATE,
+		       COUNT
+		FROM BOARD B
+		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
+		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
+		JOIN CREATE_SETTING C ON(E.REF_SNO = C.SETTING_NO)
+		WHERE B.STATUS = 'Y'
+		AND B.CATEGORY = 'E'
+        AND SOLVED||ERROR_TYPE != 'NS'
+        <if test="category == 'writer'">
+		AND M.NICKNAME
+		</if>
+		<if test="category == 'title'">
+		AND B.TITLE
+		</if>
+		<if test="category == 'content'">
+		AND B.CONTENT
+		</if>
+		<if test="category == 'library'">
+		AND UPPER(C.SETTING_TITLE)
+		</if>
+		LIKE UPPER('%'||#{keyword}||'%')
+		ORDER BY DECODE(NOTICE,'Y',1,'N',2),
+                 DECODE(SOLVED,'N',1,'Y',2),
+                 CREATE_DATE DESC
+	</select>
+	
 	<!-- 조회수 증가 -->
 	<update id="increaseCount">
 		UPDATE BOARD
@@ -60,7 +119,7 @@
 		AND STATUS = 'Y'
 	</update>
 	
-	<!-- 게시글 상세 조회   -->
+	<!-- 게시글 상세 조회   / 관리자 에러 체크-->
 	<select id="selectBoard" resultMap="errorSetResultSet">
 		SELECT BOARD_NO,
 			   SETTING_TITLE,
@@ -194,7 +253,7 @@
 		ORDER BY 1 DESC
 	</select>
 	
-	<!-- 댓글 작성   //확인전 -->
+	<!-- 댓글 작성  -->
 	<insert id="insertReply">
 		INSERT INTO REPLY VALUES(SEQ_RNO.NEXTVAL,
 								 #{refBno},
@@ -204,14 +263,14 @@
 								 'W')
 	</insert>
 	
-	<!-- 댓글 수정   //확인전 -->
-	<update id="updateReply">
+	<!-- 댓글 수정  -->
+	<update id="updateReply" parameterType="reply">
 		UPDATE REPLY
 		SET REPLY_CONTENT = #{replyContent}
 		WHERE REPLY_NO = #{replyNo}
 	</update>
 	
-	<!-- 댓글 삭제  //확인전  -->
+	<!-- 댓글 삭제  -->
 	<delete id="deleteReply">
 		DELETE REPLY
 		WHERE REPLY_NO = #{replyNo}

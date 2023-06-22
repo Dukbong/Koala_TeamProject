@@ -53,10 +53,11 @@
     #header_2_1{height: 70%;}
     #header_2_2{height: 29%;}
 
-    #header_1>i{padding-top: 65px;}
+    #header_1 i{padding-top: 65px;}
     #header_2_1>h1{
         margin: 0;
-        font-size: 50px;
+        font-size: 55px;
+        font-weight: 600;
         padding-top: 30px;
         color: rgb(40, 151, 223);
     }
@@ -174,6 +175,9 @@
                 			</c:when>
                 			<c:when test='${path.contains("blockip.list")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala Black List</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("errorDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
                 			</c:when>
                 		</c:choose>        		
                 		</c:when>

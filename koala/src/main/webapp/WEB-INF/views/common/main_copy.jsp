@@ -12,8 +12,8 @@
 <style>
 
     .wrapper{
-        width: 80%;
-        height: 800px;
+        width: 100%;
+        height: 900px;
         margin: auto;
     }
     .space{
@@ -23,7 +23,7 @@
     .main_area{
         width: 100%;
         height: 50%;
-        background-color: rgba(136, 133, 147, 0.87);
+        background-color: rgba(136, 133, 147, 0.4);
         text-align: center;
         position: relative;
     }
@@ -33,9 +33,9 @@
         color: white;
     }
     .main_body{
-        margin-left: 90px;
-        margin-right: 90px;
-        margin-top: 50px;
+    	width: 75%;
+    	margin: auto;
+        margin-top: 100px;
         justify-content: space-between;
         display: flex;
         flex-direction : row;

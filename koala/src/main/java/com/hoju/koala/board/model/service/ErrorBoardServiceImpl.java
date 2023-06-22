@@ -1,6 +1,7 @@
 package com.hoju.koala.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,22 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.selectListCount(sqlSession);
 	}
 	
+	@Override //검색된 게시글 수
+	public int searchListCount(HashMap<String, String> hashMap) {
+		
+		return ebDao.searchListCount(sqlSession, hashMap);
+	}
+	
 	@Override //게시글 전체 목록 조회
 	public ArrayList<ErrorSet> selectList(PageInfo pi) {
 		
 		return ebDao.selectList(sqlSession, pi);
+	}
+	
+	@Override //검색된 게시글 목록 조회
+	public ArrayList<ErrorSet> searchList(PageInfo pi, HashMap<String, String> hashMap) {
+		
+		return ebDao.searchList(sqlSession, pi, hashMap);
 	}
 	
 	@Override //조회수 증가
