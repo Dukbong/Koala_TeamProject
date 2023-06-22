@@ -24,7 +24,7 @@
 				<input type="text" name="keyword" value="${keyword }">
 				<button type="submit">검색</button>
 			</form>
-			<c:if test="${empty loginUser }">
+			<c:if test="${not empty loginUser }">
 				<button  onclick="location.href='enroll?boardNo=${b.boardNo}'">글작성</button>
 			</c:if>
 		</div>

@@ -155,4 +155,10 @@ public class BulletinBoardServiceImpl implements BulletinBoardService{
 		return bbDao.boardDisLike(liked,sqlSession);
 	}
 
+	@Override
+	public int selectBoardLike(Liked liked) {
+		
+		return bbDao.selectBoardLike(liked,sqlSession);
+	}
+
 }
