@@ -133,25 +133,32 @@ public class QnABoardServiceImpl implements QnABoardService{
 
 	//qna 회원포인트 지급
 	@Override
-	public void pointUpdate(String boardWriter) {
+	public void pointUpdate(int boardNo) {
 		
-		qnaDao.pointUpdate(sqlSession,boardWriter);
+		qnaDao.pointUpdate(sqlSession, boardNo);
 	}
 
 
 	//qna like테이블 삭제
-	@Override
-	public void deleteLike(int boardNo, int userNo) {
-		
-		qnaDao.deleteLike(sqlSession,boardNo,userNo);
-	}
+//	@Override
+//	public void deleteLike(int boardNo, int userNo) {
+//		
+//		qnaDao.deleteLike(sqlSession,boardNo,userNo);
+//	}
 
 	//qna 회원포인트 차감
 	@Override
-	public void pointDelete(String boardWriter) {
+	public void pointDelete(int boardNo) {
 		
-		qnaDao.pointDelete(sqlSession,boardWriter);
+		qnaDao.pointDelete(sqlSession, boardNo);
 		
+	}
+
+	//qna 댓글 수 
+	@Override
+	public int replyCount(int boardNo) {
+		
+		return qnaDao.replyCount(sqlSession,boardNo);
 	}
 	
 

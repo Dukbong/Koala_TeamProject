@@ -190,10 +190,10 @@
                 <div class="search_area">
                 	<form action="search" method="get">
                 	<input type="hidden" name="currentPage" value="1">
-	                    <select name="search_qna" id="search_qna" class="search_qna">
-	                        <option value="qnaWriter">작성자</option>
-	                        <option value="qnaTitle">제목</option>
-	                        <option value="qnaContent">내용</option>
+	                    <select name="types" id="search_qna" class="search_qna">
+	                        <option value="writer">작성자</option>
+	                        <option value="title">제목</option>
+	                        <option value="content">내용</option>
 	                    </select>
                     <input type="search" name="keyword" value="${keyword }" placeholder="검색할 내용을 입력하세요">
                     <button type="submit">검색</button>
@@ -239,7 +239,7 @@
 				            <c:if test="${b.notice != 'y'}">
 				                <tr style="height: 40px;">
 				                    <td>${b.boardNo }</td>
-				                    <td>${b.title}</td>
+				                    <td>${b.title} [${replyCount}]</td>
 				                    <td>${b.boardWriter}</td>
 				                    <td>${b.createDate}</td>
 				                    <td>${b.count}</td>

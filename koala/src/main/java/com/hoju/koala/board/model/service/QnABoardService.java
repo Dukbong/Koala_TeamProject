@@ -56,12 +56,17 @@ public interface QnABoardService {
 	void updateLike(int boardNo);
 
 	//qna 회원포인트 지급
-	void pointUpdate(String boardWriter);
+	void pointUpdate(int boardNo);
 
 	//qna like테이블 삭제
-	void deleteLike(int boardNo, int userNo);
+//	void deleteLike(int boardNo, int userNo);
 
 	//qna 회원포인트 차감
-	void pointDelete(String boardWriter);
+	void pointDelete(int boardNo);
+
+	//qna 댓글 수
+	int replyCount(int boardNo);
+
+	
 
 }

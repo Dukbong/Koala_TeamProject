@@ -1,7 +1,9 @@
 package com.hoju.koala.board.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,53 +39,76 @@ public class RankingBoardController {
 		}
 
 		// 등락 계산
-		class RankCal {
+				class RankCal {
 
-			private List<Member> previousData; // 이전 데이터
-
-			public RankCal(List<Member> previousData) {
-				this.previousData = previousData;
-				System.out.println(previousData);
-			}
-
-			public List<Member> calculateRank() {
-				//새로운 등수 정보 저장
-			    List<Member> result = new ArrayList<>();
-			    int previousRank = 1; //첫번째 회원의 등수로 초기화
-
-			    for (Member newMember : previousData) {
-			        Member previousMember = findMemWithRank(previousData, newMember.getUserId());
-			        
-			        if (previousMember != null) {
-			            previousRank = previousMember.getRank();
-			        }
-
-			        int currentRank = previousRank + 1;
-			        int rankDifference = currentRank - previousRank;
-
-			        System.out.println("자기 등수: " + newMember.getRank());
-			        String rankChange = getRankChangeIcon(rankDifference);
-
-			        newMember.setRank(currentRank);
-			        newMember.setRankChange(rankChange);
-			        result.add(newMember);
-
-			        previousRank = currentRank;
-			    }
-
-			    return result;
-			}
-			
-			//이전 데이터에서 특정 회원의 등수 정보를 찾아오는 메소드
-			private Member findMemWithRank(List<Member> members,String userId) {
-				for(Member m : members) {
-					if(m.getUserId().equals(userId)) {
-						return m;
+					private List<Member> previousData; // 이전 데이터
+					private Map<String,Integer> previousRanks;//예전 등수 저장 맵
+					
+					public RankCal(List<Member> previousData) {
+						this.previousData = previousData;
+						this.previousRanks = new HashMap<>();
+						
+						// 이전 데이터의 등수 정보를 previousRanks 맵에 설정
+					    for (Member member : previousData) {
+					        previousRanks.put(member.getUserId(), member.getRank());
+					    }
+					    
+					    for (Member member : previousData) {
+					        System.out.println("회원 아이디: " + member.getUserId() + ", 등수: " + member.getRank());
+					    }
 					}
-				}
-				return null;
-			}
 
+					private Member findMemWithRank(Map<String,Integer> previousRanks,String userId) {
+						Integer previousRankStored = previousRanks.get(userId);
+					    if(previousRankStored != null) {
+					    	for(Member m : previousData) {
+					    		if(m.getRank() == previousRankStored) {
+					    			return m;
+					    		}
+					    	}
+					    }
+					    return null;
+					}
+					
+					public List<Member> calculateRank() {
+					    List<Member> result = new ArrayList<>();
+					    int previousRank = 0;
+
+					    for (Member newMember : previousData) {
+					        int currentRank = previousRank + 1;
+					        System.out.println("현재 순위 : "+currentRank);
+					        
+					        String userId = newMember.getUserId();
+					        Member previousMember = findMemWithRank(previousRanks,userId);// previousRanks 맵에서 예전 등수를 가져옴
+					        
+					        if(previousMember != null) {
+					        	int previousRankStored = previousMember.getRank();//예전등수 가져오기
+					        	System.out.println("예전 등수 : "+previousRankStored);
+					        	int rankDifference = currentRank - previousRankStored;
+					        	previousRanks.put(userId, currentRank);//현재 등수를 맵에 저장
+					        	
+					        	//등수 차이 계산 및 처리
+					        	String rankChange = getRankChangeIcon(rankDifference);
+					        	System.out.println("등수 차이 : "+rankDifference);
+					        	
+					        	newMember.setRank(currentRank);
+					        	newMember.setRankChange(rankChange);					        	
+					        }else {//예전 등수가 없을 경우
+					        	System.out.println("예전 등수 없음");
+					        	previousRanks.put(userId, currentRank);
+					        	newMember.setRank(currentRank);
+					        	newMember.setRankChange("-");
+					        }
+					        
+					        result.add(newMember);
+
+					        previousRank = currentRank;
+					        System.out.println("previousRank : "+previousRank);
+					    }
+
+					    return result;
+					}
+			
 
 			//아이콘 적용
 			private String getRankChangeIcon(int rankDifference) {

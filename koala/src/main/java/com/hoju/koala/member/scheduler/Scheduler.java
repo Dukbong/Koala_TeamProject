@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,7 @@ public class Scheduler {
 	public void deleteMemberScheduler() {
 		
 		ArrayList<Member> outUsers = (ArrayList)sqlSession.selectList("memberMapper.selectDeleteMember");
-
+		
 		int result = 0;
 		
 		if(outUsers.size() != 0) {
