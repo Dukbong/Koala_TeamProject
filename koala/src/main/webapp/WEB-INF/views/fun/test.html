@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <textarea id="myTextarea" style="width: 800px; height: 800px;" oninput="numberedTextarea()"></textarea>
+
+    <script>
+      function numberedTextarea() {
+        var textarea = document.getElementById('myTextarea');
+        console.log(textarea.value.split("\n"));
+        var arr = textarea.value.split("\n");
+        for(var i = 0; i < arr.length; i++){
+            textarea.value = i + ". " + arr[i];
+        }
+      }
+    </script>
+</body>
+</html>
