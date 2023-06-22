@@ -119,7 +119,7 @@
 		AND STATUS = 'Y'
 	</update>
 	
-	<!-- 게시글 상세 조회   -->
+	<!-- 게시글 상세 조회   / 관리자 에러 체크-->
 	<select id="selectBoard" resultMap="errorSetResultSet">
 		SELECT BOARD_NO,
 			   SETTING_TITLE,

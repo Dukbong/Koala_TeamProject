@@ -11,6 +11,7 @@ import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.dao.MemberDao;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.member.model.vo.Profile;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -188,6 +189,48 @@ public class MemberServiceImpl implements MemberService {
 		
 		return fList;
 	}
+
+
+	//닉네임 변경
+	@Override
+	public int updateNick(Member m) {
+
+		int result = memberDao.updateNick(sqlSession, m);
+		
+		return result;
+	}
+
+
+	//프로필 등록
+	@Override
+	public int insertProfile(Profile p) {
+		
+		int result = memberDao.insertProfile(sqlSession, p);
+		
+		return result;
+	}
+
+
+	//프로필 조회
+	@Override
+	public Profile selectProfile(int userNo) {
+
+		Profile delProfile = memberDao.selectProfile(sqlSession, userNo);
+		
+		return delProfile;
+	}
+	
+	
+	//프로필 삭제
+	@Override
+	public int deleteProfile(Profile delProfile) {
+
+		int result = memberDao.deleteProfile(sqlSession, delProfile);
+		
+		return result;
+	}
+
+
 
 
 	

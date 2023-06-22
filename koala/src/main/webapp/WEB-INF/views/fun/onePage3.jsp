@@ -50,29 +50,27 @@
 			height: 100%;
 			box-sizing: border-box;
 		}
-		span{
-			color : red;
-		}
 	</style>
 
 	<body>
 		<script>
 			var socket;
+			var color = [];
+			var userArr = [];
 			function connect() {
 				if (!socket) {
 					socket = new WebSocket("ws://localhost:8888/koala/ssss");
 				}
-				
 				socket.onopen = function (e) {
 					console.log("Connect Success");
+					userArr.push("${loginUser.userId}");
+// 					$(".CodeMirror-code").html("<div style='position: relative;'><div class='CodeMirror-gutter-wrapper' style='left: -30px;'><div class='CodeMirror-linenumber CodeMirror-gutter-elt' style='left: 0px; width: 21px;'>1</div></div><pre class=' CodeMirror-line ' role='presentation'><span role='presentation' style='padding-right: 0.1px;'>jang</span></pre></div>");
 				}
 				socket.onclose = function () {
 					console.log("disconnnect Success");
 				}
 				socket.onmessage = function (e) {
-					$("#testareaa").val(e.data);
-					var textarea = document.getElementById('testareaa');
-					 textarea.innerHTML = textarea.innerHTML.replace(/select/g, '<span>select</span>');
+					
 				}
 			}
 			function disconnect() {
@@ -82,22 +80,72 @@
 				} catch (e) {
 				}
 			}
-			
-			$(function(){
-				$("#testareaa").on("keyup", function(){
-					console.log($(this).val());
-					var textarea = document.getElementById('testareaa');
-					 textarea.innerHTML = textarea.innerHTML.replace(/select/g, '<span>select</span>');
-					socket.send($(this).val());
-				});	
-				
-			})
 
+			$(
+				function () {
+
+					var codeEditor = null;
+					var showCodeEditor = false;
+					var textArea = document.getElementById("testareaa");
+					function initializeCodeMirror() {
+						codeEditor = CodeMirror.fromTextArea(textArea, {
+							lineNumbers: true,
+							lineWrapping: true,
+							theme: "darcula",
+							mode: "text/x-sql",
+							val: textArea.value
+						});
+
+					}
+					function openCodeEditor() {
+						if (!codeEditor) {
+							initializeCodeMirror();//코드미러 생성
+						}
+
+						var codeEditorWrapper = codeEditor.getWrapperElement();
+						if (!showCodeEditor) {//false일 경우 입력창 보이도록
+							codeEditorWrapper.style.display = "block";
+							showCodeEditor = true;
+						} else {//true일 경우 입력창 닫기
+							var code = getCode();
+							textArea.value = code;//textarea에 코드 넣기
+							codeEditorWrapper.style.display = "none";
+							showCodeEditor = false;//변수 값 바꾸기
+							console.log("a ", textArea.value);
+							codeEditor.toTextArea();
+						}
+					}
+
+					openCodeEditor();
+
+					var $test = document.querySelector(".CodeMirror");
+
+					$test
+						.addEventListener(
+							"keyup",
+							function () {
+
+								var tt = document
+									.querySelector(".CodeMirror-code").children;
+								var text = "";
+								for (var i = 0; i < tt.length; i++) {
+									text += tt[i].children[1].parentElement.parentElement.innerHTML;
+								}
+								if (!socket) {
+									alert("접속을 먼저 해주세요.");
+									$(".CodeMirror-code")
+										.html(
+											"<div style='position: relative;'><div class='CodeMirror-gutter-wrapper' style='left: -30px;'><div class='CodeMirror-linenumber CodeMirror-gutter-elt' style='left: 0px; width: 21px;'>1</div></div><pre class=' CodeMirror-line ' role='presentation'><span role='presentation' style='padding-right: 0.1px;'><span cm-text=''>​</span></span></pre></div>");
+								} else {
+									socket.send(text);
+								}
+							})
+				})
 		</script>
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<div class="togeSql">
 			<div class="sqlArea">
-				<textarea id="testareaa" class="testarea"
+				<textarea id="testareaa" class="testarea codemirror-textarea"
 					style="width: 100%; height: 100%"></textarea>
 			</div>
 			<div class="userConarea">

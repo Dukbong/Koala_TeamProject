@@ -7,6 +7,11 @@
 <title>[Koala] Issues</title>
 </head>
 <style>
+	.tagName{
+		width: 80%;
+		margin:auto;
+		height: 50px;
+	}
 	.wrap{
 		width: 65%;
 		height:1500px;
@@ -42,7 +47,7 @@
 		font-size: 25px;
 		font-weight: bold;
 		text-align: right;
-		color: rgb(255, 201,20);
+		color: red;
 	}
 	.lidescrip{
 		width: 100%;
@@ -66,9 +71,17 @@
 		font-size : 50px;
 		font-weight: bold;
 	}
+	.tit{
+		color: rgb(255, 201,20);
+		font-weight:bold;
+	}
 </style>
 <body>
 	<%@include file="../common/header.jsp" %>
+	<br>
+	<div class="tagName">
+		<h1 class="tit">@Issues</h1>
+	</div>
 	<br>
 		<div class="wrap">
 			<c:choose>
@@ -106,9 +119,9 @@
 		$(function(){
 			$(".nobinArea").on("click", function(){
 				$.ajax({
-					url : "admin/issuesDetail",
+					url : "/koala/admin/issuesDetail",
 					data : {
-						settingTitle : $(this).children().eq(0).text().trim()
+						settingTitle : $(this).children().eq(0).text().trim(),
 					}
 				});
 			})
