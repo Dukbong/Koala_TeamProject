@@ -179,6 +179,13 @@
 		AND REF_UNO = #{refUno}
 	</delete>
 	
+	<select id="selectBoardLike" resultType="_int">
+		SELECT LIKED_TYPE
+		FROM LIKED
+		WHERE REF_BNO = #{refBno}
+		AND REF_UNO = #{refUno}
+	</select>
+	
 	<!-- 공통으로 사용할 게시판 관련 resultMap -->
 	
 	<resultMap type="board" id="boardResultSet">

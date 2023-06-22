@@ -78,4 +78,7 @@ public interface BulletinBoardService {
 	//게시글 좋아요 취소 기록 메소드
 	int boardDisLike(Liked liked);
 
+	//사용자 좋아요 확인 메소드
+	int selectBoardLike(Liked liked);
+
 }

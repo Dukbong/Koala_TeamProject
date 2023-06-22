@@ -79,11 +79,12 @@
 	        </c:if>
 	        Title: <input type="text" name="title" id="title"><br>
 	        <p>Content:</p><br>
-	        <textarea name="content" id="content" cols="30" rows="10" style="resize:none"></textarea><br>
+	        <div id="ta1" contentEditable="true" style="overflow-x:auto; width:500px; height: 300px; border: solid 1px; margin: 20px; line-height: 20px;">
+	        </div><br>
 	        <p>Code:</p><br>
 	        <textarea name="contentCode" id="contentCode" cols="30" rows="10" style="resize:none"></textarea><br>
 	        <p>Attachment:</p><br>
-	        <input type="file" name="upfile">
+	        <input id="browse" type="file" onchange="previewFiles()" multiple />
 	        <button type="submit">upload</button>
 	    </div>
     </form>
@@ -128,6 +129,7 @@
         editor.setSize("100%","600");
         
         closeBtn.addEventListener("click",click);
+        
         function click(){
            console.log(editor.display.maxLine.parent.lines);
            for(var i=0; i<editor.display.maxLine.parent.lines.length; i++){
@@ -135,6 +137,31 @@
            }
         }
         
+        function previewFiles() {
+            var preview = document.querySelector('#ta1');
+            var files = document.querySelector('input[type=file]').files;
+
+            function readAndPreview(file) {
+                if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                var reader = new FileReader();
+                reader.addEventListener(
+                    'load',
+                    function () {
+                    var image = new Image();
+                    image.height = 200;
+                    image.title = file.name;
+                    image.src = this.result;
+                    preview.appendChild(image);
+                    },
+                    false
+                );
+                reader.readAsDataURL(file);
+                }
+            }
+                if (files) {
+                    [].forEach.call(files, readAndPreview);
+                }
+    	}
     </script>
     <jsp:include page="../../common/footer.jsp"/>
 </body>
