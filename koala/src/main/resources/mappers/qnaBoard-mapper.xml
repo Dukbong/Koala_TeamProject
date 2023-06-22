@@ -95,26 +95,28 @@
 	<select id="selectAttachment" resultMap="qnaBoardAttachmentResultSet">
 		SELECT FILE_NO,
 			   ORIGIN_NAME,
-			   FILE_PATH
+			   CHANGE_NAME,
+			   FILE_PATH,
+			   UPLOAD_DATE
 		FROM BOARD_ATTACHMENT
 		WHERE REF_BNO = #{boardNo}
 		AND STATUS = 'Y'
 	</select>
 	
 	<!-- 검색 게시글 갯수 select문 -->
-	<select id="selectBoardCount" resultType="_int" parameterType="java.util.HashMap">
+	<select id="selectBoardCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM BOARD B
 		JOIN MEMBER M ON (USER_NO=BOARD_WRITER)
 		WHERE B.CATEGORY = 'Q'
 		AND B.STATUS = 'Y'
-		<if test="#{searchQna} eq 'qnaWriter'">
+		<if test="types == 'writer'">
 			AND M.NICKNAME LIKE '%' || #{keyword} || '%'
 		</if>
-		<if test="#{searchQna} eq 'qnaTitle'">
+		<if test="types == 'title'">
 			AND TITLE LIKE '%' || #{keyword} || '%'
 		</if>
-		<if test="#{searchQna} eq 'qnaContent'">
+		<if test="types == 'content'">
 		 	AND CONTENT LIKE '%' || #{keyword} || '%'	
 		</if>
 	</select>
@@ -130,13 +132,13 @@
 		JOIN MEMBER M ON(USER_NO = BOARD_WRITER)
 		WHERE B.CATEGORY = 'Q'
 		AND B.STATUS = 'Y'
-		<if test="#{searchQna} eq 'qnaWriter'">
+		<if test="types == 'writer'">
 	        AND M.NICKNAME LIKE '%' || #{keyword} || '%'		
 		</if>
-		<if test="#{searchQna} eq 'qnaTitle'">
+		<if test="types == 'title'">
 			AND TITLE LIKE '%' || #{keyword} || '%'
 		</if>
-		<if test="#{searchQna} eq 'qnaContent'">
+		<if test="types == 'content'">
 		 	AND CONTENT LIKE '%' || #{keyword} || '%'
 		
 		</if>
@@ -147,24 +149,24 @@
 	<select id="selectReply" resultMap="qnaReplyResultSet">
 		SELECT REPLY_NO,
 			   REPLY_CONTENT,
-			   REPLY_WRITER,
-			   TO_CHAR(CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
+			   NICKNAME,
+			   TO_CHAR(R.CREATE_DATE,'YYYY-MM-DD AMHH:MI')AS CREATE_DATE
 		FROM REPLY R
 		JOIN MEMBER ON (USER_NO = REPLY_WRITER)
-		WHERE REF_BNO = #{boardNo}
-		AND R.STATUS = 'Y'
-		ORDER BY CREATE_DATE DESC
+		WHERE R.REF_BNO = #{boardNo}
+		AND R.STATUS = 'W'
+		ORDER BY R.CREATE_DATE DESC
 	</select>
 	
 	<!-- 댓글 작성 insert문 -->
 	<insert id="insertReply">
 		INSERT INTO REPLY(REPLY_NO,
-						REPLY_CONTENT,
 						REF_BNO,
+						REPLY_CONTENT,
 						REPLY_WRITER)
 		VALUES(SEQ_RNO.NEXTVAL,
-			   #{replyContent},
 			   #{refBno},
+			   #{replyContent},
 			   #{replyWriter})
 	</insert>
 	
@@ -226,14 +228,14 @@
 	<!-- 게시글 추천 시 LIKE테이블 insert문 -->
 	<insert id="insertLike">
 		INSERT INTO LIKED(REF_UNO,REF_BNO,LIKED_TYPE)
-		VALUES (#{boardNo},
-				#{userNo},
+		VALUES (#{userNo},
+				#{boardNo},
 				1
 		)
 	</insert>
 	
 	<!-- 게시글 추천 수 update문 -->
-	<update id="updateLike">
+	<update id="updateLike" parameterType="java.util.HashMap">
 		UPDATE BOARD
 		SET LIKED = LIKED + 1
 		WHERE BOARD_NO = #{boardNo}
@@ -243,23 +245,40 @@
 	<!-- 추천 시 포인트 추가 update문 -->
 	<update id="pointUpdate">
 		UPDATE MEMBER
-		SET POINT = POINT + 10
-		WHERE USER_NO = #{boardWriter}
+		SET POINT = POINT + 100
+		WHERE USER_NO =(
+		SELECT BOARD_WRITER
+		FROM BOARD
+<!-- 		WHERE BOARD_WRITER = #{boardWriter} -->
+		WHERE BOARD_NO = #{boardNo})
 	</update>
 	
 	<!-- 추천 취소 시 like테이블 update문 -->
-	<update id="deleteLike">
-		UPDATE LIKED
-		SET LIKED_TYPE = NULL
-		WHERE REF_BNO = #{boardNo}
-		AND REF_UNO = #{boardWriter}
-	</update>
+<!-- 	<update id="deleteLike"> -->
+<!-- 		UPDATE LIKED -->
+<!-- 		SET LIKED_TYPE = NULL -->
+<!-- 		WHERE REF_BNO = #{boardNo} -->
+<!-- 		AND REF_UNO = #{boardWriter} -->
+<!-- 	</update> -->
 	
 	<!-- 추천 취소 시 포인트 차감 update문 -->
 	<update id="pointDelete">
 		UPDATE MEMBER
-		SET POINT = POINT - 10
-		WHERE USER_NO = #{boardWriter}
+		SET POINT = POINT - 100
+		WHERE USER_NO =(
+		SELECT BOARD_WRITER
+		FROM BOARD
+<!-- 		WHERE BOARD_WRITER = #{boardWriter} -->
+		WHERE BOARD_NO = #{boardNo})
 	</update>
+	
+	<!-- 댓글 수 확인 -->
+	<select id="replyCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM REPLY
+		WHERE STATUS = 'Y'
+		AND REF_BNO = #{refBno}
+	</select>
+	
 	
 </mapper>
