@@ -462,7 +462,7 @@
 									url:"/koala/member/deleteMember",
 									method:"post",
 									data:{
-										userId:${loginUser.userId}
+										userId:"${loginUser.userId}"
 									},
 									success:function(result){
 										if(result>0){

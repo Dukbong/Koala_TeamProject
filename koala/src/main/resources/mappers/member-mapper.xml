@@ -8,7 +8,7 @@
 	<select id="loginMember" resultMap="memberResultSet">
 		SELECT *
 		FROM MEMBER M
-		JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
 		WHERE STATUS = 'Y'
 		AND USER_ID = #{userId}
 	</select>
@@ -32,7 +32,7 @@
 	<select id="selectMember" resultMap="memberResultSet">
 		SELECT *
 		FROM MEMBER M
-		JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
 		WHERE STATUS = 'Y'
 		AND USER_ID = #{userId}
 	</select>
