@@ -84,7 +84,7 @@ public class BulletinBoardController {
 	
 	//게시판 상세 보기 페이지
 	@RequestMapping("detail")
-	public String  boardDetailView(int boardNo,Model model) {
+	public String  boardDetailView(int boardNo,Model model,HttpSession session) {
 		
 		int result = bbService.increaseCount(boardNo);
 		
@@ -92,9 +92,18 @@ public class BulletinBoardController {
 			Board board = bbService.boardDetailView(boardNo);
 			BulletinBoard bulletinBoard = bbService.boardCategoryDetailView(boardNo);
 			ArrayList<Reply> rList = bbService.selectBoardReply(boardNo);
+			
 			model.addAttribute("b",board);
 			model.addAttribute("bulletinBoard",bulletinBoard);
 			model.addAttribute("rList",rList);
+			
+			if(session.getAttribute("loginUser")!=null) {
+				int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
+				System.out.println(liked);
+				int userDoLike = bbService.selectBoardLike(liked);
+				model.addAttribute("userDoLike",userDoLike);
+			}
 
 			if(board.getFileNo()!=0) {
 				ArrayList<BoardAttachment> baList = bbService.selectBoardAttachment(boardNo);
@@ -137,7 +146,6 @@ public class BulletinBoardController {
 		
 		if(select==1) {
 			int result = bbService.increaseLike(boardNo);
-			System.out.println(result);
 			int result2 = bbService.boardLike(liked);
 		}else {
 			int result = bbService.decreaseLike(boardNo);

@@ -156,4 +156,12 @@ public class BulletinBoardDao {
 		return sqlSession.delete("bulletinBoardMapper.boardDisLike",liked);
 	}
 
+	//사용자 좋아요 조회 메소드
+	public int selectBoardLike(Liked liked, SqlSessionTemplate sqlSession) {
+//		int result = sqlSession.selectOne("bulletinBoardMapper.selectBoardLike",liked);
+//		System.out.println(result);
+		
+		return 0;
+	}
+
 }
