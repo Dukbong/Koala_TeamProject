@@ -6,7 +6,7 @@ import java.util.HashMap;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
 import com.hoju.koala.board.model.vo.BulletinBoard;
-import com.hoju.koala.board.model.vo.ErrorSet;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -71,5 +71,11 @@ public interface BulletinBoardService {
 
 	//게시글 첨부파일 조회 메소드
 	ArrayList<BoardAttachment> selectBoardAttachment(int boardNo);
+
+	//게시글 좋아요 기록 메소드
+	int boardLike(Liked liked);
+
+	//게시글 좋아요 취소 기록 메소드
+	int boardDisLike(Liked liked);
 
 }

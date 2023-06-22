@@ -128,29 +128,40 @@ public class QnABoardDao {
 
 
 	//qna 회원포인트 지급
-	public void pointUpdate(SqlSessionTemplate sqlSession, String boardWriter) {
+	public void pointUpdate(SqlSessionTemplate sqlSession, int boardNo) {
 		
-		sqlSession.update("qnaBoardMapper.pointUpdate",boardWriter);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("boardWriter", boardWriter);
+//		map.put("boardNo", boardNo);
+//		
+		sqlSession.update("qnaBoardMapper.pointUpdate", boardNo);
 		
 	}
 
 
 	//qna like테이블 삭제
-	public void deleteLike(SqlSessionTemplate sqlSession, int boardNo, int userNo) {
+//	public void deleteLike(SqlSessionTemplate sqlSession, int boardNo, int userNo) {
+//		
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("userNo", userNo);
+//		map.put("boardNo", boardNo);
+//		
+//		sqlSession.update("qnaBoardMapper.deleteLike",map);
+//		
+//	}
+
+	//qna 회원포인트 차감
+	public void pointDelete(SqlSessionTemplate sqlSession, int boardNo) {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userNo", userNo);
-		map.put("boardNo", boardNo);
 		
-		sqlSession.update("qnaBoardMapper.deleteLike",map);
+		sqlSession.update("qnaBoardMapper.pointDelete", boardNo);
 		
 	}
 
-	//qna 회원포인트 차감
-	public void pointDelete(SqlSessionTemplate sqlSession, String boardWriter) {
+	//qna 댓글 수
+	public int replyCount(SqlSessionTemplate sqlSession, int boardNo) {
 		
-		sqlSession.update("qnaBoardMapper.pointDelete", boardWriter);
-		
+		return sqlSession.selectOne("qnaBoardMapper.replyCount",boardNo);
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.hoju.koala.board.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -38,20 +39,69 @@ public class ErrorBoardController {
 	//게시글 목록 조회 메소드
 	@GetMapping("/list")
 	public String selectList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+							 @RequestParam(value="category", defaultValue="") String category,
+							 @RequestParam(value="keyword", defaultValue="") String keyword,
 			 				 Model model) {
 		
-		int listCount = ebService.selectListCount();
+		int listCount = 0;
+		HashMap<String,String> hashMap = new HashMap<>();
+		ArrayList<ErrorSet> ebList = new ArrayList<>();
+		
+		if(category.equals("") || keyword.equals("")) {
+			listCount = ebService.selectListCount();
+		}else {
+			hashMap.put("category", category);
+			hashMap.put("keyword", keyword);
+			
+			listCount = ebService.searchListCount(hashMap);
+		}
 		int pageLimit = 10;
 		int boardLimit = 10;
 		
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
-		ArrayList<ErrorSet> ebList = ebService.selectList(pi);
+		if(category.equals("") || keyword.equals("")) {
+			ebList = ebService.selectList(pi);
+		}else {
+			ebList = ebService.searchList(pi, hashMap);
+		}
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("ebList", ebList);
+		model.addAttribute("category", category);
+		model.addAttribute("keyword", keyword);
+		
 		return "board/errorBoard/ebListView";
 	}
+	
+	//검색된 게시글 목록 조회 메소드
+//	@GetMapping("searchList")
+//	public String searchList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+//							 String category,
+//							 String keyword,
+//			 				 Model model) {
+//		
+//		HashMap<String,String> hashMap = new HashMap<>();
+//		
+//		hashMap.put("category", category);
+//		hashMap.put("keyword", keyword);
+//		
+//		int listCount = ebService.searchListCount(hashMap);
+//		int pageLimit = 10;
+//		int boardLimit = 10;
+//		
+//		
+//		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+//		
+//		ArrayList<ErrorSet> ebList = ebService.searchList(pi, hashMap);
+//		
+//		model.addAttribute("pi", pi);
+//		model.addAttribute("ebList", ebList);
+//		model.addAttribute("category", category);
+//		model.addAttribute("keyword", keyword);
+//		
+//		return "board/errorBoard/ebListView";
+//	}
 	
 	//게시글 상세 조회 메소드
 	@GetMapping("/detail")

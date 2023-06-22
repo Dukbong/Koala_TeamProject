@@ -1,6 +1,7 @@
 package com.hoju.koala.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,11 +24,24 @@ public class ErrorBoardDao {
 		
 		return sqlSession.selectOne("errorBoardMapper.selectListCount");
 	}
+	
+	//검색된 게시글 수
+	public int searchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> hashMap) {
+		
+		return sqlSession.selectOne("errorBoardMapper.searchListCount", hashMap);
+	}
 
 	//게시글 전체 목록 조회
 	public ArrayList<ErrorSet> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		System.out.println("들어옴");
 		
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
+	}
+	
+	//검색된 게시글 목록 조회
+	public ArrayList<ErrorSet> searchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> hashMap) {
+		System.out.println("검색으로 들어옴");
+		return (ArrayList)sqlSession.selectList("errorBoardMapper.searchList", hashMap, pi.rowBounds());
 	}
 	
 	//조회수 증가
