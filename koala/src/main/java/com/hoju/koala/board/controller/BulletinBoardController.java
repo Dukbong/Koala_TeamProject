@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.hoju.koala.board.model.service.BulletinBoardService;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
@@ -100,7 +101,6 @@ public class BulletinBoardController {
 			if(session.getAttribute("loginUser")!=null) {
 				int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
-				System.out.println(liked);
 				int userDoLike = bbService.selectBoardLike(liked);
 				model.addAttribute("userDoLike",userDoLike);
 			}
@@ -112,36 +112,33 @@ public class BulletinBoardController {
 			
 		}else {
 			model.addAttribute("errorMsg","게시글을 불러오는데 실패했습니다.");
+			return "common/error";
 		}
 		
 		return "board/freeBoard/boardDetailView";
 	}
-//	
-//	//게시글 댓글 달기 메소드
-//	@ResponseBody
-// 	@RequestMapping(value="",produces="application/json;charset=UTF-8")
-// 	public String insertReply(int boardNo,Reply reply, HttpSession session) {
-// 		
-//		String userNo = String.valueOf(((Member)(session.getAttribute("loginUser"))).getUserNo());
-//		reply.builder().refBno(boardNo).replyWriter(userNo).build();
-//		
-//		int result = bbService.insertReply(reply);
-//		
-//		if(result>0) {
-//			ArrayList<Reply> rList = bbService.selectBoardReply(boardNo);
-//			return new Gson().toJson(rList);
-//		}else {
-//			return null;
-//		}
-//	}
-//	
+	
+	//게시글 댓글 달기 메소드
+	@ResponseBody
+ 	@RequestMapping(value="reply",produces="application/json;charset=UTF-8")
+ 	public String insertReply(Reply reply,Model model) {
+ 		System.out.println(reply);
+		
+		int result = bbService.insertReply(reply);
+		
+		if(result>0) {
+			return null;
+		}else {
+			model.addAttribute("errorMsg","게시글을 불러오는데 실패했습니다.");
+			return "common/error";
+		}
+	}
+	
 	//좋아요 
 	@ResponseBody
  	@RequestMapping(value="like",produces="application/json;charset=UTF-8")
  	public int Like(int boardNo,int select,int loginUser) {	
-		System.out.println(boardNo);
-		System.out.println(select);
-		System.out.println(loginUser);
+
 		Liked liked = Liked.builder().refUno(loginUser).refBno(boardNo).build();
 		
 		if(select==1) {
@@ -225,25 +222,29 @@ public class BulletinBoardController {
 // 		}
 // 		return mv;
 //	}
-//	
-//	//댓글 삭제 수정 메소드
-//	@ResponseBody
-//	@RequestMapping(value="",produces="application/json;charset=UTF-8")
-// 	public String deleteAndUpdateReply(int boardNo, Reply reply, int select) {
-//		
-//		int result = 0;
-//		
-//		if(select == 1) {
-//			int replyNo = reply.getReplyNo();
-//			result = bbService.deleteReply(replyNo);
-//		}else {
-//			result = bbService.updateReply(reply);
-//		}
-//		
-//		ArrayList<Reply> rList = bbService.selectBoardReply(boardNo);
-//		return new Gson().toJson(rList);
-//	}
-//	
+	
+	//댓글 삭제 수정 메소드
+	@ResponseBody
+	@RequestMapping(value="updatereply",produces="application/json;charset=UTF-8")
+ 	public String deleteAndUpdateReply(Reply reply, int select,Model model) {
+		
+		int result = 0;
+		
+		if(select == 1) {
+			int replyNo = reply.getReplyNo();
+			result = bbService.deleteReply(replyNo);
+		}else {
+			result = bbService.updateReply(reply);
+		}
+		
+		if(result>0) {
+			return null;
+		}else {
+			model.addAttribute("errorMsg","게시글을 불러오는데 실패했습니다.");
+			return "common/error";
+		}
+	}
+	
 	//파일 이름 바꾸는 메소드
 	public String saveFile(MultipartFile upfile,HttpSession session) {
 
