@@ -120,6 +120,10 @@
     	widht: 100%;
     }
     
+    #password-area{
+    	float: left;
+    }
+    
     #warning-message,#warning-btn{
     	height: 100%;
     	display: inline-block;
@@ -173,18 +177,43 @@
 	    height: 200px;
 	    border-radius: 70%;
 	    overflow: hidden;
+	    position: relative;
 	}
 	
 	.profile{
 	    width: 100%;
 	    height: 100%;
 	    object-fit: cover;
+	    z-index: 1;
+	}
+	
+	.overlab{
+		position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    display: none;
+	    z-index: 2;
+	}
+	
+	
+	#overlab-in{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 	
 	.profile:hover{
-		cursor: pointer;
-		opacity: 0.7;
+		opacity: 0.3;
 	}
+	
+	.profile:hover+ .overlab{
+		display: block;
+	}
+	
+	
 	
 	
 </style>
@@ -255,11 +284,20 @@
 							<div id="profile-box">
 								<c:choose>
 									<c:when test="${not empty loginUser.profile }">
-									
-									    <img class="profile" src="${pageContext.request.contextPath}${loginUser.profile.filePath}${loginUser.profile.changeName}" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
+									    <img class="profile" src="${pageContext.request.contextPath}${loginUser.profile.filePath}${loginUser.profile.changeName}">
+									    <div class="overlab">
+									    	<div id="overlab-in" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
+									    		<span style="color:white; font-size: 30px; font-size:30">변경</span>
+									    	</div>
+									    </div>
 									</c:when>
 									<c:otherwise>
-									    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">									
+									    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+									    <div class="overlab">
+									    	<div id="overlab-in" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
+									    		<span style="color:white; font-size: 30px; font-size:30">변경</span>
+									    	</div>
+									    </div>
 									</c:otherwise>
 								</c:choose>
 							</div>

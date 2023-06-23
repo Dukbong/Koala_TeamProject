@@ -195,7 +195,7 @@
 			                		<h4 class="">Enroll</h4>					
                 				</c:when>
                 				
-                				<c:when test="${path.contains('ad')}">
+                				<c:when test="${path.contains('ad') or path.contains('boardList') or path.contains('replyList') or path.contains('likedList') or path.contains('followingList')}">
                 					<h4 class="">Activity Details</h4>
                 				</c:when>
                 				

@@ -15,7 +15,7 @@
 	#content{
 		margin: auto;
 		width: 80%;
-		height: 1200px;
+		height: 1100px;
 	}
 	
 	#insert-form{
@@ -27,7 +27,6 @@
 		width: 100%;
 		height: 100%;
 		margin: 0 auto;
-		border: 1px solid #dadada;
 		border-radius: 5px;
 		margin-top: 15px;
 		margin-bottom: 15px;
@@ -44,26 +43,36 @@
 		width: 60%;
 		height: 40px;
 		border: 1px solid #dadada;
-		padding: 10px;
 		border-radius: 5px;
+		padding: 10px;
 	}
 	
 	textarea{
 		width: 100%;
+		border: 1px solid #dadada;
+		border-radius: 5px;
 	}
 	
 	#center{
-		width: 60%;
-		height: 80%;
+		width: 80%;
+		height: 1050px;
 		padding: 5% 0;
+		background-color: gray;
+	}
+	
+	#center>table{
+		height: 80%;
+	}
+	
+	#center>#check-area{
+		height: 8%;
 	}
 	
 	/* 테이블 */
 	#insert-table{
-		width: 100%;
+		width: 80%;
 		height: 100%;
 	}
-	
 	
 	
 	
@@ -97,7 +106,6 @@
 	#level[value]::-webkit-progress-value {
 	    transition: width 0.5s;
 	}
-	
 	
 	
 	
@@ -157,7 +165,7 @@
 			}
 				
 			//유저 아이디 입력
-			$("#userId").on("keyup", function(){
+			$("#userId").on("focusout", function(){
 				
 				if(idExp.test($("#userId").val())){ //유효성을 통과하면
 					//아이디 중복체크
@@ -193,12 +201,25 @@
 							}
 						}
 					});
+				}else if($("#userId").val() == ""){
+					//비어있다면 다 지우기
+					$("#formId").css("display", "none");
+					$("#useId").css("display", "none");
+					
+					idCheck = false;
+					
+					if(idCheck == true){
+						$("#ci-icon").addClass("on fa-solid fa-check fa-xl");
+					}else{
+						$("#ci-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
 				}else{
 					//적합하지 않는 아이디 형식입니다. -출력해야함.
 					$("#useId").css("display", "none");
 					$("#formId").css("display", "block");
 					idCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+					
 					if(idCheck == true){
 						$("#ci-icon").addClass("on fa-solid fa-check fa-xl");
 					}else{
@@ -221,6 +242,15 @@
 					$("#formPwd").css("display", "none");
 					userPwd1 = $("#userPwd").val();
 					
+					//pwdCheck true 얻어 놓고 비밀번호입력칸 재입력 방지
+					if((userPwd2 != "") && (userPwd1 != userPwd2)){
+						pwdCheck = false;
+						$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
+						$("#notEqualPwd").css("display", "block");
+						$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+						$("#pwd2-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
+					
 				}else if($("#userPwd").val() == ""){
 					//비어있다면 다 지우기
 					$("#formPwd").css("display", "none");
@@ -236,43 +266,51 @@
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 				if(pwdCheck == true){
 					$("#pwd-icon").addClass("on fa-solid fa-check fa-xl");
+					$("#pwd2-icon").addClass("on fa-solid fa-check fa-xl");
 				}else{
 					$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+					$("#pwd2-icon").removeClass("on fa-solid fa-check fa-xl");
 				}
 			});
 			
 			//비밀번호 재확인 입력
-			$("#checkPwd").on("keyup", function(){
+			$("#checkPwd").on("focusout", function(){
 				
 				userPwd2 = $("#checkPwd").val();
 				
-				if(userPwd1 == userPwd2){
-					//같다면
-					$("#notEqualPwd").css("display", "none");
-					pwdCheck = true;
-				}else if($("#userPwd").val() == ""){
-					$("#notEqualPwd").css("display", "none");
-					pwdCheck = false;
-				}else{
-					$("#notEqualPwd").css("display", "block");
+				if(pwdExp.test($("#userPwd").val())){
+					if(userPwd1 == userPwd2){
+						//같다면
+						$("#notEqualPwd").css("display", "none");
+						pwdCheck = true;
+					}else{
+						$("#notEqualPwd").css("display", "block");
+						pwdCheck = false;
+					}
 					
+				}else{
+					//처음입력한 비밀번호 유효성이 통과되지않으면
+					$("#notEqualPwd").css("display", "none");
 					pwdCheck = false;
 				}
+				
 				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
 				
 				
 				if(pwdCheck == true){
 					$("#pwd-icon").addClass("on fa-solid fa-check fa-xl");
+					$("#pwd2-icon").addClass("on fa-solid fa-check fa-xl");
 				}else{
 					$("#pwd-icon").removeClass("on fa-solid fa-check fa-xl");
+					$("#pwd2-icon").removeClass("on fa-solid fa-check fa-xl");
 				}
 			});
 			
 			
 			
 			//닉네임 입력
-			$("#nickName").on("keyup", function(){
+			$("#nickName").on("focusout", function(){
 				
 				if(nickExp.test($("#nickName").val())){
 					
@@ -285,10 +323,14 @@
 						success:function(result){
 							if(result>0){
 								//중복(사용불가능)
+								$("#formNick").css("display","none");
+								$("#useNick").css("display", "block");
 								nickCheck = false;
 								
 							}else{
 								//사용가능
+								$("#formNick").css("display","none");
+								$("#useNick").css("display", "none");
 								nickCheck = true;
 							}
 						},
@@ -305,8 +347,22 @@
 						}
 					});
 					
+				}else if($("#nickName").val() == ""){
+					//비어있다면 다 지우기
+					$("#formNick").css("display","none");
+					$("#useNick").css("display", "none");
+					
+					nickCheck = false;
+					
+					if(nickCheck == true){
+						$("#nick-icon").addClass("on fa-solid fa-check fa-xl");
+					}else{
+						$("#nick-icon").removeClass("on fa-solid fa-check fa-xl");
+					}
 				}else{
 					//적합하지 않는 닉네임 형식입니다.
+					$("#useNick").css("display", "none");
+					$("#formNick").css("display","block");
 					
 					nickCheck = false;
 					$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
@@ -374,8 +430,10 @@
 				
 				if(emailCheck == true){
 					$("#email-icon").addClass("on fa-solid fa-check fa-xl");
+					$("#certi-icon").addClass("on fa-solid fa-check fa-xl");
 				}else{
 					$("#email-icon").removeClass("on fa-solid fa-check fa-xl");
+					$("#certi-icon").removeClass("on fa-solid fa-check fa-xl");
 				}
 				
 				$.submitState(idCheck, pwdCheck, nickCheck, agreeCheck);
@@ -408,15 +466,12 @@
        	        /[$@#&!]+/,
        	    ];
        		
-       		console.log(exps);
-       		
        		$("#userPwd").on("keyup", function(){
        			var strength = 0;
        			
        		 	$.each(exps, function(index, exp){
        				strength += $("#userPwd").val().match(exp) ? 1 : 0;
        			});
-       		 	
        		 	
        		 	
        		 	switch(strength){
@@ -431,8 +486,8 @@
        		 	}
        		 	
        		 	if($("#userPwd").val().length<6){
-       		 		//사용자가 입력한 패스워드길이가 6보다 작으면 빨건색
-       		 		$("#level").val(1);
+       		 		//사용자가 입력한 패스워드길이가 6보다 작으면 빨건색 strenth도 1
+       		 		strength = 1;
        		 		$("#level").css("--color", "red");
        		 	}
        		 	
@@ -449,9 +504,9 @@
 	        <div id="enroll-area">
 	            <form action="insert" method="post" id="insert-form">
 	            	<div id="center">
-	            		<table border="1" id="insert-table">
+	            		<table id="insert-table" >
 			                <tr> 
-			                    <td colspan=""><label for="userId">ID</label>&nbsp;<i id="ci-icon" class="" style="color: #00ff62;"></i></td>
+			                    <td><label for="userId">ID</label>&nbsp;<i id="ci-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
 			                    <td width="70%"><input class="box" type="text" name="userId" id="userId" maxlength="12" required placeholder = "영문,숫자만  4~12자리"></td>
@@ -466,7 +521,7 @@
 			                </tr>
 			                <tr>
 			                    <td>
-			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="16" required placeholder = "숫자,영어포함  6자 이상" >
+			                    	<input class="box" type="password" name="userPwd" id="userPwd" maxlength="20" required placeholder = "숫자,영어포함  6자 이상" >
 			                    	<div style="text-align: center;">
 				                    	<span>보안성</span>
 				                    	<progress id="level" value="0" max="4"></progress>
@@ -477,10 +532,10 @@
 			                    </td>
 			                </tr>
 			                <tr>
-			                    <td><label for="chkPwd">Password Check</label></td>
+			                    <td><label for="chkPwd">Password Check</label>&nbsp;&nbsp;<i id="pwd2-icon" class="" style="color: #00ff62;"></i></td>
 			                </tr>
 			                <tr>
-			                    <td><input class="box" type="password" id="checkPwd" name="checkPwd" maxlength="15" required placeholder = "비밀번호 재확인"></td>
+			                    <td><input class="box" type="password" id="checkPwd" name="checkPwd" maxlength="20" required placeholder = "비밀번호 재확인"></td>
 			                    <td>
 			                    	<span class="hide" id="notEqualPwd">비밀번호가 일치하지 않습니다.</span>
 			                    </td>
@@ -494,8 +549,8 @@
 			                <tr>
 			                    <td><input class="box" type="text" name="nickName" id="nickName" required placeholder="숫자, 영문포함 2~12자리"></td>
 			                    <td>
-			                    	<span class="hide">이미 사용중인 닉네임입니다.</span>
-			                    	<span class="hide">양식에 맞게 작성해주세요.</span>
+			                    	<span class="hide" id="useNick">이미 사용중인 닉네임입니다.</span>
+			                    	<span class="hide" id="formNick">양식에 맞게 작성해주세요.</span>
 			                    </td>
 			                </tr>
 			                
@@ -516,7 +571,7 @@
 			                </tr>
 							
 							<tr>
-								<td><label for="">Certification Code</label>
+								<td><label for="">Certification Code</label>&nbsp;<i id="certi-icon" class="" style="color: #00ff62;"></i></td>
 							</tr>
 			                <tr>
 								<td>
@@ -533,8 +588,8 @@
 			                    <td>Terms of Use</td>
 			                </tr>
 			                <tr>
-			                	<td colspan="2">
-									<textarea cols="30" rows="10" style="resize:none; height: 200px">
+			                	<td colspan="2" style="vertical-align: top">
+									<textarea cols="30" rows="10" style="resize:none; height: 150px">
 [코알라] 회원가입 및 개인정보 수집 및 이용약관
 
 제 1조 (목적)
@@ -576,9 +631,11 @@
 								</td>
 			                </tr>
 			            </table>
-		                
-		                <input type="checkbox" id="agree">
-		                <label for="agree">이용약관 및 개인정보 수집에 동의합니다.</label>
+			            
+		                <div id="check-area">
+			                <input type="checkbox" id="agree">
+			                <label for="agree">이용약관 및 개인정보 수집에 동의합니다.</label>
+		                </div>
 		               	
 		               	<div>
 			                <button type="submit" id="submitBtn" class="btn btn-primary" disabled>submit</button>		               	
