@@ -18,33 +18,57 @@
     	height: 100%;
     	width: 100%;
     }
-	
-	#select-mypage a{
-        color: darkcyan;
-        text-decoration: none;
+    
+    #content1, #content2{
+    	width: 100%;
     }
     
-    #select-list a{
-    	cursor: pointer;
-    	
+    #content1{
+    	height: 20%;
     }
-
-
-    #content{
-        height: 100%;
-        width: 100%;
-    }
-
-    #content1>div{
-        float: left;
-        height:70%;
-    }
- 
     
-    #result-area>table>tbody>tr:hover{
-    	color: gray;
-    	cursor: pointer;
+    #content2{
+    	height: 80%;
     }
+    
+    /* content1영역 */
+    
+    #con1-area, #con2-area, #con3-area{
+    	float: left;
+    }
+    
+    #con1-area{
+    	width: 30%;
+    }
+    
+   	#con2-area{
+   		width: 30%;
+   	}
+   	
+   	#con3-area{
+   		width: 30%;
+   	}
+   	
+   	/* content2영역 */
+   	
+   	#content2>#select-list{
+   		
+   	}
+   	
+   	#content2>#select-list>ul>li:hover{
+   		cursor: pointer;
+   		color: gray;
+   	}
+   	
+   	#result-area>table>tbody>tr:hover{
+   		cursor: pointer;
+   		color: gray;
+   	}
+   	
+   	#result-area>table>tr:hover{
+   		cursor: pointer;
+   		color: gray;
+   	}
     
 </style>
 <body>
@@ -91,8 +115,8 @@
                 				$.ajax({
                 					url:"/koala/member/follow",
                 					data:{
-                						fromUser:${loginUser.userNo},
-                						toUser:${user.userNo}
+                						fromUser:"${loginUser.userNo}",
+                						toUser:"${user.userNo}"
                 					},
                 					success:function(result){
                 						if(result == 1){
@@ -105,6 +129,9 @@
                 					},
                 					error:function(){
                 						alert("통신 실패!");
+                					},
+                					complete:function(){
+                						location.reload();
                 					}
                 				});
                 			});
@@ -114,7 +141,7 @@
                 	</c:if>
                     
                 </div>
-                <div id="introduce-area">
+                <div id="con3-area">
                     <div id="introduce-box">
                     	<c:choose>
                     		<c:when test="${user eq loginUser }">
@@ -130,6 +157,8 @@
                     </div>
                 </div>
             </div>
+            
+            
             <div id="content2">
                 <div id="select-list">
                     <ul>
@@ -151,68 +180,68 @@
                 		});
                 		
                 	});
-                	
-                	
                 </script>
                 
                 
                 <div id="result-area" >
-                	<table border="1" align="center">
-                		<thead>
-                			<tr>
-                				<th>카테고리</th>
-                				<th>제목</th>
-                				<th>작성일</th>
-                				<th>추천수</th>
-                				<th>조회수</th>
-                			<tr>
-                		</thead>
-                		<tbody>
-                			
-                		</tbody>
-                	</table>
                 	
-                	<c:if test="${not empty bList || not empty rList || not empty lList }">
-                	
-					<table class="table table-hover"  style="color: white;">
-						<thead>
-							<tr>
-								<th scope="col"> </th>
-								<th scope="col">카테고리</th>
-								<th scope="col">제목</th>
-								<th scope="col">작성일</th>
-								<th scope="col">추천수</th>
-								<th scope="col">조회수</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:choose>
-								<c:when test="${not empty bList }">
-									<c:forEach  var="b" items="${bList }" varStatus="status">	
+                	<c:choose>
+                		<c:when test="${not empty bList}">
+                			<table class="rel-board" style="color:white;">
+                				<thead>
 									<tr>
-										<th scope="row">${status.count }</th>
-										<c:choose>
-											<c:when test="${b.category eq 'Q' }">
-												<td>질문게시판</td>
-											</c:when>
-											<c:when test="${b.category eq 'E' }">
-												<td>에러게시판</td>
-											</c:when>
-											<c:when test="${b.category eq 'B' }">
-												<td>자유게시판</td>
-											</c:when>
-										</c:choose>
-										<td>${b.title }</td>
-										<td>${b.createDate }</td>
-										<td>${b.liked }</td>
-										<td>${b.count }</td>
+										<th scope="col"> </th>
+										<th scope="col">카테고리</th>
+										<th scope="col">제목</th>
+										<th scope="col">작성일</th>
+										<th scope="col">추천수</th>
+										<th scope="col">조회수</th>
 									</tr>
-									</c:forEach>
-								</c:when>
+								</thead>
 								
-								<c:when test="${not empty rList }">
-									<c:forEach  var="r" items="${rList }" varStatus="status">	
+	                			<tbody>
+	                				<c:forEach var="b" items="${bList }" varStatus="status">
 										<tr>
+											<input type="hidden" value="${b.boardNo }">
+											<th scope="row">${status.count }</th>
+											<c:choose>
+												<c:when test="${b.category eq 'Q' }">
+													<td>질문게시판</td>
+												</c:when>
+												<c:when test="${b.category eq 'E' }">
+													<td>에러게시판</td>
+												</c:when>
+												<c:when test="${b.category eq 'B' }">
+													<td>자유게시판</td>
+												</c:when>
+											</c:choose>
+											<td>${b.title }</td>
+											<td>${b.createDate }</td>
+											<td>${b.liked }</td>
+											<td>${b.count }</td>
+										</tr>
+									</c:forEach>
+	                			</tbody>
+                			</table>
+                		</c:when>
+                		
+                		<c:when test="${not empty rList }">
+                			<table class="rel-board" style="color:white;">
+                				<thead>
+									<tr>
+										<th scope="col"> </th>
+										<th scope="col">카테고리</th>
+										<th scope="col">제목</th>
+										<th scope="col">작성일</th>
+										<th scope="col">추천수</th>
+										<th scope="col">조회수</th>
+									</tr>
+								</thead>
+								
+	                			<tbody>
+	                				<c:forEach var="r" items="${rList }" varStatus="status">
+										<tr>
+											<input type="hidden" value="${r.boardNo }">
 											<th scope="row">${status.count }</th>
 											<c:choose>
 												<c:when test="${r.category eq 'Q' }">
@@ -231,11 +260,27 @@
 											<td>${r.count }</td>
 										</tr>
 									</c:forEach>
-								</c:when>
+	                			</tbody>
+                			</table>
+                		</c:when>
+                		
+                		<c:when test="${not empty lList }">
+                			<table class="rel-board" style="color:white;">
+                				<thead>
+									<tr>
+										<th scope="col"> </th>
+										<th scope="col">카테고리</th>
+										<th scope="col">제목</th>
+										<th scope="col">작성일</th>
+										<th scope="col">추천수</th>
+										<th scope="col">조회수</th>
+									</tr>
+								</thead>
 								
-								<c:when test="${not empty lList }">
-									<c:forEach  var="l" items="${lList }" varStatus="status">	
+	                			<tbody>
+	                				<c:forEach var="l" items="${lList }" varStatus="status">
 										<tr>
+											<input type="hidden" value="${l.boardNo }">
 											<th scope="row">${status.count }</th>
 											<c:choose>
 												<c:when test="${l.category eq 'Q' }">
@@ -254,31 +299,77 @@
 											<td>${l.count }</td>
 										</tr>
 									</c:forEach>
-								</c:when>
+	                			</tbody>
+                			</table>
+                		</c:when>
+                		
+                		<c:when test="${not empty fList }">
+                			<c:forEach var="f" items="${fList }">
+                				<table class="rel-user" style="color:white;">
+									<tr>
+										<input type="hidden" value="${f.userId }">
+										<td>프로필이미지</td>
+										<td>닉네임${f.nickName }</td>
+									</tr>
+                				</table>
+							</c:forEach>
+                		</c:when>
+                		
+                		<c:otherwise>
+                			<table class="table table-hover" style="color:white;">
+                				<thead>
+									<tr>
+										
+									</tr>
+								</thead>
 								
-								
-							</c:choose>
-							
-						</tbody>
-					</table>
-					</c:if>
-					
-					<c:if test="${not empty fList }">
-						<c:forEach var="f" items="${fList }" varStatus="status">
-							<tr>
-								<td>${status.count }</td>
-								<td>프로필이미지</td>
-								<td>닉네임${f.nickName }</td>
-								
-							</tr>
-						</c:forEach>
-					</c:if>
-					
+	                			<tbody>
+	                				
+	                			</tbody>
+                			</table>
+                		</c:otherwise>
+                		
+                	</c:choose>
+                	
                 </div>
+
                 
                 <script>
 	                $(function(){
-	            		
+	                	//보드로 넘기기
+	            		$("#result-area>.rel-board>tbody>tr").on("click", function(){
+	            			//보드 번호로 넘겨야함
+	            			
+	            			console.log($(this).find("input[type=hidden]").val());
+	            			
+	            			var bno = $(this).find("input[type=hidden]").val();
+	            			
+	            			
+	            			
+	            			console.log($(this).children().eq(2).text());
+	            			
+	            			var kind = $(this).children().eq(2).text();
+	            			
+	            			if(kind == "질문게시판"){
+	            				location.href = "/koala/qnaBoard/detail?boardNo="+bno;
+	            			}else if(kind == "에러게시판"){
+	            				location.href = "/koala/errorBoard/detail?boardNo="+bno;
+	            			}else if(kind == "자유게시판"){
+	            				location.href = "/koala/bulletinBoard/detail?boardNo="+bno;
+	            			}
+	            			
+	            			
+	            		});
+	                	
+	                	
+	                	$("#result-area>.rel-user tr").on("click", function(){
+	                		//유저 아이디로 넘겨야함
+	                		
+	                		var uid = $(this).find("input[type=hidden]").val();
+	                		
+	                		console.log(uid);
+	                		location.href = "/koala/member/ad?userId="+uid;
+	                	});
 	            	});
                 </script>
             </div>
