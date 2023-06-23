@@ -65,6 +65,10 @@ public interface AdminService {
 
 	int updateErrorType(ErrorDivision ed);
 
+	
+	// sql Cloud 제목 조회
+	String selectSqlTitle(String string);
+
 
 
 

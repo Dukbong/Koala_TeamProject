@@ -18,6 +18,7 @@
   		<typeAlias type="com.hoju.koala.admin.model.vo.CreateSetting" alias="createSetting"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.MemberSearch" alias="ms"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.IssuesAndError" alias="issuesAndError"/>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.SqlCloud" alias="sqlCloud"/>
   		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  
   		<typeAlias type="com.hoju.koala.member.model.vo.Profile" alias="profile"/>
   		
