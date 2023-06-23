@@ -106,9 +106,9 @@
 		SELECT REPLY_NO, REPLY_CONTENT, NICKNAME, TO_CHAR(R.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE"
 		FROM REPLY R
 		JOIN MEMBER ON(USER_NO = REPLY_WRITER)
-		WHERE R.STATUS = 'Y'
+		WHERE R.STATUS = 'W'
 		AND REF_BNO = #{boardNo}
-		ORDER BY CREATE_DATE DESC
+		ORDER BY CREATE_DATE
 	</select>
 	
 	<select id="countLike" resultType="_int">
@@ -125,10 +125,8 @@
 	
 	<update id="updateReply">
 		UPDATE REPLY
-		SET REPLY_CONTENT = #{replyContent},
-			REPLY_WRITER = #{replyWriter},
-		WHERE REPLY_NO =#{replyNo},
-		AND STATUS = 'Y'
+		SET REPLY_CONTENT = #{replyContent}
+		WHERE REPLY_NO =#{replyNo}
 	</update>
 	
 	<update id="deleteReply">

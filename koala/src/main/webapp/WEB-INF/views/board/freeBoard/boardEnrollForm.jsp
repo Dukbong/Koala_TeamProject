@@ -11,139 +11,110 @@
     <script src="/koala/resources/codemirror-5.53.2/addon/edit/closetag/js"></script>
     <link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/>
     <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/>
-    <style>
+     <style>
         * {
             padding:0;
             margin:0;
             box-sizing: border-box;
-
         }
-
         .enroll-outer{
+            display: flex;
             background-color: black;
             color: white;
             margin: auto;
-            text-align: center;
-            position: relative;
+            justify-content: center;
         }
-
-        p{
-            position: absolute;
-            left: 20%;
+        .inner-outer{
+            width: 80%;
+            justify-content: center;
+            align-items: center;
         }
-        #modalWrap {
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            padding-top: 0px; /* Location of the box */
-            left: 2.5%;
-            top: 2.5%;
-            width: 95%; /* Full width */
-            height: 95%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            display: none;
+        #content{
+            width:100%;
+            height: 300px;
+            background-color: white;
+            color: black;
+            overflow: auto;
         }
-
-        #modalBody {
-            width: 100%;
-            height: 100%;
-            padding: 30px 30px;
-            margin: auto;
-            border: 1px solid #777;
+        #notice{
+            display: inline-block;
+        }
+        #notice-box{
+            align-items: center;
+        }
+        #contentCode{
             background-color: black;
         }
-
-        #closeBtn {
-            float:right;
-            font-weight: bold;
-            color: #777;
-            font-size:25px;
-            cursor: pointer;
+        #title,#contentCode{
+            width: 100%;
         }
-
         .CodeMirror {
             font-family: Arial, monospace;
-            font-size: 30px;
+            font-size: 25px;
             border: 1px solid white;
+        }
+        #submmit{
+            position: relative;
+            margin-top: 20px;
+            width: 80px;
+            height: 30px;
+            left: 90%;
         }
     </style>
 </head>
 <body>
 	<%@include file="../../common/header.jsp" %>
-    <form action="" method="post" enctype="multipart/form-data">
-	    <div class="enroll-outer">
-	        <c:if test="${loginUser.nickName == '관리자' }">
-	        	<p>공지사항 여부:</p>
-		        <input type="checkbox" name="notice" id="yes" value="Y"><label for="yes">yes</label>
-		        <input type="checkbox" name="notice" id="no" value="N"><label for="no">no</label><br>
-	        </c:if>
-	        Title: <input type="text" name="title" id="title"><br>
-	        <p>Content:</p><br>
-	        <div id="ta1" contentEditable="true" style="overflow-x:auto; width:500px; height: 300px; border: solid 1px; margin: 20px; line-height: 20px;">
-	        </div><br>
-	        <p>Code:</p><br>
-	        <textarea name="contentCode" id="contentCode" cols="30" rows="10" style="resize:none"></textarea><br>
-	        <p>Attachment:</p><br>
-	        <input id="browse" type="file" onchange="previewFiles()" multiple />
-	        <button type="submit">upload</button>
-	    </div>
-    </form>
-    <div id="modalWrap">
-        <div id="modalBody">
-            <span id="closeBtn">&times;</span>
-            <div>
-               <textarea id="editor" class="editor"></textarea>
-            </div>
+    <div class="enroll-outer">
+        <div class="inner-outer">
+        	<br>
+        	<h1 align="center">let enrollBoard</h1>
+            <br><br>
+            <form action="" method="" enctype="multipart/form-data">
+                <c:if test="${loginUser.nickName eq '관리자' }">
+	                <div id="notice-box">
+	                    <p id="notice">공지사항 여부:</p>
+	                    <input type="checkbox" name="notice" id="yes" value="Y" onclick="check('Y');"><label for="yes">yes</label>
+	                    <input type="checkbox" name="notice" id="no" value="N" onclick="check('N');"><label for="no">no</label><br><br>
+	                </div>
+                </c:if>
+                <p>Title:</p>
+                <input type="text" name="title" id="title"><br><br>
+                <p>Content:</p>
+                <div id="content" contentEditable="true" style="border: solid 1px;line-height: 20px;"></div><br>
+                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple="multiple" />
+                <div id="fileList"></div> <br><br>
+                <p>Code:</p>
+                <textarea name="contentCode" id="contentCode" cols="30" rows="10" style="resize:none; display: none;"></textarea><br> 
+                <textarea id="editor" class="editor"></textarea>
+                <button type="submmit" id="submmit">upload</button>
+            </form>
+            <br><br>
         </div>
     </div>
     <script>
+        const content = document.getElementById('content');
         const textarea = document.getElementById('contentCode');
-        const modal = document.getElementById('modalWrap');
-        const closeBtn = document.getElementById('closeBtn');
         const code = document.getElementById('code');
         const contentcode = document.getElementById('contentCode');
-
-        textarea.onclick = function() {
-            modal.style.display = 'block';
-            textarea.innerHTML = "";
-        }
-        closeBtn.onclick = function() {
-            modal.style.display = 'none';
-            console.log(code.value);
-            contentcode.value = code.value;
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
+        const codemirror = document.getElementById('editor');
+        
         var editor = CodeMirror.fromTextArea(document.getElementById('editor'),{
             mode: 'text/x-java',
             theme: '3024-night',
             lineNumbers: true,
             matchBrackets: true,
-            autoCloseTags: true
         });
-        editor.setSize("100%","600");
-        
-        closeBtn.addEventListener("click",click);
-        
-        function click(){
-           console.log(editor.display.maxLine.parent.lines);
-           for(var i=0; i<editor.display.maxLine.parent.lines.length; i++){
-        	   textarea.innerHTML += editor.display.maxLine.parent.lines[i].text + "\n";
-           }
-        }
+        editor.setSize("100%","300");
         
         function previewFiles() {
-            var preview = document.querySelector('#ta1');
-            var files = document.querySelector('input[type=file]').files;
+        var preview = document.querySelector('#content');
+        var files = document.querySelector('input[type=file]').files;
 
             function readAndPreview(file) {
+                // `file.name` 형태의 확장자 규칙에 주의하세요
                 if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
                 var reader = new FileReader();
+
                 reader.addEventListener(
                     'load',
                     function () {
@@ -155,13 +126,47 @@
                     },
                     false
                 );
+
                 reader.readAsDataURL(file);
                 }
             }
-                if (files) {
-                    [].forEach.call(files, readAndPreview);
-                }
-    	}
+
+            if (files) {
+                [].forEach.call(files, readAndPreview);
+            }
+        }
+
+        function click(){
+           console.log(editor.display.maxLine.parent.lines);
+           for(var i=0; i<editor.display.maxLine.parent.lines.length; i++){
+        	   textarea.innerHTML += editor.display.maxLine.parent.lines[i].text + "\n";
+           }
+        }
+
+        function check(e){
+            console.log(e);
+            var yes = document.getElementById("yes");
+            var no = document.getElementById("no");
+           
+            if(e === 'Y' && yes.checked){
+                no.checked = false;
+            }else if(e === 'N' && no.checked){
+                yes.checked = false;
+            }
+        }
+
+        document.getElementById('browse').addEventListener('change', function(event) {
+            var fileList = document.getElementById('fileList');
+            
+            console.log("hello");
+            var files = event.target.files; 
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var listItem = document.createElement('p');
+                listItem.textContent = file.name;
+                fileList.appendChild(listItem);
+            }
+        });
     </script>
     <jsp:include page="../../common/footer.jsp"/>
 </body>
