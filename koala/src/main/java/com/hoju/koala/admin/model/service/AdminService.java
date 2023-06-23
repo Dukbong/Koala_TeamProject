@@ -8,10 +8,12 @@ import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
+import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
+import com.hoju.koala.member.model.vo.Member;
 
 public interface AdminService {
 	AllCount selectAllCount();
@@ -68,6 +70,13 @@ public interface AdminService {
 	
 	// sql Cloud 제목 조회
 	String selectSqlTitle(String string);
+
+	
+	ArrayList<SqlCloud> selectTeam(int userNo);
+
+	ArrayList<Member> selectTeamMember(int teamNo);
+
+	int selectCreator(int teamNo);
 
 
 

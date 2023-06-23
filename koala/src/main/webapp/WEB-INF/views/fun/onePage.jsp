@@ -7,13 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" -->
+<!-- 	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" -->
+<!-- 	crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -168,6 +167,52 @@ span {
 #testnumin::-webkit-scrollbar {
 	display: none;
 }
+.teamOne{
+	width:8%;
+	height:20px;
+	float:left;
+}
+.mlbanbinarea{
+	width: 4.25%;
+	height: 80px;
+	float: left;
+	margin-top:20px;
+}
+.mlarea{
+	width: 22%;
+	height: 80px;
+	float: left;
+	margin-top:20px;
+}
+.mlinfo, mlsup{
+	width: 100%;
+	height: 50%;
+	box-sizing: border-box;
+}
+.mlmain{
+	width: 50%;
+	height: 100%;
+	float: left;
+	text-align: center;
+	box-sizing: border-box;
+}
+.mlemail{
+	width: 70%;
+	height: 100%;
+	float:left;
+	box-sizing: border-box;
+	padding-top:8px; 
+	font-size:15px;
+}
+.mlgrant{
+	width: 30%;
+	height: 100%;
+	float: left;
+	box-sizing: border-box;
+ 
+	text-align:center;
+}
+
 </style>
 
 <body>
@@ -175,7 +220,7 @@ span {
 		var socket;
 		function connect() {
 			if (!socket) {
-				socket = new WebSocket("ws://localhost:8888/koala/ssss");
+				socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
 			}
 			socket.onopen = function() {
 				console.log("Connect Success");
@@ -285,19 +330,146 @@ span {
 	 				socket.send("saveFile::"+title+"/"+content);
 				}else{
 					var caontent = $("#testarea").vale();
-					socket.sent("saveFile::"+$(".topbinarea").text()+"/"+content);
+					socket.send("saveFile::"+$(".topbinarea").text()+"/"+content);
 				}
 			});
 
 			// Load
-			$("#lll").on("click", function() {
-				alert("불러왔습니다.");
+// 			$("#lll").on("click", function() {
+// 				alert("불러왔습니다.");
+// 			})
+			
+			$("#createTeam").on("click", function(){
+				console.log("createTeam");
+			});
+			
+			$("#teamInvite").on("click", function(){
+				console.log("teamInvite");
 			})
-
-		})
+			
+			$(".teamButton").on("click", function(){
+				var teamNo = $(this).parent().children().eq(2).val();
+// 				disconnect(); // 접속 종류
+// 				connect(); // 팀 누르면 접속
+// 				soket.send("connect::"+teamNo);
+				location.href="sqlCloud?teamNo="+teamNo;
+			});
+		});
 	</script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<br>
+	<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+		TEAM
+		<button id="createTeam" class="ii" type="button" 
+				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
+	</div>
+	<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
+	<div id="teamList" class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+<br>
+		<c:choose>
+			<c:when test="${not empty teamList }">
+				<c:forEach var="t" begin="0" end="${teamList.size()-1 }">
+					<c:choose>
+					<c:when test="${teamNo == teamList.get(t).getTeamNo() }">
+						<div class="teamOne" style="color:red">
+							<button type="button" class="teamButton">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
+							<input type="hidden" value="${teamList.get(t).getTeamNo() }">
+							${teamList.get(t).getTeamName() }
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="ii teamOne">
+							<button type="button" class="teamButton">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
+							<input type="hidden" value="${teamList.get(t).getTeamNo() }">
+							${teamList.get(t).getTeamName() }
+						</div>
+					</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<h1>Not Found Team...!</h1>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	<br><br>
+	<c:choose>
+	<c:when test="${not empty memberList }">
+	<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+		TEAM MEMBER
+		<button id="teamInvite" class="ii" type="button" 
+				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
+	</div>
+	<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
+	<div id="memberList" class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+		<br>
+		<c:forEach var="m" begin="0" end="${memberList.size() - 1 }">
+			<c:choose>
+			<c:when test="${m % 3 == 0 }">
+				<div class="mlbanbinarea"></div>
+				<div class="mlbanbinarea"></div>
+				<div class="mlarea ii ic" style="background-color: black;">
+					<div class="mlinfo ii ic">
+						<div class="mlmain ii ic">${memberList.get(m).getUserId() }</div>
+						<div class="mlmain ii ic">${memberList.get(m).getNickName() }</div>					
+					</div>
+					<div class="mlsup ii ic">
+						<div class="mlemail ii ic">${memberList.get(m).getEmail() }</div>
+						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
+							<div class="mlgrant" style="color:green;">creator</div>					
+						</c:if>
+						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
+							<div class="mlgrant ii ic">user</div>					
+						</c:if>
+					</div>
+				</div>
+				<div class="mlbanbinarea"></div>
+			</c:when>
+			<c:when test="${m % 3 == 2 }">
+					<div class="mlbanbinarea"></div>
+					<div class="mlarea ii ic" style="background-color: black;">
+					<div class="mlinfo ii ic">
+						<div class="mlmain ii ic">${memberList.get(m).getUserId() }</div>
+						<div class="mlmain ii ic">${memberList.get(m).getNickName() }</div>					
+					</div>
+					<div class="mlsup ii ic">
+						<div class="mlemail ii ic">${memberList.get(m).getEmail() }</div>
+						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
+							<div class="mlgrant" style="color:green;">creator</div>					
+						</c:if>
+						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
+							<div class="mlgrant ii ic">user</div>					
+						</c:if>
+					</div>
+				</div>
+				<div class="mlbanbinarea"></div>
+				<div class="mlbanbinarea"></div>
+			</c:when>
+			<c:otherwise>
+				<div class="mlbanbinarea"></div>
+				<div class="mlarea ii ic" style="background-color: black;">
+					<div class="mlinfo ii ic">
+						<div class="mlmain ii ic">${memberList.get(m).getUserId() }</div>
+						<div class="mlmain ii ic" >${memberList.get(m).getNickName() }</div>					
+					</div>
+					<div class="mlsup">
+						<div class="mlemail ii ic">${memberList.get(m).getEmail() }</div>
+						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
+							<div class="mlgrant" style="color:green">creator</div>				
+						</c:if>
+						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
+							<div class="mlgrant ii ic">user</div>					
+						</c:if>
+					</div>
+				</div>
+				<div class="mlbanbinarea"></div>
+			</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</div>
+	<br><br>
+	<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
+	<br><br>
 	<div class="toolbar">
 		<div class="topName">
 			<div class="topimg ic" style="text-align: center; padding-top: 10px;">
@@ -308,27 +480,31 @@ span {
 		</div>
 		<div class="topbinarea"></div>
 		<div class="downarea">
-			<i class="fa-solid fa-file-arrow-down fa-2xl ii ic"
-				style="color: #ffffff;"></i>
-			<button class="ii ic" type="button" id="ttt"
-				style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">Download</button>
+<!-- 			<i class="fa-solid fa-file-arrow-down fa-2xl ii ic" -->
+<!-- 				style="color: #ffffff;"></i> -->
+<!-- 			<button class="ii" type="button" id="ttt" -->
+<!-- 				style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">Download</button> -->
 		</div>
 		<div class="loadarea">
-			<i class="fa-solid fa-file-import fa-2xl ii ic"
+<!-- 			<i class="fa-solid fa-file-import fa-2xl ii ic" -->
+<!-- 				style="color: #ffffff;"></i> -->
+<!-- 			<button class="ii" type="button" id="lll" -->
+<!-- 				style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">LoadFile</button> -->
+			<i class="fa-solid fa-file-arrow-down fa-2xl ii ic"
 				style="color: #ffffff;"></i>
-			<button class="ii ic" type="button" id="lll"
-				style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">LoadFile</button>
+			<button class="ii" type="button" id="ttt"
+				style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">Download</button>
 		</div>
 		<div class="savearea">
 			<i class="fa-solid fa-floppy-disk fa-2xl ii ic"
 				style="color: #ffffff;"></i>
 			<c:choose>
 			<c:when test="${not empty loginUser }">
-				<button class="ii ic" type="button" id="sss"
+				<button class="ii" type="button" id="sss"
 					style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">SaveFile</button>
 			</c:when>
 			<c:otherwise>
-				<button class="ii ic" type="button" 
+				<button class="ii" type="button" 
 					style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223); disabled">SaveFile</button>			
 			</c:otherwise>
 			</c:choose>
@@ -377,6 +553,13 @@ span {
 			<div class="userIn ii ic"></div>
 		</div>
 	</div>
+	</c:when>
+	<c:otherwise>
+		<div>
+			&nbsp;&nbsp;&nbsp;
+		</div>
+	</c:otherwise>
+	</c:choose>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 

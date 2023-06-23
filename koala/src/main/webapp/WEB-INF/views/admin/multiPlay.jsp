@@ -67,7 +67,7 @@
 				}, 0); // 적정 40, 테이트시 0
 				
 				function testing(){
-					location.href = "/koala/together/ssss";
+					location.href = "/koala/together/sqlCloud";
 				}
 	</script>
 </body>

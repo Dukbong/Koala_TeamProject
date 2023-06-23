@@ -1,6 +1,7 @@
 package com.hoju.koala.admin.webSocket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,45 +18,51 @@ import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.member.model.vo.Member;
 
 public class OnePageSocket extends TextWebSocketHandler {
-
+	// 종료시 세션 정리 하기....
 	private String text; // 내용 저장
-	
+
 	@Autowired
 	AdminService adminService;
-	
+
 	private Set<String> conUser = new HashSet<>(); // 접속 종료한 아이디를 찾아서 여기서 제거 하면 접속자를 변하게 할 수 있다.
-	
+	private HashMap<String, ArrayList<String>> conMember = new HashMap<>(); // 방 별로
 	private Set<WebSocketSession> list = new CopyOnWriteArraySet<>();
+
 	// 차단 기능을 넣어도 될꺼 같다.
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		Map<String, Object> map = session.getAttributes();
 		list.add(session);
-		try {			
-			String connectionId = ((Member)map.get("loginUser")).getUserId();
+		try {
+			String connectionId = ((Member) map.get("loginUser")).getUserId();
 			conUser.add(connectionId);
 			ArrayList<String> stringList = new ArrayList<>(conUser);
 			String test = "";
- 			for(int i = 0; i < stringList.size(); i++) {
-				if(i+1 != stringList.size() ) {
-					test += stringList.get(i)+",";
-				}else {
-					test += stringList.get(i);				
+			for (int i = 0; i < stringList.size(); i++) {
+				if (i + 1 != stringList.size()) {
+					test += stringList.get(i) + ",";
+				} else {
+					test += stringList.get(i);
 				}
 			}
+			System.out.println(map);
 			TextMessage newMessage = new TextMessage("###" + test + "///" + text);
-			for(WebSocketSession member : list) {
+			for (WebSocketSession member : list) {
 				member.sendMessage(newMessage);
 			}
-		}catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		if(message.getPayload().contains("saveFile::")) {
-			String[] pack = message.getPayload().replace("saveFile::", "").split("/");
+		String messageIn = message.getPayload();
+		Map<String, Object> map = session.getAttributes();
+		String userId = "";
+		String teamNo = "";
+		if(messageIn.contains("saveFile::")) {
+			String[] pack = messageIn.replace("saveFile::", "").split("/");
 			SqlCloud sql = SqlCloud.builder().sqlTitle(pack[0]).sqlContent(pack[1]).build();
 			// Insert or Update
 			// title로 조회 한 후 결과 값이 있다면 수정
@@ -68,7 +75,22 @@ public class OnePageSocket extends TextWebSocketHandler {
 			}else {
 				// 수정
 			}
-		}else {
+		}else if(messageIn.equals("connect::")) { // 몇번방에 누가 접속했는지
+			teamNo = messageIn.replace("connect::", ""); // 방번호
+			if(conMember.containsKey(teamNo)) {
+				
+			}else { // 몇번 방의 최초 접속자
+				conMember.put(teamNo, new ArrayList<String>());
+				ArrayList<String> teamMember = conMember.get(teamNo);
+				list.add(session);
+				userId = ((Member) map.get("loginUser")).getUserId();
+				teamMember.add(((Member)map.get("loginUser")).getUserId());
+			}
+//			WebSocketSession tt = 
+//			TextMessage newMessage = new TextMessage(teamNo+">>"+userId);		
+//			for(WebSocketSession mem : list) {
+//				ArrayList<String> teamm = 
+			}else {
 			// TextMessage
 			TextMessage newMessage = new TextMessage(message.getPayload());			
 			text = message.getPayload();
@@ -81,23 +103,23 @@ public class OnePageSocket extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		Map<String, Object> map = session.getAttributes();
-		String disconnectionId = ((Member)map.get("loginUser")).getUserId();
+		String disconnectionId = ((Member) map.get("loginUser")).getUserId();
 		conUser.remove(disconnectionId);
 		ArrayList<String> stringList = new ArrayList<>(conUser);
 		String test = "";
-		for(int i = 0; i < stringList.size(); i++) {
-			if(i+1 != stringList.size() ) {
-				test += stringList.get(i)+",";
-			}else {
-				test += stringList.get(i);				
+		for (int i = 0; i < stringList.size(); i++) {
+			if (i + 1 != stringList.size()) {
+				test += stringList.get(i) + ",";
+			} else {
+				test += stringList.get(i);
 			}
 		}
 		list.remove(session);
-		if(conUser.size() == 0){
+		if (conUser.size() == 0) {
 			text = "";
 		}
 		TextMessage newMessage = new TextMessage("###" + test + "///" + text);
-		for(WebSocketSession member : list) {
+		for (WebSocketSession member : list) {
 			member.sendMessage(newMessage);
 		}
 	}
