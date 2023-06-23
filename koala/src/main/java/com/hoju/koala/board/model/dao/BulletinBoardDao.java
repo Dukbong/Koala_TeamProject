@@ -93,7 +93,7 @@ public class BulletinBoardDao {
 	//댓글 달기 메소드
 	public int insertReply(Reply reply, SqlSessionTemplate sqlSession) {
 
-		return sqlSession.selectOne("bulletinBoardMapper.insertReply",reply);
+		return sqlSession.insert("bulletinBoardMapper.insertReply",reply);
 	}
 
 	//좋아요 개수 메소드
@@ -158,10 +158,12 @@ public class BulletinBoardDao {
 
 	//사용자 좋아요 조회 메소드
 	public int selectBoardLike(Liked liked, SqlSessionTemplate sqlSession) {
-//		int result = sqlSession.selectOne("bulletinBoardMapper.selectBoardLike",liked);
-//		System.out.println(result);
 		
-		return 0;
+		if(sqlSession.selectOne("bulletinBoardMapper.selectBoardLike",liked)!=null) {;
+			return sqlSession.selectOne("bulletinBoardMapper.selectBoardLike",liked);
+		}else {
+			return 0;
+		}
 	}
 
 }
