@@ -209,7 +209,7 @@
 		opacity: 0.3;
 	}
 	
-	.profile:hover+ .overlab{
+	.profile:hover+ .overlab{	
 		display: block;
 	}
 	
@@ -264,7 +264,7 @@
 											if(result>0){
 												alert("닉네임 변경 완료");
 											}else{
-												alert("닉네임 변경 실패");
+												alert("이미 존재하는 닉네임입니다.");
 											}
 										},
 										error:function(){

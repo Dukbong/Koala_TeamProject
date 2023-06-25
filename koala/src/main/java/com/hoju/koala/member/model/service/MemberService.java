@@ -73,6 +73,9 @@ public interface MemberService {
 	//프로필 삭제
 	int deleteProfile(Profile delProfile);
 
+	//닉네임 존재여부 확인
+	int selectNick(String inputNick);
+
 
 	
 

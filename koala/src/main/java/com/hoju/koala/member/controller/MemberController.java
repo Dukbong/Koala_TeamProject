@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
+import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
@@ -38,28 +42,37 @@ public class MemberController {
 	@Autowired
 	private EmailCheck ec;
 	
+	@Autowired
+	private MemberCookie mCookie;
 	
 	
 	//로그인 페이지 이동
 	@GetMapping("/login")
-	public String login() {
+	public String login(@CookieValue(value = "saveId", required = false) String saveId,
+						Model model,
+						HttpServletResponse response) {
 		
-		
-		return "member/loginPage";
+		if (saveId != null) {
+	        model.addAttribute("savedId", saveId);
+	    }
+	    return "member/loginPage";
 	}
 	
 	//로그인
 	@PostMapping("/login")
 	public ModelAndView login(HttpSession session,
 							  HttpServletRequest request,
+							  HttpServletResponse response,
 							  Member m,
 							  ModelAndView mv) {
 		
+		//아이디저장 
+		String keepId = request.getParameter("keepId");
 		
 		//아이디 값에 대한 유저 정보 가져오기
 		Member loginUser = memberService.loginMember(m);
 		
-		
+		System.out.println(request.getParameter("keepId"));
 		System.out.println("loginUser" +loginUser);
 		
 		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
@@ -73,6 +86,14 @@ public class MemberController {
 			
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
+			
+			if (keepId != null && keepId.equals("on")) { //뷰의 체크박스가 체크된상태로 넘어오면
+	            // 아이디를 쿠키에 저장
+	            mCookie.setCookie(response, "saveId", loginUser.getUserId(), 604800); //쿠키수명 7일
+	        } else {
+	            // 쿠키에서 아이디 삭제
+	            mCookie.deleteCookie(response, "saveId");
+	        }
 			
 			mv.setViewName("redirect:/");
 		}else {
@@ -270,20 +291,25 @@ public class MemberController {
 		
 		//변경전
 		Member m = (Member)request.getSession().getAttribute("loginUser");
-		System.out.println("=============");
-		System.out.println(m);
-		m.setNickName(inputNick);
-	
-		int result = memberService.updateNick(m);
+		//입력한 닉네임이 이미 존재하는지 확인
+		int cnt = memberService.selectNick(inputNick);
 		
-		if(result>0) {
-			//변경후 로그인유저 세션업데이트
-			Member loginUser = memberService.selectMember(m.getUserId());
-			System.out.println("변경하고 세션담을때");
-			request.getSession().setAttribute("loginUser", loginUser);
+		int result = 0;
+		
+		if(cnt == 0) {
+			//사용가능
+			m.setNickName(inputNick);
+			result = memberService.updateNick(m);
+			
+			if(result>0) {
+				//변경후 로그인유저 세션업데이트
+				Member loginUser = memberService.selectMember(m.getUserId());
+				request.getSession().setAttribute("loginUser", loginUser);
+			}
+			
 		}
-		
-		System.out.println(result);
+	
+		//닉네임 중복되면 자동으로 result에 0이 담김
 		
 		return result;
 	}

@@ -219,4 +219,11 @@
 		WHERE REF_UNO = #{refUno}
 	</delete>
 	
+	<!-- 닉네임 존재여부 조회 -->
+	<select id="selectNick" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE NICKNAME = #{inputNick}
+	</select>
+	
 </mapper>
