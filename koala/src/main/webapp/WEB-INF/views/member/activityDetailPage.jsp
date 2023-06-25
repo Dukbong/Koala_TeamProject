@@ -39,6 +39,7 @@
     
     #con1-area{
     	width: 30%;
+    	text-align: center;
     }
     
    	#con2-area{
@@ -48,6 +49,27 @@
    	#con3-area{
    		width: 30%;
    	}
+   	
+   	.profile{
+	    width: 150px;
+	    height: 150px;
+	    border-radius: 70%;
+	    overflow: hidden;
+	    position: relative;
+	}
+	
+	#nickname{
+		width: 100%;
+	}
+	#nickname-box{
+		width: 60%;
+		margin: auto;
+		font-size: 20px;
+		padding: 15px;
+		border: 1px solid gray;
+		border-radius: 10px;
+		
+	}
    	
    	/* content2영역 */
    	
@@ -81,10 +103,12 @@
             <div id="content1">
                 <div id="con1-area">
                     <div id="profile">
-                        <img src="피치.png" alt="">
+                        <img class="profile" src="${pageContext.request.contextPath}${user.profile.filePath}${user.profile.changeName}">
                     </div>
                     <div id="nickname">
-                        <span>${user.nickName }</span>
+                    	<div id="nickname-box">
+	                        <span>${user.nickName }</span>
+                    	</div>
                     </div>
                 </div>
                 <div id="con2-area">

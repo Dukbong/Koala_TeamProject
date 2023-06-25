@@ -141,6 +141,12 @@ public class MemberDao {
 		return sqlSession.delete("memberMapper.deleteProfile", delProfile);
 	}
 
+	//닉네임 조회
+	public int selectNick(SqlSessionTemplate sqlSession, String inputNick) {
+		
+		return sqlSession.selectOne("memberMapper.selectNick", inputNick);
+	}
+
 
 
 	
