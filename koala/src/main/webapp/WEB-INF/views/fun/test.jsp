@@ -205,39 +205,70 @@ span {
 
 </style>
 </head>
+<!-- 
+	06.26 : 접속자 표시 및 통신 완료
+	06.27 : sql문 표시 및 통신, DB저장 및 불러오기
+-->
 		<script>
 			var socket;
 			var teamNo;
 			
+			function sendEnter(teamNo, type){
+				var text = {
+						type : type,
+						teamNo : "${teamNo}",
+						userId : "${loginUser.userId}"
+				}
+				socket.send(JSON.stringify(text));
+			}
+			
 			function connect() {
 				if (!socket) {
-					console.log("재시작");
 					socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
 				}
 				socket.onopen = function (e) {
-					console.log("Connect Success");
+					sendEnter(teamNo, "Enter")
+					alert("Connect Success");
 				}
 				socket.onclose = function () {
-					console.log("disconnnect Success");
+					
+					alert("disconnnect Success");
 				}
 				socket.onmessage = function (e) { 
-
+					var idArr = e.data.substring(1,e.data.length-1).replace(" ","").split(",");
+					$(".mlid").each(function(){
+						if(idArr.includes($(this).text())){
+							$(this).css("color", "blue");
+						}else{
+							$(this).css("color","");
+						}
+					});
 				}
 			}
 			function disconnect() {
+				sendEnter(teamNo, "Out");
 				socket.close();
+				$(".mlid").each(function(){
+					$(this).css("color", "");
+				})
 			}
 			
 			$(function(){
+				
 				$(".teamButton").on("click", function(){
 					teamNo = $(this).parent().children().eq(2).val(); // 팀번호 부여
 					location.href="sqlCloud?teamNo="+teamNo;
 				});
 				
-			});
-			$("#conbtn").on("click", function(){
-				connect();
-				socket.send("Enter:" + teamNo + "/${loginUser.userId}");
+				$("#conbtn").on("click", function(){
+					connect();
+				});
+				
+				
+				$("#disconbtn").on("click", function(){
+					disconnect();
+					socket = "";
+				});
 			});
 			
 			
@@ -355,9 +386,11 @@ span {
 			</c:otherwise>
 			</c:choose>
 		</c:forEach>
-		<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
+		<hr style="width: 100%; margin:auto; background-color: red;  height:5px; border: 0px;">
+		<br>
 	<div style="width: 80%; height: 50px; margin:0 auto; padding-top: 5px;">
-		<button id="conbtn" class="btn btn-success" type="button">Connect</button>
+		<button id="conbtn" class="btn btn-success" type="button" style="font-size: 22px;">open</button>
+		<button id="disconbtn" class="btn btn-danger" type="button" style="font-size: 22px;">close</button>
 	</div>
 	</div>
 	<br><br><br><br>
@@ -369,7 +402,48 @@ span {
 	</c:otherwise>
 	</c:choose>
 	<br><br><br><br><br><br><br>
-	
+	<div class="togeSql">
+		<div class="sqlArea">
+			<div id="testnum" style="text-align: right; font-size: 22px;">
+				<textarea class="ic ii" id="testnumin"
+					style="width: 100%; height: 100%; text-align: right; box-sizing: border-box; border: none; border-right: 1px solid gray;"
+					disabled></textarea>
+			</div>
+			<div class="middlebin ic ii" style="background-color: black"></div>
+			<div id="textare">
+				<textarea class="ic ii" id="testarea" class="testarea"
+					style="width: 100%; height: 100%; font-size: 22px; resize: none; outline: none; border: none;"></textarea>
+			</div>
+		</div>
+		<div class="userConarea">
+			<div class="btnsarea ii ic">
+				<c:choose>
+				<c:when test="${not empty loginUser }">
+					<button type="button" onclick="connect();" class="btn btn-success"
+						style="width: 100%; height: 45%;">접속</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" onclick="connect();" class="btn btn-success"
+						style="width: 100%; height: 45%;" disabled>접속</button>
+				</c:otherwise>
+				</c:choose>
+				<br>
+				<div style="height: 10%; width: 100%;"></div>
+				<c:choose>
+				<c:when test="${not empty loginUser }">
+					<button type="button" onclick="disconnect();" class="btn btn-danger"
+						style="width: 100%; height: 45%;">종료</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" onclick="disconnect();" class="btn btn-danger"
+						style="width: 100%; height: 45%;" disabled>종료</button>
+				</c:otherwise>
+				</c:choose>
+			</div>
+			<div class="userInarea ii ic">현재 접속자</div>
+			<div class="userIn ii ic"></div>
+		</div>
+	</div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
