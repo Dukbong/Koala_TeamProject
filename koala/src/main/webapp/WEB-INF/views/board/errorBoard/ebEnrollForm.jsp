@@ -9,7 +9,7 @@
 
 <style>
 	div{ box-sizing: border-box;}
-    .ebEnrollForm{width: 1200px; margin: auto; padding: 100px 0px;}
+    .ebEnrollForm{width: 1300px; margin: auto; padding: 200px 0px;}
     .ebEnrollForm>form>*{width: 85%; margin: auto; padding-bottom: 50px;}
     .option-area{padding-bottom: 20px; padding-left: 290px;}
     div[class*='_b']{width: 100%; background-color: black;}
@@ -27,21 +27,21 @@
         font-size: 15px;
     }
 /* ======================================================= 수정폼 영역 */
-    div[class*='modifyForm-area']{width: 85%; height: 600px; display: none;}
+    div[class*='modifyForm-area']{width: 85%; height: 700px; display: none;}
     .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
     .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding: 10px;}
     .modifyForm-area_info .modifyForm_1, .modifyForm-area_info .modifyForm_3{padding: 10px;}
     .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
-    textarea{
+    .ebEnrollForm textarea{
     	width: 100%;
     	height: 100%;
     	background-color: black;
     	color : white;
     	border: none;
         outline: none;
-    	resize: none; /*왜 안되는지 확인해보기*/
+    	resize: none;
     }
     .reset{position:absolute; margin:auto; right:0; cursor:pointer;}
 /* ======================================================== 버튼 관련 */
@@ -58,7 +58,7 @@
 </style>
 
 <body>
-	<%@include file="../../common/header.jsp"%>
+	<%@include file="../../common/header_copy.jsp"%>
 	
 	<div class="ebEnrollForm">
 		<form action="insert" method="post">
@@ -74,11 +74,9 @@
 						data : {settingTitle : $("select[name='settingTitle']").val()},
 						success : function(vList){
 							var str = "";
-							
 							for(var i in vList){
 								str += "<option value="+vList[i]+">"+vList[i]+"</option>";
 							}
-							
 							$("select[name='settingVersion']").html(str);
 						},
 						error : function(){
@@ -128,7 +126,7 @@
 			<div class="modifyForm-area_code">
 				<div class="modifyForm-top">
 					<span>code</span>
-					<button type="button">cancle</button>
+					<button type="button">cancel</button>
 					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
@@ -190,7 +188,7 @@
 			<div class="modifyForm-area_info">
 				<div class="modifyForm-top">
 					<span>manual</span>
-					<button type="button">cancle</button>
+					<button type="button">cancel</button>
 					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
@@ -221,7 +219,7 @@
 			
 			<div class="button-area">
 				<div class="buttons">
-					<button type="reset">cancle</button>
+					<button type="reset">cancel</button>
 					<button type="submit" style="background-color: rgb(147, 208, 248); right:0;">submit</button>
 				</div>
 			</div>
