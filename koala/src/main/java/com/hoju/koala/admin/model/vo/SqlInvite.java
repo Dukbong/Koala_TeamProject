@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SqlCloud {
+
+public class SqlInvite {
+	private int creator_no;
+	private int user_no;
 	private int teamNo;
-	private String teamName;
-	private String sqlTitle;
-	private String sqlContent;
-	private String createDate;
-	private String modifyDate;
 }

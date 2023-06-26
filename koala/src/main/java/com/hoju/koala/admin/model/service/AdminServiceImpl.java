@@ -14,6 +14,7 @@ import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
+import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
@@ -154,6 +155,21 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public String selectSqlTitle(String string) {
 		return adminDao.selectSqlTitle(string, sqlSession);
+	}
+
+	@Override
+	public ArrayList<SqlCloud> selectTeam(int userNo) {
+		return adminDao.selectTeam(userNo, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Member> selectTeamMember(int teamNo) {
+		return adminDao.selectTeamMember(teamNo, sqlSession);
+	}
+
+	@Override
+	public int selectCreator(int teamNo) {
+		return adminDao.selectCreator(teamNo, sqlSession);
 	}
 
 

@@ -68,6 +68,10 @@
         <br>
         <br>
         <div class="board-content">
+        	<c:if test="${loginUser.nickName eq b.boardWriter }">
+        		<button onclick="location.href='update?boardNo=${b.boardNo}'">Edit</button>
+        		<button onclick="location.href='delete?boardNo=${b.boardNo}'">Delete</button>
+        	</c:if>
             <input type="text" name="boardTitle" id="boardTitle" value="${b.title }" readonly><br>
             <input type="text" name="boardWriter" id="boardWriter" value="by ${b.boardWriter } create_date ${b.createDate}" readonly><br>
             <div name="content" id="boardContent" >${b.content }</div>

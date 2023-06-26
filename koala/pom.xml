@@ -15,6 +15,13 @@
 		<org.slf4j-version>2.0.6</org.slf4j-version>
 	</properties>
 	<dependencies>
+	
+	<!-- jang : test용도 -->
+	<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.8</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
