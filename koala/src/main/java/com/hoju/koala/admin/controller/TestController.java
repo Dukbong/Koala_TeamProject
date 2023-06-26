@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.SqlCloud;
@@ -37,16 +38,18 @@ public class TestController {
 						   @RequestParam(value="teamNo", required = false, defaultValue = "0") int teamNo) {
 		// 현재 팀이 있는지 확인
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
-		ArrayList<SqlCloud> teamList = adminService.selectTeam(userNo); // join 후 goekd userNo로 조건 걸면 속해있는 팀이 나온다.
-		model.addAttribute("teamList", teamList); // 처음엔 팀만 몇개인지 무엇인지 보여주면 된다.
+		ArrayList<SqlCloud> teamList = adminService.selectTeam(userNo); 
+		model.addAttribute("teamList", teamList); 
+		
 		if(teamNo != 0) {
-//			session.setAttribute("teamNo", teamNo);
 			ArrayList<Member> memberList = adminService.selectTeamMember(teamNo);
 			int creatorNo = adminService.selectCreator(teamNo);
 			model.addAttribute("memberList", memberList);
+			session.setAttribute("teamNo", teamNo);
 			model.addAttribute("teamNo", teamNo);
 			model.addAttribute("creatorNo",creatorNo);
 		}
-		return "fun/onePage";
+//		return "fun/onePage4";
+		return "fun/test";
 	}
 }

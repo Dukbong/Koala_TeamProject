@@ -1,21 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" -->
-<!-- 	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" -->
-<!-- 	crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 </head>
 <style>
 .toolbar {
@@ -214,195 +208,59 @@ span {
 }
 
 </style>
-
 <body>
-	<script>
-	
-		var socket;
-		var teamNo;
-		function connect() {
-			if (!socket) {
-				socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
-// 				sm(teamNo);
-// 				socket.send("connect::"+no);
-			}
-			socket.onopen = function() {
-				console.log("Connect Success");
-				sm(teamNo);
-				alert("메세지 전송 후" + teamNo);
-			}
-			socket.onclose = function() {
-				console.log("disconnnect Success");
-				$("#testnumin").val("1 ");
-				$(".userInarea").html("현재 접속자<br>")
-				$("#testarea").val(" >> 접속이 종료되었습니다.");
-			}
-			socket.onmessage = function(e) {
-				var str = e.data;
-				
-				alert("data : " + e.data); // ### 올 나온다.
-				if (str.includes("###")) {
-					// 회원 정보
-					var user = "현재 접속자<br>";
-					var userPack = ((e.data).replace("###", "")).split("///"); // 0번째는 회원 1번째는 현재까지 작성된 문자
-					
-					var bang = userInfoarr[0];
-					alert("bang : " + bang);
-					var userId = userInfoarr[1];
-					alert("bang : " + userId);
-// 					$(".mlmain").each(function(){
-// 						if($(this).text() == userId){
-// 							alert($(this).text());
-// 							$(this).text("");
-// 						}
-						
-// 					})
-					
-					var userInfo = userPack[0].split(",");
-					for ( var u in userInfo) {
-						user += userInfo[u] + "\n";
-					}
-					$(".userInarea").html(user);
-					if (userPack[1] != "null") {
-						$("#testarea").val(userPack[1]); // 접속 직전의 정보를 토대로 뿌려준다.
-						var test = $("#testarea").val().split("\n");
-						var str = "";
-						if (test.length > 0) {
-							for (var i = 1; i <= test.length; i++) {
-								str += i + " \n";
-							}
-							$("#testnumin").val(str);
-						}
-					}
-				}
-				else if (str.includes(">>>")){ // 방 클릭시 
-					var userInfo = str.replace(">>>", "");
-					var userInfoarr = userInfo.split("/");
-					var bang = userInfoarr[0];
-					var userId = userInfoarr[1];
-					alert(bang);
-					alert(userId);
-					$(".mlid").each(function(){
-						if($(this).text() == userId){
-							$(this).css("color","black");
-						}
-						
-					})
-					
-				}
-				else {
-					// sql 내용
-					$("#testarea").val(e.data);
-					var test = $("#testarea").val().split("\n");
-					var str = "";
-					if (test.length > 0) {
-						for (var i = 1; i <= test.length; i++) {
-							str += i + " \n";
-						}
-						$("#testnumin").val(str);
-					}
-				}
-			}
-		}
-
-		function disconnect() {
-			try {
-				socket.close();
-				socket = "";
-			} catch (e) {}
-		}
-
-		// send func
-		$(function() {
-			$("#testarea").on("keyup", function() {
+		<script>
+			var socket;
+			var teamNo;
+			
+			function connect() {
 				if (!socket) {
-					$(this).val("");
-					alert("접속 하지 않았습니다.");
-				} else {
-					var test = $(this).val().split("\n");
-					var str = "";
-					if (test.length > 0) {
-						for (var i = 1; i <= test.length; i++) {
-							str += i + " \n";
-						}
-						$("#testnumin").val(str);
-					}
-					var testing = $("#testarea").val().split("\n");
-					var testingStr = "";
-					for (var i = 0; i < testing.length; i++) {
-						testingStr += testing[i];
-					}
-					socket.send($(this).val());
+					socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
 				}
-			});
-
-			// Scroll sync
-			$("#testarea").scroll(function() {
-				$("#testnumin").scrollTop($("#testarea").scrollTop());
-				$("#testnumin").scrollLeft($("#testarea").scrollLeft());
-			});
-			$("#testnumin").scroll(function() {
-				$("#testarea").scrollTop($("#testnumin").scrollTop());
-				$("#testarea").scrollLeft($("#testnumin").scrollLeft());
-			});
-
-			// Download
-			$("#ttt").on("click", function() {
-				var text = document.getElementById('testarea').value;
-				var fileBlob = new Blob([ text ], {
-					type : 'text/plain'
-				});
-
-				var a = document.createElement('a');
-				a.href = URL.createObjectURL(fileBlob);
-				a.download = 'koalaSQL.sql';
-				a.click();
-			})
-			// Save
-			$("#sss").on("click", function() {
-				if(!$(".topbinarea").text()){
-	 				var title = prompt("파일명을 입력해주세요.");
-	 				$(".topbinarea").text(title);
-	 				var content = $("#testarea").val();
-	 				socket.send("saveFile::"+title+"/"+content);
-				}else{
-					var caontent = $("#testarea").vale();
-					socket.send("saveFile::"+$(".topbinarea").text()+"/"+content);
+				socket.onopen = function (e) {
+					console.log("Connect Success");
+					
 				}
-			});
-
-			// Load
-// 			$("#lll").on("click", function() {
-// 				alert("불러왔습니다.");
-// 			})
-			
-			$("#createTeam").on("click", function(){
-				console.log("createTeam");
-			});
-			
-			$("#teamInvite").on("click", function(){
-				console.log("teamInvite");
-			})
-			
-			$(".teamButton").on("click", function(){
-// 				socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
-				teamNo = $(this).parent().children().eq(2).val();
-				sessionStorage.setItem("bang", teamNo);
-// 				alert("클릭시 " + teamNo);
-// 				socket.send("connect::"+no);
-				connect(); // 팀 누르면 접속
-			});
-			
-		});
-		
-		function sm(no){
-			if(socket){
-				alert("소켓 연결 후 " + teamNo);
-				socket.send("connect::"+no); // return >>> [최초 실행자] teamNo / userId 
-				location.href="sqlCloud?teamNo="+no;					
+				socket.onclose = function () {
+					console.log("disconnnect Success");
+// 					setTimeout(socketInit, 300); // 웹소켓을 재연결하는 코드 삽입
+				}
+				socket.onmessage = function (e) { 
+// 					var preUsers = e.data.split("/")[1];
+// 					var users = preUsers.substring(1, preUsers.length-1).split(","); // 아이디값을 배열로 바꾼다.
+					// Enter:teamNo/[a,b,c,d,e...];
+					if(e.data.includes("Enter:")){						
+						location.href="sqlCloud?teamNo="+teamNo;
+// 						$(function(){
+// 							for(var loginId in users){
+// 								$(".mlid").each(function(){
+// 									if($(this).text() == users[loginId]){
+// 										$(this).css("color","red");	
+										
+// 									}
+// 								});
+// 							}
+							
+// 						})
+					}
+				}
 			}
-		}
-	</script>
+			function disconnect() {
+				socket.close();
+			}
+			
+			$(function(){
+				connect();
+				
+				$(".teamButton").on("click", function(){
+					teamNo = $(this).parent().children().eq(2).val();
+					socket.send(teamNo);			
+				});
+				
+			});
+			
+			
+		</script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<br>
 	<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
@@ -411,8 +269,8 @@ span {
 				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
 	</div>
 	<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
-	<div id="teamList" class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
-<br>
+	<div id="teamList" class="ii" style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+	<br>
 		<c:choose>
 			<c:when test="${not empty teamList }">
 				<c:forEach var="t" begin="0" end="${teamList.size()-1 }">
@@ -442,31 +300,31 @@ span {
 	<br><br>
 	<c:choose>
 	<c:when test="${not empty memberList }">
-	<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+	<div id="tttest" class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
 		TEAM MEMBER
 		<button id="teamInvite" class="ii" type="button" 
 				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
 	</div>
 	<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
-	<div id="memberList" class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+	<div id="memberList" class="ii" style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
 		<br>
 		<c:forEach var="m" begin="0" end="${memberList.size() - 1 }">
 			<c:choose>
 			<c:when test="${m % 3 == 0 }">
 				<div class="mlbanbinarea"></div>
 				<div class="mlbanbinarea"></div>
-				<div class="mlarea ii ic" style="background-color: black;">
-					<div class="mlinfo ii ic">
-						<div class="mlmain mlid ii ic">${memberList.get(m).getUserId() }</div>
-						<div class="mlmain ii ic">${memberList.get(m).getNickName() }</div>					
+				<div class="mlarea">
+					<div class="mlinfo">
+						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
+						<div class="mlmain">${memberList.get(m).getNickName() }</div>					
 					</div>
-					<div class="mlsup ii ic">
-						<div class="mlemail ii ic">${memberList.get(m).getEmail() }</div>
+					<div class="mlsup">
+						<div class="mlemail">${memberList.get(m).getEmail() }</div>
 						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
 							<div class="mlgrant" style="color:green;">creator</div>					
 						</c:if>
 						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
-							<div class="mlgrant ii ic">user</div>					
+							<div class="mlgrant">user</div>					
 						</c:if>
 					</div>
 				</div>
@@ -474,18 +332,18 @@ span {
 			</c:when>
 			<c:when test="${m % 3 == 2 }">
 					<div class="mlbanbinarea"></div>
-					<div class="mlarea ii ic" style="background-color: black;">
-					<div class="mlinfo ii ic">
-						<div class="mlmain mlid ii ic">${memberList.get(m).getUserId() }</div>
-						<div class="mlmain ii ic">${memberList.get(m).getNickName() }</div>					
+					<div class="mlarea">
+					<div class="mlinfo">
+						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
+						<div class="mlmain">${memberList.get(m).getNickName() }</div>					
 					</div>
-					<div class="mlsup ii ic">
-						<div class="mlemail ii ic">${memberList.get(m).getEmail() }</div>
+					<div class="mlsup">
+						<div class="mlemail">${memberList.get(m).getEmail() }</div>
 						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
 							<div class="mlgrant" style="color:green;">creator</div>					
 						</c:if>
 						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
-							<div class="mlgrant ii ic">user</div>					
+							<div class="mlgrant">user</div>					
 						</c:if>
 					</div>
 				</div>
@@ -494,18 +352,18 @@ span {
 			</c:when>
 			<c:otherwise>
 				<div class="mlbanbinarea"></div>
-				<div class="mlarea ii ic" style="background-color: black;">
-					<div class="mlinfo ii ic">
-						<div class="mlmain mlid ii ic">${memberList.get(m).getUserId() }</div>
-						<div class="mlmain ii ic" >${memberList.get(m).getNickName() }</div>					
+				<div class="mlarea">
+					<div class="mlinfo">
+						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
+						<div class="mlmain" >${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">
-						<div class="mlemail ii ic">${memberList.get(m).getEmail() }</div>
+						<div class="mlemail">${memberList.get(m).getEmail() }</div>
 						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
 							<div class="mlgrant" style="color:green">creator</div>				
 						</c:if>
 						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
-							<div class="mlgrant ii ic">user</div>					
+							<div class="mlgrant">user</div>					
 						</c:if>
 					</div>
 				</div>
@@ -558,6 +416,13 @@ span {
 		</div>
 		<div class="lastbin"></div>
 	</div>
+		</c:when>
+	<c:otherwise>
+		<div>
+			&nbsp;&nbsp;&nbsp;
+		</div>
+	</c:otherwise>
+	</c:choose>
 	<div class="togeSql">
 		<div class="sqlArea">
 			<div id="testnum" style="text-align: right; font-size: 22px;">
@@ -600,14 +465,8 @@ span {
 			<div class="userIn ii ic"></div>
 		</div>
 	</div>
-	</c:when>
-	<c:otherwise>
-		<div>
-			&nbsp;&nbsp;&nbsp;
-		</div>
-	</c:otherwise>
-	</c:choose>
+
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
-
+</body>
 </html>
