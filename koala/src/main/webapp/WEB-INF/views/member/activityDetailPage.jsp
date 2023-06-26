@@ -12,6 +12,7 @@
         height: 1300px;
         width: 80%;
     	margin: auto;
+    	padding-top: 200px;
     }
     
     #content{
@@ -20,23 +21,59 @@
     }
     
     #content1, #content2{
-    	width: 100%;
+    	margin: auto;
+    	width: 80%;
+    	margin-bottom: 5%;
+    	background-color: rgb(45, 45, 45);
+    	padding: 20px;
+    	
     }
     
     #content1{
-    	height: 20%;
+    	height: 350px;
     }
     
     #content2{
-    	height: 80%;
+    	height: 600px;
     }
     
     /* content1영역 */
     
     #con1-area, #con2-area, #con3-area{
     	float: left;
+    	height: 80%;
+    	border-bottom: 3px solid lightgray;
+    	padding: 10px;
     }
     
+    #select-list{
+    	height: 10%;
+    }
+
+	#select-list>ul{
+	
+		width:100%;
+		height:100%;
+		list-style-type:none;
+		margin:auto;
+		padding:0;
+	}
+	
+    #select-list>ul>li {float:left; width:10%; height:100%; text-align:center; margin:10px;}
+    #select-list>ul>li a {text-decoration:none;}
+	#select-list>ul>li:hover{
+		cursor: pointer;
+		border: 1px solid gray;
+		border-radius: 30px;
+	}
+
+	
+	
+	
+	
+	
+	
+	    
     #con1-area{
     	width: 30%;
     	text-align: center;
@@ -47,7 +84,7 @@
    	}
    	
    	#con3-area{
-   		width: 30%;
+   		width: 40%;
    	}
    	
    	.profile{
@@ -58,14 +95,25 @@
 	    position: relative;
 	}
 	
+	#introduce-box textarea{
+		background-color: rgb(52, 73, 94);
+		width: 100%;
+		color: white;
+		resize: none;
+		border: 1px solid gray;
+		border-radius: 10px;
+	}
+	
 	#nickname{
+		margin-top: 15px;
 		width: 100%;
 	}
 	#nickname-box{
 		width: 60%;
 		margin: auto;
+		background-color: rgb(52, 73, 94);
 		font-size: 20px;
-		padding: 15px;
+		padding: 5px;
 		border: 1px solid gray;
 		border-radius: 10px;
 		
@@ -94,7 +142,7 @@
     
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
 	
 	
     <div id="outer" >
@@ -103,7 +151,14 @@
             <div id="content1">
                 <div id="con1-area">
                     <div id="profile">
-                        <img class="profile" src="${pageContext.request.contextPath}${user.profile.filePath}${user.profile.changeName}">
+	       				<c:choose>
+							<c:when test="${not empty user.profile }">
+							    <img class="profile" src="${pageContext.request.contextPath}${user.profile.filePath}${user.profile.changeName}">
+							</c:when>
+							<c:otherwise>
+							    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+							</c:otherwise>
+						</c:choose>
                     </div>
                     <div id="nickname">
                     	<div id="nickname-box">
@@ -163,6 +218,15 @@
                 	
                 	</script>
                 	</c:if>
+                	<c:if test="${empty loginUser }">
+                	<script>
+                		$(function(){
+                			$("#follow").on("click", function(){
+                				alert("로그인 후 이용해 주세요.");
+                			});
+                		})
+                	</script>
+                	</c:if>
                     
                 </div>
                 <div id="con3-area">
@@ -170,20 +234,21 @@
                     	<c:choose>
                     		<c:when test="${user eq loginUser }">
 		                        <form action="update.intro" method="post">
-		                            <textarea name="introduce" id="" cols="30" rows="5" style="resize: none;">${user.introduce }</textarea><br>
-		                            <button type="submit" style="background-color: blue;">Update</button>
+		                            <textarea name="introduce" id="introduce" cols="30" rows="5">${user.introduce }</textarea><br>
+		                            <button type="submit" class="btn btn-primary" style="float:right">Update</button>
 		                        </form>	
                     		</c:when>
                     		<c:otherwise>
-                    			<textarea name="" id="" cols="30" rows="5" style="resize: none;" readonly>${user.introduce }</textarea><br>
+                    			<textarea name="introduce" id="introduce" cols="30" rows="5" readonly placeholder="작성된 소갯말이 없습니다.">${user.introduce }</textarea><br>
                     		</c:otherwise>
                     	</c:choose>
                     </div>
                 </div>
-            </div>
-            
-            
-            <div id="content2">
+                
+                <script>
+                	
+                </script>
+                
                 <div id="select-list">
                     <ul>
                         <li style="list-style-type: none;"><a id="boardList">Board</a></li>
@@ -192,13 +257,17 @@
                         <li style="list-style-type: none;"><a id="followingList">Following</a></li>
                     </ul>
                 </div>
+            </div>
+            
+            
+            <div id="content2">
                 
                 <script>
                 	$(function(){
                 		//리스트 조회
-                		$("#select-list a").on("click", function(){
+                		$("#select-list>ul>li").on("click", function(){
                 			
-                			var select = $(this).prop("id");
+                			var select = $(this).children().prop("id");
                 			
                 			location.href = "/koala/member/"+select+"?userId=${user.userId}";
                 		});
