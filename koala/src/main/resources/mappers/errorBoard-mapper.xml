@@ -63,14 +63,24 @@
 		       SOLVED,
 		       NOTICE,
 		       B.CREATE_DATE,
-		       COUNT
+		       B.COUNT,
+               COUNT(R.REPLY_NO) REPLY_COUNT
 		FROM BOARD B
-		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
-		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
+		JOIN MEMBER M ON(B.BOARD_WRITER = M.USER_NO)
+		JOIN ERROR_BOARD E ON(B.BOARD_NO = E.REF_BNO)
 		JOIN CREATE_SETTING C ON(E.REF_SNO = C.SETTING_NO)
+        LEFT JOIN REPLY R ON(B.BOARD_NO = R.REF_BNO)
 		WHERE B.STATUS = 'Y'
 		AND B.CATEGORY = 'E'
         AND SOLVED||ERROR_TYPE != 'NS'
+        GROUP BY BOARD_NO,
+		         SETTING_TITLE,
+		         TITLE,
+		         NICKNAME,
+		         SOLVED,
+		         NOTICE,
+		         B.CREATE_DATE,
+		         B.COUNT
 		ORDER BY DECODE(NOTICE,'Y',1,'N',2),
                  DECODE(SOLVED,'N',1,'Y',2),
                  CREATE_DATE DESC
@@ -85,11 +95,13 @@
 		       SOLVED,
 		       NOTICE,
 		       B.CREATE_DATE,
-		       COUNT
+		       COUNT,
+		       COUNT(R.REPLY_NO) REPLY_COUNT
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
 		JOIN ERROR_BOARD E ON (B.BOARD_NO = E.REF_BNO)
 		JOIN CREATE_SETTING C ON(E.REF_SNO = C.SETTING_NO)
+		LEFT JOIN REPLY R ON(B.BOARD_NO = R.REF_BNO)
 		WHERE B.STATUS = 'Y'
 		AND B.CATEGORY = 'E'
         AND SOLVED||ERROR_TYPE != 'NS'
@@ -106,6 +118,14 @@
 		AND UPPER(C.SETTING_TITLE)
 		</if>
 		LIKE UPPER('%'||#{keyword}||'%')
+		GROUP BY BOARD_NO,
+		         SETTING_TITLE,
+		         TITLE,
+		         NICKNAME,
+		         SOLVED,
+		         NOTICE,
+		         B.CREATE_DATE,
+		         B.COUNT
 		ORDER BY DECODE(NOTICE,'Y',1,'N',2),
                  DECODE(SOLVED,'N',1,'Y',2),
                  CREATE_DATE DESC

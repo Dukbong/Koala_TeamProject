@@ -55,8 +55,8 @@ public class ErrorBoardController {
 			
 			listCount = ebService.searchListCount(hashMap);
 		}
-		int pageLimit = 10;
-		int boardLimit = 10;
+		int pageLimit = 20;
+		int boardLimit = 20;
 		
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
@@ -71,37 +71,12 @@ public class ErrorBoardController {
 		model.addAttribute("category", category);
 		model.addAttribute("keyword", keyword);
 		
+		System.out.println("listCount"+listCount);
+		System.out.println("게시글 총 개수"+ebList.size());
+		System.out.println(ebList);
+		
 		return "board/errorBoard/ebListView";
 	}
-	
-	//검색된 게시글 목록 조회 메소드
-//	@GetMapping("searchList")
-//	public String searchList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-//							 String category,
-//							 String keyword,
-//			 				 Model model) {
-//		
-//		HashMap<String,String> hashMap = new HashMap<>();
-//		
-//		hashMap.put("category", category);
-//		hashMap.put("keyword", keyword);
-//		
-//		int listCount = ebService.searchListCount(hashMap);
-//		int pageLimit = 10;
-//		int boardLimit = 10;
-//		
-//		
-//		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-//		
-//		ArrayList<ErrorSet> ebList = ebService.searchList(pi, hashMap);
-//		
-//		model.addAttribute("pi", pi);
-//		model.addAttribute("ebList", ebList);
-//		model.addAttribute("category", category);
-//		model.addAttribute("keyword", keyword);
-//		
-//		return "board/errorBoard/ebListView";
-//	}
 	
 	//게시글 상세 조회 메소드
 	@GetMapping("/detail")
