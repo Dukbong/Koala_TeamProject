@@ -5,12 +5,6 @@
 
 <mapper namespace="settingMapper">
 
-	<select id="selectList" resultMap="settingResultSet">
-		SELECT *
-		FROM CREATE_SETTING
-		WHERE NOT STATUS = 'Y'
-	</select>
-	
 	<resultMap type="setting" id="settingResultSet">
 		<result column="SETTING_NO" property="settingNo"/>
 		<result column="REF_UNO" property="refUno"/>
@@ -25,6 +19,22 @@
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
+	
+	
+	<!-- Setting리스트 조회 -->
+	<select id="selectList" resultMap="settingResultSet">
+		SELECT *
+		FROM CREATE_SETTING
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<!-- 해당 Setting 정보 조회 -->
+	<select id="selectSetting" resultMap="settingResultSet">
+		SELECT *
+		FROM CREATE_SETTING
+		WHERE SETTING_NO = #{settingNo}
+		AND STATUS = 'Y'
+	</select>
 	
 	
 </mapper>

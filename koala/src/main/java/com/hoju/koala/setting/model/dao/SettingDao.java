@@ -15,6 +15,12 @@ public class SettingDao {
 		
 		return (ArrayList)sqlSession.selectList("settingMapper.selectList");
 	}
+
+	//해당 Setting 조회
+	public Setting selectSetting(SqlSessionTemplate sqlSession, int settingNo) {
+		
+		return sqlSession.selectOne("settingMapper.selectSetting", settingNo);
+	}
 	
 
 }

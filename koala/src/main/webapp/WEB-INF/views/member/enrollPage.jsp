@@ -86,6 +86,7 @@
 	
 	
 	.hide{
+		color: yellow;
 		display: none;
 	}
 	
