@@ -236,18 +236,20 @@ public class QnABoardController {
 						  @RequestParam("boardWriter") String boardWriter) {
 		
 		int likeChk = qnaService.likeChk(boardNo, userNo);//좋아요 눌렀는지 아닌지 체크
-		
+		System.out.println(likeChk);
 //		System.out.println("글 번호 : "+boardNo);
 //		System.out.println("userNo : "+userNo);
 //		System.out.println("boardWriter : "+boardWriter);
 		
 		if(likeChk == 0) {
 			//처음 좋아요를 눌렀을 때
+			System.out.println("처음 추천하는고야");
 			qnaService.insertLike(boardNo,userNo); // like테이블 추가
 			qnaService.updateLike(boardNo); //board테이블 업데이트
 			qnaService.pointUpdate(boardNo); //member테이블 포인트 지급 업데이트
 		}else if(likeChk == 1){
 			//두번째 좋아요를 눌렀을 때
+			System.out.println("추천을 한 번 더 누른고야");
 //			qnaService.deleteLike(boardNo, userNo); //like테이블 삭제
 			qnaService.pointDelete(boardNo); //member테이블 포인트 차감 업데이트
 		}

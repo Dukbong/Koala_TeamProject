@@ -222,10 +222,10 @@
                     </thead>
                          <tbody>
 				        <!-- 공지사항 -->
-				        <c:forEach var="b" items="${list }">
+				        <c:forEach var="b" items="${list }" varStatus="status" >
 				            <c:if test="${b.notice == 'y'}">
 				                <tr style="height: 40px; color: rgb(206, 145, 120); font-weight: bold;">
-				                    <td>${b.boardNo }</td>
+				                    <td>${status.count }</td>
 				                    <td>${b.title}</td>
 				                    <td>${b.boardWriter}</td>
 				                    <td>${b.createDate}</td>
@@ -235,10 +235,10 @@
 				            </c:if>
 				        </c:forEach>
 				        <!-- 일반 게시글 -->
-				        <c:forEach var="b" items="${list }">
+				        <c:forEach var="b" items="${list }" varStatus="status">
 				            <c:if test="${b.notice != 'y'}">
 				                <tr style="height: 40px;">
-				                    <td>${b.boardNo }</td>
+				                    <td>${status.count}</td>
 				                    <td>${b.title} [${replyCount}]</td>
 				                    <td>${b.boardWriter}</td>
 				                    <td>${b.createDate}</td>

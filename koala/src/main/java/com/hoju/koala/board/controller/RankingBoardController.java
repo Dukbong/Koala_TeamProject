@@ -49,15 +49,17 @@ public class RankingBoardController {
 						this.previousRanks = new HashMap<>();
 						
 						// 이전 데이터의 등수 정보를 previousRanks 맵에 설정
-					    for (Member member : previousData) {
-					        previousRanks.put(member.getUserId(), member.getRank());
+					    for (Member m : previousData) {
+					        previousRanks.put(m.getUserId(), m.getRank());
 					    }
 					    
-					    for (Member member : previousData) {
-					        System.out.println("회원 아이디: " + member.getUserId() + ", 등수: " + member.getRank());
-					    }
+//					    for (Member m : previousData) {
+//					        System.out.println("회원 아이디: " + m.getUserId() + ",등수 : " + m.getRank());
+//					    }
 					}
+					
 
+					//예전 등수 저장 맵
 					private Member findMemWithRank(Map<String,Integer> previousRanks,String userId) {
 						Integer previousRankStored = previousRanks.get(userId);
 					    if(previousRankStored != null) {
@@ -72,16 +74,16 @@ public class RankingBoardController {
 					
 					public List<Member> calculateRank() {
 					    List<Member> result = new ArrayList<>();
-					    int previousRank = 0;
+					    int rank = 0;//순위 만들기
 
 					    for (Member newMember : previousData) {
-					        int currentRank = previousRank + 1;
+					        int currentRank = rank + 1; //차례로 순위 먹이기
 					        System.out.println("현재 순위 : "+currentRank);
 					        
 					        String userId = newMember.getUserId();
 					        Member previousMember = findMemWithRank(previousRanks,userId);// previousRanks 맵에서 예전 등수를 가져옴
 					        
-					        if(previousMember != null) {
+					        if(previousMember != null) {//예전 등수가 있을 때
 					        	int previousRankStored = previousMember.getRank();//예전등수 가져오기
 					        	System.out.println("예전 등수 : "+previousRankStored);
 					        	int rankDifference = currentRank - previousRankStored;
@@ -102,8 +104,8 @@ public class RankingBoardController {
 					        
 					        result.add(newMember);
 
-					        previousRank = currentRank;
-					        System.out.println("previousRank : "+previousRank);
+					        rank = currentRank;
+					        System.out.println("등수 : "+rank);
 					    }
 
 					    return result;

@@ -65,20 +65,22 @@
     .control_area button[type="reset"]{
         background-color: rgb(206, 145,120);
         color: white;
-        font-weight: bold;
+/*         font-weight: bold; */
         width: 70px;
         height: 30px;
         border-radius: 4px;
         cursor: pointer;
+        font-size : 11px;
     }
     .control_area button[type="submit"]{
         background-color: rgb(106, 153,85);
         color: white;
-        font-weight: bold;
+/*         font-weight: bold; */
         width: 70px;
         height: 30px;
         border-radius: 4px;
         cursor: pointer;
+        font-size : 11px;
     }
     .middle_area{
         color: white;
@@ -218,7 +220,7 @@
                 </div>
                 <div class="control_area">
                 	<c:choose>
-	                	<c:when test="${b.boardWriter eq loginUser.userNo.toString() }">
+	                	<c:when test="${b.boardWriter eq loginUser.nickName }">
 		                    <button type="reset" onclick="formSubmit(1)">글 삭제</button>
 		                    <button type="submit" onclick="formSubmit(2)">수정</button>
 	                    </c:when>
@@ -270,7 +272,7 @@
                 <div class="button_area">
                     <button type="button">댓글 <span id="rcount"></span></button>
                     <c:choose>
-                    <c:when test="${b.boardWriter != loginUser.userNo.toString() }">
+                    <c:when test="${b.boardWriter != loginUser.nickName }">
                     <button type="submit" onclick="updateLike();">추천 ${b.liked }</button>                    
                     </c:when>
                     <c:otherwise>
@@ -341,6 +343,13 @@
 				function updateLike(){
 					console.log("추천");
 					var btn = $(this); //클릭된 버튼
+					var boardNo = "${b.boardNo}"
+						var userNo = "${loginUser.userNo}"
+							var boardWriter = "${b.boardWriter}"
+							
+							console.log("글 번호 : "+boardNo);
+							console.log("로그인 한사람 : "+userNo);
+							console.log("작성자 번호 : "+boardWriter);
 					$.ajax({
 						type : "POST",
 						url : "updateLike",
@@ -351,6 +360,7 @@
 							boardWriter : "${b.boardWriter}"
 						},
 						success : function(likeChk){
+							console.log("여기에는 들어왔겠지");
 							if(likeChk===0){
 								console.log("처음하는 추천");
 								alert("추천되었습니다!");
