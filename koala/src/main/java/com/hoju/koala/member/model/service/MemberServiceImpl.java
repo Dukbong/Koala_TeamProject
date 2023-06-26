@@ -231,6 +231,16 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 
+	//닉네임 조회
+	@Override
+	public int selectNick(String inputNick) {
+
+		int cnt = memberDao.selectNick(sqlSession, inputNick);
+		
+		return cnt;
+	}
+
+
 
 
 	

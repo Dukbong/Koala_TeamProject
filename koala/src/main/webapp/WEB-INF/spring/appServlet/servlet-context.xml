@@ -71,4 +71,12 @@
 		<beans:property name="maxInMemorySize" value="10000000"/>
 	</beans:bean>
 	
+	<interceptors>
+		<interceptor>
+			<!-- 페이지 접근제한 -->
+			<mapping path="/as"/> <!-- 사용자 계정관리 페이지 -->
+			<beans:bean class="com.hoju.koala.member.interceptor.MemberInterceptor" id="MemberInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

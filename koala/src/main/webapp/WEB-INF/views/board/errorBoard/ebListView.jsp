@@ -12,7 +12,7 @@
 <style>
 
     div{ box-sizing: border-box;}
-    .ebListView{width: 80%; margin:auto; padding: 80px 0px 80px 0px;}
+    .ebListView{width: 80%; margin:auto; padding: 200px 0px 80px 0px;}
     .body_content{
         display: flex;
         flex-wrap: wrap;
@@ -155,7 +155,7 @@
 
 </style>
 <body>
-<%@include file="../../common/header.jsp"%>
+<%@include file="../../common/header_copy.jsp"%>
     <div class="ebListView">
 
 		<script>
@@ -206,7 +206,7 @@
 							</c:choose>
 								<td>${eb.board.boardNo }</td>
 								<td>${eb.createSetting.settingTitle }</td>
-								<td>${eb.board.title }</td>
+								<td>${eb.board.title } [ ${eb.replyCount } ]</td>
 								<td>${eb.board.boardWriter }</td>
 								<td>${eb.board.createDate }</td>
 								<td>${eb.board.count }</td>
@@ -236,7 +236,7 @@
                 		<li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
             		</c:when>
             		<c:otherwise>
-                		<li class="pagingSection"><a class="page-link" href="list?currentPage=${pi.currentPage -1}&category=${category}&keyword=${keyword}"">&lt;</a></li>	
+                		<li class="pagingSection"><a class="page-link" href="list?currentPage=${pi.currentPage -1}&category=${category}&keyword=${keyword}">&lt;</a></li>	
             		</c:otherwise>
             	</c:choose>
 				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">

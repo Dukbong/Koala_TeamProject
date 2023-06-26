@@ -128,6 +128,10 @@
 
 </head>
 <body>
+	<c:if test="${not empty cookie.saveId.value}">
+		<c:set var="checked" value="checked"/>
+	</c:if>
+	
 	<div id="wrap">
 		<div id="content">
 	        <div id="login-area">
@@ -136,13 +140,13 @@
 	
 	                <div id="input-area">
 	                    <label for="userId" class="">ID</label>
-	                    <input type="text" class="box" placeholder="아이디 입력" id="userId" name="userId" required> <br>
+	                    <input type="text" class="box" placeholder="아이디 입력" id="userId" name="userId" required value="${cookie.saveId.value }"> <br>
 	                    <label for="userPwd" class="">Password</label>
 	                    <input type="password" class="box" placeholder="패스워드 입력" id="userPwd" name="userPwd" required>
 	                </div>
 	
 	                <div id="keep-area">
-	                    <input type="checkbox" id="keepId">
+	                    <input type="checkbox" id="keepId" name="keepId" ${checked }>
 	                    <label for="keepId">아이디 저장</label>
 	                </div>
 	                
