@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="settingMapper">
+
+	<select id="selectList" resultMap="settingResultSet">
+		SELECT *
+		FROM CREATE_SETTING
+		WHERE NOT STATUS = 'Y'
+	</select>
+	
+	<resultMap type="setting" id="settingResultSet">
+		<result column="SETTING_NO" property="settingNo"/>
+		<result column="REF_UNO" property="refUno"/>
+		<result column="SETTING_TITLE" property="settingTitle"/>
+		<result column="SETTING_VERSION" property="settingVersion"/>
+		<result column="SORT_DESCRIPTION" property="sortDescription"/>
+		<result column="SETTING_INFO" property="settingInfo"/>
+		<result column="SETTING_CODE" property="settingCode"/>
+		<result column="INPUT" property="input"/>
+		<result column="SETTING_PATH" property="settingPath"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="MODIFY_DATE" property="modifyDate"/>
+	</resultMap>
+	
+	
+</mapper>
