@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +17,7 @@
         }
     .wrapper{
         width: 100%;
-        height: 1000px;
+        height: 1200px;
     }
     .body_content{
         display: flex;
@@ -217,7 +218,7 @@
                 </div>
                 <div class="control_area">
                 	<c:choose>
-	                	<c:when test="${b.boardWriter==loginUser.userId }">
+	                	<c:when test="${b.boardWriter eq loginUser.userNo.toString() }">
 		                    <button type="reset" onclick="formSubmit(1)">글 삭제</button>
 		                    <button type="submit" onclick="formSubmit(2)">수정</button>
 	                    </c:when>
@@ -230,19 +231,19 @@
             </div>
             
             <script>
-//             	function formSubmit(num){
-//             		var formObj = $("<form>");
-//             		var bno = $("<input>").prop("type","hidden").prop("name","boardNo").prop("value","${b.boardNo}");
-//             		var filepath = $("<input>").prop("type","hidden").prop("name","filePath").prop("value","${at.changeName}");
-//             		var obj = formObj.append(bno);
+            	function formSubmit(num){
+            		var formObj = $("<form>");
+            		var bno = $("<input>").prop("type","hidden").prop("name","boardNo").prop("value","${b.boardNo}");
+            		var filepath = $("<input>").prop("type","hidden").prop("name","filePath").prop("value","${at.changeName}");
+            		var obj = formObj.append(bno);
             		
-//             		if(num==1){
-//             			obj.attr("action","updateForm.bo").attr("method","get");
-//             		}else{
-//             			obj.append(filePath);
-//             			obj.attr("action","delete.bo").attr("method","post");
-//             		}
-//             	}
+            		if(num==1){
+            			obj.attr("action","updateForm.bo").attr("method","get");
+            		}else{
+            			obj.append(filePath);
+            			obj.attr("action","delete.bo").attr("method","post");
+            		}
+            	}
             </script> 
 
             <div class="middle_area">
@@ -268,7 +269,15 @@
                 </table>
                 <div class="button_area">
                     <button type="button">댓글 <span id="rcount"></span></button>
-                    <button type="submit" onclick="updateLike();">추천 ${b.liked }</button>
+                    <c:choose>
+                    <c:when test="${b.boardWriter != loginUser.userNo.toString() }">
+                    <button type="submit" onclick="updateLike();">추천 ${b.liked }</button>                    
+                    </c:when>
+                    <c:otherwise>
+                    <button type="submit" disabled>추천 ${b.liked }</button>
+                    </c:otherwise>
+                    </c:choose>
+                    
                 </div>
             </div>
 
@@ -283,7 +292,6 @@
 						url : "selectReply.bo",
 						data : {
 							boardNo : "${b.boardNo}",
-							userNo : "${b.boardWriter}"
 						},
 						success : function(list){
 							var result = "";
@@ -307,10 +315,11 @@
 				
 				function insertReply(){
 					
+					
 					$.ajax({
 						url : "insertReply.bo",
 						data : {
-							replyWriter : "${loginUser.userId}",
+							replyWriter : "${loginUser.userNo}",
 							replyContent : $("#content").val(),
 							refBno : "${b.boardNo}"
 						},
@@ -331,6 +340,7 @@
 				
 				function updateLike(){
 					console.log("추천");
+					var btn = $(this); //클릭된 버튼
 					$.ajax({
 						type : "POST",
 						url : "updateLike",
@@ -342,13 +352,14 @@
 						},
 						success : function(likeChk){
 							if(likeChk===0){
+								console.log("처음하는 추천");
 								alert("추천되었습니다!");
-								button.css("background-color", "crimson"); // 버튼의 배경색을 빨간색으로 변경
+								btn.css("background-color", "crimson"); // 버튼의 배경색을 빨간색으로 변경
 								location.reload();
 							}
 							else if(likeChk===1){
 								alert("추천이 취소되었습니다.");
-								button.css("background-color", "background-color: rgb(156, 220, 254)"); // 배경색을 초기값으로 변경 (기본 스타일 적용)
+								btn.css("background-color", "background-color: rgb(156, 220, 254)"); // 배경색을 초기값으로 변경 (기본 스타일 적용)
 								location.reload();
 							}
 						},

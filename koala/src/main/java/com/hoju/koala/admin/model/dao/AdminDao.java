@@ -118,4 +118,8 @@ public class AdminDao {
 	public int updateErrorType(ErrorDivision ed, SqlSession sqlSession) {
 		return sqlSession.update("adminMapper.updateErrorType", ed);
 	}
+
+	public String selectSqlTitle(String string, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectSqlTitle", string);
+	}
 }

@@ -151,6 +151,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateErrorType(ed, sqlSession);
 	}
 
+	@Override
+	public String selectSqlTitle(String string) {
+		return adminDao.selectSqlTitle(string, sqlSession);
+	}
+
 
 
 
