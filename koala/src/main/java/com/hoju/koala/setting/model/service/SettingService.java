@@ -9,4 +9,7 @@ public interface SettingService {
 	//리스트 조회
 	ArrayList<Setting> selectList();
 
+	//해당 setting조회
+	Setting selectSetting(int settingNo);
+
 }
