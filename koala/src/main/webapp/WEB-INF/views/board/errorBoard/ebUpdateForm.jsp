@@ -92,7 +92,7 @@
 			<div class="modifyForm-area_code">
 				<div class="modifyForm-top">
 					<span>code</span>
-					<button type="button">cancle</button>
+					<button type="button">cancel</button>
 					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
@@ -111,7 +111,7 @@
 			<div class="modifyForm-area_info">
 				<div class="modifyForm-top">
 					<span>manual</span>
-					<button type="button">cancle</button>
+					<button type="button">cancel</button>
 					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
 				</div>
 				<div class="modifyForm-bottom">
@@ -139,7 +139,7 @@
 			
 			<div class="button-area">
 				<div class="buttons">
-					<button type="reset">cancle</button>
+					<button type="reset">cancel</button>
 					<button type="submit" style="background-color: rgb(147, 208, 248); right:0;">submit</button>
 				</div>
 			</div>
