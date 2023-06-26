@@ -1,14 +1,13 @@
 package com.hoju.koala.board.controller;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -38,10 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/bulletinBoard")
 public class BulletinBoardController {
-	//글수정 글삭제 첨부파일 관한 문제
-	//첨부파일 arraylist로 받아오는 문제
-	//자동 객체 생성 문제
-	//안녕
 	
 	@Autowired
 	private BulletinBoardService bbService;
@@ -158,41 +153,66 @@ public class BulletinBoardController {
 	
 	//게시글 입력 메소드
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
-	public String insertBoard(@RequestParam("upfiles") MultipartFile[] files, Model model,Board b,String subContent, HttpSession session) {
-		String pattern = "<img.*?>";
-		String content = subContent.replaceAll(pattern, "&^*&");
-		System.out.println(content);
+	public String insertBoard(@RequestParam("upfiles") MultipartFile[] files, Model model,Board b,String subContent,HttpSession session) {
+		
+		ArrayList<String> list = new ArrayList<>();
+		ArrayList<BoardAttachment> aList = new ArrayList<>();
+		int result = 1;
+		
 		for(int i=0; i<files.length; i++) {
 			if(!files[i].getOriginalFilename().equals("")) {
 				
 				String changeName = saveFile(files[i],session);
 				String originName = (files[i]).getOriginalFilename();
 				String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
-				BoardAttachment ba = BoardAttachment.builder().originName(originName).changeName(changeName).refBno(b.getBoardNo()).fileLevel(i).filePath(savePath).build();
-				System.out.println(ba);
-//				int result = bbService.insertBoardAttachment(ba);
-//				
-//				if(result<=0) {
-//					new File(session.getServletContext().getRealPath(ba.getFilePath())).delete();
-//					model.addAttribute("errorMsg","첨부파일 저장 실패");
-//					return "common/errorPage";
-//				}
+				BoardAttachment ba = BoardAttachment.builder().refBno(b.getBoardNo()).originName(originName).changeName(changeName).fileLevel(i+1).filePath(savePath).build();
+		        
+				String replacement = "<img src='" + ba.getFilePath() + "/" + changeName + "\'>";
+	            list.add(replacement);
+	            aList.add(ba);
 			}
 		}
-//		
-//		b.builder().boardWriter(String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo())).build();
-//		int result = bbService.insertBoard(b);
-//		BulletinBoard bulletinBoard = BulletinBoard.builder().boardNo(b.getBoardNo()).boardType(category).build();
-//		int result2 = bbService.insertBoardCategory(bulletinBoard);
-//		
-//		if(result*result2!=0) {
-//			model.addAttribute("alertMsg","게시글 작성 성공");
-//			return "redirect:bulletinboard.bo";
-//		}else {
-//			model.addAttribute("errorMsg","게시글 작성 실패");
-//			return "common/errorPage";
-//		}
-		return null;
+		
+		String pattern = "<img.*?>"; 
+		String content = subContent;
+		
+		if(!list.isEmpty()) {
+			for (String replacement : list) {
+				content = subContent.replaceAll(pattern, replacement);
+			}
+		}
+		
+		b.setCategory("B");
+		b.setContent(content);
+		BulletinBoard bulletinBoard = null;
+		System.out.println(b);
+		int result2 = bbService.insertBoard(b);
+		int boardNo = bbService.selectBoardNo();
+		if(b.getContentCode().equals("")) {
+			String contentCode = null;
+			b.setContentCode(contentCode);
+			bulletinBoard = BulletinBoard.builder().boardNo(boardNo).boardType(2).build();
+		}else{
+			bulletinBoard = BulletinBoard.builder().boardNo(boardNo).boardType(1).build();
+		}
+		int result3 = bbService.insertBoardCategory(bulletinBoard);
+		System.out.println(aList);
+		if(result2*result3!=0) {
+			for(BoardAttachment ba: aList) {
+				ba.setRefBno(boardNo);
+				result = bbService.insertBoardAttachment(ba);
+				if(result!=1) {
+					new File(session.getServletContext().getRealPath(ba.getFilePath())).delete();
+					model.addAttribute("errorMsg","첨부파일 저장 실패");
+					return "common/errorPage";
+				}
+			}
+			model.addAttribute("alertMsg","게시글 작성 성공");
+			return "redirect:/bulletinBoard/list";
+		}else {
+			model.addAttribute("errorMsg","게시글 작성 실패");
+			return "common/errorPage";
+		}
 	}
 		
 	//글쓰기 페이지
@@ -208,6 +228,18 @@ public class BulletinBoardController {
 		Board b = bbService.selectBoard(boardNo);
 		model.addAttribute(b);
 		return "../views/board/freeBoard/boardUpdateForm";
+	}
+	
+	//글 수정 메소드
+	@RequestMapping(value = "updateboard", method = RequestMethod.POST)
+	public String updateBoard(@RequestParam("upfiles") MultipartFile[] files, Model model) {
+//		System.out.println(files[0].getOriginalFilename());
+//		System.out.println(files[1].getOriginalFilename());
+		for(MultipartFile file:files) {
+			System.out.println(file.getOriginalFilename());
+			
+		}
+		return null;
 	}
 	
 	//글 삭제 메소드
@@ -267,7 +299,7 @@ public class BulletinBoardController {
 		String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
 		
 		try {
-			upfile.transferTo(new File(savePath+changeName));
+			upfile.transferTo(new File(savePath+"/"+changeName));
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

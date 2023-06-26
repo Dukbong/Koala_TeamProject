@@ -83,7 +83,7 @@
                 <p>Content:</p>
                 <textarea id="content" name="subContent" style="display:none"></textarea>
                 <div id="divcontent" contentEditable="true" style="border: solid 1px;line-height: 20px;"></div><br>
-                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple="multiple" />
+                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple />
                 <div id="fileList"></div> <br><br>
                 <p>Code:</p>
                 <textarea id="editor" name="contentCode" class="editor"></textarea>
@@ -109,29 +109,30 @@
         function previewFiles() {
         	var preview = document.querySelector('#divcontent');
         	var files = document.querySelector('input[type=file]').files;
-
+			
             function readAndPreview(file) {
                
                 if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-                var reader = new FileReader();
-
-                reader.addEventListener(
-                    'load',
-                    function () {
-                    var image = new Image();
-                    image.height = 200;
-                    image.title = file.name;
-                    image.src = this.result;
-                    preview.appendChild(image);
-                    },
-                    false
-                );
-
-                reader.readAsDataURL(file);
+	                var reader = new FileReader();
+	
+	                reader.addEventListener(
+	                    'load',
+	                    function () {
+	                    var image = new Image();
+	                    image.height = 200;
+	                    image.title = file.name;
+	                    image.src = this.result;
+	                    preview.appendChild(image);
+	                    },
+	                    false
+	                );
+	
+	                reader.readAsDataURL(file);
                 }
             }
 
             if (files) {
+            	console.log(files);
                 [].forEach.call(files, readAndPreview);
             }
         }
@@ -150,7 +151,6 @@
         document.getElementById('browse').addEventListener('change', function(event) {
             var fileList = document.getElementById('fileList');
             
-            console.log("hello");
             var files = event.target.files; 
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -161,16 +161,32 @@
         });
         
         function submitForm() {
-        	content.innerHTML = divcontent.innerHTML;
-        	
         	var form = document.getElementById('myForm');
         	var formData = new FormData(form);
+        	var title = document.getElementById('title').value;
+        	content.innerHTML = divcontent.innerHTML;
+        	if(title===''){
+        		window.alert("제목을 입력해주세요.");
+        		return false;
+        	}else if(content.innerHTML===''){
+        		window.alert("내용을 입력해주세요.");
+        		return false;
+        	}
+        	
         	formData.append('additionalData', 'some value');
+        	var fileInput = document.getElementById('browse');
+        	console.log(fileInput.files);
+        	    var files = fileInput.files;
+        	    for (var i = 0; i < files.length; i++) {
+        	    	console.log(files[i]);
+        	      formData.append('upfiles', files[i]);
+        	    } 
 			form.action = "insert";
         	var shouldSubmitForm = confirm('작성하시겠습니까?');
         	
         	return shouldSubmitForm;
         }
+        
     </script>
     <jsp:include page="../../common/footer.jsp"/>
 </body>

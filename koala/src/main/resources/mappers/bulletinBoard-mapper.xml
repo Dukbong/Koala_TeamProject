@@ -43,12 +43,12 @@
 	
 	<insert id="insertBoard">
 		INSERT INTO BOARD (BOARD_NO, CATEGORY, BOARD_WRITER, TITLE, CONTENT, CONTENT_CODE)
-		VALUES(SEQ_BNO.NEXTVAL,#{boardNo},#{category},#{boardWriter},#{title},#{content}, #{contentCode})
+		VALUES(SEQ_BNO.NEXTVAL,#{category},#{boardWriter},#{title},#{content}, #{contentCode})
 	</insert>
 	
 	<insert id="insertBoardAttachment">
-		INSERT INTO BOARD (FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL)
-		VALUES(SEQ_FNO.NEXTVAL,#{fileNo},#{refBno},#{originName},#{changeName},#{filePaht}, #{fileLevel})
+		INSERT INTO BOARD_ATTACHMENT (FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL)
+		VALUES(SEQ_FNO.NEXTVAL,#{refBno},#{originName},#{changeName},#{filePath}, #{fileLevel})
 	</insert>
 	
 	<update id="increaseLike">
@@ -146,12 +146,12 @@
 		FROM BOARD B
         JOIN MEMBER ON(BOARD_WRITER = USER_NO)
 		WHERE CATEGORY = 'B'
-		AND BOARD_NO = #{boardNo}
+		AND BOARD_NO = #{boardNo} 
 	</select>
 	
 	<insert id="insertBoardCategory">
-		INSERT INTO BULLETINBOARD
-		VALUES (#{boardNo},#{boardType))
+		INSERT INTO BULLETIN_BOARD
+		VALUES (#{boardNo},#{boardType})
 	</insert>
 	
 	<select id="boardCategoryDetailView" resultMap="bulletinBoardResultSet">
@@ -184,6 +184,14 @@
 		WHERE REF_BNO = #{refBno}
 		AND REF_UNO = #{refUno}
 	</select>
+	
+	<select id="selectBoardNo" resultType="_int">
+		SELECT BOARD_NO 
+		FROM BOARD 
+		WHERE ROWNUM = 1 
+		ORDER BY BOARD_NO DESC
+	</select>
+	
 	
 	<!-- 공통으로 사용할 게시판 관련 resultMap -->
 	
