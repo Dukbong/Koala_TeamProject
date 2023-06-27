@@ -23,7 +23,7 @@
   		<typeAlias type="com.hoju.koala.member.model.vo.Profile" alias="profile"/>
   		
   		<typeAlias type="com.hoju.koala.setting.model.vo.Setting" alias="setting"/>
-  		<typeAlias type="com.hoju.koala.setting.model.vo.Version" alias="version"/>
+  		
   		<typeAlias type="com.hoju.koala.board.model.vo.Board" alias="board"/>
   		<typeAlias type="com.hoju.koala.board.model.vo.BulletinBoard" alias="bulletinBoard"/>
   		<typeAlias type="com.hoju.koala.board.model.vo.BoardAttachment" alias="boardAttachment"/>

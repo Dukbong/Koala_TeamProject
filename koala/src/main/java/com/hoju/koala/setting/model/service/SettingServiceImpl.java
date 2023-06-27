@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.hoju.koala.setting.model.dao.SettingDao;
 import com.hoju.koala.setting.model.vo.Setting;
-import com.hoju.koala.setting.model.vo.Version;
 
 @Service
 public class SettingServiceImpl implements SettingService {
@@ -38,14 +37,6 @@ public class SettingServiceImpl implements SettingService {
 		return s;
 	}
 
-	//해당 Setting의 Version리스트 조회
-	@Override
-	public ArrayList<Version> selectVersionList(int settingNo) {
-		
-		ArrayList<Version> verlist = stDao.selectVersionList(sqlSession, settingNo);
-		
-		return verlist;
-	}
 	
 	
 }
