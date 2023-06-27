@@ -24,7 +24,7 @@ public class SettingController {
 	public String selectList(Model model) {
 		
 		//굴 리스트 조회
-		ArrayList<Setting> slist = stService.selectList();
+		ArrayList<Setting> slist = stService.selectSettingList();
 		
 		//버전정보도 추가해야함.
 		
@@ -41,21 +41,7 @@ public class SettingController {
 	}
 	
 	
-	//디테일 페이지로 보내기
-	@GetMapping("/detail")
-	public String detail(int settingNo,
-						 Model model) {
-		
-		//해당 setting 모든 버전 조회
-		Setting s = stService.selectSetting(settingNo);
-		
-		System.out.println(s);
-		
-		//해서 최ㅅ
-		
-		
-		return null; //디테일 페이지 완성되면
-	}
+	
 	
 	
 }

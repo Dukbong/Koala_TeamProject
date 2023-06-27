@@ -11,9 +11,9 @@ import com.hoju.koala.setting.model.vo.Setting;
 public class SettingDao {
 
 	//리스트 조회
-	public ArrayList<Setting> selectList(SqlSessionTemplate sqlSession) {
+	public ArrayList<Setting> selectSettingList(SqlSessionTemplate sqlSession) {
 		
-		return (ArrayList)sqlSession.selectList("settingMapper.selectList");
+		return (ArrayList)sqlSession.selectList("settingMapper.selectSettingList");
 	}
 
 	//해당 Setting 조회
@@ -21,6 +21,8 @@ public class SettingDao {
 		
 		return sqlSession.selectOne("settingMapper.selectSetting", settingNo);
 	}
+
+	
 	
 
 }

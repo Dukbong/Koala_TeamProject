@@ -14,15 +14,13 @@
 		<result column="SETTING_INFO" property="settingInfo"/>
 		<result column="SETTING_CODE" property="settingCode"/>
 		<result column="INPUT" property="input"/>
-		<result column="SETTING_PATH" property="settingPath"/>
 		<result column="STATUS" property="status"/>
 		<result column="CREATE_DATE" property="createDate"/>
-		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
 	
 	
 	<!-- Setting리스트 조회 -->
-	<select id="selectList" resultMap="settingResultSet">
+	<select id="selectSettingList" resultMap="settingResultSet">
 		SELECT *
 		FROM CREATE_SETTING
 		WHERE STATUS = 'Y'

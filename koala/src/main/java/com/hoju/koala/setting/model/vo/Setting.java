@@ -21,11 +21,10 @@ SORT_DESCRIPTION	VARCHAR2(1000 BYTE)
 SETTING_INFO	CLOB
 SETTING_CODE	VARCHAR2(4000 BYTE)
 INPUT	VARCHAR2(200 BYTE)
-SETTING_PATH	VARCHAR2(200 BYTE)
 STATUS	VARCHAR2(2 BYTE)
 CREATE_DATE	DATE
-MODIFY_DATE	DATE //필요할까?
  */
+
 	private int settingNo;
 	private int refUno;
 	private String settingTitle;
@@ -34,8 +33,7 @@ MODIFY_DATE	DATE //필요할까?
 	private String settingInfo;
 	private String settingCode;
 	private String input;
-	private String settingPath;
 	private String status;
 	private Date createDate;
-	private Date modifyDate;
+	
 }

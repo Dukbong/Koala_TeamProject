@@ -172,12 +172,12 @@ CREATE TABLE SUPPORTERS(
     REPO_URL VARCHAR2(100) DEFAULT '',
     CONSTRAINT FK_SU FOREIGN KEY(REF_UNO) REFERENCES MEMBER(USER_NO) ON DELETE CASCADE
 );
-​
+
 COMMENT ON COLUMN SUPPORTERS.REF_UNO IS '참조 회원 번호';
 COMMENT ON COLUMN SUPPORTERS.GITHUB_ID IS 'GitHub 아이디';
 COMMENT ON COLUMN SUPPORTERS.CREATE_DATE IS '서포터즈 생성일';
 COMMENT ON COLUMN SUPPORTERS.REPO_URL IS '서포터즈 레포';
-​
+
 
 
 INSERT INTO SUPPORTERS VALUES (1, 'seolheee', SYSDATE, DEFAULT);
@@ -319,7 +319,7 @@ VALUES ('2', '2');
 
 -------------------------------------------------CREATE_SETTING TABLE
 CREATE TABLE CREATE_SETTING(
-    SETTING_NO NUMBER PRIMARY KEY,
+    SETTING_NO NUMBER UNIQUE,
     REF_UNO NUMBER NOT NULL,
     SETTING_TITLE VARCHAR2(100) NOT NULL,
     SETTING_VERSION VARCHAR2(100) DEFAULT '1.0.0' NOT NULL,
@@ -327,11 +327,11 @@ CREATE TABLE CREATE_SETTING(
     SETTING_INFO CLOB NOT NULL,
     SETTING_CODE VARCHAR2(4000) NOT NULL,
     INPUT VARCHAR2(200),
-    SETTING_PATH VARCHAR2(200) UNIQUE,
     STATUS VARCHAR2(2) DEFAULT 'W' NOT NULL CHECK (STATUS IN ('W','Y','N')),
     CREATE_DATE DATE DEFAULT SYSDATE NOT NULL,
-    MODIFY_DATE DATE DEFAULT SYSDATE NOT NULL,
+    PRIMARY KEY (SETTING_NO, SETTING_VERSION),
     CONSTRAINT FK_SE FOREIGN KEY(REF_UNO) REFERENCES MEMBER(USER_NO) ON DELETE CASCADE
+
 );
 
 COMMENT ON COLUMN CREATE_SETTING.SETTING_NO IS '세팅 번호';
@@ -342,19 +342,17 @@ COMMENT ON COLUMN CREATE_SETTING.SORT_DESCRIPTION IS '짧은 설명';
 COMMENT ON COLUMN CREATE_SETTING.SETTING_INFO IS '세팅 설명';
 COMMENT ON COLUMN CREATE_SETTING.SETTING_CODE IS '세팅코드';
 COMMENT ON COLUMN CREATE_SETTING.INPUT IS '인풋요소';
-COMMENT ON COLUMN CREATE_SETTING.SETTING_PATH IS '입력폼 저장위치';
 COMMENT ON COLUMN CREATE_SETTING.STATUS IS '상태값';
 COMMENT ON COLUMN CREATE_SETTING.CREATE_DATE IS '생성일';
-COMMENT ON COLUMN CREATE_SETTING.MODIFY_DATE IS '수정일';
 
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'Common dbcp', DEFAULT, 'DB 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자1', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/driverClassName,url,username,password', 'path', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'Mybatis', DEFAULT, 'DB1 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자2', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/driverClassName,url,username,password', 'path1', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 2, 'CommonsMultipartResolver', DEFAULT, 'DB2 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자3', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/defaultEncoding,maxUploadSize,maxInMemorySize', 'path2', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 4, 'springSecurity', DEFAULT, 'DB3 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자4', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/driverClassName,url,username,password', 'path3', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 6, 'Filter', DEFAULT, 'DB4 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', 'path4', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'AOP', DEFAULT, 'DB7 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자9', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', 'pat5h', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 2, 'WebSocket', DEFAULT, 'DB8 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자7', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', 'pat6h', DEFAULT, DEFAULT, DEFAULT);
-INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'Schedule', DEFAULT, 'DB9 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자8', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', 'pat7h', DEFAULT, DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'Common dbcp', DEFAULT, 'DB 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자1', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/driverClassName,url,username,password', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'Mybatis', DEFAULT, 'DB1 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자2', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/driverClassName,url,username,password', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 2, 'CommonsMultipartResolver', DEFAULT, 'DB2 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자3', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/defaultEncoding,maxUploadSize,maxInMemorySize', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 4, 'springSecurity', DEFAULT, 'DB3 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자4', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', 'input/driverClassName,url,username,password', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 6, 'Filter', DEFAULT, 'DB4 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'AOP', DEFAULT, 'DB7 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자9', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 2, 'WebSocket', DEFAULT, 'DB8 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자7', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', DEFAULT, DEFAULT);
+INSERT INTO CREATE_SETTING VALUES (SEQ_SET.NEXTVAL, 1, 'Schedule', DEFAULT, 'DB9 연결에 사용되는 Connection Pool을 만들어 관리 및 공유 할 수 있게 해주는 역할', '설명서||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||어쩌구 저쩌구||CHR(13)||CHR(10)||1||CHR(13)||CHR(10)||2||CHR(13)||CHR(10)||3||CHR(13)||CHR(10)||작성할곳||CHR(13)||CHR(10)||src/main/webapp/WEB-INF/spring/root-context.xml||CHR(13)||CHR(10)||자자자8', '<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">||CHR(13)||CHR(10)||<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>||CHR(13)||CHR(10)||<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>||CHR(13)||CHR(10)||<property name="username" value="SPRING"/>||CHR(13)||CHR(10)||<property name="password" value="SPRING"/>||CHR(13)||CHR(10)||</bean>', '', DEFAULT, DEFAULT);
 
 -------------------------------------------------ERROR_BOARD TABLE
 CREATE TABLE ERROR_BOARD(
@@ -473,19 +471,6 @@ INSERT INTO BLOCK_IP VALUES ('125.143.66.35',5,'N');
 INSERT INTO BLOCK_IP VALUES ('173.174.61.69',1,'N');
 INSERT INTO BLOCK_IP VALUES ('182.193.62.36',5,'Y');
 
-
-
------------------------------------------------SQL CLOUD
-CREATE TABLE SQLCLOUD(
-	SQLTITLE VARCHAR2(200) UNIQUE,
-	SQLCONTENT CLOB NOT NULL,
-	CREATE_DATE DATE DEFAULT SYSDATE NOT NULL,
-	MODIFY_DATE DATE DEFAULT SYSDATE NOT NULL,
-)
-COMMENT ON COLUMN SQLCLOUD.SQLTITLE IS 'SQL제목';
-COMMENT ON COLUMN SQLCLOUD.SQLCONTENT IS 'SQL내용';
-COMMENT ON COLUMN SQLCLOUD.CREATE_DATE IS '생성일';
-COMMENT ON COLUMN SQLCLOUD.MODIFY_DATE IS '마지막수정일';
 
 COMMIT;
 
