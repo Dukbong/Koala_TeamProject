@@ -22,6 +22,12 @@ public class SettingDao {
 		return sqlSession.selectOne("settingMapper.selectSetting", settingNo);
 	}
 
+	//버전정보와 
+	public ArrayList<Setting> selectVersionList(SqlSessionTemplate sqlSession, String settingTitle) {
+		
+		return (ArrayList)sqlSession.selectList("settingMapper.selectVersionList", settingTitle);
+	}
+
 	
 	
 
