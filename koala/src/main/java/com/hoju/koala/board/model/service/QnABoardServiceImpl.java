@@ -160,6 +160,41 @@ public class QnABoardServiceImpl implements QnABoardService{
 		
 		return qnaDao.replyCount(sqlSession,boardNo);
 	}
+
+	//qna 좋아요 수
+	@Override
+	public int getLikeCount(int boardNo) {
+		
+		return qnaDao.getLikeCount(sqlSession,boardNo);
+	}
+
+	//qna 댓글 채택
+	@Override
+	public int qnaSelect(int boardNo, int replyNo) {
+		
+		return qnaDao.qnaSelect(sqlSession,boardNo,replyNo);
+	}
+
+	//qna 게시글 삭제
+	@Override
+	public int deleteBoard(int boardNo) {
+		
+		return qnaDao.deleteBoard(sqlSession,boardNo);
+	}
+
+	//qna 댓글 채택 여부
+	@Override
+	public String chkSelectedReply(int boardNo, Integer replyNo) {
+		
+		return qnaDao.chkSelectedReply(sqlSession,boardNo,replyNo);
+	}
+
+	//qna 좋아요 수
+//	@Override
+//	public int countLike(int boardNo) {
+//		
+//		return qnaDao.countLike(sqlSession,boardNo);
+//	}
 	
 
 }
