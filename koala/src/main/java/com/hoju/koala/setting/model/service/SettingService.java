@@ -12,5 +12,8 @@ public interface SettingService {
 	//해당 setting조회
 	Setting selectSetting(int settingNo);
 
+	//ajax 버전정보와 setting번호
+	ArrayList<Setting> selectVersionList(String settingTitle);
+
 
 }

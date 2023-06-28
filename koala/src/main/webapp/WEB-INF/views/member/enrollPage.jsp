@@ -15,7 +15,8 @@
 	#content{
 		margin: auto;
 		width: 80%;
-		height: 1100px;
+		height: 1400px;
+		padding-top: 200px
 	}
 	
 	#insert-form{
@@ -499,7 +500,7 @@
        		
    		});
 	</script>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
 	<div id="content">
 		<div id="content_1" align="center">
 	        <div id="enroll-area">
@@ -563,7 +564,7 @@
 			                	<td>
 			                		<div class="input-group" id="email-group">
 				                		<input class="box" type="text" name="email" id="email" required placeholder="이메일 형식으로 입력">
-				                		<button type="button" class="btn btn-success" id="emailSend">Send</button>
+				                		<button type="button" class="btn btn-success" id="emailSend" style="z-index: auto;">Send</button>
 			                		</div>
 			                	</td>
 			                	<td>
@@ -578,9 +579,9 @@
 								<td>
 									<div class="input-group" id="checkCode-group">
 										<input class="box" id="certiCode" type ="text" required placeholder="인증코드 입력">
-										<button type="button" class="btn btn-success" id="certiCheck">Check</button>
+										<button type="button" class="btn btn-success" id="certiCheck" style="z-index: auto;">Check</button>
 									</div>
-									<input type="text" class="box hide" id="email-success" readonly value="인증 완료">
+									<input type="text" class="box hide" id="email-success" style="background-color: black;"readonly value="인증 완료">
 								</td>
 								
 			                </tr>

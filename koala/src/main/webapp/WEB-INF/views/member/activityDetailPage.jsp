@@ -87,13 +87,6 @@
    		width: 40%;
    	}
    	
-   	.profile{
-	    width: 150px;
-	    height: 150px;
-	    border-radius: 70%;
-	    overflow: hidden;
-	    position: relative;
-	}
 	
 	#introduce-box textarea{
 		background-color: rgb(52, 73, 94);
@@ -130,19 +123,17 @@
    		color: gray;
    	}
    	
-   	#result-area>table>tbody>tr:hover{
-   		cursor: pointer;
-   		color: gray;
+   	
+   	
+   	.rel-board tbody>tr>td{
+   		color: black;
    	}
    	
-   	#result-area>table>tr:hover{
-   		cursor: pointer;
-   		color: gray;
-   	}
+   	
    	
 
 
-	#result-area table {
+	.rel-board {
 		border: 1px #a39485 solid;
 		font-size: .9em;
 		box-shadow: 0 2px 5px rgba(0,0,0,.25);
@@ -152,72 +143,59 @@
 		overflow: hidden;
 	}
 
-	#result-area th {
+	.rel-board th {
 		text-align: left;
 	}
   
-	#result-area thead {
+	.rel-board thead {
 		font-weight: bold;
 		color: #fff;
 		background: #73685d;
 	}
   
-	#result-area td,#result-area th {
+	.rel-board td,.rel-board th {
 		padding: 1em .5em;
 		vertical-align: middle;
 	}
+	
+	.rel-board>tbody>tr>th{
+		background: #fff;
+		color: black;
+	}
   
-	#result-area td {
+	.rel-board td {
 		border-bottom: 1px solid rgba(0,0,0,.1);
 		background: #fff;
 	}
-
 	
-  
-	 @media all and (max-width: 768px) {
-	    
-	  table, thead, tbody, th, td, tr {
-	    display: block;
-	  }
-	  
-	  th {
-	    text-align: right;
-	  }
-	  
-	  table {
-	    position: relative; 
-	    padding-bottom: 0;
-	    border: none;
-	    box-shadow: 0 0 10px rgba(0,0,0,.2);
-	  }
-	  
-	  thead {
-	    float: left;
-	    white-space: nowrap;
-	  }
-	  
-	  tbody {
-	    overflow-x: auto;
-	    overflow-y: hidden;
+	.rel-board tbody>tr:hover{
+		opacity: 0.8;
+		cursor: pointer;
+	}
+	
+	
+	
+	
+	.rel-user{
+		text-align: center;
+		float: left;
+		margin: auto;
+	}
+	
+	.rel-user:hover{
+		cursor: pointer;
+		opacity: 0.7;
+	}
+	
+	
+   	.profile{
+	    width: 150px;
+	    height: 150px;
+	    border-radius: 70%;
+	    overflow: hidden;
 	    position: relative;
-	    white-space: nowrap;
-	  }
-	  
-	  tr {
-	    display: inline-block;
-	    vertical-align: top;
-	  }
-	  
-	  th {
-	    border-bottom: 1px solid #a39485;
-	  }
-	  
-	  td {
-	    border-bottom: 1px solid #e5e5e5;
-	  }
-	  
-	  
-	  }
+	}
+
     
 </style>
 <body>
@@ -477,13 +455,24 @@
                 		
                 		<c:when test="${not empty fList }">
                 			<c:forEach var="f" items="${fList }">
-                				<table class="rel-user" style="color:white;">
-									<tr>
-										<input type="hidden" value="${f.userId }">
-										<td>프로필이미지</td>
-										<td>닉네임${f.nickName }</td>
-									</tr>
-                				</table>
+								<table class="rel-user">
+				                    <tr>
+				                    	<input type="hidden" value="${f.userId }">
+				                        <th>
+				                        	<c:choose>
+												<c:when test="${f.profile != null }">
+												    <img class="profile" src="${pageContext.request.contextPath}${f.profile.filePath}${f.profile.changeName}"></img>
+												</c:when>
+												<c:otherwise>
+												    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+												</c:otherwise>
+											</c:choose>
+				                        </th>
+				                    </tr>
+				                    <tr>
+				                        <th>${f.nickName}</th>
+				                    </tr>
+				                </table>
 							</c:forEach>
                 		</c:when>
                 		
@@ -534,7 +523,7 @@
 	            		});
 	                	
 	                	
-	                	$("#result-area>.rel-user tr").on("click", function(){
+	                	$("#result-area>.rel-user").on("click", function(){
 	                		//유저 아이디로 넘겨야함
 	                		
 	                		var uid = $(this).find("input[type=hidden]").val();

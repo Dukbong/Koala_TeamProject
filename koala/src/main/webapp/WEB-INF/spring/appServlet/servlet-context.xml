@@ -42,6 +42,12 @@
 			<exclude-mapping path="/admin/**"/>
 			<beans:bean class="com.hoju.koala.admin.interceptor.SupporterInterceptor" id="SupportInterceptor"/>
 		</interceptor>
+		
+		<interceptor>
+			<!-- 페이지 접근제한 -->
+			<mapping path="/member/as"/> <!-- 사용자 계정관리 페이지 -->
+			<beans:bean class="com.hoju.koala.member.interceptor.MemberInterceptor" id="MemberInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 	
@@ -69,14 +75,6 @@
 		<beans:property name="defaultEncoding" value="UTF-8"/>
 		<beans:property name="maxUploadSize" value="10000000"/>
 		<beans:property name="maxInMemorySize" value="10000000"/>
-	</beans:bean>
-	
-	<interceptors>
-		<interceptor>
-			<!-- 페이지 접근제한 -->
-			<mapping path="/as"/> <!-- 사용자 계정관리 페이지 -->
-			<beans:bean class="com.hoju.koala.member.interceptor.MemberInterceptor" id="MemberInterceptor"/>
-		</interceptor>
-	</interceptors>
+	</beans:bean>	
 	
 </beans:beans>
