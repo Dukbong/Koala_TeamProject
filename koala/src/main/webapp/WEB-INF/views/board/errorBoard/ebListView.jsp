@@ -12,7 +12,7 @@
 <style>
 
     div{ box-sizing: border-box;}
-    .ebListView{width: 80%; margin:auto; padding: 200px 0px 80px 0px;}
+    .ebListView{width: 1600px; margin:auto; padding: 200px 0px 80px 0px;}
     .body_content{
         display: flex;
         flex-wrap: wrap;
@@ -90,7 +90,7 @@
     }
     .middle_area table>thead{
         height: 10%;
-        font-size: 13px;
+        font-size: 14px;
         color: rgb(255, 201,20);        
     }
     .middle_area table>tbody{
@@ -102,6 +102,9 @@
     .middle_area table > tbody > tr:hover{
         opacity: 85%;
     }
+    .middle_area i:hover{
+    	cursor: pointer;
+    }
     .notice{
         color: rgb(206, 145, 120);
         font-weight: bold;
@@ -111,7 +114,7 @@
         width: 80px;
         height: 30px;
         margin-left: 80px;
-        margin-top: 30px;
+        margin-top: 50px;
     }
     .insertBtn_area button{
         background-color: rgb(255, 201,20);
@@ -160,10 +163,47 @@
 
 		<script>
 			$(function(){
-				if("${category}"!="" && "${keyword}"!=""){
+				if("${category}"!="" && "${keyword}"!=""){ //검색어 유지
 					$("select[name='category']").val("${category}").prop("selected", true);
 					$("input[name='keyword']").val("${keyword}");
 				}
+				
+				var color1 = "rgb(255, 201, 20)" //기존색
+				var color2 = "rgb(255, 150, 20)"; //표시용 진한색
+				
+				if("${sort}" != null){ //정렬 유지
+					switch ("${sort}") {
+					  case "ascDate": $("#sortDate").css("color", color2); break;
+					  case "descDate": $("#sortDate").css("color", color1); break;
+					  case "descCount": $("#sortCount").css("color", color2); break;
+					  case "ascCount": $("#sortCount").css("color", color1); break;
+					}
+				}
+				
+				$(".sort").on("click", function(){ // 정렬 변경
+					var sort = ($(this).parent().text()).substr(0,3);
+					var color = $(this).css("color");
+					
+					if(sort == "작성일"){ //작성일
+						if(color == "rgb(255, 201, 20)"){ //기본정렬
+							sort = "ascDate";
+							$(this).css("color", color2);
+						}else{ //반대정렬
+							sort = "descDate";
+							$(this).css("color", color1);
+						}
+					}else{ //조회수
+						if(color == "rgb(255, 201, 20)"){ //기본정렬
+							sort = "descCount"
+							$(this).css("color", color2);
+						}else{ //반대정렬
+							sort = "ascCount";
+							$(this).css("color", color1);
+						}
+					}			
+					
+					location.href="list?currentPage=${pi.currentPage}&category=${category}&keyword=${keyword}&sort="+sort;
+				})
 			})
 		</script>
         <div class="body_content">
@@ -189,12 +229,12 @@
                 <table>
                     <thead>
                         <tr style="height: 50px;">
-                            <th style="width: 80px;">글번호</th>
-							<th style="width: 200px;">라이브러리&nbsp;&nbsp;<i class="fa-solid fa-sort fa-sm" style="color: #ffc914;"></i></th>
+                            <th style="width: 90px;">글번호</th>
+							<th style="width: 200px;">라이브러리</th>
 							<th>제목</th>
 							<th style="width: 90px;">작성자</th>
-							<th style="width: 100px;">작성일</th>
-							<th style="width: 90px;">조회수</th>
+							<th style="width: 100px;">작성일&nbsp;&nbsp;<i id="sortDate" class="fa-solid fa-sort fa- sort" style="color: #ffc914;"></i></th>
+							<th style="width: 90px;">조회수&nbsp;&nbsp;<i id="sortCount" class="fa-solid fa-sort fa- sort" style="color: #ffc914;"></i></th>
 							<th style="width: 90px;">해결여부</th>
                         </tr>
                     </thead>
@@ -202,7 +242,7 @@
                     	<c:forEach var="eb" items="${ebList}">
                     		<c:choose>
 								<c:when test="${eb.board.notice ne 'Y' }"><tr style="height: 47px;"></c:when>
-								<c:otherwise><tr style="height: 40px;" class="notice"></c:otherwise>
+								<c:otherwise><tr style="height: 47px;" class="notice"></c:otherwise>
 							</c:choose>
 								<td>${eb.board.boardNo }</td>
 								<td>${eb.createSetting.settingTitle }</td>
@@ -213,7 +253,7 @@
 								<td>
 									<c:choose>
 										<c:when test="${eb.errorBoard.solved eq 'Y'}"><span style="color:gray">해결완료</span></c:when>
-										<c:when test="${eb.errorBoard.solved eq 'N' and eb.errorBoard.notice eq 'N'}"><span style="color:rgb(255,116,96);">대기중</span></c:when>
+										<c:when test="${eb.errorBoard.solved eq 'N' and eb.board.notice eq 'N'}"><span style="color:rgb(255,116,96);">대기중</span></c:when>
 									</c:choose>
 								</td>
 							</tr>
@@ -236,19 +276,19 @@
                 		<li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
             		</c:when>
             		<c:otherwise>
-                		<li class="pagingSection"><a class="page-link" href="list?currentPage=${pi.currentPage -1}&category=${category}&keyword=${keyword}">&lt;</a></li>	
+                		<li class="pagingSection"><a class="page-link" href="list?currentPage=${pi.currentPage -1}&category=${category}&keyword=${keyword}&sort=${sort}">&lt;</a></li>	
             		</c:otherwise>
             	</c:choose>
 				<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
                		<li class="pagingSection"><a class="page-link" 
-					<c:if test="${p eq pi.currentPage }">style="color: rgb(255, 201,20);"</c:if> href="list?currentPage=${p }&category=${category}&keyword=${keyword}">${p }</a></li>
+					<c:if test="${p eq pi.currentPage }">style="color: rgb(255, 201,20);"</c:if> href="list?currentPage=${p }&category=${category}&keyword=${keyword}&sort=${sort}">${p }</a></li>
             	</c:forEach>
             	<c:choose>
             		<c:when test="${pi.currentPage eq pi.maxPage }">
                 		<li class="pagingSection"><a class="page-link" href="#">&gt;</a></li>
             		</c:when>
             		<c:otherwise>
-            			<li class="pagingSection"><a class="page-link" href="list?currentPage=${pi.currentPage + 1}&category=${category}&keyword=${keyword}">&gt;</a></li>	
+            			<li class="pagingSection"><a class="page-link" href="list?currentPage=${pi.currentPage + 1}&category=${category}&keyword=${keyword}&sort=${sort}">&gt;</a></li>	
             		</c:otherwise>
             	</c:choose>
             </ul>
