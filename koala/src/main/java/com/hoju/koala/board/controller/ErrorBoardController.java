@@ -2,6 +2,7 @@ package com.hoju.koala.board.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -41,26 +42,28 @@ public class ErrorBoardController {
 	public String selectList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 							 @RequestParam(value="category", defaultValue="") String category,
 							 @RequestParam(value="keyword", defaultValue="") String keyword,
+							 @RequestParam(value="sort", defaultValue="") String sort,
 			 				 Model model) {
 		
 		int listCount = 0;
 		HashMap<String,String> hashMap = new HashMap<>();
 		ArrayList<ErrorSet> ebList = new ArrayList<>();
 		
-		if(category.equals("") || keyword.equals("")) {
+		if((category.equals("") || keyword.equals("")) && sort.equals("")) {
 			listCount = ebService.selectListCount();
 		}else {
 			hashMap.put("category", category);
 			hashMap.put("keyword", keyword);
+			hashMap.put("sort", sort);
 			
 			listCount = ebService.searchListCount(hashMap);
 		}
-		int pageLimit = 20;
-		int boardLimit = 20;
+		int pageLimit = 10;
+		int boardLimit = 10;
 		
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
-		if(category.equals("") || keyword.equals("")) {
+		if((category.equals("") || keyword.equals("")) && sort.equals("")) {
 			ebList = ebService.selectList(pi);
 		}else {
 			ebList = ebService.searchList(pi, hashMap);
@@ -70,10 +73,8 @@ public class ErrorBoardController {
 		model.addAttribute("ebList", ebList);
 		model.addAttribute("category", category);
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("sort", sort);
 		
-		System.out.println("listCount"+listCount);
-		System.out.println("게시글 총 개수"+ebList.size());
-		System.out.println(ebList);
 		
 		return "board/errorBoard/ebListView";
 	}
@@ -99,7 +100,7 @@ public class ErrorBoardController {
 			
 		}else {
 			
-			model.addAttribute("errorMsg", "게시글 조회에 실패했습니다."); //이게 맞나
+			model.addAttribute("errorMsg", "게시글 조회에 실패했습니다.");
 			return "common/error";
 		}
 	}
@@ -109,7 +110,7 @@ public class ErrorBoardController {
 	@GetMapping("/enrollForm")
 	public String enrollForm(Model model) {
 		
-		ArrayList<CreateSetting> libList = ebService.selectLibList();  //list로 가져오는법.....
+		ArrayList<CreateSetting> libList = ebService.selectLibList();
 		
 		model.addAttribute("libList", libList);
 		return "board/errorBoard/ebEnrollForm";
@@ -239,6 +240,16 @@ public class ErrorBoardController {
 		
 		return ebService.deleteReply(replyNo);
 	}
+	
+	//insert.cs 테스트용
+//	@PostMapping("insert.cs")
+//	public String createSettingTest(CreateSetting cs) {
+//		
+//		System.out.println(cs);
+//		
+//		return "";
+//	}
+	
 	
 	
 }
