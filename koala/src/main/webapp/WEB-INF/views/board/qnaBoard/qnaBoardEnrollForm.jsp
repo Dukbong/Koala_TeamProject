@@ -170,8 +170,8 @@
                             <th colspan="4" style="text-align: left;"><input type="text" id="titleArea" name="title" placeholder="제목을 입력하세요"></th>
                         </tr>
                          <tr>
-                            <th style="width: 10%;"><label for="uploadPhoto">사진 <i class="fa-solid fa-image"></i><input type="file" name="upFile" id="uploadPhoto" accept="image/*" style="display: none;"></label></th>
-                            <th style="width: 10%;"><label for="uploadFile">파일 <i class="fa-solid fa-file"></i><input type="file" name="upFile" id="uploadFile" style="display: none;"></label></th>
+                            <th style="width: 10%;"><label for="uploadPhoto">사진 <i class="fa-solid fa-image"></i><input type="file" name="upFile" id="uploadPhoto" accept="image/*"></label></th>
+                            <th style="width: 10%;"><label for="uploadFile">파일 <i class="fa-solid fa-file"></i><input type="file" name="upFile" id="uploadFile"></label></th>
                             <th><label for="uploadCode"><button type="button" onclick="fn_msg();">코드 <i class="fa-solid fa-code"></i></button></label></th>
                         </tr>
                     </thead>
