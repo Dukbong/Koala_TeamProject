@@ -1,8 +1,20 @@
 package com.hoju.koala.admin.controller;
 
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.socket.WebSocketSession;
+
+import com.hoju.koala.admin.model.service.AdminService;
+import com.hoju.koala.admin.model.vo.SqlCloud;
+import com.hoju.koala.member.model.vo.Member;
 
 @Controller
 @RequestMapping("/together")
@@ -17,9 +29,27 @@ public class TestController {
 	 * */
 	
 	// Supporters 게시판에서 
+
+	@Autowired
+	AdminService adminService;
 	
-	@GetMapping("/ssss")
-	public String qqqq() {
-		return "fun/onePage";
+	@GetMapping("/sqlCloud")
+	public String sqlCloud(HttpSession session, Model model,
+						   @RequestParam(value="teamNo", required = false, defaultValue = "0") int teamNo) {
+		// 현재 팀이 있는지 확인
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		ArrayList<SqlCloud> teamList = adminService.selectTeam(userNo); 
+		model.addAttribute("teamList", teamList); 
+		
+		if(teamNo != 0) {
+			ArrayList<Member> memberList = adminService.selectTeamMember(teamNo);
+			int creatorNo = adminService.selectCreator(teamNo);
+			model.addAttribute("memberList", memberList);
+			session.setAttribute("teamNo", teamNo);
+			model.addAttribute("teamNo", teamNo);
+			model.addAttribute("creatorNo",creatorNo);
+		}
+//		return "fun/onePage4";
+		return "fun/test";
 	}
 }

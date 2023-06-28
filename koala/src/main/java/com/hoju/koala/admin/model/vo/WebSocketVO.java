@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SqlCloud {
+@ToString
+public class WebSocketVO {
+	private String type;
 	private int teamNo;
-	private String teamName;
-	private String sqlTitle;
-	private String sqlContent;
-	private String createDate;
-	private String modifyDate;
+	private String userId;
 }

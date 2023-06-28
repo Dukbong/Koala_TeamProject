@@ -81,4 +81,7 @@ public interface BulletinBoardService {
 	//사용자 좋아요 확인 메소드
 	int selectBoardLike(Liked liked);
 
+	//게시글 번호 가져오기 메소드
+	int selectBoardNo();
+
 }

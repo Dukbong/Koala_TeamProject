@@ -21,6 +21,7 @@
         height: 1300px;
         width: 80%;
     	margin: auto;
+    	padding-top: 200px
     }
     
     #content{
@@ -32,7 +33,7 @@
     	margin: auto;
     	width: 80%;
     	margin-bottom: 5%;
-    	background-color: black;
+    	background-color: rgb(45, 45, 45);
     	padding: 30px;
     }
     
@@ -160,9 +161,9 @@
 	}
 	
 	#profile-area{
-    	height:80%;
-    	width: 80%;
-    	background-color: rgb(40, 40, 40);
+    	height:100%;
+    	width: 90%;
+    	background-color: rgb(30, 30, 30);
     }
     
 	
@@ -193,8 +194,9 @@
 	    left: 0;
 	    width: 100%;
 	    height: 100%;
-	    display: none;
+	    /* display: none; */
 	    z-index: 2;
+	    opacity: 0;
 	}
 	
 	
@@ -205,12 +207,10 @@
 		height: 100%;
 	}
 	
-	.profile:hover{
-		opacity: 0.3;
-	}
 	
-	.profile:hover+ .overlab{	
-		display: block;
+	
+	.overlab:hover{
+		cursor: pointer;
 	}
 	
 	
@@ -218,10 +218,21 @@
 	
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
 	
 	<div id="outer">
 		
+		<script type="text/javascript">
+			$(function() {
+				$(".overlab").hover(function() {
+					$(".profile").css("opacity", "0.3");
+					$(".overlab").css("opacity", "1");
+				}, function() {
+					$(".profile").css("opacity", "1");
+					$(".overlab").css("opacity", "0");
+				})
+			})
+		</script>
 	    
 		<div id="content">
 			<div id="content1">
@@ -247,7 +258,7 @@
 			                	<label for="nickName">Nickname</label><br>
 								<div class="input-group">
 							      	<input type="text" id="inputNick" class="box" placeholder="닉네임" name="nickName" required value="${loginUser.nickName }">
-							      	<button class="btn btn-primary" type="button" id="nickUpdate">Change</button>
+							      	<button class="btn btn-primary" type="button" id="nickUpdate" style="z-index: auto;">Change</button>
 						      	</div>
 	            			</div>
 						</div>

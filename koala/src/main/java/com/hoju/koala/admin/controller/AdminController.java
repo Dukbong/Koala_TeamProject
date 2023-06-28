@@ -189,8 +189,4 @@ public class AdminController {
 		response.addCookie(cookie);
 		return new Gson().toJson(cookie);
 	}
-	@GetMapping("/ssss")
-	public String qqqq() {
-		return "fun/onePage";
-	}
 }
