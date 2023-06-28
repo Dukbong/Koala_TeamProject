@@ -166,4 +166,10 @@ public class BulletinBoardDao {
 		}
 	}
 
+	//게시글 번호 가져오기 메소드
+	public int selectBoardNo(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("bulletinBoardMapper.selectBoardNo");
+	}
+
 }

@@ -18,6 +18,9 @@
 	</resultMap>
 	
 	<resultMap type="sqlCloud" id="sqlCloudResultSet">
+		<result column="TEAM_NO" property="teamNo"/>
+		<result column="TEAMNAME" property="teamName"/>
+		<result column="CREATORNO" property="createNo"/>
 		<result column="SQLTITLE" property="sqlTitle"/>
 		<result column="SQLCONTENT" property="sqlContent"/>
 		<result column="CREATE_DATE" property="createDate"/>
@@ -266,5 +269,19 @@
 	
 	<select id="selectSqlTitle" parameterType="string" resultType="string">
 		SELECT SQLTITLE FROM SQLCLOUD WHERE SQLTITLE = #{sqlTitle}
+	</select>
+	<select id="selectTeam" parameterType="_int" resultMap="sqlCloudResultSet">
+		SELECT A.* FROM SQLCLOUD A JOIN SQLINVITE B ON(A.TEAM_NO = B.TEAM_NO) WHERE USER_NO = #{userNo}
+	</select>
+	<select id="selectTeamMember" parameterType="_int" resultMap="memberMapper.memberResultSet">
+		SELECT user_id, email, nickname, user_no
+		FROM SQLCLOUD A
+		JOIN SQLINVITE B ON(A.TEAM_NO = B.TEAM_NO)
+		JOIN MEMBER M USING(USER_NO)
+		WHERE B.TEAM_NO = #{teamNo}
+	</select>
+	
+	<select id="selectCreator" parameterType="_int" resultType="int">
+		SELECT CREATOR_NO FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
 	</select>
 </mapper>

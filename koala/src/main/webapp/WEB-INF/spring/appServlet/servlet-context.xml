@@ -46,9 +46,10 @@
 	
 	
 	
-	<beans:bean id="onePage" class="com.hoju.koala.admin.webSocket.OnePageSocket"/>
+<!-- 	<beans:bean id="onePage" class="com.hoju.koala.admin.webSocket.OnePageSocket3"/> -->
+	<beans:bean id="onePage" class="com.hoju.koala.admin.webSocket.Atest"/>
 	<websocket:handlers allowed-origins="*">
-		<websocket:mapping handler="onePage" path="/ssss"/>
+		<websocket:mapping handler="onePage" path="/sqlcloud"/>
 		
 		<websocket:handshake-interceptors>
 			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>

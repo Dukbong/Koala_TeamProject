@@ -33,14 +33,14 @@ public class ErrorBoardDao {
 
 	//게시글 전체 목록 조회
 	public ArrayList<ErrorSet> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
-		System.out.println("들어옴");
-		
+
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
+		
 	}
 	
 	//검색된 게시글 목록 조회
 	public ArrayList<ErrorSet> searchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> hashMap) {
-		System.out.println("검색으로 들어옴");
+
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.searchList", hashMap, pi.rowBounds());
 	}
 	

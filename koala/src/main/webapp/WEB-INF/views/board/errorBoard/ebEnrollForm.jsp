@@ -9,14 +9,14 @@
 
 <style>
 	div{ box-sizing: border-box;}
-    .ebEnrollForm{width: 1200px; margin: auto; padding: 100px 0px;}
+    .ebEnrollForm{width: 1400px; margin: auto; padding-top: 200px;}
     .ebEnrollForm>form>*{width: 85%; margin: auto; padding-bottom: 50px;}
-    .option-area{padding-bottom: 20px; padding-left: 290px;}
+    .option-area{width: max-content; margin:auto; padding-bottom: 20px;}
     div[class*='_b']{width: 100%; background-color: black;}
     .enrollForm-area span, .modifyBtn-area span, .modifyForm-top span{
         margin: 0px 10px;
         color: rgb(147, 208, 248);
-        font-size: 18px;
+        font-size: 19px;
         font-weight: 700;
     }
     #eb_title, #eb_content {
@@ -27,28 +27,28 @@
         font-size: 15px;
     }
 /* ======================================================= 수정폼 영역 */
-    div[class*='modifyForm-area']{width: 85%; height: 600px; display: none;}
+    div[class*='modifyForm-area']{width: 85%; height: 700px; display: none;}
     .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
     .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding: 10px;}
     .modifyForm-area_info .modifyForm_1, .modifyForm-area_info .modifyForm_3{padding: 10px;}
     .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
-    textarea{
+    .ebEnrollForm textarea{
     	width: 100%;
     	height: 100%;
     	background-color: black;
     	color : white;
     	border: none;
         outline: none;
-    	resize: none; /*왜 안되는지 확인해보기*/
+    	resize: none;
     }
-    .reset{position:absolute; margin:auto; right:0; cursor:pointer;}
+    .reset{cursor:pointer;}
 /* ======================================================== 버튼 관련 */
      .ebEnrollForm button{border-radius: 5px;}
      button:hover{cursor: pointer;} 
-     .buttons{width: 25%; height: 50px; margin: auto; position: relative;} 
-     .buttons>button{ width: 120px; height: 40px; position:absolute; margin: auto;}
+     .buttons{width: 40%; height: 60px; margin: auto; position: relative;} 
+     .buttons>button{ width: 45%; height: 100%; position:absolute; margin: auto;}
      
      .CodeMirror {
 		width: 100%;
@@ -58,7 +58,7 @@
 </style>
 
 <body>
-	<%@include file="../../common/header.jsp"%>
+	<%@include file="../../common/header_copy.jsp"%>
 	
 	<div class="ebEnrollForm">
 		<form action="insert" method="post">
@@ -74,11 +74,9 @@
 						data : {settingTitle : $("select[name='settingTitle']").val()},
 						success : function(vList){
 							var str = "";
-							
 							for(var i in vList){
 								str += "<option value="+vList[i]+">"+vList[i]+"</option>";
 							}
-							
 							$("select[name='settingVersion']").html(str);
 						},
 						error : function(){
@@ -128,15 +126,14 @@
 			<div class="modifyForm-area_code">
 				<div class="modifyForm-top">
 					<span>code</span>
-					<button type="button">cancle</button>
-					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
+					<button type="button">cancel</button>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
 						<textarea id="beforeCode" class="codeMirror" cols="30" rows="10" readonly disabled></textarea>
 					</div>
 					<div class="modifyForm_2">
-						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
+						<i class="fa-solid fa-angles-right fa-2x reset" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
 						<textarea name="modifiedCode" class="codeMirror" id="afterCode" cols="30" rows="10" disabled></textarea>
@@ -149,7 +146,7 @@
 		$(function() {
 			$(".codeMirror").on("change keyup paste", function() {
 				var text = $(".codeMirror").val();
-				console.log(text);
+				//console.log(text);
 			});
 			
             var codeEditor = null;
@@ -159,7 +156,7 @@
             
             var textArea = document.getElementById("beforeCode");
             
-            console.log(textArea.value);
+            //console.log(textArea.value);
             
 			function initializeCodeMirror(){
                 //textarea 태그의 element 지정
@@ -175,30 +172,20 @@
 
 
             }
-			function openCodeEditor(){
-                if (!codeEditor) {
-                    initializeCodeMirror();//코드미러 생성
-                    }
-
-                var codeEditorWrapper = codeEditor.getWrapperElement();
-            }
-			
-			openCodeEditor();
 		})
 	</script>
 			
 			<div class="modifyForm-area_info">
 				<div class="modifyForm-top">
 					<span>manual</span>
-					<button type="button">cancle</button>
-					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
+					<button type="button">cancel</button>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
 						<textarea id="beforeInfo" cols="30" rows="10" readonly disabled>설명서 가져오기</textarea>
 					</div>
 					<div class="modifyForm_2">
-						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
+						<i class="fa-solid fa-angles-right fa-2x reset" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
 						<textarea name="modifiedInfo" id="afterInfo" cols="30" rows="10" disabled>설명서 가져오기</textarea>
@@ -221,8 +208,8 @@
 			
 			<div class="button-area">
 				<div class="buttons">
-					<button type="reset">cancle</button>
-					<button type="submit" style="background-color: rgb(147, 208, 248); right:0;">submit</button>
+					<button id="cancelBtn" type="reset">cancel</button>
+					<button id="submitBtn" type="submit" style="background-color: rgb(147, 208, 248); right:0;">submit</button>
 				</div>
 			</div>
 			
@@ -236,6 +223,7 @@
 						
 						if($("select[name='settingVersion']").val() == null){
 							alert("category를 먼저 선택해주세요 !");
+							$("select[name='settingTitle']").focus();
 						}else{
 							$.ajax({
 								
@@ -252,13 +240,13 @@
 										$("#afterCode").attr("disabled",false);
 										$(".modifyForm-area_code").css("display","block");
 										$("option[value='code']").css("display","none");
-										$('html').animate({scrollTop : $(".modifyForm-area_code").offset().top}, 300);
+										$("#afterCode").focus();
 									}else if($category=="info"){
 										$("#beforeInfo,#afterInfo").html(str);
 										$("#afterInfo").attr("disabled",false);
 										$(".modifyForm-area_info").css("display","block");
 										$("option[value='info']").css("display","none");
-										$('html').animate({scrollTop : $(".modifyForm-area_info").offset().top}, 300);
+ 										$("#afterInfo").focus();
 									}
 									$("select[name='category']").find('option:first').prop('selected', true);
 									
@@ -285,8 +273,9 @@
 					
 					//수정폼 리셋
 					$(".reset").on("click", function(){
-						var str = $(this).parent().next().children().eq(0).find('textarea').val();
-						$(this).parent().next().children().eq(2).find('textarea').val(str);
+						console.log($(this).parent().prev().find('textarea').val());
+						var str = $(this).parent().prev().find('textarea').val();
+						$(this).parent().next().find('textarea').val(str);
 					});
 				});
 			</script>

@@ -161,4 +161,10 @@ public class BulletinBoardServiceImpl implements BulletinBoardService{
 		return bbDao.selectBoardLike(liked,sqlSession);
 	}
 
+	@Override
+	public int selectBoardNo() {
+		
+		return bbDao.selectBoardNo(sqlSession);
+	}
+
 }

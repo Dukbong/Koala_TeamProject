@@ -8,7 +8,7 @@
 </head>
 <style>
     div{ box-sizing: border-box;}
-    .ebDetailView{width: 1400px; margin: auto; padding: 130px 0px;}
+    .ebDetailView{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
     .ebDetailView>div{width: 100%;}
     
     .total-area{height: 750px;}
@@ -97,7 +97,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        margin: -150px 0 0 -550px;
+        margin: -250px 0 0 -550px;
         background-color: rgb(30, 30, 30);
         border: 2px solid gray;
         color: white;
@@ -133,6 +133,9 @@
     	width: 100%;
     	height: 100%;
     }
+    .ebDetailView button:hover{
+    	opacity: 85%;
+    }
     
     .hover:hover{cursor: pointer;}
     
@@ -142,7 +145,7 @@
 </style>
 
 <body>
-	<%@include file="../../common/header.jsp"%>
+	<%@include file="../../common/header_copy.jsp"%>
 	<div class="ebDetailView">
 	    <div class="total-area">
 	    	<!-- 게시글 영역 -->
@@ -235,7 +238,7 @@
 		        				<td colspan="2" style="width: 50%; text-align: right;">
 		        					<c:if test="${re.replyWriter eq loginUser.nickName }">
 			        					<button id="updateReply">수정</button>
-			        					<button id="updateCancle" style="display: none;">취소</button>
+			        					<button id="updateCancel" style="display: none;">취소</button>
 			        					<button id="deleteReply">삭제</button>
 		        					</c:if>
 		        				</td>
@@ -270,7 +273,7 @@
 		    		});
 		    		
 		    		//수정 취소
-		    		$(".reply-table").on("click", "button[id='updateCancle']", function(){
+		    		$(".reply-table").on("click", "button[id='updateCancel']", function(){
 		    			$(this).css("display", "none");
 		    			$(this).parents("tr").siblings().eq(1).css("display", "");
 		    			$(this).prev().css("display", "inline");
@@ -346,7 +349,7 @@
     
    	<!-- 모달창 영역 -->
     <div class="modal-wrap">
-        <div class="modal_close" id="cancle"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>
+        <div class="modal_close" id="cancel"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>
         <div class="modal-area">
         	<div class="modifyForm-area">
 				<div class="modifyForm-top">
@@ -390,7 +393,7 @@
 				}
 			});
 			
-			$("#cancle").on("click", function(){
+			$("#cancel").on("click", function(){
 				$(".modal-wrap").css("display", "none");
 			});
 		});

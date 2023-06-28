@@ -29,7 +29,7 @@
             justify-content: center;
             align-items: center;
         }
-        #content{
+        #divcontent{
             width:100%;
             height: 300px;
             background-color: white;
@@ -69,7 +69,7 @@
         	<br>
         	<h1 align="center">let enrollBoard</h1>
             <br><br>
-            <form action="" method="" enctype="multipart/form-data">
+            <form id="myForm" onsubmit="return submitForm();" method="POST" enctype="multipart/form-data">
                 <c:if test="${loginUser.nickName eq '관리자' }">
 	                <div id="notice-box">
 	                    <p id="notice">공지사항 여부:</p>
@@ -77,25 +77,25 @@
 	                    <input type="checkbox" name="notice" id="no" value="N" onclick="check('N');"><label for="no">no</label><br><br>
 	                </div>
                 </c:if>
+                <input type="hidden" value="${loginUser.userNo }" name="boardWriter">
                 <p>Title:</p>
                 <input type="text" name="title" id="title"><br><br>
                 <p>Content:</p>
-                <div id="content" contentEditable="true" style="border: solid 1px;line-height: 20px;"></div><br>
-                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple="multiple" />
+                <textarea id="content" name="subContent" style="display:none"></textarea>
+                <div id="divcontent" contentEditable="true" style="border: solid 1px;line-height: 20px;"></div><br>
+                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple />
                 <div id="fileList"></div> <br><br>
                 <p>Code:</p>
-                <textarea name="contentCode" id="contentCode" cols="30" rows="10" style="resize:none; display: none;"></textarea><br> 
-                <textarea id="editor" class="editor"></textarea>
-                <button type="submmit" id="submmit">upload</button>
+                <textarea id="editor" name="contentCode" class="editor"></textarea>
+                <button type="submit" id="submmit">upload</button>
             </form>
             <br><br>
         </div>
     </div>
     <script>
+        const divcontent = document.getElementById('divcontent');
         const content = document.getElementById('content');
-        const textarea = document.getElementById('contentCode');
         const code = document.getElementById('code');
-        const contentcode = document.getElementById('contentCode');
         const codemirror = document.getElementById('editor');
         
         var editor = CodeMirror.fromTextArea(document.getElementById('editor'),{
@@ -107,44 +107,37 @@
         editor.setSize("100%","300");
         
         function previewFiles() {
-        var preview = document.querySelector('#content');
-        var files = document.querySelector('input[type=file]').files;
-
+        	var preview = document.querySelector('#divcontent');
+        	var files = document.querySelector('input[type=file]').files;
+			
             function readAndPreview(file) {
-                // `file.name` 형태의 확장자 규칙에 주의하세요
+               
                 if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-                var reader = new FileReader();
-
-                reader.addEventListener(
-                    'load',
-                    function () {
-                    var image = new Image();
-                    image.height = 200;
-                    image.title = file.name;
-                    image.src = this.result;
-                    preview.appendChild(image);
-                    },
-                    false
-                );
-
-                reader.readAsDataURL(file);
+	                var reader = new FileReader();
+	
+	                reader.addEventListener(
+	                    'load',
+	                    function () {
+	                    var image = new Image();
+	                    image.height = 200;
+	                    image.title = file.name;
+	                    image.src = this.result;
+	                    preview.appendChild(image);
+	                    },
+	                    false
+	                );
+	
+	                reader.readAsDataURL(file);
                 }
             }
 
             if (files) {
+            	console.log(files);
                 [].forEach.call(files, readAndPreview);
             }
         }
 
-        function click(){
-           console.log(editor.display.maxLine.parent.lines);
-           for(var i=0; i<editor.display.maxLine.parent.lines.length; i++){
-        	   textarea.innerHTML += editor.display.maxLine.parent.lines[i].text + "\n";
-           }
-        }
-
         function check(e){
-            console.log(e);
             var yes = document.getElementById("yes");
             var no = document.getElementById("no");
            
@@ -158,7 +151,6 @@
         document.getElementById('browse').addEventListener('change', function(event) {
             var fileList = document.getElementById('fileList');
             
-            console.log("hello");
             var files = event.target.files; 
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -167,6 +159,34 @@
                 fileList.appendChild(listItem);
             }
         });
+        
+        function submitForm() {
+        	var form = document.getElementById('myForm');
+        	var formData = new FormData(form);
+        	var title = document.getElementById('title').value;
+        	content.innerHTML = divcontent.innerHTML;
+        	if(title===''){
+        		window.alert("제목을 입력해주세요.");
+        		return false;
+        	}else if(content.innerHTML===''){
+        		window.alert("내용을 입력해주세요.");
+        		return false;
+        	}
+        	
+        	formData.append('additionalData', 'some value');
+        	var fileInput = document.getElementById('browse');
+        	console.log(fileInput.files);
+        	    var files = fileInput.files;
+        	    for (var i = 0; i < files.length; i++) {
+        	    	console.log(files[i]);
+        	      formData.append('upfiles', files[i]);
+        	    } 
+			form.action = "insert";
+        	var shouldSubmitForm = confirm('작성하시겠습니까?');
+        	
+        	return shouldSubmitForm;
+        }
+        
     </script>
     <jsp:include page="../../common/footer.jsp"/>
 </body>

@@ -11,6 +11,7 @@ import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
+import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
@@ -121,5 +122,17 @@ public class AdminDao {
 
 	public String selectSqlTitle(String string, SqlSession sqlSession) {
 		return sqlSession.selectOne("adminMapper.selectSqlTitle", string);
+	}
+
+	public ArrayList<SqlCloud> selectTeam(int userNo, SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectTeam", userNo);
+	}
+
+	public ArrayList<Member> selectTeamMember(int teamNo, SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectTeamMember", teamNo);
+	}
+
+	public int selectCreator(int teamNo, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectCreator", teamNo);
 	}
 }

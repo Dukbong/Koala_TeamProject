@@ -9,14 +9,14 @@
 
 <style>
 	div{ box-sizing: border-box;}
-    .ebEnrollForm{width: 1200px; margin: auto; padding-top: 50px;}
+    .ebEnrollForm{width: 1400px; margin: auto; padding-top: 200px;}
     .ebEnrollForm>form>*{width: 85%; margin: auto; padding-bottom: 50px;}
-    .option-area{padding-bottom: 20px; padding-left: 290px;}
+    .option-area{width: max-content; margin:auto; padding-bottom: 20px;}
     div[class*='_b']{width: 100%; background-color: black;}
     .enrollForm-area span, .modifyBtn-area span, .modifyForm-top span{
         margin: 0px 10px;
         color: rgb(147, 208, 248);
-        font-size: 18px;
+        font-size: 19px;
         font-weight: 700;
     }
     #eb_title, #eb_content {
@@ -27,13 +27,13 @@
         font-size: 15px;
     }
 /* ======================================================= 수정폼 영역 */
-    div[class*='modifyForm-area']{width: 85%; height: 600px; display: none;}
+    div[class*='modifyForm-area']{width: 85%; height: 700px; display: none;}
     .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
     .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding : 10px;}
     .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
-    textarea{
+    .ebEnrollForm textarea{
     	width: 100%;
     	height: 100%;
     	background-color: black;
@@ -42,7 +42,7 @@
     	border: none;
         outline: none;
     }
-    .reset{position:absolute; margin:auto; right:0; cursor:pointer;}
+    .reset{cursor:pointer;}
 /* ======================================================== 버튼 관련 */
      button{border-radius: 5px;}
      button:hover{cursor: pointer;} 
@@ -51,10 +51,11 @@
 </style>
 
 <body>
-	<%@include file="../../common/header.jsp"%>
+	<%@include file="../../common/header_copy.jsp"%>
 	
 	<div class="ebEnrollForm">
-		<form action="insert" method="post">
+		<form action="updateBoard" method="post">
+			<input type="hidden" name="boardNo" value="${eb.board.boardNo }">
 		
 		<script>
 			$(function(){
@@ -70,6 +71,7 @@
 			})
 		</script>
 		
+			
 			<div class="enrollForm-area">
 				<div class="option-area">
 					<span>category</span> ${eb.createSetting.settingTitle }
@@ -92,15 +94,14 @@
 			<div class="modifyForm-area_code">
 				<div class="modifyForm-top">
 					<span>code</span>
-					<button type="button">cancle</button>
-					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
+					<button type="button">cancel</button>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
 						<textarea id="beforeCode" cols="30" rows="10" readonly disabled>${eb.createSetting.settingCode }</textarea>
 					</div>
 					<div class="modifyForm_2">
-						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
+						<i class="fa-solid fa-angles-right fa-2x reset" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
 						<textarea name="modifiedCode" id="afterCode" cols="30" rows="10" disabled>${eb.errorBoard.modifiedCode }</textarea>
@@ -111,15 +112,14 @@
 			<div class="modifyForm-area_info">
 				<div class="modifyForm-top">
 					<span>manual</span>
-					<button type="button">cancle</button>
-					<span class="reset"><i class="fa-solid fa-rotate-left fa-lg" style="color: #ffffff;"></i></span>
+					<button type="button">cancel</button>
 				</div>
 				<div class="modifyForm-bottom">
 					<div class="modifyForm_1">
 						<textarea id="beforeInfo" cols="30" rows="10" readonly disabled>${eb.createSetting.settingInfo }</textarea>
 					</div>
 					<div class="modifyForm_2">
-						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
+						<i class="fa-solid fa-angles-right fa-2x reset" style="color: #ffffff;"></i>
 					</div>
 					<div class="modifyForm_3">
 						<textarea name="modifiedInfo" id="afterInfo" cols="30" rows="10" disabled>${eb.errorBoard.modifiedInfo }</textarea>
@@ -139,7 +139,7 @@
 			
 			<div class="button-area">
 				<div class="buttons">
-					<button type="reset">cancle</button>
+					<button type="reset">cancel</button>
 					<button type="submit" style="background-color: rgb(147, 208, 248); right:0;">submit</button>
 				</div>
 			</div>
@@ -151,7 +151,7 @@
 					
 					//현재 상태에 따라 수정폼 보여주기
 					function FormCheck(){
-						console.log("바로 실행");
+						
 						if(${eb.errorBoard.modifiedCode ne null}){
 							$(".modifyForm-area_code").css("display","block");
 							$("#afterCode").attr("disabled",false);
@@ -169,8 +169,6 @@
 					$(".modifyBtn-area").on("click", "button", function(){
 						
 						var $category = $("select[name='category']").val();
-						
-					
 									
 						if($category=="code"){
 							$("#afterCode").attr("disabled",false);
@@ -204,8 +202,9 @@
 					
 					//수정폼 리셋
 					$(".reset").on("click", function(){
-						var str = $(this).parent().next().children().eq(0).find('textarea').val();
-						$(this).parent().next().children().eq(2).find('textarea').val(str);
+						console.log($(this).parent().prev().find('textarea').val());
+						var str = $(this).parent().prev().find('textarea').val();
+						$(this).parent().next().find('textarea').val(str);
 					});
 				});
 			</script>
