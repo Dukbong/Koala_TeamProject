@@ -28,6 +28,7 @@ public class Member {
 	private String status;
 	
 	private int rank;//랭킹페이지 등수 필드 추가
+	private int previousRank;//예전 등수 필드 추가
 	private String rankChange;//랭킹 페이지 등수 변동 필드 추가
 	
 	private Profile profile;

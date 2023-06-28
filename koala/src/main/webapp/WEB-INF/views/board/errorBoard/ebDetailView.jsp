@@ -133,6 +133,9 @@
     	width: 100%;
     	height: 100%;
     }
+    .ebDetailView button:hover{
+    	opacity: 85%;
+    }
     
     .hover:hover{cursor: pointer;}
     

@@ -16,11 +16,48 @@
 	</resultMap>
 
 	<!-- 오류게시판 조회용 -->
+<!-- 	<resultMap type="errorSet" id="errorSetResultSet"> -->
+<!-- 		<result column="REPLY_COUNT" property="replyCount"/> -->
+<!-- 		<collection property="board" resultMap="boardMapper.boardResultSet"/> -->
+<!-- 		<collection property="errorBoard" resultMap="errorBoardResultSet"/> -->
+<!-- 		<collection property="createSetting" resultMap="adminMapper.createSettingResultSet"/> -->
+<!-- 	</resultMap> -->
+
 	<resultMap type="errorSet" id="errorSetResultSet">
+		<result column="BOARD_NO" property="board.boardNo"/>
+<!-- 		<result column="CATEGORY" property="category"/> -->
+		<result column="NICKNAME" property="board.boardWriter"/> <!-- 닉네임으로 조회 -->
+		<result column="TITLE" property="board.title"/>
+		<result column="CONTENT" property="board.content"/>
+<!-- 		<result column="CONTENT_CODE" property="contentCode"/> -->
+		<result column="COUNT" property="board.count"/>
+<!-- 		<result column="LIKED" property="liked"/> -->
+		<result column="CREATE_DATE" property="board.createDate"/>
+<!-- 		<result column="MODIFIED_DATE" property="modifyDate"/> -->
+		<result column="NOTICE" property="board.notice"/>
+<!-- 		<result column="STATUS" property="status"/> -->
+		
+		<result column="REF_BNO" property="errorBoard.refBno"/>
+<!-- 		<result column="REF_SNO" property="refSno"/> -->
+		<result column="SOLVED" property="errorBoard.solved"/>
+		<result column="ERROR_TYPE" property="errorBoard.errorType"/>
+		<result column="MODIFIED_CODE" property="errorBoard.modifiedCode"/>
+		<result column="MODIFIED_INFO" property="errorBoard.modifiedInfo"/>
+		
+<!-- 		<result column="SETTING_NO" property="settingNo"/> -->
+<!-- 		<result column="REF_UNO" property="refUno"/> -->
+		<result column="SETTING_TITLE" property="createSetting.settingTitle"/>
+		<result column="SETTING_VERSION" property="createSetting.settingVersion"/>
+<!-- 		<result column="SORT_DESCRIPTION" property="sortDescription"/> -->
+		<result column="SETTING_INFO" property="createSetting.settingInfo"/>
+		<result column="SETTING_CODE" property="createSetting.settingCode"/>
+		<result column="INPUT" property="createSetting.input"/>
+<!-- 		<result column="SETTING_PATH" property="settingPath"/> -->
+<!-- 		<result column="STATUS" property="status"/> -->
+<!-- 		<result column="CREATE_DATE" property="createDate"/> -->
+<!-- 		<result column="MODIFY_DATE" property="modifyDate"/> -->
+		
 		<result column="REPLY_COUNT" property="replyCount"/>
-		<collection property="board" resultMap="boardMapper.boardResultSet"/>
-		<collection property="errorBoard" resultMap="errorBoardResultSet"/>
-		<collection property="createSetting" resultMap="adminMapper.createSettingResultSet"/>
 	</resultMap>
 	
 	<!-- 총 게시글 수  -->
@@ -64,7 +101,7 @@
 		       NOTICE,
 		       B.CREATE_DATE,
 		       B.COUNT,
-               COUNT(R.REPLY_NO) REPLY_COUNT
+               COUNT(R.REPLY_NO) REPLY_COUNT 
 		FROM BOARD B
 		JOIN MEMBER M ON(B.BOARD_WRITER = M.USER_NO)
 		JOIN ERROR_BOARD E ON(B.BOARD_NO = E.REF_BNO)
@@ -95,7 +132,7 @@
 		       SOLVED,
 		       NOTICE,
 		       B.CREATE_DATE,
-		       COUNT,
+		       B.COUNT,
 		       COUNT(R.REPLY_NO) REPLY_COUNT
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
@@ -105,19 +142,20 @@
 		WHERE B.STATUS = 'Y'
 		AND B.CATEGORY = 'E'
         AND SOLVED||ERROR_TYPE != 'NS'
-        <if test="category == 'writer'">
-		AND M.NICKNAME
-		</if>
-		<if test="category == 'title'">
-		AND B.TITLE
-		</if>
-		<if test="category == 'content'">
-		AND B.CONTENT
-		</if>
-		<if test="category == 'library'">
-		AND UPPER(C.SETTING_TITLE)
-		</if>
-		LIKE UPPER('%'||#{keyword}||'%')
+        <choose>
+        	<when test="category == 'writer'">
+				AND M.NICKNAME LIKE '%'||#{keyword}||'%'
+        	</when>
+        	<when test="category == 'title'">
+				AND B.TITLE LIKE '%'||#{keyword}||'%'
+        	</when>
+        	<when test="category == 'content'">
+				AND B.CONTENT LIKE '%'||#{keyword}||'%'
+        	</when>
+        	<when test="category == 'library'">
+				AND UPPER(C.SETTING_TITLE) LIKE UPPER('%'||#{keyword}||'%')
+        	</when>
+        </choose>
 		GROUP BY BOARD_NO,
 		         SETTING_TITLE,
 		         TITLE,
@@ -126,9 +164,25 @@
 		         NOTICE,
 		         B.CREATE_DATE,
 		         B.COUNT
+		<choose>
+			<when test="sort == 'ascDate'">
+		ORDER BY B.CREATE_DATE ASC
+			</when>
+			<when test="sort == 'descDate'">
+		ORDER BY B.CREATE_DATE DESC
+			</when>
+			<when test="sort == 'descCount'">
+		ORDER BY B.COUNT DESC
+			</when>
+			<when test="sort == 'ascCount'">
+		ORDER BY B.COUNT ASC
+			</when>
+			<otherwise>
 		ORDER BY DECODE(NOTICE,'Y',1,'N',2),
                  DECODE(SOLVED,'N',1,'Y',2),
                  CREATE_DATE DESC
+			</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 조회수 증가 -->
@@ -236,8 +290,8 @@
 	<!-- 게시글 수정 - Board  //확인전 -->
 	<update id="updateBoard">
 		UPDATE BOARD
-		SET TITLE = #{boardTitle},
-			CONTENT = #{boardContent},
+		SET TITLE = #{title},
+			CONTENT = #{content},
 			MODIFY_DATE = SYSDATE
 		WHERE BOARD_NO = #{boardNo}
 		AND STATUS = 'Y'
@@ -249,7 +303,6 @@
 		SET MODIFIED_CODE = #{modifiedCode},
 			MODIFIED_INFO = #{modifiedInfo}
 		WHERE REF_BNO = #{boardNo}
-		AND STATUS = 'Y'
 	</update>
 	
 	<!-- 게시글 삭제 -->
