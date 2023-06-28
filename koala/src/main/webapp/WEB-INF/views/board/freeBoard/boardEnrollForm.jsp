@@ -126,11 +126,9 @@
 	                    },
 	                    false
 	                );
-	
 	                reader.readAsDataURL(file);
                 }
             }
-
             if (files) {
             	console.log(files);
                 [].forEach.call(files, readAndPreview);
@@ -175,7 +173,7 @@
         	
         	formData.append('additionalData', 'some value');
         	var fileInput = document.getElementById('browse');
-        	console.log(fileInput.files);
+        	
         	    var files = fileInput.files;
         	    for (var i = 0; i < files.length; i++) {
         	    	console.log(files[i]);
@@ -186,7 +184,6 @@
         	
         	return shouldSubmitForm;
         }
-        
     </script>
     <jsp:include page="../../common/footer.jsp"/>
 </body>

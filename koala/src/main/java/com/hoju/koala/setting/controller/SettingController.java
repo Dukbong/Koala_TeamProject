@@ -37,6 +37,12 @@ public class SettingController {
 		return "setting/ex";
 	}
 	
+	//코드 작성 페이지 이동
+	@RequestMapping("create")
+	public String createCodePage() {
+		
+		return "board/errorBoard/createSettingForm";
+	}
 	@GetMapping("/detail")
 	public String selectSetting(int settingNo,
 								Model model) {
@@ -64,6 +70,12 @@ public class SettingController {
 	}
 	
 	
+	//코드 작성 메소드
+	@RequestMapping("insert")
+	public String createCode(String input) {
+		System.out.println(input);
+		return null;
+	}
 	
 	
 	
