@@ -14,8 +14,7 @@
 	<div class="bulletin-outer" align="center">
 		<h1 align="center">BULLETIN_BOARD</h1>
 		<div id="search-area">
-			<form action="search" method="get">
-				<!-- <input type="hidden" name="currentPage" value="1"> -->
+			<form action="search" method="get" >
 				<select name="types">
 					<option value="writer">작성자</option>
 					<option value="content">내용</option>
@@ -40,12 +39,11 @@
 				});
 			</script>
 		</c:if>
-		<table id="list-area">
+		<table id="list-area" >
 			<thead>
 				<tr>
 					<th>글번호</th>
 					<th width="400">제목</th>
-					<th>코드</th>
 					<th>첨부파일</th>
 					<th>작성자</th>
 					<th>조회수</th>
@@ -58,15 +56,7 @@
 						<td>${b.boardNo }</td>
 						<td>${b.title }</td>
 						<c:choose>
-							<c:when test="${not empty b.contentCode }">
-								<td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>code-tags</title><path d="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z" /></svg></td>
-							</c:when>
-							<c:otherwise>
-								<td></td>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when test="${not empty b.fileNo }">
+							<c:when test="${b.fileNo ne 0}">
 								<td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>file-document-outline</title><path d="M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z" /></svg></td>
 							</c:when>
 							<c:otherwise>
@@ -82,7 +72,14 @@
 		</table>
 		<br>
 		<div id="paging-area">
-			<a href="list.bo?currentPage=${pi.currentPage-1 }">이전</a>
+			<c:choose>
+				<c:when test="${pi.currentPage eq 1 }">
+					<a disabled>이전</a>
+				</c:when>
+				<c:otherwise>
+					<a href="list.bo?currentPage=${pi.currentPage-1 }">이전</a>
+				</c:otherwise>
+			</c:choose>
 			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }" step="1">
 				<c:choose>
 					<c:when test="${empty types }">
@@ -93,7 +90,14 @@
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
-			<a href="list.bo?currentPage=${pi.currentPage+1 }">다음</a>
+			<c:choose>
+				<c:when test="${pi.currentPage eq pi.maxPage }">
+					<a disabled>다음</a>
+				</c:when>
+				<c:otherwise>
+					<a id="next" href="list.bo?currentPage=${pi.currentPage+1 }">다음</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<br><br>
 	</div>

@@ -54,6 +54,10 @@
         padding: 30px;
         font-size: 70px;
     }
+    
+    .logo:hover{
+    	cursor: pointer;
+    }
 
     label{
         color: white;
@@ -135,7 +139,7 @@
 	<div id="wrap">
 		<div id="content">
 	        <div id="login-area">
-	            <span class="logo">Koala</span>
+	            <span class="logo" onclick="location.href='/koala'">Koala</span>
 	            <form action="login" method="post">
 	
 	                <div id="input-area">
@@ -170,12 +174,12 @@
     </div>
     
 	<!-- 알림메세지 -->
-  	<c:if test="${not empty msg }">
 		<script>
- 			alert("${msg}");
+			$(function(){
+				alert("${msg}");
+			});
 		</script>
 		<c:remove var="msg" scope="session"/>
-	</c:if>
 	
 	<!-- 자동완성 끄기 -->
 	<script>
