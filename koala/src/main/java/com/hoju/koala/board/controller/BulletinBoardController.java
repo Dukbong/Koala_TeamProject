@@ -52,7 +52,7 @@ public class BulletinBoardController {
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<Board> bbList = bbService.selectList(pi);
-
+		
 		model.addAttribute("pi",pi);
 		model.addAttribute("bbList", bbList);
 		return "board/freeBoard/boardListView";
@@ -88,6 +88,7 @@ public class BulletinBoardController {
 		
 		if(result>0) {
 			Board board = bbService.boardDetailView(boardNo);
+			
 			BulletinBoard bulletinBoard = bbService.boardCategoryDetailView(boardNo);
 			ArrayList<Reply> rList = bbService.selectBoardReply(boardNo);
 			
@@ -119,7 +120,6 @@ public class BulletinBoardController {
 	@ResponseBody
  	@RequestMapping(value="reply",produces="application/json;charset=UTF-8")
  	public String insertReply(Reply reply,Model model) {
- 		System.out.println(reply);
 		
 		int result = bbService.insertReply(reply);
 		
@@ -154,7 +154,6 @@ public class BulletinBoardController {
 	//게시글 입력 메소드
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public String insertBoard(@RequestParam("upfiles") MultipartFile[] files, Model model,Board b,String subContent,HttpSession session) {
-		
 		ArrayList<String> list = new ArrayList<>();
 		ArrayList<BoardAttachment> aList = new ArrayList<>();
 		int result = 1;
@@ -166,43 +165,45 @@ public class BulletinBoardController {
 				String originName = (files[i]).getOriginalFilename();
 				String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
 				BoardAttachment ba = BoardAttachment.builder().refBno(b.getBoardNo()).originName(originName).changeName(changeName).fileLevel(i+1).filePath(savePath).build();
-		        
-				String replacement = "<img src='" + ba.getFilePath() + "/" + changeName + "\'>";
+				
+				String replacement = "src='/koala/resources/board/bulletinBoard/" + changeName + "\'";
 	            list.add(replacement);
 	            aList.add(ba);
 			}
 		}
 		
-		String pattern = "<img.*?>"; 
+		String pattern = "src=\"([^\\\"]*)\""; 
 		String content = subContent;
 		
 		if(!list.isEmpty()) {
 			for (String replacement : list) {
-				content = subContent.replaceAll(pattern, replacement);
+				content = content.replaceFirst(pattern, replacement);
 			}
 		}
 		
 		b.setCategory("B");
 		b.setContent(content);
 		BulletinBoard bulletinBoard = null;
-		System.out.println(b);
+		
+		if(b.getContentCode().equals("")||b.getContentCode()==null) {
+			b.setContentCode("비어있습니다.");
+		}
+		
 		int result2 = bbService.insertBoard(b);
 		int boardNo = bbService.selectBoardNo();
-		if(b.getContentCode().equals("")) {
-			String contentCode = null;
-			b.setContentCode(contentCode);
+		if(b.getContentCode().equals("비어있습니다.")) {
 			bulletinBoard = BulletinBoard.builder().boardNo(boardNo).boardType(2).build();
-		}else{
+		}else {
 			bulletinBoard = BulletinBoard.builder().boardNo(boardNo).boardType(1).build();
 		}
 		int result3 = bbService.insertBoardCategory(bulletinBoard);
-		System.out.println(aList);
+		
 		if(result2*result3!=0) {
 			for(BoardAttachment ba: aList) {
 				ba.setRefBno(boardNo);
 				result = bbService.insertBoardAttachment(ba);
 				if(result!=1) {
-					new File(session.getServletContext().getRealPath(ba.getFilePath())).delete();
+					new File(session.getServletContext().getRealPath(ba.getFilePath())+"/"+ba.getChangeName()).delete();
 					model.addAttribute("errorMsg","첨부파일 저장 실패");
 					return "common/errorPage";
 				}
@@ -226,18 +227,77 @@ public class BulletinBoardController {
 	public String updateBoardPage(int boardNo,Model model) {
 		
 		Board b = bbService.selectBoard(boardNo);
-		model.addAttribute(b);
+		model.addAttribute("b",b);
+		
+		if(b.getFileNo()!=0) {
+			ArrayList<BoardAttachment> baList = bbService.selectBoardAttachment(boardNo);
+			model.addAttribute("baList",baList);
+		}
 		return "../views/board/freeBoard/boardUpdateForm";
 	}
 	
 	//글 수정 메소드
 	@RequestMapping(value = "updateboard", method = RequestMethod.POST)
-	public String updateBoard(@RequestParam("upfiles") MultipartFile[] files, Model model) {
-//		System.out.println(files[0].getOriginalFilename());
-//		System.out.println(files[1].getOriginalFilename());
-		for(MultipartFile file:files) {
-			System.out.println(file.getOriginalFilename());
-			
+	public String updateBoard(@RequestParam("upfiles") MultipartFile[] files,Board b,String[] filePath, String[] existedFiles,String subContent,int[] fileNos, Model model,HttpSession session) {
+		//filelevel 처리하기
+		int result = 1;
+		int result2 = 1;
+		ArrayList<String> list = new ArrayList<>();
+		ArrayList<BoardAttachment> baList = new ArrayList<>();
+		for(MultipartFile file: files) {
+			if(!file.getOriginalFilename().equals("")) {
+				String changeName = saveFile(file,session);
+				String originName = (file).getOriginalFilename();
+				String savePath = session.getServletContext().getRealPath("/resources/board/bulletinBoard");
+				BoardAttachment ba = BoardAttachment.builder().refBno(b.getBoardNo()).originName(originName).changeName(changeName).filePath(savePath).build();
+				baList.add(ba);
+				String replacement = "src='/koala/resources/board/bulletinBoard/" + changeName + "\'";
+	            list.add(replacement);
+			}
+		}
+		String pattern = "src=\"([^\\\"]*)\""; 
+		if(!list.isEmpty()) {
+			for (String replacement : list) {
+				subContent = subContent.replaceFirst(pattern, replacement);
+			}
+		}
+		ArrayList<Integer> fileno = new ArrayList<>();
+		for(int i = 0; i<existedFiles.length; i++) {
+			if(!subContent.contains(existedFiles[i])) {
+				new File(session.getServletContext().getRealPath(filePath[i]+"/"+existedFiles[i])).delete();
+				result = bbService.deleteAttachment(existedFiles[i]);
+				fileno.add(fileNos[i]);
+			}
+			fileno.add(i+1);
+		}
+		int y = 0;
+		if(!baList.isEmpty()) {
+			for(BoardAttachment ba: baList) {
+				if(fileno.get(y)!=0) {
+					ba.setFileNo(fileno.get(y));
+					y++;
+				}
+				ba.setFileNo(fileno.get(y)+1);
+				result2 = bbService.insertBoardAttachment(ba);
+			}
+		}
+		
+		String content = subContent;
+		b.setContent(content);
+		int result3 = 0;
+		
+		if(result*result2!=0) {
+			result3 = bbService.updateBoard(b);
+			if(result2==0) {
+				session.setAttribute("errorMsg","게시글 작성 실패");
+				return "common/errorPage";
+			}else {
+				model.addAttribute("alertMsg","게시글 작성 성공");
+				return "redirect:/bulletinBoard/detail?boardNo="+b.getBoardNo();
+			}
+		}else {
+			session.setAttribute("errorMsg","첨부파일 저장 실패");
+			return "common/errorPage";
 		}
 		return null;
 	}
