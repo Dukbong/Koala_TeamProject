@@ -71,7 +71,7 @@
     }
     
     .noneChange{
-    	height:50%;
+    	height:60%;
     }
     
     
@@ -542,6 +542,7 @@
 			</script>
 		</div>
 	</div>
+	
 	    
     
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

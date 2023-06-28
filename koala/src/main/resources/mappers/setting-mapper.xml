@@ -31,8 +31,12 @@
 		SELECT *
 		FROM CREATE_SETTING
 		WHERE SETTING_NO = #{settingNo}
-		AND STATUS = 'Y'
 	</select>
 	
-	
+	<select id="selectVersionList" resultMap="settingResultSet">
+		SELECT SETTING_NO, SETTING_VERSION
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		ORDER BY CREATE_DATE DESC
+	</select>
 </mapper>
