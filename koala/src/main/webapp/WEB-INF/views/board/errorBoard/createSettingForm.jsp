@@ -14,6 +14,7 @@
 <!-- <script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script> -->
 <!-- <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script> -->
 <!-- <script src="/koala/resources/codemirror-5.53.2/addon/edit/closetag/js"></script> -->
+<script src="/koala/resources/codemirror-5.53.2/mode/xml/xml.js"></script>
 <!-- <link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/> -->
 <!-- <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/> -->
 <style>
@@ -154,7 +155,7 @@
 	</script>
 	
     <div class="createSettingForm">
-        <form action="errorBoard/insert.cs" method="post" onsubmit="return checkSubmit()">
+        <form action="insert" method="post" onsubmit="return checkSubmit()">
         
             <!--이름/작성자 영역-->
             <div class="libraryName-author-area">
@@ -185,7 +186,7 @@
                 <div class="code-area">
                     <p><span class="ii" style="background: linear-gradient(to top, rgba(135, 139, 186, 0.7) 50%, transparent 40%);">&nbsp;<i class="fa-solid fa-star-of-life fa-xs"></i> Code&nbsp;</span></p>
                     <div class="code-box">
-                        <textarea id="editor" name="settingCode" required></textarea>
+                        <textarea id="editor" name="settingCode"></textarea>
                     </div>
                 </div>
             </div>
@@ -217,7 +218,7 @@
             <!--버튼 영역-->
             <div class="button-area">
                 <div>
-                    <button id="cancelBtn" type="button" onclick="checkSubmit();">cancel</button>
+                    <button id="cancelBtn" type="button" >cancel</button>
                     <button id="submitBtn" type="submit">submit</button>
                 </div>
             </div>
@@ -281,7 +282,7 @@
 	        lineNumbers: true,  //왼쪽 라인넘버 표기
 	        lineWrapping: true, //줄바꿈. 음.. break-word;
 	        theme: "blackboard",   //테마는 맘에드는 걸로.
-	        mode: 'text/x-java', //모드
+	        mode: 'text/html', //모드
 	        val: textarea.value
 	    });
 	    

@@ -40,10 +40,17 @@ public class SettingController {
 		return "setting/ex";
 	}
 	
-	//코드 작성 메소드
-	@RequestMapping()
-	public String createCode() {
+	//코드 작성 페이지 이동
+	@RequestMapping("create")
+	public String createCodePage() {
 		
+		return "board/errorBoard/createSettingForm";
+	}
+	
+	//코드 작성 메소드
+	@RequestMapping("insert")
+	public String createCode(String input) {
+		System.out.println(input);
 		return null;
 	}
 	
