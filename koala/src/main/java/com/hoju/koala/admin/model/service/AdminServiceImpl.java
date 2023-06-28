@@ -172,6 +172,31 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectCreator(teamNo, sqlSession);
 	}
 
+	@Override
+	public String selectSqlContent(int teamNo) {
+		return adminDao.selectSqlContent(teamNo, sqlSession);
+	}
+
+	@Override
+	public int updateTeamSql(SqlCloud saveSql) {
+		return adminDao.updateTeamSql(saveSql, sqlSession);
+	}
+
+	@Override
+	public SqlCloud selectSqlDate(int teamNo) {
+		return adminDao.selectSqlDate(teamNo, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Member> searchMember(String text) {
+		return adminDao.searchMember(text, sqlSession);
+	}
+
+	@Override
+	public Supporters selectMemberDetailInfo(String userId) {
+		return adminDao.selectMemberDetailInfo(userId, sqlSession);
+	}
+
 
 
 
