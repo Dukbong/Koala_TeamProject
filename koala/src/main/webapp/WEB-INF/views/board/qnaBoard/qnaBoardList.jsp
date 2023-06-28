@@ -118,7 +118,6 @@
 /*         font-weight: bold; */
 /*     } */
         .insertBtn_area{
-
         width: 80px;
         margin-left: 40px;
         margin-right: 10px;
@@ -131,8 +130,8 @@
     }
 
     .insertBtn_area button:hover{
-        background-color: black;
-        color: rgb(255, 201,20);
+        background-color: transparent;
+        color: white;
         border: 1px solid grey;
     }
 
@@ -225,8 +224,8 @@
 				        <c:forEach var="b" items="${list }" varStatus="status" >
 				            <c:if test="${b.notice == 'y'}">
 				                <tr style="height: 40px; color: rgb(206, 145, 120); font-weight: bold;">
-				                    <td>${status.count }</td>
-				                    <td>${b.title}</td>
+				                    <td>${b.boardNo}<!--  ${status.count }--></td>
+				                    <td>${b.title} [ ${b.replyCount } ]</td>
 				                    <td>${b.boardWriter}</td>
 				                    <td>${b.createDate}</td>
 				                    <td>${b.count}</td>
@@ -238,8 +237,8 @@
 				        <c:forEach var="b" items="${list }" varStatus="status">
 				            <c:if test="${b.notice != 'y'}">
 				                <tr style="height: 40px;">
-				                    <td>${status.count}</td>
-				                    <td>${b.title} [${replyCount}]</td>
+				                    <td>${b.boardNo}<!-- ${status.count} --></td>
+				                    <td>${b.title} <!--  [${qnaService.replyCount(b.boardNo)}]--> [ ${b.replyCount } ]</td>
 				                    <td>${b.boardWriter}</td>
 				                    <td>${b.createDate}</td>
 				                    <td>${b.count}</td>
@@ -251,7 +250,7 @@
                 </table>
 			<c:if test="${not empty loginUser }">
 			<div class="insertBtn_area">
-                <button type="button"><a href="enrollForm" style="text-decoration : none">글쓰기</a></button>
+                <button type="button"><a href="enrollForm" style="text-decoration : none; color: black;">글쓰기</a></button>
             </div>
             </c:if>
             </div>

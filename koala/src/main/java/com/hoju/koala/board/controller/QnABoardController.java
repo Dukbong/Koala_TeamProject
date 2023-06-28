@@ -6,13 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,19 +51,25 @@ public class QnABoardController {
 																					Model model) {
 		
 		//qna게시글 목록 조회
-		int listCount = qnaService.selectListCount();
-		
+		int listCount = qnaService.selectListCount();		
 		int pageLimit = 10;
 		int boardLimit = 10;
 		
 		PageInfo pi = Paging.getPageInfo(listCount,currentPage,pageLimit,boardLimit);
 		ArrayList<Board> list = qnaService.selectList(pi);
 
-		int replyCount = qnaService.replyCount(boardNo);
+//	    for (Board b : list) {
+//	        int replyCount = qnaService.replyCount(b.getBoardNo());
+//	        model.addAttribute("replyCount",replyCount);
+//	        
+//	        System.out.println("댓글수 : "+replyCount);
+//	    }
+	    
+//		int replyCount = qnaService.replyCount(boardNo);
 		
 		model.addAttribute("list",list);
 		model.addAttribute("pi",pi);
-		model.addAttribute("replyCount",replyCount);
+
 		return "board/qnaBoard/qnaBoardList";
 	}
 	
@@ -69,13 +78,22 @@ public class QnABoardController {
 	public ModelAndView selectBoard(int boardNo,
 									ModelAndView mv) {
 		
-		int result = qnaService.increateCount(boardNo);
+		int result = qnaService.increateCount(boardNo);//조회수 증가
+		
 		if(result>0) {
 			Board b = qnaService.selectBoard(boardNo);
-//			ArrayList<BoardAttachment> at = qnaService.selectAttachment(boardNo);
-
-//			mv.addObject("at",at);
+//			ArrayList<Reply> r = qnaService.selectReplyList(boardNo);			
+//			mv.addObject("r", r);
 			mv.addObject("b",b).setViewName("board/qnaBoard/qnaBoardDetail");
+		
+		if(b.getFileNo()!=0) {
+
+			ArrayList<BoardAttachment> at = qnaService.selectAttachment(boardNo);
+			mv.addObject("at",at).setViewName("board/qnaBoard/qnaBoardDetail");;
+			
+		}
+		
+		
 		}else {
 			mv.addObject("errorMsg","게시글 조회실패").setViewName("common/error");
 		}
@@ -136,8 +154,8 @@ public class QnABoardController {
 //		Member m = (Member)session.getAttribute("loginUser");
 		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
 		b.setBoardWriter(userNo);
-		b.setTitle(b.getTitle());
-		b.setContent(b.getContent());
+//		b.setTitle(b.getTitle());
+//		b.setContent(b.getContent());
 		System.out.println("====================");
 		
 		//게시글 작성자 설정
@@ -147,6 +165,10 @@ public class QnABoardController {
 				at.setOriginName(upFile.getOriginalFilename());
 				at.setChangeName("resources/uploadFiles/"+changeName);
 				result = qnaService.insertBoardFile(at);//파일 첨부 있을 때
+				
+				//filePath확인
+				String filePath = at.getFilePath();
+				System.out.println(filePath);
 			}else {
 				result = qnaService.insertBoard(b);//그냥 글만 있을 때
 				System.out.println(b);
@@ -163,6 +185,7 @@ public class QnABoardController {
 		
 		
 		if(result>0) {
+			System.out.println("글 작성 완료");
 			mv.addObject("alertMsg","정상적으로 등록되었습니다.").setViewName("redirect:list");
 		}else {
 			mv.addObject("errorMSg","등록 실패하였습니다.").setViewName("common/error");
@@ -202,21 +225,34 @@ public class QnABoardController {
 	//댓글 조회
 	@ResponseBody
 	@RequestMapping(value="selectReply.bo", produces="application/json; charset=UTF-8")
-	public String selectReply(int boardNo) {
+	public String selectReply(int boardNo,
+							  String boardWriter,
+							  HttpSession session) {
 		
-//		System.out.println(boardNo);
+
 		ArrayList<Reply> list = qnaService.selectReply(boardNo);
-//		System.out.println("--------------");
-//
-//		if(list!=null) {
-//			for(Reply r : list) {
-//				System.out.println(r);
-//			}
-//		}else {
-//			System.out.println("댓글 리스트 비어있음");
-//		}
-		return new Gson().toJson(list);
+		
+		return new Gson().toJson(list);	}
+	
+	//로그인 유저 닉네임 가져가지
+	@ResponseBody
+	@RequestMapping(value="getUserNick", produces="application/json; charset=UTF-8")
+	public String getUserNick(HttpSession session) {
+		String userNickName = null;
+//		String userNickName = String.valueOf(((Member)session.getAttribute("loginUser")).getNickName());
+	    // 로그인 사용자 정보를 가져오기
+	    Object loginUserObj = session.getAttribute("loginUser");
+	    if (loginUserObj != null && loginUserObj instanceof Member) {
+	        Member loginUser = (Member) loginUserObj;
+	        userNickName = loginUser.getNickName();
+	    }
+//	    
+	    JSONObject json = new JSONObject();
+	    json.put("userNickName", userNickName);
+	    return json.toString();
+//		return userNickName;
 	}
+	
 	
 	//댓글 삽입
 	@ResponseBody
@@ -231,31 +267,92 @@ public class QnABoardController {
 	//게시글 추천
 	@ResponseBody
 	@RequestMapping(value="updateLike", method=RequestMethod.POST)
-	public int updateLike(@RequestParam("boardNo") int boardNo, 
-						  @RequestParam("userNo") int userNo, 
-						  @RequestParam("boardWriter") String boardWriter) {
+	public Map<String, Object> updateLike(@RequestParam("boardNo") int boardNo, 
+	                      @RequestParam("userNo") int userNo, 
+	                      @RequestParam("boardWriter") String boardWriter) {
 		
-		int likeChk = qnaService.likeChk(boardNo, userNo);//좋아요 눌렀는지 아닌지 체크
-		System.out.println(likeChk);
-//		System.out.println("글 번호 : "+boardNo);
-//		System.out.println("userNo : "+userNo);
-//		System.out.println("boardWriter : "+boardWriter);
+		Map<String, Object> response = new HashMap<>();
 		
-		if(likeChk == 0) {
-			//처음 좋아요를 눌렀을 때
-			System.out.println("처음 추천하는고야");
-			qnaService.insertLike(boardNo,userNo); // like테이블 추가
-			qnaService.updateLike(boardNo); //board테이블 업데이트
-			qnaService.pointUpdate(boardNo); //member테이블 포인트 지급 업데이트
-		}else if(likeChk == 1){
-			//두번째 좋아요를 눌렀을 때
-			System.out.println("추천을 한 번 더 누른고야");
-//			qnaService.deleteLike(boardNo, userNo); //like테이블 삭제
-			qnaService.pointDelete(boardNo); //member테이블 포인트 차감 업데이트
-		}
-		return likeChk;
+	    int likeChk  = qnaService.likeChk(boardNo, userNo); // 좋아요 눌렀는지 아닌지 체크
+	    System.out.println(likeChk );
+	    
+	    if (likeChk  == 0) {
+	        // 처음 좋아요를 눌렀을 때
+	        System.out.println("처음 추천하는 고야");
+	        qnaService.insertLike(boardNo, userNo); // like 테이블 추가
+	        qnaService.updateLike(boardNo); // board 테이블 업데이트
+	        qnaService.pointUpdate(boardNo); // member 테이블 포인트 지급 업데이트
+	        response.put("isLiked", true);
+	    } else if (likeChk  == 1) {
+	        // 두번째 좋아요를 눌렀을 때
+	        System.out.println("두번째 누른 추천 그니까 취소");
+	        qnaService.pointDelete(boardNo); // member 테이블 포인트 차감 업데이트
+	        response.put("isLiked", false);
+	    }
+	    
+	    int likeCount = qnaService.getLikeCount(boardNo);
+	    System.out.println(likeCount);
+	    response.put("likeCount", likeCount);
+	    
+	    return response;
 	}
 	
+//	@ResponseBody
+//	@RequestMapping(value="getLikeCount", produces="application/json; charset=UTF-8")
+//	public int getLikeCount(@RequestParam("boardNo")int boardNo) {
+//		
+//		
+//		Integer getLikeCount = qnaService.getLikeCount(boardNo);
+//		int likeCount = getLikeCount != null ? getLikeCount : 0; //null일때는 0
+//		return likeCount;
+//	}
+	
+	//댓글 채택
+	@ResponseBody
+	@RequestMapping(value="qnaSelect",method=RequestMethod.POST)
+	public String qnaSelect(int boardNo,
+							Integer replyNo) {
+		
+		System.out.println("글번호 : "+boardNo);
+		System.out.println("댓글번호 : "+replyNo);
+		int result = qnaService.qnaSelect(boardNo,replyNo);
 
+//		System.out.println("되는지 안되는지.."+result);
+		return (result>0)? "success" : "fail";
+	}
+	
+	//댓글 채택 여부 확인
+	@ResponseBody
+	@RequestMapping("chkSelectedReply")
+	public String chkSelectedReply(int boardNo,
+									Integer replyNo) {
+		
+		System.out.println("채택 확인 댓글 번호 : "+replyNo);
+		String result = qnaService.chkSelectedReply(boardNo,replyNo);
+		
+		return (result.equals("Y"))? "selected" : "notSelected";
+	}
+	
+	//게시글 삭제 
+	@RequestMapping(value="delete", method=RequestMethod.POST)
+	public ModelAndView deleteBoard(int boardNo,
+									String filePath,
+									ModelAndView mv,
+									HttpSession session) {
+		
+		int result = qnaService.deleteBoard(boardNo);
+				
+		if(result>0) {
+			if(!filePath.equals("")) {
+				new File(session.getServletContext().getRealPath(filePath)).delete();
+			}
+			session.setAttribute("alertMsg", "게시글이 삭제 되었습니다!");
+			mv.setViewName("redirect:list.bo");
+		}else {
+			mv.addObject("errorMsg","게시글 삭제 실패").setViewName("common/error");
+		}
+		
+		return mv;
+	}
 
 }

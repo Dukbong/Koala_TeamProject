@@ -67,6 +67,24 @@ public interface QnABoardService {
 	//qna 댓글 수
 	int replyCount(int boardNo);
 
+	//qna 좋아요 수
+	int getLikeCount(int boardNo);
+
+	//qna 댓글 채택
+	int qnaSelect(int boardNo, int replyNo);
+
+	//qna 게시글 삭제
+	int deleteBoard(int boardNo);
+
+	//qna 댓글 채택 여부
+	String chkSelectedReply(int boardNo, Integer replyNo);
+
+//	//댓글 보여주기
+//	ArrayList<Reply> selectReplyList(int boardNo);
+
+//	//qna 좋아요 수
+//	int countLike(int boardNo);
+
 	
 
 }

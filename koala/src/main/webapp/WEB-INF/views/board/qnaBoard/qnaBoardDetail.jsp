@@ -55,32 +55,36 @@
         margin-right: 10px;
     }
     .control_area button[type="reset"]:hover {
-        color: black;
+        font-weight:bold;
         border: 1px solid grey;
     }
     .control_area button[type="submit"]:hover {
-        color: black;
+        font-weight:bold;
         border: 1px solid grey;
     }
     .control_area button[type="reset"]{
-        background-color: rgb(206, 145,120);
-        color: white;
+/*         background-color: rgb(206, 145,120); */
+		border:1px solid grey;
+		background-color:transparent;
+        color: rgb(206, 145,120);;
 /*         font-weight: bold; */
         width: 70px;
         height: 30px;
         border-radius: 4px;
         cursor: pointer;
-        font-size : 11px;
+        font-size : 12px;
     }
     .control_area button[type="submit"]{
-        background-color: rgb(106, 153,85);
-        color: white;
+/*         background-color: rgb(106, 153,85); */
+		background-color:transparent;
+		border: 1px solid grey;
+        color: rgb(106, 153,85);
 /*         font-weight: bold; */
         width: 70px;
         height: 30px;
         border-radius: 4px;
         cursor: pointer;
-        font-size : 11px;
+        font-size : 12px;
     }
     .middle_area{
         color: white;
@@ -204,6 +208,13 @@
         cursor: pointer;
         font-weight: bold;
     }
+    .selected-reply {
+    color: red; /* 원하는 폰트 색상으로 변경 */
+}
+
+	.replyDel{
+		background-color : red;
+	}
 
 
 
@@ -240,10 +251,10 @@
             		var obj = formObj.append(bno);
             		
             		if(num==1){
-            			obj.attr("action","updateForm.bo").attr("method","get");
+            			obj.attr("action","update").attr("method","get");
             		}else{
             			obj.append(filePath);
-            			obj.attr("action","delete.bo").attr("method","post");
+            			obj.attr("action","delete").attr("method","post");
             		}
             	}
             </script> 
@@ -259,7 +270,7 @@
                             <th style="text-align: center;">${b.boardWriter}</th>
                             <th style="width: 10%;">조회 ${b.count}</th>
                             <th style="width: 15%;">${b.createDate}</th>
-                            <th>첨부 파일 &nbsp; <!-- ${at.originName} --></th> 
+                            <th>첨부 파일 &nbsp;  ${at.originName} </th> 
                             
                         </tr>
                     </thead>
@@ -270,13 +281,13 @@
                     </tbody>                   
                 </table>
                 <div class="button_area">
-                    <button type="button">댓글 <span id="rcount"></span></button>
+                    <button type="button"><i class="fa-solid fa-comment-dots fa-lg"></i> <span id="rcount"></span></button>
                     <c:choose>
                     <c:when test="${b.boardWriter != loginUser.nickName }">
-                    <button type="submit" onclick="updateLike();">추천 ${b.liked }</button>                    
+                    <button type="submit" onclick="updateLike(this);" class="likeIt"><i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount"><!-- ${b.liked } --></span></button>                    
                     </c:when>
                     <c:otherwise>
-                    <button type="submit" disabled>추천 ${b.liked }</button>
+                    <button type="submit" disabled><i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount"><!-- ${b.liked } --></span> </button>
                     </c:otherwise>
                     </c:choose>
                     
@@ -284,11 +295,36 @@
             </div>
 
 			<script>
+			
+			
+				function checkSelectedReply(replyId){
+					
+					var selectedReplyNo = $(this).closest("tr").find("td:first-child").text();
+					$.ajax({
+						url:"chkSelectedReply",
+						method:"GET",
+						data:{
+							replyId:replyId,
+							boardNo:"${boardNo}",
+							replyNo : selectedReplyNo
+						},
+						success:function(response){
+							if(response==="selected"){
+								$("#reply_table").prepend($("#"+replyId));
+								$("#"+replyId+".selectBtn").prop("disabled",true)
+							}
+						},
+						error:function(){
+							console.log("통신 실패");
+						}
+					})
+				}
 				$(function(){
 					selectReplyList();
 				});
 				
-				function selectReplyList(){
+				
+				function selectReply(loginUser){
 					
 					$.ajax({
 						url : "selectReply.bo",
@@ -297,25 +333,100 @@
 						},
 						success : function(list){
 							var result = "";
+// 							console.log("여기들어온 닉네임은 "+loginUser);
+							var boardWriter = "${b.boardWriter}";
+// 							console.log("글 작성자는 "+boardWriter);
 							for(var i in list){
-								result += "<tr>"
+								var replyId = list[i].replyId;
+								result += "<tr data-reply-id='"+list[i].replyId+"'>"
+										+ "<td>"+list[i].replyNo+"</td>"
 										+ "<td>"+list[i].replyWriter+"</td>"
 										+ "<td>"+list[i].replyContent+"</td>"
 										+ "<td>"+list[i].createDate+"</td>"
-										+ "<td>"+"<button class='selectBtn'>+채택"+"</button>"+"</td>"
-										+ "</tr>"
+										
+										//게시글 작성자인 경우에만 채택 버튼 추가
+										if(loginUser === boardWriter){
+											console.log(loginUser+"입니다.")
+											result += "<td>"+"<button class='selectBtn' style='background-color:lightseagreen'>채택"+"</button>"+"</td>"
+										}else if(loginUser === list[i].replyWriter){
+											result += "<td>"+"<button class='replyDel' style='background-color:darkmagenta'>삭제"+"</button>"+"</td>"
+										}else{
+											result += "<td>"+"</td>"
+										}
+										
+										result += "</tr>"
+										
+										checkSelectedReply(replyId); //채택 여부 확인
 							}
 							
 							$("#reply_table").html(result);
 							$("#rcount").text(list.length);
+							
 						},
 						error : function(){
 							console.log("댓글 목록 조회 실패");
 						}
 					});
+					}
+				function selectReplyList(){
+					
+					var loginUser;//로그인 사용자 닉네임 저장할 변수
+					
+					$.ajax({
+						url:"getUserNick",
+						method:"GET",
+						dataType: "json",
+						success:function(response){
+							var loginUser = response.userNickName;//닉네임 뽑아내기
+							selectReply(loginUser);
+						},
+						error:function(){
+							console.log("통신 실패");
+						}
+					});
+					
+
 				}
 				
-				function insertReply(){
+				
+				$(document).on("click",".selectBtn",function(){
+					
+// 					console.log("채택 선택해보기");
+// 					var selectedReplyId = $(this).closest("tr").data("reply-id");
+// 				    var selectedReplyNo = $(this).closest("tr").data("reply-no");
+// 					var selectedButton = $(this);//선택된 버튼 요소 
+					var selectedReplyNo = $(this).closest("tr").find("td:first-child").text();
+
+					console.log("replyNo"+selectedReplyNo);
+					$.ajax({
+						url:"qnaSelect",
+						method:"POST",
+						data:{
+							boardNo : "${b.boardNo}",
+							replyNo : selectedReplyNo
+						},
+						success:function(result){
+							
+							if(result === "success"){
+								
+							$(this).prop("disabled",true);
+							$(this).css("background-color","blue");
+							var selectedReply = $(this).closest("tr").detach();
+							$("#reply_table").prepend(selectReply);
+							$(this).not(this).hide();
+							
+							}
+							
+						},
+						error:function(){
+							console.log("통신 실패");
+						}
+					});
+				})
+				
+				
+				
+				function insertReply(){//댓글 삽입
 					
 					
 					$.ajax({
@@ -340,55 +451,59 @@
 				
 				
 				
-				function updateLike(){
-					console.log("추천");
-					var btn = $(this); //클릭된 버튼
-					var boardNo = "${b.boardNo}"
-						var userNo = "${loginUser.userNo}"
-							var boardWriter = "${b.boardWriter}"
-							
-							console.log("글 번호 : "+boardNo);
-							console.log("로그인 한사람 : "+userNo);
-							console.log("작성자 번호 : "+boardWriter);
-					$.ajax({
-						type : "POST",
-						url : "updateLike",
-						dataType : "text",
-						data : {
-							boardNo : "${b.boardNo}",
-							userNo : "${loginUser.userNo}",
-							boardWriter : "${b.boardWriter}"
-						},
-						success : function(likeChk){
-							console.log("여기에는 들어왔겠지");
-							if(likeChk===0){
-								console.log("처음하는 추천");
-								alert("추천되었습니다!");
-								btn.css("background-color", "crimson"); // 버튼의 배경색을 빨간색으로 변경
-								location.reload();
-							}
-							else if(likeChk===1){
-								alert("추천이 취소되었습니다.");
-								btn.css("background-color", "background-color: rgb(156, 220, 254)"); // 배경색을 초기값으로 변경 (기본 스타일 적용)
-								location.reload();
-							}
-						},
-						error : function(){
-							console.log("통신 실패");
-						}
-					});
+				function updateLike(btn) {
+				    var boardNo = "${b.boardNo}";
+				    var userNo = "${loginUser.userNo}";
+				    var boardWriter = "${b.boardWriter}";
+				    
+				    $.ajax({
+				        type: "POST",
+				        url: "updateLike",
+				        dataType: "json",
+				        data: {
+				            boardNo: boardNo,
+				            userNo: userNo,
+				            boardWriter: boardWriter
+				        },
+				        success: function(response) {
+				        	var likeCount = response.likeCouunt;//좋아요 개수
+				        	var isLiked = response.isLiked;//좋아요 여부
+				        	
+				            if (isLiked) {
+				                console.log("처음하는 추천");
+				                alert("추천되었습니다!");
+				                $(btn).css("background-color", "crimson");//버튼 색 변경
+				                $(btn).find("i").removeClass("fa-regular fa-heart").addClass("fa-solid fa-heart");//채운 하트
+				            } else{
+				                alert("추천이 취소되었습니다.");
+				                $(btn).css("background-color", "rgb(156, 220, 254)");//예전 버튼 색으로 돌리기
+				                $(btn).find("i").removeClass("fa-solid fa-heart").addClass("fa-regular fa-heart");//빈 하트
+				            }
+				            $("#likeCount").text(likeCount);
+				        },
+				        error: function() {
+				            console.log("통신 실패");
+				        }
+				    });
+				    //본인 게시글인지 확인
+				    if(userNo != boardWriter){
+				    	//로그인 유저가 다른 사람의 게시글에 좋아요를 눌렀을 때
+				    	$(btn).css("background-color", "crimson");
+				    	$(btn).find("i").removeClass("fa-regular fa-heart").addClass("fa-solid fa-heart");
+				    }
 				}
+				
 			</script>
             
             
             <div class="bottom_area">
                 <table id="reply_table">
-                    <tr>
-                        <td>백준왕(작성자)</td>
-                        <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td>
-                        <td>23.06.02.22:10</td>
-                        <td><button class="selectBtn">채택</button></td>
-                    </tr>
+<!--                     <tr> -->
+<!--                         <td>백준왕(작성자)</td> -->
+<!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->
+<!--                         <td>23.06.02.22:10</td> -->
+<!--                         <td><button class="selectBtn">채택</button></td> -->
+<!--                     </tr> -->
 <!--                     <tr> -->
 <!--                         <td>백준왕(작성자)</td> -->
 <!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->

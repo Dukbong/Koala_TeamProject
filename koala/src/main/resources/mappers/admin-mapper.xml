@@ -17,6 +17,13 @@
 		<result column="issue" property="issue"/>
 	</resultMap>
 	
+	<resultMap type="sqlCloud" id="sqlCloudResultSet">
+		<result column="SQLTITLE" property="sqlTitle"/>
+		<result column="SQLCONTENT" property="sqlContent"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="MODIFY_DATE" property="modifyDate"/>
+	</resultMap>
+	
 	<resultMap type="issuesAndError" id="issuesAndErrorResultSet">
 		<result column="SETTING_TITLE" property="settingTitle"/>
 		<result column="CC" property="count"/>
@@ -255,4 +262,9 @@
 		</if>
 		WHERE REF_BNO = #{boardNo}
 	</update>
+	
+	
+	<select id="selectSqlTitle" parameterType="string" resultType="string">
+		SELECT SQLTITLE FROM SQLCLOUD WHERE SQLTITLE = #{sqlTitle}
+	</select>
 </mapper>
