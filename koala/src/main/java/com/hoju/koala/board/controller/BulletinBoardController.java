@@ -268,16 +268,17 @@ public class BulletinBoardController {
 				result = bbService.deleteAttachment(existedFiles[i]);
 				fileno.add(fileNos[i]);
 			}
-			fileno.add(i+1);
 		}
+		fileno.add(existedFiles.length+1);
 		int y = 0;
 		if(!baList.isEmpty()) {
 			for(BoardAttachment ba: baList) {
 				if(fileno.get(y)!=0) {
 					ba.setFileNo(fileno.get(y));
 					y++;
+				}else {
+					ba.setFileNo(fileno.get(y-1));
 				}
-				ba.setFileNo(fileno.get(y)+1);
 				result2 = bbService.insertBoardAttachment(ba);
 			}
 		}

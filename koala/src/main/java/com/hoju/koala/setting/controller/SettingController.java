@@ -40,7 +40,12 @@ public class SettingController {
 		return "setting/ex";
 	}
 	
-	
+	//코드 작성 메소드
+	@RequestMapping()
+	public String createCode() {
+		
+		return null;
+	}
 	
 	
 	
