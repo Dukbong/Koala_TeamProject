@@ -58,7 +58,7 @@
 </style>
 
 <body>
-	<%@include file="../../common/header_copy.jsp"%>
+	<%@include file="../../common/header.jsp"%>
 	
 	<div class="ebEnrollForm">
 		<form action="insert" method="post">

@@ -15,7 +15,8 @@
 	#content{
 		margin: auto;
 		width: 80%;
-		height: 1100px;
+		height: 1300px;
+		padding-top : 200px;
 	}
 	
 	#insert-form{

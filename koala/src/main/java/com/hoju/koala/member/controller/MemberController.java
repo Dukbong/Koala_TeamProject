@@ -25,6 +25,7 @@ import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
+import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
@@ -71,6 +72,11 @@ public class MemberController {
 		
 		//아이디 값에 대한 유저 정보 가져오기
 		Member loginUser = memberService.loginMember(m);
+		
+		//======================================================설희 작성
+		System.out.println("loginUser : "+loginUser);
+		int userNo =  loginUser.getUserNo();
+		memberService.attendance(userNo);
 		
 		System.out.println(request.getParameter("keepId"));
 		System.out.println("loginUser" +loginUser);
@@ -478,6 +484,24 @@ public class MemberController {
 		mv.addObject("fList", fList);
 		mv.setViewName("member/activityDetailPage");
 		
+		
+		return mv;
+	}
+	
+	//활동내역 Contributions ================================설희 잔디
+	@GetMapping("/contributions")
+	public ModelAndView selectContributions(ModelAndView mv,
+											String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		int userNo = m.getUserNo();
+		
+		ArrayList<Attendance> attList = memberService.selectContributions(userNo);
+		
+		mv.addObject("user", m);
+		mv.addObject("attList", attList);
+		mv.setViewName("member/activityDetailPage");
 		
 		return mv;
 	}
