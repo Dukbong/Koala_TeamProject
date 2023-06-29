@@ -17,6 +17,8 @@
 <script src="/koala/resources/codemirror-5.53.2/mode/xml/xml.js"></script>
 <!-- <link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/> -->
 <!-- <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ayu-dark.min.css" integrity="sha512-mV3RUXi1gt22jDb4UyRBFhZVFgAIiOfRE6ul+2l1Hcj6glyg6x4xlnjPH+neGm/t6XrFmsMRu4++McQu0asjqg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
     /* ===================================================== 영역잡기 */
     div{ box-sizing: border-box;}
@@ -45,8 +47,7 @@
     .menual-area{width: 48%; margin-right: 2%;}
     .code-area{width: 48%; margin-left:  2%;}   
     .menual-area>div{width: 100%; padding: 20px; background-color: white; border: 1px solid gray;}
-/*     .code-area>div{width: 100%; padding: 20px;  background-color: black;} */
-.code-area>div{width: 100%; height: 640px;  background-color: black;}
+    .code-area>div{width: 100%; height: 650px;  padding: 20px;  background-color: black;}
     .menual-code-area textarea{
         width: 100%;
         height: 600px;
@@ -90,11 +91,16 @@
     input:focus{outline: none;}
     span{font-size: 21px; font-weight: 600; color: rgb(238, 238, 238);}
     p{font-size: 18px; font-weight: 600; margin-bottom: 20px;}
+    
+    .CodeMirror{
+    	font-family: Arial, monospace;
+    	fonc
+    }
 </style>
 
 
 <body>
-    <%@include file="../../common/header_copy.jsp"%>
+    <%@include file="../../common/header.jsp"%>
 	<script>
 		$(function(){
 			//input 옵션 생성
@@ -274,31 +280,28 @@
     
     
     	
-    	<script>
+   	<script>
 	    // textarea 태그의 element를 지정
 	    var textarea = document.getElementById('editor');
 	    // 에디터 설정
 	    var editor = CodeMirror.fromTextArea(textarea, {
 	        lineNumbers: true,  //왼쪽 라인넘버 표기
 	        lineWrapping: true, //줄바꿈. 음.. break-word;
+	        matchBrackets: true,
+// 	        theme: "ayu-dark",   //테마는 맘에드는 걸로.
+// 	        mode: 'text/x-java', //모드
 	        theme: "blackboard",   //테마는 맘에드는 걸로.
 	        mode: 'text/html', //모드
 	        val: textarea.value
 	    });
 	    
-// 	    var editor = CodeMirror.fromTextArea(document.getElementById('editor'),{
-// 		    mode: 'text/x-java',
-// 		    theme: '3024-night',
-// 		    lineNumbers: true,
-// 		    matchBrackets: true,
-// 		  });
-// 		editor.setSize("100%","300");
+	    editor.setSize("100%","100%");
 
-	    function fn_msg() {
-	        // 에디터에 입력된 값은 아래와 같이 가져올 수 있다.
-	        var text = editor.getValue();
-	        alert(text);
-	    }
+// 	    function fn_msg() {
+// 	        // 에디터에 입력된 값은 아래와 같이 가져올 수 있다.
+// 	        var text = editor.getValue();
+// 	        alert(text);
+// 	    }
 	</script>
 </body>
 </html>

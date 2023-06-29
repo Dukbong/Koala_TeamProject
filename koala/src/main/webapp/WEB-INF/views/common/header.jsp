@@ -14,6 +14,7 @@
 
 </head>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<!-- font-awesome Copy Link Tag (아이콘 CDN) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -25,49 +26,54 @@
         background-color: rgb(30, 30, 30);
         color: white;
         positon: relative;
-        font-family: 'Noto Sans KR', sans-serif; 
+        font-family: 'Noto Sans KR', sans-serif;
     }
     #wrap{
-        width: 100%;
-        height: 180px;
+        width: 1500px;
+    	position: absolute;
+    	z-index: 1;
     }
-
+    #wrap>div{
+    	width: 100%;
+    	height: 150px;
+    	background-color: rgb(30, 30, 30);
+    	position: fixed;
+    }
     #header{
-        width: 80%;
+        width: 1400px;
         height: 99%;
         margin: auto;
     }
     #line{
-        width: 80%;
+        width: 1500px;
         height: 1%;
-        background-color: rgb(172, 171, 169);
+        background-color: rgb(100, 100, 100);
         margin: auto;
     }
-
     #header>div{height: 100%; float: left;}
     #header_1{width: 15%;}
-    #header_2{width: 65%;}
-    #header_3{width: 20%;}
+    #header_2{width: 70%;}
+    #header_3{width: 15%;}
 
     #header_2>div{width: 100%;}
     #header_2_1{height: 70%;}
     #header_2_2{height: 29%;}
 
-    #header_1 i{padding-top: 65px;}
+    #header_1 i{padding-top: 70px;}
+    #header_1 i:hover, #back>i:hover{cursor: pointer;}
     #header_2_1>h1{
         margin: 0;
-        font-size: 55px;
-        font-weight: 600;
-        padding-top: 30px;
-        color: rgb(40, 151, 223);
+        padding-top: 35px;
     }
-    
-    
-    
+    #header_2_1>h1>span{
+        font-size: 50px;
+        font-weight: 700;
+		color: rgb(40, 150, 223);
+		text-shadow: 2px 2px 2px rgb(40,30,223);
+	}
     #header_2_1:hover{
     	cursor: pointer;
     }
-    
     #header_2_2>h4{
         margin: 0;
         font-size: 20px;
@@ -76,57 +82,36 @@
     }
     
     #header_3_1{
-    	
     	height: 100%;
     	width: 100%;
-    	top: 0;
-    	left: 0;
-    	bottom: 0;
-    	right: 0;
-    	text-align: center;
-    	display: flex;
-    	justify-content: center;
         flex-direction: column;
     }
-    #header_3_1>div{width: 100%; height: 100%;}
-    #header_3_1 li{width: 200px; height: 30px;} 
-    #myPage{width: 100%; height: 100%;}
-    
-    .ac-wrap{
-    	margin: auto;
-    	width: 80%;
-    }
-    
+    #header_3_1 div{width: 100%; height: 100%;}
+    #header_3_1 li{width: 150px; height: 30px;}
+    #myPage{width: 100%; height: 100%; border: 0; text-align: center;}
+
     .ac-wrap>ul{
     	list-style-type: none;
-    	padding: 0;
-    	padding-top: 40px;
+    	padding-top: 60px;
+    	padding-left: 90px;
     }
-    
-    .ac-wrap>ul>li{
-    	height: 100%;
-    	width: 100%;
+    .ac-wrap>ul>li, .ac-wrap>ul>li>select{
 		border-radius: 50px;
     	background-color: rgb(50, 50, 50);
+    	color: white;
     	margin-bottom: 10px;
-    	/* margin: 10px; */
     }
-    
-    /* *{box-sizing: border-box;} */
-    
+    .ac-wrap>ul>li>select>option{border-radius: 50px;}
     .ac-wrap>ul>li:hover{
     	background-color: rgb(40, 40, 40);
     }
-    
-    .ac-wrap>ul>li>a{
+    .ac-wrap a{
     	display: block;
-    	/* padding: 10px; */
     	text-decoration: none;
     	text-align: center;
     	color: white;
-    	
+    	line-height: 28px;
     }
-    
     
 	#darkmode{
 		position: absolute;
@@ -139,14 +124,29 @@
 	#pagingArea {width:fit-content; margin:auto;}
 </style>
 <body>
+	<script>
+		$(function(){
+			$("#menuOnBtn").on("click", function(){ //메뉴바 펼치기
+ 				$('#menu').css("transform","translateX(0px)");
+				//$('#menu').css("transform","translateY(0px)");
+			});
+			$("#menuOffBtn").on("click", function(){ //메뉴바 닫기
+				$('#menu').css("transform","translateX(-950px)");
+				//$('#menu').css("transform","translateY(-100%)");
+			})
+		});
+	</script>
+    <%@include file="menubar.jsp"%>
     <div id="wrap">
+    <div>
         <div id="header">
             <div id="header_1">
-                <a href="../common/menubar.jsp"><i class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i></a>
+                <i id="menuOnBtn" class="fa-solid fa-bars fa-2xl" style="color: #ffffff;"></i>
             </div>
             <div id="header_2">
                 <div id="header_2_1">
-                    <h1 onclick="location.href='/koala'">Koala initializr</h1>
+                    <h1 onclick="location.href='/koala'"><span>Koala </span><span style="color:white; font-size: 30px;"> initializr</span></h1>
+                    
                 </div>
                 <div id="header_2_2">
                 	<!-- /각 카데고리/이후 주소  ex) /admin/supporter/...-->
@@ -195,7 +195,7 @@
 			                		<h4 class="">Enroll</h4>					
                 				</c:when>
                 				
-                				<c:when test="${path.contains('ad') or path.contains('boardList') or path.contains('replyList') or path.contains('likedList') or path.contains('followingList')}">
+                				<c:when test="${path.contains('ad')}">
                 					<h4 class="">Activity Details</h4>
                 				</c:when>
                 				
@@ -230,8 +230,8 @@
                 		<c:when test="${empty loginUser }">
                				<div class="ac-wrap">
             	    			<ul>
-        	        				<li><a href="/koala/member/login">로그인</a></li>
-    	            				<li><a href="/koala/member/enroll">회원가입</a></li>                				
+        	        				<li><a href="/koala/member/login">Login</a></li>
+    	            				<li><a href="/koala/member/enroll">Sign up</a></li>                				
 	                			</ul>
                				</div>
                    		</c:when>
@@ -245,7 +245,7 @@
 		    	               				<option value="as">Account Settings</option>
 			                   			</select>
                    					</li>
-                   					<li><a href="/koala/member/logout">로그아웃</a></li>
+                   					<li><a href="/koala/member/logout">Logout</a></li>
                    				</ul>
                    			</div>
                    			
@@ -267,6 +267,7 @@
             </div>
         </div>
         <div id="line"></div>
+    </div>
     </div>
     <div id="darkmode">
     	<i id="dark" class="fa-solid fa-sun fa-2xl" style="color: rgb(255, 246, 246)" onclick="changeMode(event);"></i> <br><br> <!-- 수정할 것 -->
@@ -295,14 +296,14 @@
         }
     	
     	function darkmode(){
-    		$("body").css("background-color", "rgb(255, 246, 246)").css("color", "black");
+    		$("body, #wrap>div").css("background-color", "rgb(255, 246, 246)").css("color", "black");
         	$(".topLine").css("background-color", "white")
         	$(".ii").css("color", "black");
         	$(".ic").css("background-color", "white").css("color","black");
     	}
     	
     	function whitemode(){
-    		$("body").css("background-color", "rgb(30, 30, 30)").css("color", "white");
+    		$("body, #wrap>div").css("background-color", "rgb(30, 30, 30)").css("color", "white");
     		$(".topLine").css("background-color", "black");
     		$(".ii").css("color", "#ffffff");
     		$(".ic").css("background-color", "black").css("color","#ffffff");

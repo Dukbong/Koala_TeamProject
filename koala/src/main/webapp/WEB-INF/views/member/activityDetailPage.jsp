@@ -199,7 +199,7 @@
     
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	
     <div id="outer" >
@@ -312,6 +312,7 @@
                         <li style="list-style-type: none;"><a id="replyList">Reply</a></li>
                         <li style="list-style-type: none;"><a id="likedList">Liked</a></li>
                         <li style="list-style-type: none;"><a id="followingList">Following</a></li>
+                        <li style="list-style-type: none;"><a id="contributions">contributions</a></li>
                     </ul>
                 </div>
             </div>
@@ -474,6 +475,28 @@
 				                    </tr>
 				                </table>
 							</c:forEach>
+                		</c:when>
+                		
+                		<c:when test="${not empty attList }">
+<%--                 			<c:forEach var="a" items="${attList }"> --%>
+<!--                 				<table class="rel-user" style="color:white;"> -->
+<!-- 									<tr> -->
+<%-- 										<td>날짜 ${a.attDate }</td> --%>
+<%-- 										<td>기여도 ${a.attLevel }</td> --%>
+<!-- 									</tr> -->
+<!--                 				</table> -->
+<%-- 							</c:forEach> --%>
+							<div style="width: 1200px; height: 400px; margin: auto; background-color: pink;">
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+							</div>
                 		</c:when>
                 		
                 		<c:otherwise>

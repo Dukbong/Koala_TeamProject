@@ -500,7 +500,7 @@
        		
    		});
 	</script>
-	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<div id="content">
 		<div id="content_1" align="center">
 	        <div id="enroll-area">

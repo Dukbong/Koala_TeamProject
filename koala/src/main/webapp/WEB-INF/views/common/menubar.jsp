@@ -6,26 +6,37 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-<!-- font-awesome Copy Link Tag (아이콘 CDN) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-
-    body{margin: 0;}
-    #wrap{
-        width: 50vw; /*메인페이지는 width: 100vw; 조건걸기*/
+    #menu{
+        width: 950px;
         height: 100vh;
         background-color: rgb(40, 151, 223);
         color: white;
+        transform: translatex(-950px);
+		transition: transform 0.4s ease-in-out;
+        position: fixed;
+        z-index: 10;
     }
+    /* 위에서 내려오는 메뉴바
+    #menu{
+        width: 100%;
+        height: 100vh;
+        background-color: rgb(40, 151, 223);
+        color: white;
+        transform: translatey(-100%);
+		transition: transform 0.4s ease-in-out;
+        position: fixed;
+        z-index: 10;
+    }
+    */
 
-    #wrap>div{height: 100%; float: left;}
+    #menu>div{height: 100%; float: left;}
     #back{width: 25%; text-align: center;}
     #menu-area{width: 75%;}
-
+    
     #menu-area>div{width: 100%;}
-    #title{height: 15%;}
-    #title>h1{font-size: 50px; color: rgb(255, 201, 15);}
+    #menu-title{height: 15%;}
+    #menu-title>h1{font-size: 50px; font-weight: 700; color: rgb(255, 201, 15); text-shadow: 2px 2px 2px rgb(40,30,223); margin:0; padding-top: 40px;}
     #menubar{height: 60%;}
     #icon-area{height: 25%;}
     #icons{width: 20%; height: 100%; background-color: rgb(76, 179, 240); float: right;}
@@ -61,29 +72,28 @@
     #navi>li>ul a:hover{font-size: 21px;}
     #navi>li>a:hover+ul{display: block;}
     #navi>li>ul:hover{display: block;}
-
 </style>
 <body>
-    <div id="wrap">
+    <div id="menu">
         <div id="back">
-            <a href=""><i class="fa-solid fa-x fa-xl" style="color: #ffffff; padding-top: 60px;"></i></a>
+            <i id="menuOffBtn" class="fa-solid fa-x fa-xl" style="color: #ffffff; padding-top: 70px;"></i>
         </div>
         <div id="menu-area">
-            <div id="title">
-                <h1 style="color: rgb(255, 201, 15); margin:0; padding-top: 25px;">Koala initializr</h1>
+            <div id="menu-title">
+                <h1>Koala initializr</h1>
             </div>
             <div id="menubar">
                 <ul id="navi">
                     <li><a href="">CreateCode && DownloadFile</a></li>
-                    <li><a href="bulletinboard.bo">Community(All user);</a></li>
-                    <li><a href="">try{} catch(Error){}</a>
+                    <li><a href="/koala/bulletinBoard/list">Community(All user);</a></li>
+                    <li><a href="/koala/errorBoard/list">try{} catch(Error){}</a>
                         <ul>
                             <li><a href="">ex1CreateCodeCode</a></li>
                             <li><a href="">ex2CreateCode</a></li>
                             <li><a href="">ex3CreateCodeCode</a></li>
                         </ul>
                     </li>
-                    <li><a href="">response.getWriter().print(QnA);</a>
+                    <li><a href="/koala/qnaBoard/list">response.getWriter().print(QnA);</a>
                         <ul>
                             <li><a href="">ex1CreateCodeCode</a></li>
                             <li><a href="">ex2CreateCode</a></li>
