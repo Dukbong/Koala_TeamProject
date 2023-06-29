@@ -34,7 +34,7 @@ public class SettingController {
 		}
 		
 		
-		return "setting/ex";
+		return "board/settingBoard/NewFile";
 	}
 	
 	//코드 작성 페이지 이동
@@ -43,6 +43,8 @@ public class SettingController {
 		
 		return "board/errorBoard/createSettingForm";
 	}
+	
+	
 	@GetMapping("/detail")
 	public String selectSetting(int settingNo,
 								Model model) {
@@ -51,7 +53,7 @@ public class SettingController {
 		Setting s = stService.selectSetting(settingNo);
 		
 		if(s != null) {
-			//해당 세팅과 같은 라이브러리인 정보들 다 가져오기
+			
 			model.addAttribute("setting", s);
 		}
 		

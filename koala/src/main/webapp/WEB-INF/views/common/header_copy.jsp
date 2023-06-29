@@ -52,8 +52,8 @@
     }
     #header>div{height: 100%; float: left;}
     #header_1{width: 15%;}
-    #header_2{width: 70%;}
-    #header_3{width: 15%;}
+    #header_2{width: 65%;}
+    #header_3{width: 20%;}
 
     #header_2>div{width: 100%;}
     #header_2_1{height: 70%;}
@@ -90,10 +90,23 @@
     #header_3_1 li{width: 150px; height: 30px;}
     #myPage{width: 100%; height: 100%; border: 0; text-align: center;}
 
+	.ac-wrap{
+		padding-left: 40px;
+	}
+	.ac-wrap>#message-icon{
+		padding-top: 30px;
+		width: 17%;
+	}
+	
+	#message-icon:hover{
+		cursor: pointer;
+	}
     .ac-wrap>ul{
+    	display: inline-block;
     	list-style-type: none;
-    	padding-top: 60px;
-    	padding-left: 90px;
+		padding-top: 40px;
+		width: 80%;
+		padding-left: 20px;
     }
     .ac-wrap>ul>li, .ac-wrap>ul>li>select{
 		border-radius: 50px;
@@ -122,6 +135,11 @@
 	}
 	/* 페이징 버튼 처리 css */
 	#pagingArea {width:fit-content; margin:auto;}
+	
+	.modal{
+		color: black;
+	}
+	
 </style>
 <body>
 	<script>
@@ -237,6 +255,7 @@
                    		</c:when>
                    		<c:otherwise>
                    			<div class="ac-wrap">
+                   				<i id="message-icon" class="fa-regular fa-message fa-2xl" data-bs-toggle="modal" data-bs-target="#messengerModal"></i>
                    				<ul>
                    					<li>
 		                	   			<select id="myPage">
@@ -251,6 +270,7 @@
                    			
                    			<script>
                    				$(function(){
+                   					//마이페이지이동
                    					$("#myPage").change(function(){
                    						if(this.value == "ad"){
                    							console.log("hi");
@@ -261,6 +281,7 @@
                    					});
                    				});
                    			</script>
+                   			
                    		</c:otherwise>
                 	</c:choose>
                 </div>
@@ -274,6 +295,58 @@
     	<i id="white" class="fa-solid fa-moon fa-2xl" style="color: rgb(30, 30, 30)" onclick="changeMode(event);"></i>
     </div>
     
+    <!-- 메신저 모달창 -->
+    <div class="modal fade" id="messengerModal" tabindex="-1">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">메신저</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	
+	      	<div class="input-group mb-3">
+			  <input type="text" id="searchUser" name="searchUser" class="form-control" placeholder="닉네임 검색">
+			  <button class="btn btn-outline-secondary" type="button" id="searchUserBtn">Search</button>
+			</div>
+			
+	        <p>Modal body text goes here.</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 메신저 스크립트 -->
+	<script>
+		$(function(){
+			$("#searchUserBtn").on("click", function(){
+				var searchUser = $("#searchUser").val();
+				
+				console.log(searchUser);
+				
+				$.ajax({
+					url:"member/searchUser",
+					data:{
+						searchUser:searchUser
+					},
+					success:function(list){
+						
+					},
+					error:function(){
+						alert("유저 찾기 통신 오류");
+					}
+				});
+				
+				
+			});
+		});
+	</script>
+	
+	
     <script>
 
     	$(function(){

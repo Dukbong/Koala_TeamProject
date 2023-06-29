@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,142 +61,41 @@
 
 </style>
 <body>
+	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
+	
     <div class="wrapper">
         <div class="header">
 
         </div>
         <div class="body_content">
+        
+        <c:forEach var="s" items="${slist }" >
+        
         <div class="menubox">
+        	<input type="hidden" value="${s.settingNo }">
             <div class="box_title">
-                <span>ojdbc6</span>
+                <span>${s.settingTitle }</span>
             </div>
             <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
+                <p>
+                	${s.sortDescription }
                 </p>
             </div>
         </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>spring jdbc</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>JSTL</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>json</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>Gson</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>commons dbcp</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>filter</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>interceptor</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox" >
-            <div class="box_title">
-                <span>mybatis</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-        <div class="menubox">
-            <div class="box_title">
-                <span>lombok</span>
-            </div>
-            <div class="box_content">
-                <p>설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                    설명들어가는곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳 설명들어가는 곳
-                </p>
-            </div>
-        </div>
-    </div>
+        
+        </c:forEach>
+        
+    	</div>
+    	
+    	<script>
+    		$(function(){
+    			$(".menubox").on("click", function(){
+    				var settingNo = $(this).find("input[type=hidden]").val();
+    				
+    				location.href="/koala/setting/detail?settingNo="+settingNo;
+    			});
+    		});
+    	</script>
     </div>
 </body>
 </html>
