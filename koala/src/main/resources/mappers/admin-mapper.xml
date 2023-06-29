@@ -20,9 +20,8 @@
 	<resultMap type="sqlCloud" id="sqlCloudResultSet">
 		<result column="TEAM_NO" property="teamNo"/>
 		<result column="TEAMNAME" property="teamName"/>
-		<result column="CREATORNO" property="createNo"/>
-		<result column="SQLTITLE" property="sqlTitle"/>
 		<result column="SQLCONTENT" property="sqlContent"/>
+		<result column="CREATOR_NO" property="creatorNo"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
@@ -283,5 +282,34 @@
 	
 	<select id="selectCreator" parameterType="_int" resultType="int">
 		SELECT CREATOR_NO FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</select>
+	
+	<select id="selectSqlContent" parameterType="_int" resultType="string">
+		SELECT SQLCONTENT FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</select>
+	<update id="updateTeamSql" parameterType="sqlCloud">
+		UPDATE SQLCLOUD
+		SET SQLCONTENT = #{sqlContent},
+		    MODIFY_DATE = SYSDATE
+		WHERE TEAM_NO = #{teamNo}
+	</update>
+	<select id="selectSqlDate" resultMap="sqlCloudResultSet">
+		SELECT * FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</select>
+	
+	<select id="searchMember" parameterType="string" resultMap="memberMapper.memberResultSet">
+	SELECT *
+		FROM MEMBER M
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
+		WHERE STATUS = 'Y'
+		AND USER_ID LIKE '%'||#{text}||'%'
+	</select>
+	<select id="selectMemberDetailInfo" resultMap="supportResultSet">
+		SELECT *
+		FROM MEMBER M
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
+        LEFT JOIN supporters S ON(M.USER_NO = S.REF_UNO)
+		WHERE M.STATUS = 'Y'
+        AND M.USER_ID = #{userId}
 	</select>
 </mapper>

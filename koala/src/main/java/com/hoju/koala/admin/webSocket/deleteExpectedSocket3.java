@@ -22,7 +22,7 @@ import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.member.model.vo.Member;
 
-public class OnePageSocket3 extends TextWebSocketHandler {
+public class deleteExpectedSocket3 extends TextWebSocketHandler {
 	// 종료시 세션 정리 하기....
 	private String text; // 내용 저장
 
@@ -76,7 +76,7 @@ public class OnePageSocket3 extends TextWebSocketHandler {
 		String teamNo = "";
 		if(messageIn.contains("saveFile::")) {
 			String[] pack = messageIn.replace("saveFile::", "").split("/");
-			SqlCloud sql = SqlCloud.builder().sqlTitle(pack[0]).sqlContent(pack[1]).build();
+//			SqlCloud sql = SqlCloud.builder().sqlTitle(pack[0]).sqlContent(pack[1]).build();
 			// Insert or Update
 			// title로 조회 한 후 결과 값이 있다면 수정
 			// title로 조회 한 후 결과 값이 없다면 삽입

@@ -78,6 +78,21 @@ public interface AdminService {
 
 	int selectCreator(int teamNo);
 
+	// 저장 된 sql문 가져오기
+	String selectSqlContent(int teamNo);
+	
+	// sql문 저장하기
+	int updateTeamSql(SqlCloud saveSql);
+
+	// 처음에 해당 자료가 언제 저장된 자료인지 확인
+	SqlCloud selectSqlDate(int teamNo);
+
+	// 초기 팀원 초대하기
+	ArrayList<Member> searchMember(String text);
+
+	// 팀원 초대시 그래프를 보여주기 위한 정보
+	Supporters selectMemberDetailInfo(String userId);
+
 
 
 
