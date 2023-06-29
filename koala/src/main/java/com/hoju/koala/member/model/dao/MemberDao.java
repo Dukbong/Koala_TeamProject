@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
+import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
@@ -116,6 +117,20 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.followingList", userId);
 	}
+	
+	//해당 유저의 잔디 조회 ================================설희 잔디
+	public ArrayList<Attendance> selectContributions(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.selectContributions", userNo);
+	}
+	public void attendance(SqlSessionTemplate sqlSession, int userNo) { //출석 등록
+		
+		try {
+			int result = sqlSession.insert("memberMapper.attendance", userNo);
+		} catch(Exception e){   
+		    System.out.println("출석 중복");
+		}
+	}
 
 	//닉네임 변경
 	public int updateNick(SqlSessionTemplate sqlSession, Member m) {
@@ -146,6 +161,8 @@ public class MemberDao {
 		
 		return sqlSession.selectOne("memberMapper.selectNick", inputNick);
 	}
+
+
 
 
 

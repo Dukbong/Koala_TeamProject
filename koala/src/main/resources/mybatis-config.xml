@@ -24,6 +24,8 @@
   		
   		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  
   		<typeAlias type="com.hoju.koala.member.model.vo.Profile" alias="profile"/>
+  		<typeAlias type="com.hoju.koala.member.model.vo.Attendance" alias="attendance"/>
+  		
   		
   		<typeAlias type="com.hoju.koala.setting.model.vo.Setting" alias="setting"/>
   		
