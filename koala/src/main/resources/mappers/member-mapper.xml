@@ -183,7 +183,8 @@
 	<!-- 해당유저의 팔로잉리스트 조회 -->
 	<select id="followingList" resultMap="memberResultSet">
 		SELECT *
-		FROM MEMBER
+		FROM MEMBER M
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
 		WHERE USER_NO IN (SELECT TO_USER
                           FROM FOLLOW
                           WHERE FROM_USER = (SELECT USER_NO

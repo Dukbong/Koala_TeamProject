@@ -54,6 +54,10 @@
         padding: 30px;
         font-size: 70px;
     }
+    
+    .logo:hover{
+    	cursor: pointer;
+    }
 
     label{
         color: white;
@@ -96,7 +100,7 @@
 	<div id="wrap">
 		<div id="content">
 	        <div id="fotget-area">
-	            <span class="logo">Koala</span>
+	            <span class="logo" onclick="location.href='/koala'">Koala</span>
 	            <div id="ex">
 		            <span class="small">회원가입시 입력하신 이메일 주소를 입력하세요.</span><br>
 		            <span class="small">해당 이메일로 아이디와 변경된 패스워드를 보내드립니다.</span>

@@ -479,6 +479,8 @@ public class MemberController {
 		
 		ArrayList<Member> fList = memberService.followingList(userId);
 		
+		System.out.println("fList : "+fList);
+		
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
 		mv.addObject("fList", fList);

@@ -15,4 +15,5 @@ public class WebSocketVO {
 	private String type;
 	private int teamNo;
 	private String userId;
+	private String msg;
 }

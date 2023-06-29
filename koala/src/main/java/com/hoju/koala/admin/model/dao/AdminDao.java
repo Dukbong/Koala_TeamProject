@@ -135,4 +135,24 @@ public class AdminDao {
 	public int selectCreator(int teamNo, SqlSession sqlSession) {
 		return sqlSession.selectOne("adminMapper.selectCreator", teamNo);
 	}
+
+	public String selectSqlContent(int teamNo, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectSqlContent", teamNo);
+	}
+
+	public int updateTeamSql(SqlCloud saveSql, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateTeamSql", saveSql);
+	}
+
+	public SqlCloud selectSqlDate(int teamNo, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectSqlDate", teamNo);
+	}
+
+	public ArrayList<Member> searchMember(String text, SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.searchMember", text);
+	}
+
+	public Supporters selectMemberDetailInfo(String userId, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectMemberDetailInfo", userId);
+	}
 }

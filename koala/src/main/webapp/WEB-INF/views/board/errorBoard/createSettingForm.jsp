@@ -8,17 +8,17 @@
 </head>
 
 <!-- 코드 미러 CDN -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js" integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/blackboard.min.css" integrity="sha512-KnHAkH0/78Cyjs1tjV9/+00HK8gu1uKRCCKcWFxX0+rehRh9SYJqiG/2fY4St7H8rPItOsBkgQjN0m4rL5Wobw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js" integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/blackboard.min.css" integrity="sha512-KnHAkH0/78Cyjs1tjV9/+00HK8gu1uKRCCKcWFxX0+rehRh9SYJqiG/2fY4St7H8rPItOsBkgQjN0m4rL5Wobw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- <script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script> -->
+<!-- <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script> -->
+<!-- <script src="/koala/resources/codemirror-5.53.2/addon/edit/closetag/js"></script> -->
+<script src="/koala/resources/codemirror-5.53.2/mode/xml/xml.js"></script>
+<!-- <link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/> -->
+<!-- <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ayu-dark.min.css" integrity="sha512-mV3RUXi1gt22jDb4UyRBFhZVFgAIiOfRE6ul+2l1Hcj6glyg6x4xlnjPH+neGm/t6XrFmsMRu4++McQu0asjqg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
-<script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/addon/edit/closetag/js"></script>
-<link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/>
-<link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/>
 <style>
     /* ===================================================== 영역잡기 */
     div{ box-sizing: border-box;}
@@ -161,7 +161,7 @@
 	</script>
 	
     <div class="createSettingForm">
-        <form action="errorBoard/insert.cs" method="post" onsubmit="return checkSubmit()">
+        <form action="insert" method="post" onsubmit="return checkSubmit()">
         
             <!--이름/작성자 영역-->
             <div class="libraryName-author-area">
@@ -192,7 +192,7 @@
                 <div class="code-area">
                     <p><span class="ii" style="background: linear-gradient(to top, rgba(135, 139, 186, 0.7) 50%, transparent 40%);">&nbsp;<i class="fa-solid fa-star-of-life fa-xs"></i> Code&nbsp;</span></p>
                     <div class="code-box">
-                        <textarea id="editor" name="settingCode" required></textarea>
+                        <textarea id="editor" name="settingCode"></textarea>
                     </div>
                 </div>
             </div>
@@ -224,7 +224,7 @@
             <!--버튼 영역-->
             <div class="button-area">
                 <div>
-                    <button id="cancelBtn" type="button" onclick="checkSubmit();">cancel</button>
+                    <button id="cancelBtn" type="button" >cancel</button>
                     <button id="submitBtn" type="submit">submit</button>
                 </div>
             </div>
@@ -288,8 +288,10 @@
 	        lineNumbers: true,  //왼쪽 라인넘버 표기
 	        lineWrapping: true, //줄바꿈. 음.. break-word;
 	        matchBrackets: true,
-	        theme: "ayu-dark",   //테마는 맘에드는 걸로.
-	        mode: 'text/x-java', //모드
+// 	        theme: "ayu-dark",   //테마는 맘에드는 걸로.
+// 	        mode: 'text/x-java', //모드
+	        theme: "blackboard",   //테마는 맘에드는 걸로.
+	        mode: 'text/html', //모드
 	        val: textarea.value
 	    });
 	    

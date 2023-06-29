@@ -71,7 +71,7 @@
     }
     
     .noneChange{
-    	height:50%;
+    	height:60%;
     }
     
     
@@ -218,7 +218,7 @@
 	
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	<div id="outer">
 		
@@ -542,6 +542,7 @@
 			</script>
 		</div>
 	</div>
+	
 	    
     
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

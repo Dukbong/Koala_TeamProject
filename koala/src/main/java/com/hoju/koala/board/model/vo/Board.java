@@ -29,5 +29,6 @@ public class Board {
 	private String notice; //공지사항여부
 	private String status; //상태값(Y/N)
 	private int fileNo;
+	private int replyCount;//댓글 수
 
 }

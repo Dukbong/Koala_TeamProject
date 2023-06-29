@@ -37,6 +37,15 @@ public class SettingServiceImpl implements SettingService {
 		return s;
 	}
 
+	//ajax 버전정보와 setting번호
+	@Override
+	public ArrayList<Setting> selectVersionList(String settingTitle) {
+		
+		ArrayList<Setting> versionList = stDao.selectVersionList(sqlSession, settingTitle);
+		
+		return versionList;
+	}
+
 	
 	
 }

@@ -163,6 +163,42 @@ public class QnABoardDao {
 		
 		return sqlSession.selectOne("qnaBoardMapper.replyCount",boardNo);
 	}
+
+	//qna 좋아요 수
+	public int getLikeCount(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.selectOne("qnaBoardMapper.getLikeCount",boardNo);
+	}
+
+	//qna 댓글 채택
+	public int qnaSelect(SqlSessionTemplate sqlSession, int boardNo, int replyNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardNo", boardNo);
+		map.put("replyNo", replyNo);
+		return sqlSession.insert("qnaBoardMapper.qnaSelect",map);
+	}
+
+	//qna 게시글 삭제
+	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.update("qnaBoardMapper.deleteBoard",boardNo);
+	}
+
+	//qna 댓글 채택 여부
+	public String chkSelectedReply(SqlSessionTemplate sqlSession, int boardNo, Integer replyNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardNo", boardNo);
+		map.put("replyNo", replyNo);
+		return sqlSession.selectOne("qnaBoardMapper.chkSelectedReply",map);
+	}
+
+	//qna 좋아요 수
+//	public int countLike(SqlSessionTemplate sqlSession, int boardNo) {
+//		
+//		return sqlSession.selectOne("qnaBoardMapper.countLike",boardNo);
+//	}
 	
 	
 	
