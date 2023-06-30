@@ -367,7 +367,6 @@ li{
 			
 			// 취소 버튼
 			$("#refer").on("click", function(){
-				
 				location.href = document.referrer;
 			});
 			

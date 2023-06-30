@@ -17,6 +17,17 @@
 		<result column="issue" property="issue"/>
 	</resultMap>
 	
+	<resultMap type="modifyTeam" id="modifyTeamResultSet">
+		<result column="teamname" property="teamName"/>
+		<result column="creatorId" property="creatorId"/>
+		<result column="user_id" property="userId"/>
+		<result column="nickname" property="nickName"/>
+		<result column="user_no" property="userNo"/>
+		<result column="file_path" property="filePath"/>
+		<result column="change_name" property="changeName"/>
+		<result column="github_id" property="githubId"/>
+	</resultMap>
+	
 	<resultMap type="sqlCloud" id="sqlCloudResultSet">
 		<result column="TEAM_NO" property="teamNo"/>
 		<result column="TEAMNAME" property="teamName"/>
@@ -311,5 +322,22 @@
         LEFT JOIN supporters S ON(M.USER_NO = S.REF_UNO)
 		WHERE M.STATUS = 'Y'
         AND M.USER_ID = #{userId}
+	</select>
+	<insert id="insertSQLteam" parameterType="sqlCloud">
+		INSERT INTO SQLCLOUD VALUES (SQL_TNO.NEXTVAL, #{teamName}, #{creatorNo}, #{sqlContent}, DEFAULT, DEFAULT)
+	</insert>
+	<insert id="insertSQLteamMember" parameterType="sqlInvite">
+		INSERT INTO SQLINVITE VALUES (#{creatorNo}, #{userNo}, SQL_TNO.CURRVAL)
+	</insert>
+	
+	<select id="selectOneTeam" parameterType="_int" resultMap="modifyTeamResultSet">
+		select s.teamname, z.user_id creatorId ,m.user_id, m.nickname, m.user_no, g.file_path, g.change_name, p.github_id
+		from sqlcloud s
+		join sqlinvite i using(team_no)
+		join member z on(s.creator_no = z.user_no)
+		join member m on(i.user_no = m.user_no)
+		left join member_image g on(m.user_no = g.ref_uno)
+		left join supporters p on(m.user_no = p.ref_uno)
+		where team_no = #{teamNo}
 	</select>
 </mapper>

@@ -67,7 +67,17 @@
 				}, 0); // 적정 40, 테이트시 0
 				
 				function testing(){
-					location.href = "/koala/together/sqlCloud";
+					var form = document.createElement("form");
+					form.setAttribute("method","GET");
+					form.setAttribute("action", "/koala/together/sqlCloud");
+					document.charset = "utf-8";
+					var hidden = document.createElement("input");
+					hidden.setAttribute("type","hidden");
+					hidden.setAttribute("name","teamNo");
+					hidden.setAttribute("value",0);
+					form.appendChild(hidden);
+					document.body.appendChild(form);
+					form.submit();
 				}
 	</script>
 </body>

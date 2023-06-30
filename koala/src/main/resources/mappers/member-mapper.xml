@@ -214,12 +214,13 @@
 		UPDATE ATTENDANCE A
 		SET A.ATT_LEVEL = CASE WHEN (SELECT M.POINT-A.PRE_POINT
 		                             FROM MEMBER M
-		                             WHERE M.USER_NO = A.REF_UNO)>200 THEN 2
+		                             WHERE M.USER_NO = A.REF_UNO)>300 THEN 3
 		                       WHEN (SELECT M.POINT-A.PRE_POINT
 		                             FROM MEMBER M
-		                             WHERE M.USER_NO = A.REF_UNO)>300 THEN 3
+		                             WHERE M.USER_NO = A.REF_UNO)>200 THEN 2
+		                       ELSE 1
 		                       END
-		WHERE A.ATT_DATE = TRUNC(SYSDATE)
+		WHERE A.ATT_DATE = TRUNC(SYSDATE-1)
 	</update>
 	
 	<!-- 닉네임 업데이트  -->

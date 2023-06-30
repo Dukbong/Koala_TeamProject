@@ -23,9 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
+import com.hoju.koala.member.calendar.CalendarController;
 import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Attendance;
+import com.hoju.koala.member.model.vo.Calendar;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
@@ -48,6 +50,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberCookie mCookie;
+	
+	@Autowired
+	private CalendarController calendar;
 	
 	
 	//로그인 페이지 이동
@@ -76,10 +81,12 @@ public class MemberController {
 		//아이디 값에 대한 유저 정보 가져오기
 		Member loginUser = memberService.loginMember(m);
 		
+
 		log.debug("아이디 저장 상태 : {}", request.getParameter("keepId"));
 
-		//======================================================설희 작성
-		System.out.println("loginUser : "+loginUser);
+		
+		//로그인 시 출석 등록 ======================================== 설희
+
 		int userNo =  loginUser.getUserNo();
 		memberService.attendance(userNo);
 		//======================================================
@@ -493,19 +500,25 @@ public class MemberController {
 		return mv;
 	}
 	
-	//활동내역 Contributions ================================설희 잔디
+	//해당 유저의 contributions 조회 ======================================== 설희
 	@GetMapping("/contributions")
 	public ModelAndView selectContributions(ModelAndView mv,
 											String userId) {
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
-		int userNo = m.getUserNo();
+				
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
+		int userNo = m.getUserNo();
 		ArrayList<Attendance> attList = memberService.selectContributions(userNo);
+		ArrayList<Calendar> calList = calendar.selectCalendar(attList);
 		
 		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
 		mv.addObject("attList", attList);
+		mv.addObject("calList", calList);
 		mv.setViewName("member/activityDetailPage");
 		
 		return mv;
