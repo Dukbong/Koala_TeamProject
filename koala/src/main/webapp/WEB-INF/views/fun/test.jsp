@@ -49,7 +49,7 @@
 }
 
 .savearea, .loadarea {
-	width: 13%;
+	width: 15%;
 	height: 100%;
 	box-sizing: border-box;
 	float: left;
@@ -64,7 +64,7 @@
 }
 
 .lastbin {
-	width: 10%;
+	width: 6%;
 	height: 100%;
 	box-sizing: border-box;
 	float: left;
@@ -250,7 +250,7 @@ span {
 							});						
 						}else if(e.data.includes("SAVE:")){
 							var modifyDate = e.data.split("SAVE:");
-							$(".topbinarea").html("&nbsp;&nbsp;&nbsp;&nbsp;Last Save : "+modifyDate);
+							$(".topbinarea").html("&nbsp;&nbsp;&nbsp;&nbsp;Last Save : "+modifyDate.substring(1));
 						}else{
 							// 접속
 							var idArr = e.data.substring(1,e.data.length-1).split(",");
@@ -277,10 +277,19 @@ span {
 			}
 			
 			$(function(){
-				
 				$(".teamButton").on("click", function(){
 					teamNo = $(this).parent().children().eq(2).val();
-					location.href="sqlCloud?teamNo="+teamNo;
+					var form = document.createElement("form");
+					form.setAttribute("method","GET");
+					form.setAttribute("action", "/koala/together/sqlCloud");
+					document.charset = "utf-8";
+					var hidden = document.createElement("input");
+					hidden.setAttribute("type","hidden");
+					hidden.setAttribute("name","teamNo");
+					hidden.setAttribute("value",teamNo);
+					form.appendChild(hidden);
+					document.body.appendChild(form);
+					form.submit();
 				});
 				
 				$("#conbtn").on("click", function(){
@@ -318,29 +327,39 @@ span {
 				
 				// Save (DB에 저장할 내용)
 				$("#sss").on("click", function() {
-					console.log($("testarea").val());
-					$.ajax({
-						url : "sqlSave",
-						data : {
-							teamNo : "${teamNo}",
-							sqlContent : $("#testarea").val()
-						},
-						type : "POST",
-						success : function(data){
-							console.log(data);
-							if(data > 0){
-								alert("저장되었습니다.");
-								var text = {
-										type : "SAVE",
-										teamNo : "${teamNo}"
+					if(socket){
+						$.ajax({
+							url : "sqlSave",
+							data : {
+								teamNo : "${teamNo}",
+								sqlContent : $("#testarea").val()
+							},
+							type : "POST",
+							success : function(data){
+								console.log(data);
+								if(data > 0){
+									alert("저장되었습니다.");
+									var text = {
+											type : "SAVE",
+											teamNo : "${teamNo}"
+									}
+									socket.send(JSON.stringify(text)); // 구분하기 위해
+								}else{
+									alert("저장되었습니다.");
+									var text = {
+											type : "SAVE",
+											teamNo : " "
+									}
+									socket.send(JSON.stringify(text)); // 구분하기 위해
 								}
-								socket.send(JSON.stringify(text)); // 구분하기 위해
+							},
+							error : function(){
+								console.log(error);
 							}
-						},
-						error : function(){
-							console.log(error);
-						}
-					})
+						})
+					}else{
+						alert("저장되지 않습니다.");
+					}
 				});
 				
 				// 팀 만들기
@@ -350,11 +369,23 @@ span {
 				
 				// 팀원 초대하기
 				$("#teamInvite").on("click", function(){
-					console.log("teamInvite");
+					var form = document.createElement("form");
+					form.setAttribute("method","POST");
+					form.setAttribute("action", "/koala/together/modifyTeam");
+					document.charset = "utf-8";
+					var hidden = document.createElement("input");
+					hidden.setAttribute("type","hidden");
+					hidden.setAttribute("name","teamNo");
+					hidden.setAttribute("value","${teamNo}");
+					form.appendChild(hidden);
+					document.body.appendChild(form);
+					form.submit();
+// 					location.href="modifyTeam";
 				});
 				
 				// 입력 (접속시 입력창 생성)
 				$("#testarea").on("keyup", function() { // 보강 필요
+					if(socket){
 						var test = $(this).val().split("\n");
 						var str = "";
 						if (test.length > 0) {
@@ -377,6 +408,9 @@ span {
 								msg : $(this).val()
 						}
 						socket.send(JSON.stringify(text)); // 구분하기 위해
+					}else{
+						$("#testarea").val("");
+					}
 				});
 			});
 		</script>

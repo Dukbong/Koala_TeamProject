@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hoju.koala.admin.model.service.AdminService;
+import com.hoju.koala.admin.model.vo.ModifyTeam;
 import com.hoju.koala.admin.model.vo.SqlCloud;
+import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.member.model.vo.Member;
 
@@ -47,8 +49,6 @@ public class TestController {
 		if(teamNo != 0) {
 			ArrayList<Member> memberList = adminService.selectTeamMember(teamNo);
 			SqlCloud sqlInfo = adminService.selectSqlDate(teamNo);
-			System.out.println("sqlInfo는 뭐가 나오나");
-			System.out.println(sqlInfo);
 			int creatorNo = adminService.selectCreator(teamNo);
 			model.addAttribute("memberList", memberList);
 			model.addAttribute("sqlInfo", sqlInfo);
@@ -56,15 +56,12 @@ public class TestController {
 			model.addAttribute("teamNo", teamNo);
 			model.addAttribute("creatorNo",creatorNo);
 		}
-//		return "fun/onePage4";
 		return "fun/test";
 	}
 	
 	@PostMapping("/sqlSave")
 	@ResponseBody
 	public int sqlSave(int teamNo, String sqlContent) {
-		System.out.println(teamNo);
-		System.out.println(sqlContent);
 		SqlCloud saveSql = SqlCloud.builder().teamNo(teamNo).sqlContent(sqlContent).build();
 		return adminService.updateTeamSql(saveSql);
 	}
@@ -93,5 +90,34 @@ public class TestController {
 	public Supporters userInfo(String userId) {
 		Supporters info = adminService.selectMemberDetailInfo(userId);
 		return info;
+	}
+	
+	@GetMapping("/createTeam")
+	@ResponseBody
+	public int createTeam(String team, String teamName) {
+		System.out.println(team);
+		String[] arr = team.split(",");
+		SqlCloud sql = SqlCloud.builder().teamName(teamName).sqlContent(" ").creatorNo(Integer.parseInt(arr[0])).build();
+		int createTeam = adminService.insertSQLteam(sql); // teamCreate
+		int insertMember = 0;
+		if(createTeam > 0) {
+			for(int i = 0; i < arr.length; i++) {
+				SqlInvite sqlIn = SqlInvite.builder().creatorNo(Integer.parseInt(arr[0])).userNo(Integer.parseInt(arr[i])).build();
+				insertMember = adminService.insertSQLteamMember(sqlIn);
+			}
+		}
+		return insertMember;
+	}
+	
+	@PostMapping("/modifyTeam")
+	public String modifyTeam(int teamNo, Model model) {
+		System.out.println(teamNo);
+		// 필요한거 팀이름 / 오너아이디 / 유저 이름, 유저번호, 사진, 닉네임, 서포터즈 유무
+		// sqlCloud, sqlinvite, member, supporter, profile 조인...
+		// 30일날 하기
+		ArrayList<ModifyTeam> mt = adminService.selectOneTeam(teamNo);
+		System.out.println(mt);;
+		model.addAttribute("modify", mt);
+		return "fun/modifyTeam";
 	}
 }
