@@ -192,13 +192,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	
-	//해당 유저의 잔디 조회 ================================설희 잔디
+	//========================================================= 설희
+	//해당 유저의 contributions 조회
 	@Override
 	public ArrayList<Attendance> selectContributions(int userNo) {
 		
 		return memberDao.selectContributions(sqlSession, userNo);
 	}
-	@Override //출석 등록
+	//로그인 시 출석 등록
+	@Override
 	public void attendance(int userNo) {
 		
 		memberDao.attendance(sqlSession, userNo);
@@ -252,6 +254,15 @@ public class MemberServiceImpl implements MemberService {
 		int cnt = memberDao.selectNick(sqlSession, inputNick);
 		
 		return cnt;
+	}
+
+	//메신저 닉네임으로 유저 검색
+	@Override
+	public ArrayList<Member> searchUser(String searchUser) {
+		
+		ArrayList<Member> mlist = memberDao.searchUser(sqlSession, searchUser);
+		
+		return mlist;
 	}
 
 

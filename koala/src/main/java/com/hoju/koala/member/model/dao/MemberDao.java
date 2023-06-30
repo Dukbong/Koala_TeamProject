@@ -118,12 +118,14 @@ public class MemberDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.followingList", userId);
 	}
 	
-	//해당 유저의 잔디 조회 ================================설희 잔디
+	//========================================================= 설희
+	//해당 유저의 contributions 조회
 	public ArrayList<Attendance> selectContributions(SqlSessionTemplate sqlSession, int userNo) {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.selectContributions", userNo);
 	}
-	public void attendance(SqlSessionTemplate sqlSession, int userNo) { //출석 등록
+	//로그인 시 출석 등록
+	public void attendance(SqlSessionTemplate sqlSession, int userNo) {
 		
 		try {
 			int result = sqlSession.insert("memberMapper.attendance", userNo);
@@ -160,6 +162,12 @@ public class MemberDao {
 	public int selectNick(SqlSessionTemplate sqlSession, String inputNick) {
 		
 		return sqlSession.selectOne("memberMapper.selectNick", inputNick);
+	}
+
+	//메신저 닉네임으로 유저 검색
+	public ArrayList<Member> searchUser(SqlSessionTemplate sqlSession, String searchUser) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.searchUser", searchUser);
 	}
 
 

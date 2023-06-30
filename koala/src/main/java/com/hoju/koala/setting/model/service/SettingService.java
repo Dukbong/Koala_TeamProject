@@ -15,5 +15,8 @@ public interface SettingService {
 	//ajax 버전정보와 setting번호
 	ArrayList<Setting> selectVersionList(String settingTitle);
 
+	//메인페이지 search
+	ArrayList<Setting> searchSetting(String input);
+
 
 }

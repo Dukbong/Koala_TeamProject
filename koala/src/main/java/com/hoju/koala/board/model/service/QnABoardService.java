@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -78,6 +79,21 @@ public interface QnABoardService {
 
 	//qna 댓글 채택 여부
 	String chkSelectedReply(int boardNo, Integer replyNo);
+
+	//게시글 조회시추천확인
+	int likeYesOrNo(Liked liked);
+
+	//qna 조아요 취소 시 보드 업데이트
+	void deleteLike(int boardNo);
+
+	//qna 좋아요 눌렀나 안눌렀나
+	Integer likeStatus(int boardNo, int userNo);
+
+	//qna 게시글 글 수정
+	int updateBoard(Board b);
+
+	//qna 게시글 파일 수정
+	int updateFile(BoardAttachment at);
 
 //	//댓글 보여주기
 //	ArrayList<Reply> selectReplyList(int boardNo);
