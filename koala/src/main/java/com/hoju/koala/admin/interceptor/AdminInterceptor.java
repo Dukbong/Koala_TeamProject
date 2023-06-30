@@ -28,7 +28,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		
+		log.debug(">>");
 		HttpSession session = request.getSession();
 		Member member = (Member)session.getAttribute("loginUser");
 		
