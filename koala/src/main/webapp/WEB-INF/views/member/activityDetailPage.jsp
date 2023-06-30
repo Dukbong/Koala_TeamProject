@@ -195,6 +195,16 @@
 	    overflow: hidden;
 	    position: relative;
 	}
+	
+	
+	/* =====================================설희 작성 */
+	.contributions-outer div{border: 1px solid pink;}
+	.contributions-outer{width: 1200px; height: 400px; margin: auto;}
+	.contributions-area{width: 100%; height: 90%;}
+	.level-area{width: 100%; height: 10%; position:relative;}
+	.level-area>div{width: 230px; height: 30px; position:absolute; right:0; bottom:0;}
+	.level-area>div>*{height: 100%; float:left; margin: 0px 5px;}
+	.level-area>div>div{width:20px; height: 20px;}
 
     
 </style>
@@ -478,24 +488,94 @@
                 		</c:when>
                 		
                 		<c:when test="${not empty attList }">
-<%--                 			<c:forEach var="a" items="${attList }"> --%>
-<!--                 				<table class="rel-user" style="color:white;"> -->
-<!-- 									<tr> -->
-<%-- 										<td>날짜 ${a.attDate }</td> --%>
-<%-- 										<td>기여도 ${a.attLevel }</td> --%>
-<!-- 									</tr> -->
-<!--                 				</table> -->
-<%-- 							</c:forEach> --%>
-							<div style="width: 1200px; height: 400px; margin: auto; background-color: pink;">
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
-								<i class="fa-solid fa-seedling fa-bounce" style="color: #26b53e;"></i>
+							<div class="contributions-outer">
+								<div class="contributions-area">
+									<table border="1">
+										<tr>
+											<th>Jan.</th>
+											<c:forEach  var="a" items="attList">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Feb.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Mar.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Apr.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>May.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Jun.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Jul.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Aug.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Sep.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Oct.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Nov.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Dec.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										
+									</table>
+								</div>
+								<div class="level-area">
+									<div>
+										<span>Less</span>
+										<div style="background-color: rgb(74, 40, 4);"></div>
+										<div style="background-color: rgb(70, 93, 39);"></div>
+										<div style="background-color: rgb(53, 141, 53);"></div>
+										<i class="fa-solid fa-seedling fa-bounce" style="color: #1eff00;"></i>
+										<span>More</span>
+									</div>
+								</div>
 							</div>
                 		</c:when>
                 		
