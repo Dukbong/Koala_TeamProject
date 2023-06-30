@@ -314,6 +314,7 @@
 		)
 	</insert>
 	
+	<!-- 게시글 삭제 -->
 	<update id="deleteBoard">
 		UPDATE BOARD
 		SET STATUS = 'N'
@@ -321,11 +322,53 @@
 		AND BOARD_NO = #{boardNo}
 	</update>
 	
+	<!-- 댓글 채택 조회  -->
 	<select id="chkSelectedReply">
 		SELECT REPLY_SELECT
 		FROM QNA_SELECT
 		WHERE REPLY_NO = #{replyNo}
 		AND REF_BNO = #{boardNo}
 	</select>
+	
+	<!-- 좋아요 여부 -->
+	<select id="likeYesOrNo" resultType="_int">
+		SELECT LIKED_TYPE
+		FROM LIKED
+		WHERE REF_BNO = #{refBno}
+		AND REF_UNO = #{refUno}
+	</select>
+	
+	<!-- 좋아요 취소 시 board liked 업데이트 -->
+	<update id="deleteLike">
+		UPDATE BOARD
+		SET LIKED = LIKED - 1
+		WHERE BOARD_NO = #{boardNo}
+		AND CATEGORY = 'Q'
+	</update>
+	
+	<select id="likeStatus" resultMap="qnaLikedResultSet">
+		SELECT LIKED_TYPE
+		FROM LIKED
+		WHERE REF_UNO = #{refUno}
+		AND REF_BNO = #{refBno}
+	</select>
+	
+	<update id="updateBoard">
+		UPDATE BOARD
+		SET BOARD_TITLE = #{title},
+			BOARD_CONTENT = #{content}
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+		AND CATEGORY = 'Q'
+	</update>
+	
+	<update id="updateFile">
+		UPDATE BOARD_ATTACHMENT
+		SET ORIGIN_NAME = #{originName},
+			CHANGE_NAME = #{changeName}
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+		AND CATEGORY = 'Y'
+	</update>
 	
 </mapper>

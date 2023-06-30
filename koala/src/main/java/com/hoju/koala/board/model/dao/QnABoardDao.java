@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -192,6 +193,44 @@ public class QnABoardDao {
 		map.put("boardNo", boardNo);
 		map.put("replyNo", replyNo);
 		return sqlSession.selectOne("qnaBoardMapper.chkSelectedReply",map);
+	}
+
+	//qna 게시글 상세보기 시 좋아요 여부 확인
+	public int likeYesOrNo(SqlSessionTemplate sqlSession, Liked liked) {
+		
+		if(sqlSession.selectOne("qnaBoardMapper.likeYesOrNo",liked)!=null) {
+			return sqlSession.selectOne("qnaBoardMapper.likeYesOrNo",liked);			
+		}else {
+			return 0;
+		}
+	}
+
+	//qna 조아요 취소 시 보드 liked 차감
+	public void deleteLike(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		sqlSession.update("qnaBoardMapper.deleteLike",boardNo);
+		
+	}
+
+	//qna 좋아요 클릭 여부 확인
+	public Integer likeStatus(SqlSessionTemplate sqlSession, int boardNo, int userNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardNo", boardNo);
+		map.put("userNo", userNo);
+		
+		return sqlSession.selectOne("qnaBoardMapper.likeStatus",map);
+	}
+
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.update("qnaBoardMaper.updateBoard",b);
+	}
+
+	//qna 파일 수정
+	public int updateFile(SqlSessionTemplate sqlSession, BoardAttachment at) {
+		
+		return sqlSession.update("qnaBoardMapper.updateFile",at);
 	}
 
 	//qna 좋아요 수
