@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class SqlInvite {
-	private int creator_no;
-	private int user_no;
+	private int creatorNo;
+	private int userNo;
 	private int teamNo;
 }
