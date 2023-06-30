@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class SqlCloud {
 	private int teamNo;
 	private String teamName;
-	private String sqlTitle;
 	private String sqlContent;
+	private int creatorNo;
 	private String createDate;
 	private String modifyDate;
 }

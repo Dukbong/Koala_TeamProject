@@ -43,4 +43,12 @@ public class Scheduler {
 		}
 		
 	}
+	
+	//매일 정시에
+//	@Scheduled(cron = "0 0 0 * * *")
+//	public void contributionsScheduler() {
+//		
+//		int result = sqlSession.update("memberMapper.update")
+//			
+//	}
 }

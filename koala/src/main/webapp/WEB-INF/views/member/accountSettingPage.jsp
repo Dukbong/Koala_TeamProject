@@ -218,7 +218,7 @@
 	
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	<div id="outer">
 		

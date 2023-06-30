@@ -19,8 +19,13 @@
   		<typeAlias type="com.hoju.koala.admin.model.vo.MemberSearch" alias="ms"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.IssuesAndError" alias="issuesAndError"/>
   		<typeAlias type="com.hoju.koala.admin.model.vo.SqlCloud" alias="sqlCloud"/>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.ModifyTeam" alias="modifyTeam"/>
+  		<typeAlias type="com.hoju.koala.admin.model.vo.SqlInvite" alias="sqlInvite"/>
+  		
   		<typeAlias type="com.hoju.koala.member.model.vo.Member" alias="member"/>  
   		<typeAlias type="com.hoju.koala.member.model.vo.Profile" alias="profile"/>
+  		<typeAlias type="com.hoju.koala.member.model.vo.Attendance" alias="attendance"/>
+  		
   		
   		<typeAlias type="com.hoju.koala.setting.model.vo.Setting" alias="setting"/>
   		

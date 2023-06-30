@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-public class WebSocketVO {
-	private String type;
-	private int teamNo;
+public class ModifyTeam {
+	private String teamName;
+	private String creatorId;
 	private String userId;
-	private String msg;
+	private String nickName;
+	private String userNo;
+	private String filePath;
+	private String changeName;
+	private String githubId;
 }

@@ -14,7 +14,9 @@ import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
+import com.hoju.koala.admin.model.vo.ModifyTeam;
 import com.hoju.koala.admin.model.vo.SqlCloud;
+import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
@@ -170,6 +172,46 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int selectCreator(int teamNo) {
 		return adminDao.selectCreator(teamNo, sqlSession);
+	}
+
+	@Override
+	public String selectSqlContent(int teamNo) {
+		return adminDao.selectSqlContent(teamNo, sqlSession);
+	}
+
+	@Override
+	public int updateTeamSql(SqlCloud saveSql) {
+		return adminDao.updateTeamSql(saveSql, sqlSession);
+	}
+
+	@Override
+	public SqlCloud selectSqlDate(int teamNo) {
+		return adminDao.selectSqlDate(teamNo, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Member> searchMember(String text) {
+		return adminDao.searchMember(text, sqlSession);
+	}
+
+	@Override
+	public Supporters selectMemberDetailInfo(String userId) {
+		return adminDao.selectMemberDetailInfo(userId, sqlSession);
+	}
+
+	@Override
+	public int insertSQLteam(SqlCloud sql) {
+		return adminDao.insertSQLteam(sql, sqlSession);
+	}
+
+	@Override
+	public int insertSQLteamMember(SqlInvite sqlIn) {
+		return adminDao.insertSQLteamMember(sqlIn, sqlSession);
+	}
+
+	@Override
+	public ArrayList<ModifyTeam> selectOneTeam(int teamNo) {
+		return adminDao.selectOneTeam(teamNo, sqlSession);
 	}
 
 
