@@ -330,13 +330,6 @@ li{
 						}
 					})
 				}else{
-					// 즉시 실행 함수
-// 					(function (){
-// 						$("#addBtn").addClass("vibration");
-// 						setTimeout(() => {
-// 							$("#addBtn").removeClass("vibration");
-// 						}, 400);
-// 					})();
 					alert("정원이 초과되었습니다.");
 				}
 			});

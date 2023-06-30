@@ -14,7 +14,7 @@
 	}
 	.wrap{
 		width: 80%;
-		height:1500px;
+ 		height:800px; 
 		margin: auto;
 		box-sizing: border-box;
 	}
@@ -24,7 +24,7 @@
 	
 	.twoArea{
 		width: 100%;
-		height: 8%;
+		height: 15%;
 	}
 	.nobinArea{
 		width: 42.5%;
@@ -79,11 +79,10 @@
 </style>
 <body>
 	<%@include file="../common/header.jsp" %>
-	<br>
-		<div class="tagName">		
+		<div class="tagName" style="padding-top : 200px;">		
 			<h1 class="tit">@ErrorCheck</h1>
 		</div>	
-		<br>
+		<br><br><br>
 		<div class="wrap">
 			<c:choose>
 			<c:when test="${not empty errorList }">

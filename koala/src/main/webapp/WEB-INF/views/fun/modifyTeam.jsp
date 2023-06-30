@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.hoju.koala.admin.model.vo.ModifyTeam, java.util.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -141,14 +141,14 @@ li{
 <body style="background-color: black;">
 	<div class="wrap">
 	<div class="selecter" style="padding : 50px; width: 50%; height: 100%; border-right: 1px solid white;">
-		<h2 class="mainText" style="display:inline;">CREATE TEAM</h2><button id="create" style="margin-left:550px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-plus fa-2xl" style="color: #ffffff;"></i></button>
+		<h2 class="mainText" style="display:inline;">MODIFY TEAM</h2><button id="create" style="margin-left:550px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-repeat fa-2xl" style="color: #ffffff;"></i></button>
 		<br><br><br>
 		<div class="input-box">
 			<label class="text-label" for="teamName">TEAM NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-			<input id="teamName" name="teamName" class="input-text" type="text" placeholder="team name">
+			<input id="teamName" name="teamName" class="input-text" type="text" value="${modify.getTeamName() }">
 			<br><br><br>
 			<label class="text-label" for="teamName">OWNER NAME&nbsp;&nbsp;&nbsp;&nbsp;</label>
-			<input id="teamName" name="teamName" class="input-text" type="text" value="${loginUser.userId }" readonly>
+			<input id="teamName" name="teamName" class="input-text" type="text" value="${modify.getCreatorId() }" readonly>
 			<br><br><br>
 			<label class="text-label" for="memberInvite">MEMBER&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 			<input id="memberInvite" name="memberInvite" class="input-text" type="text" placeholder="member invite">
@@ -167,34 +167,34 @@ li{
 		
 		<div class="ownerArea">
 			<c:choose>
-			<c:when test="${not empty owner.getGithubId() }">
+			<c:when test="${not empty modify.getGithubId() }">
 						<c:choose>
-							<c:when test="${not empty owner.getProfile() }">
+							<c:when test="${not empty modify.getFilePath() }">
 								<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-									<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${owner.getProfile().getFilePath()}" + "${owner.getProfile().getChangeName()}"' alt="s"></div>
-									<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
+									<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${modify.getFilePath()}" + "${modify.getChangeName()}"' alt="s"></div>
+									<span style="font-size: 15px; font-weight:bold; color:white;">${modify.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 								</div>
 							</c:when>
 							<c:otherwise>
 								<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
 									<div class="ownerimg"><img style="width: 100%; height: 100%;  height: 100%; border-radius: 300px;" src='/koala/resources/memberImage/default.jpg' alt="s"></div>
-									<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
+									<span style="font-size: 15px; font-weight:bold; color:white;">${modify.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 								</div>
 							</c:otherwise>
 						</c:choose>
 			</c:when>
 			<c:otherwise>
 				<c:choose>
-					<c:when test="${not empty owner.getProfile() }">
+					<c:when test="${not empty modify.getFilePath() }">
 						<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-							<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${owner.getProfile().getFilePath()}" + "${owner.getProfile().getChangeName()}"' alt="s"></div>
-							<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
+							<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${modify.getFilePath()}" + "${modify.getChangeName()}"' alt="s"></div>
+							<span style="font-size: 15px; font-weight:bold; color:white;">${modify.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 						</div>
 					</c:when>
 					<c:otherwise>
 						<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
 							<div class="ownerimg"><img style="width: 100%; height: 100%; border-radius: 300px;" src='/koala/resources/memberImage/default.jpg' alt="s"></div>
-							<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
+							<span style="font-size: 15px; font-weight:bold; color:white;">${modify.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 						</div>
 					</c:otherwise>
 				</c:choose>
@@ -220,6 +220,8 @@ li{
 	</div>
 	<script>
 		$(function(){
+			console.log("${test}");
+			
 			var checkPoint = [];
 			var consendarr = [];			
 			consendarr.push("${owner.userNo}");
@@ -245,7 +247,6 @@ li{
 			 								ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='"+ filePath + changeName + "' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
 										}else{
 											ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='/koala/resources/memberImage/default.jpg' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
-											// 아이디를 가지고 있따 중복 을 막아보자.
 										}
 									}
 								}
@@ -330,13 +331,6 @@ li{
 						}
 					})
 				}else{
-					// 즉시 실행 함수
-// 					(function (){
-// 						$("#addBtn").addClass("vibration");
-// 						setTimeout(() => {
-// 							$("#addBtn").removeClass("vibration");
-// 						}, 400);
-// 					})();
 					alert("정원이 초과되었습니다.");
 				}
 			});
@@ -372,9 +366,9 @@ li{
 			
 			// 생성 버튼
 			$("#create").on("mouseenter", function(){
-				$(this).children().eq(0).addClass("fa-beat");
+				$(this).children().eq(0).addClass("fa-spin");
 			}).on("mouseleave", function(){
-				$(this).children().eq(0).removeClass("fa-beat");
+				$(this).children().eq(0).removeClass("fa-spin");
 			}).on("click", function(){
 				if(consendarr.length < 2){
 					alert("팀원이 1명 이상 있어야 합니다.");
