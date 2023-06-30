@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
+import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
@@ -61,6 +62,12 @@ public interface MemberService {
 	//해당 유저의 팔로잉 조회
 	ArrayList<Member> followingList(String userId);
 
+	//========================================================= 설희
+	//해당 유저의 contributions 조회
+	ArrayList<Attendance> selectContributions(int userNo);
+	//로그인 시 출석 등록
+	void attendance(int userNo);
+
 	//닉네임 변경
 	int updateNick(Member m);
 
@@ -75,6 +82,12 @@ public interface MemberService {
 
 	//닉네임 존재여부 확인
 	int selectNick(String inputNick);
+
+	//메신저 닉네임으로 유저 검색
+	ArrayList<Member> searchUser(String searchUser);
+
+	
+
 
 
 	

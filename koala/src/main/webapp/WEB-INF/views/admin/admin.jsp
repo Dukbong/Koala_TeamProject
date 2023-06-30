@@ -10,7 +10,7 @@
 	.adminMain{
 		margin: auto;
 		width: 80%;
-		height: 500px;
+		height: 700px;
 		padding: 50px 0px;
 /* 		border: 1px solid red; */
 	}
@@ -133,9 +133,9 @@
 	
 </style>
 </head>
-<body>
+<body >
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-	<div class="adminMain">
+	<div class="adminMain" style="padding-top : 200px;"> 
 			<div class="adminMainTop">
 				<div class="din"></div>
 				<div class="waitingLibrary">

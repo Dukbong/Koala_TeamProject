@@ -174,7 +174,7 @@
     </div>
     
 	<!-- 알림메세지 -->
-	<c:if test="${not empty msg }">
+  	<c:if test="${not empty msg }">
 		<script>
 			$(function(){
 				window.alert("${msg}");

@@ -17,12 +17,22 @@
 		<result column="issue" property="issue"/>
 	</resultMap>
 	
+	<resultMap type="modifyTeam" id="modifyTeamResultSet">
+		<result column="teamname" property="teamName"/>
+		<result column="creatorId" property="creatorId"/>
+		<result column="user_id" property="userId"/>
+		<result column="nickname" property="nickName"/>
+		<result column="user_no" property="userNo"/>
+		<result column="file_path" property="filePath"/>
+		<result column="change_name" property="changeName"/>
+		<result column="github_id" property="githubId"/>
+	</resultMap>
+	
 	<resultMap type="sqlCloud" id="sqlCloudResultSet">
 		<result column="TEAM_NO" property="teamNo"/>
 		<result column="TEAMNAME" property="teamName"/>
-		<result column="CREATORNO" property="createNo"/>
-		<result column="SQLTITLE" property="sqlTitle"/>
 		<result column="SQLCONTENT" property="sqlContent"/>
+		<result column="CREATOR_NO" property="creatorNo"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="MODIFY_DATE" property="modifyDate"/>
 	</resultMap>
@@ -283,5 +293,51 @@
 	
 	<select id="selectCreator" parameterType="_int" resultType="int">
 		SELECT CREATOR_NO FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</select>
+	
+	<select id="selectSqlContent" parameterType="_int" resultType="string">
+		SELECT SQLCONTENT FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</select>
+	<update id="updateTeamSql" parameterType="sqlCloud">
+		UPDATE SQLCLOUD
+		SET SQLCONTENT = #{sqlContent},
+		    MODIFY_DATE = SYSDATE
+		WHERE TEAM_NO = #{teamNo}
+	</update>
+	<select id="selectSqlDate" resultMap="sqlCloudResultSet">
+		SELECT * FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</select>
+	
+	<select id="searchMember" parameterType="string" resultMap="memberMapper.memberResultSet">
+	SELECT *
+		FROM MEMBER M
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
+		WHERE STATUS = 'Y'
+		AND USER_ID LIKE '%'||#{text}||'%'
+	</select>
+	<select id="selectMemberDetailInfo" resultMap="supportResultSet">
+		SELECT *
+		FROM MEMBER M
+		LEFT JOIN MEMBER_IMAGE P ON (M.USER_NO = P.REF_UNO)
+        LEFT JOIN supporters S ON(M.USER_NO = S.REF_UNO)
+		WHERE M.STATUS = 'Y'
+        AND M.USER_ID = #{userId}
+	</select>
+	<insert id="insertSQLteam" parameterType="sqlCloud">
+		INSERT INTO SQLCLOUD VALUES (SQL_TNO.NEXTVAL, #{teamName}, #{creatorNo}, #{sqlContent}, DEFAULT, DEFAULT)
+	</insert>
+	<insert id="insertSQLteamMember" parameterType="sqlInvite">
+		INSERT INTO SQLINVITE VALUES (#{creatorNo}, #{userNo}, SQL_TNO.CURRVAL)
+	</insert>
+	
+	<select id="selectOneTeam" parameterType="_int" resultMap="modifyTeamResultSet">
+		select s.teamname, z.user_id creatorId ,m.user_id, m.nickname, m.user_no, g.file_path, g.change_name, p.github_id
+		from sqlcloud s
+		join sqlinvite i using(team_no)
+		join member z on(s.creator_no = z.user_no)
+		join member m on(i.user_no = m.user_no)
+		left join member_image g on(m.user_no = g.ref_uno)
+		left join supporters p on(m.user_no = p.ref_uno)
+		where team_no = #{teamNo}
 	</select>
 </mapper>

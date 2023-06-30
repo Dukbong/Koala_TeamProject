@@ -80,7 +80,7 @@
 
         <body>
             <jsp:include page="/WEB-INF/views/common/header.jsp" />
-            <div class="wrap">
+            <div class="wrap" style="padding-top : 200px;">
                 <div id="supporterLine">
                     <div id="showLine">
                         <div id="middleLine"></div>

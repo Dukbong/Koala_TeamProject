@@ -75,7 +75,6 @@ public class ErrorBoardController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("sort", sort);
 		
-		
 		return "board/errorBoard/ebListView";
 	}
 	

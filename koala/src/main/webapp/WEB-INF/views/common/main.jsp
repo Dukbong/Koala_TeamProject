@@ -8,22 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koala</title>
 </head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-
     .wrapper{
-        width: 80%;
-        height: 800px;
+        width: 1500px;
+        height: 1100px;
         margin: auto;
-    }
-    .space{
-        width: 100%;
-        height: 10%;
+        padding-top: 250px;
     }
     .main_area{
         width: 100%;
-        height: 50%;
-        background-color: rgba(136, 133, 147, 0.87);
+        margin: auto;
+        height: 47%;
+        background-color: rgba(100, 100, 100, 0.5);
         text-align: center;
         position: relative;
     }
@@ -33,21 +29,42 @@
         color: white;
     }
     .main_body{
-        margin-left: 90px;
-        margin-right: 90px;
-        margin-top: 50px;
+    	width: 75%;
+    	margin: auto;
+        margin-top: 100px;
         justify-content: space-between;
         display: flex;
         flex-direction : row;
     }
 
+	.search-area{
+		width: 700px;
+		height: 40px;
+		margin: auto;
+		margin-top: 60px;
+		border: 2px solid gray;
+	}
+	.search-area>*{
+		height: 100%;
+		float: left;
+	}
+	.search-area>input{
+		width: 85%;
+	}
+	.search-area>button{
+		width: 15%;
+		background-color: rgb(250, 220, 160);
+		border: 0;
+		font-size: 17px;
+		font-weight: 600;
+	}
+
     .body1,.body2,.body3{
-        width: 30%;
-        height: 200px;
+        width: 27%;
+        height: 170px;
         color: white;
         cursor: pointer;
     }
-
     .item_name{
         margin-top: 10px;
         font-size: 30px;
@@ -82,16 +99,13 @@
         position: absolute;
         margin: auto;
         width: 100%;
-        margin-top: 50px;
+        margin-top: 30px;
     }
     .main_area_opening{
-        margin-top: 330px;
+        margin-top: 320px;
     }
-
-
 </style>
 <body>
-<%-- 	<jsp:include page="header.jsp"/> --%>
 	<%@include file="header.jsp" %>
     <div class="wrapper">
     <div class="space"></div>
@@ -106,25 +120,36 @@
                 <span>KH Academy</span>&nbsp;&nbsp;&nbsp;<span> 2023.05.30</span>
             </div>
         </div>
+        
+        <div class="search-area">
+        	<input type="search" placeholder="검색어를 입력하세요"><button id="searchBtn">search</button>
+        </div>
+        
+        <script>
+        	$(function(){
+        		$("#searchBtn").on("click", function(){
+        			var searchInput = $(".search-area>input[type=search]").val();
+        			
+        			location.href = "/koala/setting/search?input="+searchInput;
+        		});
+        	});
+        
+        </script>
+        
+        
 
         <div class="main_body">
             <div class="body1">
-                <span style="font-size: 20px;" class="ii">2.56.141</span>
-                <div class="body_logo1">
-                    <img src="/koala/resources/common/reload.png" style="width: 50px;" alt="">
+                <div class="body_logo2">
+                    <img src="/koala/resources/common/download.png" style="width: 80px;" alt="">
                 </div>
-                <div class="item_name">
-                    <span class="ii">filter</span>
-                </div>
-                <div class="item_info">
-                    <p class="ii">여기는 설명이 들어가는 부분입니다. 설명을 넣어주세요. 긴 설명이 들어가는 부분. 길게 설명을 넣어주는 부분입니다.
-                        여기는 설명이 들어가는 부분입니다. 설명을 넣어주세요. 긴 설명이 들어가는 부분. 길게 설명을 넣어주는 부분입니다.
-                    </p>
+                <div class="body_title" style="margin-top: 10px;">
+                    <span class="ii">Download</span>
                 </div>
             </div>
             <div class="body2">
                 <div class="body_logo2">
-                    <img src="/koala/resources/common/download.png" style="width: 90px;" alt="">
+                    <img src="/koala/resources/common/download.png" style="width: 80px;" alt="">
                 </div>
                 <div class="body_title" style="margin-top: 10px;">
                     <span class="ii">Download</span>
@@ -132,7 +157,7 @@
             </div>
             <div class="body3">
                 <div class="body_logo3">
-                    <img src="/koala/resources/common/free-icon-cloud-upload-4007710.png" style="width: 120px;" alt="">
+                    <img src="/koala/resources/common/free-icon-cloud-upload-4007710.png" style="width: 110px;" alt="">
                 </div>
                 <div class="body_title">
                     <span class="ii">CreateFile</span>
@@ -141,7 +166,7 @@
         </div>
 
     </div>
-    <jsp:include page="footer.jsp"/>
+    <%@include file="footer.jsp" %>
     
     <c:if test="${not empty msgc}">
     	<script>
@@ -174,7 +199,6 @@
 	 					}
 	 				});
 	 			}
-	 			
     		});
     	</script>
     	<c:remove var="msgc" scope="session"/>

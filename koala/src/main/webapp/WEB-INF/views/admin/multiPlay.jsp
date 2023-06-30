@@ -14,7 +14,7 @@
 </style>
 <body>
 	<%@include file="../common/header.jsp" %>
-	<div id="testShow" style="margin:auto; width: 80%; height: 500px; color:white;">
+	<div id="testShow" style="margin:auto; width: 80%; height: 700px; color:white; padding-top: 200px;">
 		<div class="ii codeleft" style="width: 50%; height: 100%;">
 		
 		</div>
@@ -67,7 +67,17 @@
 				}, 0); // 적정 40, 테이트시 0
 				
 				function testing(){
-					location.href = "/koala/together/sqlCloud";
+					var form = document.createElement("form");
+					form.setAttribute("method","GET");
+					form.setAttribute("action", "/koala/together/sqlCloud");
+					document.charset = "utf-8";
+					var hidden = document.createElement("input");
+					hidden.setAttribute("type","hidden");
+					hidden.setAttribute("name","teamNo");
+					hidden.setAttribute("value",0);
+					form.appendChild(hidden);
+					document.body.appendChild(form);
+					form.submit();
 				}
 	</script>
 </body>

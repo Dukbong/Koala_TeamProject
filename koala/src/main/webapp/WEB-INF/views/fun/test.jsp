@@ -40,7 +40,7 @@
 }
 
 .topbinarea {
-	width: 38%;
+	width: 51%;
 	height: 100%;
 	box-sizing: border-box;
 	float: left;
@@ -48,8 +48,8 @@
 	padding-top: 13px;
 }
 
-.savearea, .loadarea, .downarea {
-	width: 13%;
+.savearea, .loadarea {
+	width: 15%;
 	height: 100%;
 	box-sizing: border-box;
 	float: left;
@@ -64,7 +64,7 @@
 }
 
 .lastbin {
-	width: 10%;
+	width: 6%;
 	height: 100%;
 	box-sizing: border-box;
 	float: left;
@@ -76,15 +76,16 @@
 
 .togeSql {
 	width: 80%;
-	height: 1000px;
+	height: 800px;
 	margin: auto;
 }
 
 .sqlArea {
-	width: 90%;
+	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
 	float: left;
+	margin:auto;
 }
 
 #testnum {
@@ -109,34 +110,8 @@
 	outline: none;
 }
 
-.userConarea {
-	width: 10%;
-	height: 100%;
-	box-sizing: border-box;
-	float: left;
-}
-
-.CodeMirror {
-	width: 100%;
-	height: 100%;
-	box-sizing: border-box;
-}
-
 span {
 	color: red;
-}
-
-.userIn {
-	width: 100%;
-	height: 85%;
-	background-color: rgb(50, 50, 50);
-	box-sizing: border-box;
-}
-
-.btnsarea {
-	width: 100%;
-	height: 10%;
-	background-color: rgb(50, 50, 50);
 }
 
 .userInarea {
@@ -180,9 +155,16 @@ span {
 	box-sizing: border-box;
 }
 .mlmain{
-	width: 50%;
+	width: 40%;
 	height: 100%;
 	float: left;
+	text-align: right;
+	box-sizing: border-box;
+}
+.concheck{
+	width:20%;
+	height:100%;
+	float:left;
 	text-align: center;
 	box-sizing: border-box;
 }
@@ -199,8 +181,7 @@ span {
 	height: 100%;
 	float: left;
 	box-sizing: border-box;
- 
-	text-align:center;
+ 	text-align:right;
 }
 
 </style>
@@ -234,30 +215,81 @@ span {
 					
 					alert("disconnnect Success");
 				}
-				socket.onmessage = function (e) { 
-					var idArr = e.data.substring(1,e.data.length-1).replace(" ","").split(",");
-					$(".mlid").each(function(){
-						if(idArr.includes($(this).text())){
-							$(this).css("color", "blue");
-						}else{
-							$(this).css("color","");
+				socket.onmessage = function (e) {
+					if(e.data.includes("SEND:")){
+						// 메시지 전송을위한 경우
+						$("#testarea").val(e.data.replace("SEND:",""));
+						var test = $("#testarea").val().split("\n");
+						var str = "";
+						if (test.length > 0) {
+							for (var i = 1; i <= test.length; i++) {
+								str += i + " \n";
+							}
+							$("#testnumin").val(str);
 						}
-					});
+					}else{
+						if(e.data.includes("MSG:")){
+							var idAndMsg = e.data.split("MSG:");
+							// 글이 이미 작성 된 이후 접속
+							var idArr = idAndMsg[0].substring(1,idAndMsg[0].length-1).split(",");
+							$(".mlid").each(function(){ // 접속 시
+								if(idArr.includes($(this).text())){
+									$(this).parent().children().eq(1).children().eq(0).css("color", "green");
+								}else{
+									$(this).parent().children().eq(1).children().eq(0).css("color", "#d9d9d9");
+								}
+								$("#testarea").val(idAndMsg[1]);
+								var test = idAndMsg[1].split("\n");
+								var str = "";
+								if (test.length > 0) {
+									for (var i = 1; i <= test.length; i++) {
+										str += i + " \n";
+									}
+									$("#testnumin").val(str);
+								}
+							});						
+						}else if(e.data.includes("SAVE:")){
+							var modifyDate = e.data.split("SAVE:");
+							$(".topbinarea").html("&nbsp;&nbsp;&nbsp;&nbsp;Last Save : "+modifyDate.substring(1));
+						}else{
+							// 접속
+							var idArr = e.data.substring(1,e.data.length-1).split(",");
+							$(".mlid").each(function(){ // 접속 시
+								if(idArr.includes($(this).text())){
+									$(this).parent().children().eq(1).children().eq(0).css("color", "green");
+								}else{
+									$(this).parent().children().eq(1).children().eq(0).css("color", "#d9d9d9");
+								}
+							});						
+						}
+					}
 				}
 			}
 			function disconnect() {
 				sendEnter(teamNo, "Out");
 				socket.close();
-				$(".mlid").each(function(){
-					$(this).css("color", "");
-				})
+				$(".mlid").each(function(){ // 접속 종료시
+					$(this).parent().children().eq(1).children().eq(0).css("color", "#d9d9d9");
+				});
+				// 종료시 창 비우기.
+				$("#testarea").val("");
+				$("#testnumin").val("");
 			}
 			
 			$(function(){
-				
 				$(".teamButton").on("click", function(){
-					teamNo = $(this).parent().children().eq(2).val(); // 팀번호 부여
-					location.href="sqlCloud?teamNo="+teamNo;
+					teamNo = $(this).parent().children().eq(2).val();
+					var form = document.createElement("form");
+					form.setAttribute("method","GET");
+					form.setAttribute("action", "/koala/together/sqlCloud");
+					document.charset = "utf-8";
+					var hidden = document.createElement("input");
+					hidden.setAttribute("type","hidden");
+					hidden.setAttribute("name","teamNo");
+					hidden.setAttribute("value",teamNo);
+					form.appendChild(hidden);
+					document.body.appendChild(form);
+					form.submit();
 				});
 				
 				$("#conbtn").on("click", function(){
@@ -269,16 +301,122 @@ span {
 					disconnect();
 					socket = "";
 				});
+				
+				// Scroll 동기화
+				$("#testarea").scroll(function() {
+					$("#testnumin").scrollTop($("#testarea").scrollTop());
+					$("#testnumin").scrollLeft($("#testarea").scrollLeft());
+				});
+				$("#testnumin").scroll(function() {
+					$("#testarea").scrollTop($("#testnumin").scrollTop());
+					$("#testarea").scrollLeft($("#testnumin").scrollLeft());
+				});
+				
+				// Download (.sql 확장자로 다운로드)
+				$("#downBtn").on("click", function() {
+					var text = document.getElementById('testarea').value;
+					var fileBlob = new Blob([ text ], {
+						type : 'text/plain'
+					});
+
+					var a = document.createElement('a');
+					a.href = URL.createObjectURL(fileBlob);
+					a.download = 'koalaSQL.sql';
+					a.click();
+				});
+				
+				// Save (DB에 저장할 내용)
+				$("#sss").on("click", function() {
+					if(socket){
+						$.ajax({
+							url : "sqlSave",
+							data : {
+								teamNo : "${teamNo}",
+								sqlContent : $("#testarea").val()
+							},
+							type : "POST",
+							success : function(data){
+								console.log(data);
+								if(data > 0){
+									alert("저장되었습니다.");
+									var text = {
+											type : "SAVE",
+											teamNo : "${teamNo}"
+									}
+									socket.send(JSON.stringify(text)); // 구분하기 위해
+								}else{
+									alert("저장되었습니다.");
+									var text = {
+											type : "SAVE",
+											teamNo : " "
+									}
+									socket.send(JSON.stringify(text)); // 구분하기 위해
+								}
+							},
+							error : function(){
+								console.log(error);
+							}
+						})
+					}else{
+						alert("저장되지 않습니다.");
+					}
+				});
+				
+				// 팀 만들기
+				$("#createTeam").on("click", function(){
+					location.href="ShowcreateTeam";
+				});
+				
+				// 팀원 초대하기
+				$("#teamInvite").on("click", function(){
+					var form = document.createElement("form");
+					form.setAttribute("method","POST");
+					form.setAttribute("action", "/koala/together/modifyTeam");
+					document.charset = "utf-8";
+					var hidden = document.createElement("input");
+					hidden.setAttribute("type","hidden");
+					hidden.setAttribute("name","teamNo");
+					hidden.setAttribute("value","${teamNo}");
+					form.appendChild(hidden);
+					document.body.appendChild(form);
+					form.submit();
+// 					location.href="modifyTeam";
+				});
+				
+				// 입력 (접속시 입력창 생성)
+				$("#testarea").on("keyup", function() { // 보강 필요
+					if(socket){
+						var test = $(this).val().split("\n");
+						var str = "";
+						if (test.length > 0) {
+							for (var i = 1; i <= test.length; i++) {
+								str += i + " \n";
+							}
+							$("#testnumin").val(str);
+						}
+						
+						var testing = $("#testarea").val().split("\n");
+						var testingStr = "";
+						for (var i = 0; i < testing.length; i++) {
+							testingStr += testing[i];
+						}
+						
+						var text = {
+								type : "SEND",
+								teamNo : "${teamNo}",
+								userId : "${loginUser.userId}",
+								msg : $(this).val()
+						}
+						socket.send(JSON.stringify(text)); // 구분하기 위해
+					}else{
+						$("#testarea").val("");
+					}
+				});
 			});
-			
-			
-			
 		</script>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
-	<br>
-<!-- 		<button type="button" id="d">send</button> -->
-		<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+		<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center; padding-top: 200px;">
 		TEAM
 		<button id="createTeam" class="ii" type="button" 
 				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
@@ -331,15 +469,16 @@ span {
 				<div class="mlarea">
 					<div class="mlinfo">
 						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
+						<div class="concheck"><i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i></div>
 						<div class="mlmain">${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">
 						<div class="mlemail">${memberList.get(m).getEmail() }</div>
 						<c:if test="${creatorNo == memberList.get(m).getUserNo() }">
-							<div class="mlgrant" style="color:green;">creator</div>					
+							<div class="mlgrant" style="color:green;">Creator</div>					
 						</c:if>
 						<c:if test="${creatorNo != memberList.get(m).getUserNo() }">
-							<div class="mlgrant">user</div>					
+							<div class="mlgrant">User</div>					
 						</c:if>
 					</div>
 				</div>
@@ -350,6 +489,7 @@ span {
 					<div class="mlarea">
 					<div class="mlinfo">
 						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
+						<div class="concheck"><i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i></div>
 						<div class="mlmain">${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">
@@ -370,6 +510,7 @@ span {
 				<div class="mlarea">
 					<div class="mlinfo">
 						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
+						<div class="concheck"><i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i></div>
 						<div class="mlmain" >${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">
@@ -393,7 +534,6 @@ span {
 		<button id="disconbtn" class="btn btn-danger" type="button" style="font-size: 22px;">close</button>
 	</div>
 	</div>
-	<br><br><br><br>
 	</c:when>
 	<c:otherwise>
 		<div>
@@ -401,49 +541,58 @@ span {
 		</div>
 	</c:otherwise>
 	</c:choose>
-	<br><br><br><br><br><br><br>
+	
+		<div class="toolbar">
+		<div class="topName">
+			<div class="topimg ic" style="text-align: center; padding-top: 10px;">
+				<i class="fa-solid fa-database fa-2xl"></i>
+			</div>
+			<div class="soname ic ii"
+				style="text-align: center; padding-top: 5px; font-weight: bold; font-size: 23px;">SQL</div>
+		</div>
+		<div class="topbinarea">&nbsp;&nbsp;&nbsp;&nbsp;Last Save : ${sqlInfo.getModifyDate() }</div>
+<!-- 		<div class="downarea"> -->
+<!-- 		</div> -->
+		<div class="lastbin"></div>
+		<div class="loadarea">
+			<i class="fa-solid fa-file-arrow-down fa-2xl ii ic"
+				style="color: #ffffff;"></i>
+			<button class="ii" type="button" id="downBtn"
+				style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">Download</button>
+		</div>
+		<div class="savearea">
+			<i class="fa-solid fa-floppy-disk fa-2xl ii ic"
+				style="color: #ffffff;"></i>
+			<c:choose>
+			<c:when test="${not empty loginUser }">
+				<button class="ii" type="button" id="sss"
+					style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223);">SaveFile</button>
+			</c:when>
+			<c:otherwise>
+				<button class="ii" type="button" 
+					style="background-color: transparent; border: 0; text-decoration: underline; text-decoration-thickness: 5px; text-decoration-color: rgb(40, 151, 223); disabled">SaveFile</button>			
+			</c:otherwise>
+			</c:choose>
+		</div>
+		
+	</div>
 	<div class="togeSql">
 		<div class="sqlArea">
 			<div id="testnum" style="text-align: right; font-size: 22px;">
+				<!-- 줄 번호 -->
 				<textarea class="ic ii" id="testnumin"
-					style="width: 100%; height: 100%; text-align: right; box-sizing: border-box; border: none; border-right: 1px solid gray;"
+					style="width: 100%; height: 100%; text-align: right; box-sizing: border-box; border: none; border-right: 1px solid gray; resize: none;"
 					disabled></textarea>
 			</div>
+			<!-- sql 입력창 -->
 			<div class="middlebin ic ii" style="background-color: black"></div>
 			<div id="textare">
 				<textarea class="ic ii" id="testarea" class="testarea"
 					style="width: 100%; height: 100%; font-size: 22px; resize: none; outline: none; border: none;"></textarea>
 			</div>
 		</div>
-		<div class="userConarea">
-			<div class="btnsarea ii ic">
-				<c:choose>
-				<c:when test="${not empty loginUser }">
-					<button type="button" onclick="connect();" class="btn btn-success"
-						style="width: 100%; height: 45%;">접속</button>
-				</c:when>
-				<c:otherwise>
-					<button type="button" onclick="connect();" class="btn btn-success"
-						style="width: 100%; height: 45%;" disabled>접속</button>
-				</c:otherwise>
-				</c:choose>
-				<br>
-				<div style="height: 10%; width: 100%;"></div>
-				<c:choose>
-				<c:when test="${not empty loginUser }">
-					<button type="button" onclick="disconnect();" class="btn btn-danger"
-						style="width: 100%; height: 45%;">종료</button>
-				</c:when>
-				<c:otherwise>
-					<button type="button" onclick="disconnect();" class="btn btn-danger"
-						style="width: 100%; height: 45%;" disabled>종료</button>
-				</c:otherwise>
-				</c:choose>
-			</div>
-			<div class="userInarea ii ic">현재 접속자</div>
-			<div class="userIn ii ic"></div>
-		</div>
 	</div>
+	<br>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

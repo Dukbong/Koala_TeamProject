@@ -195,11 +195,21 @@
 	    overflow: hidden;
 	    position: relative;
 	}
+	
+	
+	/* =====================================설희 작성 */
+	.contributions-outer div{border: 1px solid pink;}
+	.contributions-outer{width: 1200px; height: 400px; margin: auto;}
+	.contributions-area{width: 100%; height: 90%;}
+	.level-area{width: 100%; height: 10%; position:relative;}
+	.level-area>div{width: 230px; height: 30px; position:absolute; right:0; bottom:0;}
+	.level-area>div>*{height: 100%; float:left; margin: 0px 5px;}
+	.level-area>div>div{width:20px; height: 20px;}
 
     
 </style>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header_copy.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	
     <div id="outer" >
@@ -226,7 +236,24 @@
                 <div id="con2-area">
                 	<table>
                 		<tr>
-                			<th>Lv.${user.userLevel } 여기는 레벨에따라 조건</th>
+                			<th>
+                				Lv.${user.userLevel }
+                			<c:if test="${user.userLevel == 1 }">
+                				브론즈
+                			</c:if>
+                			<c:if test="${user.userLevel == 2 }">
+                				실버
+                			</c:if>
+                			<c:if test="${user.userLevel == 3 }">
+                				골드
+                			</c:if>
+                			<c:if test="${user.userLevel == 4 }">
+                				플레티넘
+                			</c:if>
+                			<c:if test="${user.userLevel == 5 }">
+                				다이아
+                			</c:if>
+                			</th>
                 		</tr>
                 		
                 		<tr>
@@ -238,7 +265,7 @@
                 		</tr>
                 		<tr>
                 			<c:if test="${user ne loginUser }">
-                				<th><button id="follow">Follow</button></th>
+                				<th><button id="follow" class="btn btn-secondary">Follow</button></th>
                 			</c:if>
                 		<tr>
                 	</table>
@@ -312,6 +339,7 @@
                         <li style="list-style-type: none;"><a id="replyList">Reply</a></li>
                         <li style="list-style-type: none;"><a id="likedList">Liked</a></li>
                         <li style="list-style-type: none;"><a id="followingList">Following</a></li>
+                        <li style="list-style-type: none;"><a id="contributions">contributions</a></li>
                     </ul>
                 </div>
             </div>
@@ -474,6 +502,98 @@
 				                    </tr>
 				                </table>
 							</c:forEach>
+                		</c:when>
+                		
+                		<c:when test="${not empty attList }">
+							<div class="contributions-outer">
+								<div class="contributions-area">
+									<table border="1">
+										<tr>
+											<th>Jan.</th>
+											<c:forEach  var="a" items="attList">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Feb.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Mar.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Apr.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>May.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Jun.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Jul.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Aug.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Sep.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Oct.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Nov.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										<tr>
+											<th>Dec.</th>
+											<c:forEach begin="1" end="31">
+												<td></td>
+											</c:forEach>
+										</tr>
+										
+									</table>
+								</div>
+								<div class="level-area">
+									<div>
+										<span>Less</span>
+										<div style="background-color: rgb(74, 40, 4);"></div>
+										<div style="background-color: rgb(70, 93, 39);"></div>
+										<div style="background-color: rgb(53, 141, 53);"></div>
+										<i class="fa-solid fa-seedling fa-bounce" style="color: #1eff00;"></i>
+										<span>More</span>
+									</div>
+								</div>
+							</div>
                 		</c:when>
                 		
                 		<c:otherwise>

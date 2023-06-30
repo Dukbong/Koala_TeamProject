@@ -8,7 +8,9 @@ import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
+import com.hoju.koala.admin.model.vo.ModifyTeam;
 import com.hoju.koala.admin.model.vo.SqlCloud;
+import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
@@ -77,6 +79,30 @@ public interface AdminService {
 	ArrayList<Member> selectTeamMember(int teamNo);
 
 	int selectCreator(int teamNo);
+
+	// 저장 된 sql문 가져오기
+	String selectSqlContent(int teamNo);
+	
+	// sql문 저장하기
+	int updateTeamSql(SqlCloud saveSql);
+
+	// 처음에 해당 자료가 언제 저장된 자료인지 확인
+	SqlCloud selectSqlDate(int teamNo);
+
+	// 초기 팀원 초대하기
+	ArrayList<Member> searchMember(String text);
+
+	// 팀원 초대시 그래프를 보여주기 위한 정보
+	Supporters selectMemberDetailInfo(String userId);
+
+	// 팀 생성
+	int insertSQLteam(SqlCloud sql);
+
+	// 팀 인원 추가
+	int insertSQLteamMember(SqlInvite sqlIn);
+
+	// 팀원 수정
+	ArrayList<ModifyTeam> selectOneTeam(int teamNo);
 
 
 

@@ -23,12 +23,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
+import com.hoju.koala.member.calendar.CalendarController;
 import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
+import com.hoju.koala.member.model.vo.Attendance;
+import com.hoju.koala.member.model.vo.Calendar;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/member")
 public class MemberController {
@@ -44,6 +50,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberCookie mCookie;
+	
+	@Autowired
+	private CalendarController calendar;
 	
 	
 	//로그인 페이지 이동
@@ -72,8 +81,16 @@ public class MemberController {
 		//아이디 값에 대한 유저 정보 가져오기
 		Member loginUser = memberService.loginMember(m);
 		
-		System.out.println(request.getParameter("keepId"));
-		System.out.println("loginUser" +loginUser);
+
+		log.debug("아이디 저장 상태 : {}", request.getParameter("keepId"));
+
+		
+		//로그인 시 출석 등록 ======================================== 설희
+
+		int userNo =  loginUser.getUserNo();
+		memberService.attendance(userNo);
+		//======================================================
+
 		
 		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
 		if((loginUser != null) && ((pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) || m.getUserPwd().equals(loginUser.getUserPwd())) ) {
@@ -238,7 +255,7 @@ public class MemberController {
 		//입력한 이메일에 대한 데이터가 있는지 조회 있다면 회원정보 가져오기
 		Member m = memberService.selectEmail(userEmail);
 		
-		System.out.println(m);
+		log.debug("이메일에 대한 회원 정보 : {}", m);
 		
 		String newPwd = null;
 		
@@ -246,7 +263,7 @@ public class MemberController {
 			//이메일에대한 아이디가 존재하면 임시비밀번호 생성하고 아이디와 함꼐 이메일보내기
 			newPwd = ec.forgetUserEmail(userEmail, m.getUserId());
 			
-			System.out.println("newPwd : "+newPwd);
+			log.debug("임시비밀번호 : {}", newPwd);
 			//임시비밀번호 암호화
 			String encPwd = pwdEncoder.encode(newPwd);
 			
@@ -350,7 +367,7 @@ public class MemberController {
 	@PostMapping("/deleteMember")
 	public int deleteMember(String userId) {
 
-		System.out.println(userId);
+		log.debug("삭제 요청 ID : {}", userId);
 		//상태값만 N변경, DELETE_DATE 추가 최종삭제는 DELETE_DATE로부터 스케줄러를 통해 30일 이후에 삭제될 예정
 		int result = memberService.deleteMember(userId);
 		
@@ -387,7 +404,8 @@ public class MemberController {
 		
 		//이메일전송후 인증번호 반환(현재 전송 막아논 상태)
 		String certiCode = ec.joinEmail(inputEmail);
-		System.out.println("인증번호 : "+certiCode);
+		
+		log.debug("인증 번호  : {}", certiCode);
 		
 		return certiCode;
 	}
@@ -473,13 +491,35 @@ public class MemberController {
 		
 		ArrayList<Member> fList = memberService.followingList(userId);
 		
-		System.out.println("fList : "+fList);
-		
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
 		mv.addObject("fList", fList);
 		mv.setViewName("member/activityDetailPage");
 		
+		
+		return mv;
+	}
+	
+	//해당 유저의 contributions 조회 ======================================== 설희
+	@GetMapping("/contributions")
+	public ModelAndView selectContributions(ModelAndView mv,
+											String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+				
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		int userNo = m.getUserNo();
+		ArrayList<Attendance> attList = memberService.selectContributions(userNo);
+		ArrayList<Calendar> calList = calendar.selectCalendar(attList);
+		
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("attList", attList);
+		mv.addObject("calList", calList);
+		mv.setViewName("member/activityDetailPage");
 		
 		return mv;
 	}
@@ -501,20 +541,21 @@ public class MemberController {
 			//넘어온 파일이 있다면
 			
 			String filePath = "/resources/memberImage/";
+			
 			//실제 저장경로
 			String savePath = request.getSession().getServletContext().getRealPath(filePath);
-			System.out.println(savePath);
+			log.debug("실제 저장 경로 : {}", savePath);
 			
 			//원본 파일명
 			String originName = upFile.getOriginalFilename();
 			
 			//확장자 떼오기
 			String extension = originName.substring(originName.lastIndexOf("."));
-			System.out.println(extension);
 			
 			//변경된 파일명
 			String changeName = System.currentTimeMillis()+extension;
-			System.out.println("change:"+changeName);
+			
+			log.debug("바뀐 파일명 : {}", changeName);
 			
 			
 			Profile p = Profile.builder().refUno(loginUser.getUserNo()).originName(originName).changeName(changeName).filePath(filePath).build();
@@ -537,18 +578,18 @@ public class MemberController {
 			}
                 
         } else {
-            System.out.println("넘어온 파일이없음");
+            log.debug("넘어온 파일 없음");
             //넘어온파일이 없으면 유저번호로 프로필 삭제를 해버리자
-            System.out.println("유저번호 : "+loginUser.getUserNo());
-            
+            log.debug("빈 파일 넘긴 유저 번호 : {}", loginUser.getUserNo());
             Profile delProfile = memberService.selectProfile(loginUser.getUserNo());
             
             System.out.println("delProfile 불러오기"+delProfile);
             
+            
             result2 = memberService.deleteProfile(delProfile);
             
             if(result2>0) { //DB파일 삭제햇으면
-            	System.out.println("db삭제완료해씀");
+            	System.out.println("db삭제완료");
             	File file = new File(request.getSession().getServletContext().getRealPath(delProfile.getFilePath())+delProfile.getChangeName());
             	
             	//서버에서도 파일 삭제
@@ -557,7 +598,7 @@ public class MemberController {
             	// -1은 넘어온파일이 없어 db에서 delte수행하고 서버에서도 파일삭제를 했을때
             	result = -1;
             }else {
-            	System.out.println("db삭제완료 안해씀");
+            	System.out.println("db삭제실패");
             	result = -2; // -2는 db삭제과정에서 오류
             }
             
@@ -570,5 +611,24 @@ public class MemberController {
 		request.setAttribute("loginUser", loginUser);
 		
 		return result;
+	}
+	
+	
+	//메신저에서 닉네임으로 유저 찾기
+	@ResponseBody
+	@GetMapping("/searchUser")
+	public ArrayList<Member> searchUser(String searchUser) {
+		
+		log.debug("입력한 유저 닉네임 : {}", searchUser);
+		
+		ArrayList<Member> mlist = memberService.searchUser(searchUser);
+		
+		System.out.println(mlist);
+//		for(Member m : mlist) {
+//			System.out.println(m);
+//		}
+		
+		
+		return mlist;
 	}
 }

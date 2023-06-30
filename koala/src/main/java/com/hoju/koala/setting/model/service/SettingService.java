@@ -18,5 +18,8 @@ public interface SettingService {
 	//코드 입력 메소드
 	int insertCode(Setting setting);
 
+	//메인페이지 search
+	ArrayList<Setting> searchSetting(String input);
+
 
 }
