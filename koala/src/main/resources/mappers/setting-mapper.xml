@@ -24,6 +24,7 @@
 		SELECT *
 		FROM CREATE_SETTING
 		WHERE STATUS = 'Y'
+		ORDER BY SETTING_TITLE
 	</select>
 	
 	<!-- 해당 Setting 정보 조회 -->
@@ -38,5 +39,14 @@
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!-- 메인 search -->
+	<select id="searchSetting" resultMap="settingResultSet">
+		SELECT *
+		FROM CREATE_SETTING
+		WHERE (SETTING_TITLE LIKE '%'||#{input}||'%' OR SORT_DESCRIPTION LIKE '%'||#{input}||'%')
+		AND STATUS = 'Y'
+		ORDER BY SETTING_TITLE
 	</select>
 </mapper>
