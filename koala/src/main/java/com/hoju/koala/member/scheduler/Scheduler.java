@@ -44,11 +44,17 @@ public class Scheduler {
 		
 	}
 	
-	//매일 정시에
-//	@Scheduled(cron = "0 0 0 * * *")
-//	public void contributionsScheduler() {
-//		
-//		int result = sqlSession.update("memberMapper.update")
-//			
-//	}
+	//매일 정시에  Level 부여 작업
+	@Scheduled(cron = "0 0 0 * * *")
+	public void contributionsScheduler() {
+		
+		int result = sqlSession.update("memberMapper.contributions");
+				
+		if(result > 0) {
+			log.debug("Level 업데이트 작업 "+result+"건 완료");
+		}else {
+			log.debug("Level 업데이트 내역 없음");
+		}
+	}
+	
 }
