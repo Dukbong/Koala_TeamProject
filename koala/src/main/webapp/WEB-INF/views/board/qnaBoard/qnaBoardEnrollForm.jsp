@@ -7,12 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-	<script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/sql/sql.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
-<link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/lib/codemirror.css">
-<link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/theme/darcula.css">
+<!-- 	<script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script> -->
+<!-- <script src="/koala/resources/codemirror-5.53.2/mode/sql/sql.js"></script> -->
+<!-- <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script> -->
+<!-- <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script> -->
+<!-- <link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/lib/codemirror.css"> -->
+<!-- <link rel="stylesheet" href="/koala/resources/codemirror-5.53.2/theme/darcula.css"> -->
+    <script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
+  <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
+  <script src="/koala/resources/codemirror-5.53.2/addon/edit/closetag/js"></script>
+  <link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/>
+  <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
@@ -206,7 +211,8 @@
                             lineNumbers:true,
                             lineWrapping:true,
                             theme:"3024-night",
-                            mode:"text/x-sql",
+                            mode:"text/x-java",
+                            matchBrackets: true,
                             val:textArea.value
                         });
 
