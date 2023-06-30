@@ -7,8 +7,10 @@
 <title></title>
 </head>
 <body>
-	<jsp:forward page="WEB-INF/views/common/main_copy.jsp"/>
- 	<%-- <jsp:forward page="WEB-INF/views/board/errorBoard/createSettingForm.jsp"/> --%>
+
+	<jsp:forward page="WEB-INF/views/common/main.jsp"/>
+<%-- 	<jsp:forward page="WEB-INF/views/board/errorBoard/createSettingForm.jsp"/> --%>
+
 </body>
 
 </html>

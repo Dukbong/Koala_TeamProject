@@ -25,6 +25,7 @@ import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
+import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
@@ -76,6 +77,13 @@ public class MemberController {
 		Member loginUser = memberService.loginMember(m);
 		
 		log.debug("아이디 저장 상태 : {}", request.getParameter("keepId"));
+
+		//======================================================설희 작성
+		System.out.println("loginUser : "+loginUser);
+		int userNo =  loginUser.getUserNo();
+		memberService.attendance(userNo);
+		//======================================================
+
 		
 		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
 		if((loginUser != null) && ((pwdEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) || m.getUserPwd().equals(loginUser.getUserPwd())) ) {
@@ -485,6 +493,24 @@ public class MemberController {
 		return mv;
 	}
 	
+	//활동내역 Contributions ================================설희 잔디
+	@GetMapping("/contributions")
+	public ModelAndView selectContributions(ModelAndView mv,
+											String userId) {
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		int userNo = m.getUserNo();
+		
+		ArrayList<Attendance> attList = memberService.selectContributions(userNo);
+		
+		mv.addObject("user", m);
+		mv.addObject("attList", attList);
+		mv.setViewName("member/activityDetailPage");
+		
+		return mv;
+	}
+	
 	//프로필 관련
 	@ResponseBody
 	@PostMapping("/profile")
@@ -578,14 +604,18 @@ public class MemberController {
 	//메신저에서 닉네임으로 유저 찾기
 	@ResponseBody
 	@GetMapping("/searchUser")
-	public ModelAndView searchUser(String searchUser,
-								   ModelAndView mv) {
+	public ArrayList<Member> searchUser(String searchUser) {
 		
 		log.debug("입력한 유저 닉네임 : {}", searchUser);
 		
 		ArrayList<Member> mlist = memberService.searchUser(searchUser);
 		
+		System.out.println(mlist);
+//		for(Member m : mlist) {
+//			System.out.println(m);
+//		}
 		
-		return null;
+		
+		return mlist;
 	}
 }

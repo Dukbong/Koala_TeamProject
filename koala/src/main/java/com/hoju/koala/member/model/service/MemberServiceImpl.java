@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.member.model.dao.MemberDao;
+import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
 import com.hoju.koala.member.model.vo.Profile;
@@ -189,6 +190,19 @@ public class MemberServiceImpl implements MemberService {
 		
 		return fList;
 	}
+	
+	
+	//해당 유저의 잔디 조회 ================================설희 잔디
+	@Override
+	public ArrayList<Attendance> selectContributions(int userNo) {
+		
+		return memberDao.selectContributions(sqlSession, userNo);
+	}
+	@Override //출석 등록
+	public void attendance(int userNo) {
+		
+		memberDao.attendance(sqlSession, userNo);
+	}
 
 
 	//닉네임 변경
@@ -239,6 +253,19 @@ public class MemberServiceImpl implements MemberService {
 		
 		return cnt;
 	}
+
+	//메신저 닉네임으로 유저 검색
+	@Override
+	public ArrayList<Member> searchUser(String searchUser) {
+		
+		ArrayList<Member> mlist = memberDao.searchUser(sqlSession, searchUser);
+		
+		return mlist;
+	}
+
+
+
+
 
 
 

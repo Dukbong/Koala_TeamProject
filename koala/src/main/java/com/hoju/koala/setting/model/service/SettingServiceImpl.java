@@ -46,6 +46,15 @@ public class SettingServiceImpl implements SettingService {
 		return versionList;
 	}
 
+	//메인페이지 search
+	@Override
+	public ArrayList<Setting> searchSetting(String input) {
+		
+		ArrayList<Setting> searchList = stDao.searchSetting(sqlSession, input);
+		
+		return searchList;
+	}
+
 	
 	
 }

@@ -145,7 +145,7 @@
 </style>
 
 <body>
-	<%@include file="../../common/header_copy.jsp"%>
+	<%@include file="../../common/header.jsp"%>
 	<div class="ebDetailView">
 	    <div class="total-area">
 	    	<!-- 게시글 영역 -->

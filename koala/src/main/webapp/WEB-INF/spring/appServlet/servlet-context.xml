@@ -62,6 +62,22 @@
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
 	
+	
+	<!-- 채팅 핸들러 설정 -->
+	<websocket:handlers>
+		<websocket:mapping handler="chatHandler" path="/chat"/>
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+		<websocket:sockjs/>
+	</websocket:handlers>
+	<!-- 채팅 빈 -->
+	<beans:bean id="chatHandler" class="com.hoju.koala.member.chat.ChatHandler"/>
+	
+	
+	
+	
+	
 	<beans:bean id="websocketContainer"
 		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
 		<beans:property name="maxTextMessageBufferSize"

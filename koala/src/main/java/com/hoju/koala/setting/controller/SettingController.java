@@ -8,10 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.setting.model.service.SettingService;
 import com.hoju.koala.setting.model.vo.Setting;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RequestMapping("/setting")
 @Controller
 public class SettingController {
@@ -60,6 +64,28 @@ public class SettingController {
 		return "";
 	}
 	
+	
+	//메인페이지 search
+	@GetMapping("/search")
+	public ModelAndView searchSetting(String input,
+									  ModelAndView mv) {
+		
+		ArrayList<Setting> searchList = stService.searchSetting(input);
+		
+		for(Setting s : searchList) {
+			log.debug("검색된 라이브러리 리스트 : {}", s);
+		}
+		
+		if(searchList.size() > 1) {
+			mv.addObject("slist", searchList);
+			mv.setViewName("board/settingBoard/NewFile");
+		}else {
+			mv.addObject("slist", searchList.get(0));
+			mv.setViewName("디테일");
+		}
+		
+		return mv;
+	}
 	
 	@ResponseBody
 	@GetMapping("/version")

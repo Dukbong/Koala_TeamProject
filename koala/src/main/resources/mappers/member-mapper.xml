@@ -29,6 +29,14 @@
 		<collection resultMap="profileResultSet" property="profile"/>
 	</resultMap>
 	
+	<!-- 잔디 VO resultMap ============================설희 잔디 -->
+	<resultMap type="attendance" id="attendanceResultSet">
+		<result column="ATT_DATE" property="attDate"/>
+		<result column="REF_UNO" property="refUno"/>
+		<result column="ATT_LEVEL" property="attLevel"/>
+		<result column="PRE_POINT" property="prePoint"/>
+	</resultMap>
+	
 	<select id="selectMember" resultMap="memberResultSet">
 		SELECT *
 		FROM MEMBER M
@@ -185,6 +193,35 @@
 		ORDER BY NICKNAME ASC
 	</select>
 	
+	<!-- ========================================================= 설희 -->
+	<!-- contributions 조회 -->
+	<select id="selectContributions" resultMap="attendanceResultSet">
+		SELECT ATT_DATE,
+			   ATT_LEVEL
+		FROM ATTENDANCE
+		WHERE REF_UNO = #{userNo}
+	</select>
+	<!-- 출석 등록 -->
+	<insert id="attendance" parameterType='attendance'>
+		INSERT INTO ATTENDANCE
+		     VALUES(TRUNC(SYSDATE), #{userNo}, 1,
+		           (SELECT POINT
+		            FROM MEMBER
+		            WHERE USER_NO = #{userNo}))
+	</insert>
+	<!-- Level 부여 -->
+	<update id="contributions">
+		UPDATE ATTENDANCE A
+		SET A.ATT_LEVEL = CASE WHEN (SELECT M.POINT-A.PRE_POINT
+		                             FROM MEMBER M
+		                             WHERE M.USER_NO = A.REF_UNO)>200 THEN 2
+		                       WHEN (SELECT M.POINT-A.PRE_POINT
+		                             FROM MEMBER M
+		                             WHERE M.USER_NO = A.REF_UNO)>300 THEN 3
+		                       END
+		WHERE A.ATT_DATE = TRUNC(SYSDATE)
+	</update>
+	
 	<!-- 닉네임 업데이트  -->
 	<update id="updateNick" parameterType="member">
 		UPDATE MEMBER
@@ -225,6 +262,15 @@
 		SELECT COUNT(*)
 		FROM MEMBER
 		WHERE NICKNAME = #{inputNick}
+	</select>
+	
+	<!-- 메신저 닉네임으로 유저 검색 -->
+	<select id="searchUser" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE STATUS = 'Y'
+		AND NICKNAME LIKE '%'||#{serachUser}||'%'
+		ORDER BY NICKNAME
 	</select>
 	
 </mapper>

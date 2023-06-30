@@ -14,7 +14,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.hoju.koala.member.model.vo.Member;
 
-public class OnePageSocket extends TextWebSocketHandler {
+public class deleteExpectedSocket2 extends TextWebSocketHandler {
 //
 	private Set<WebSocketSession> list = Collections.synchronizedSet(new HashSet<>());
 //	

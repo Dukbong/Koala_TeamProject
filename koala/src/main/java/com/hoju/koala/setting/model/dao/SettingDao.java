@@ -28,6 +28,12 @@ public class SettingDao {
 		return (ArrayList)sqlSession.selectList("settingMapper.selectVersionList", settingTitle);
 	}
 
+	//메인페이지 search
+	public ArrayList<Setting> searchSetting(SqlSessionTemplate sqlSession, String input) {
+		
+		return (ArrayList)sqlSession.selectList("settingMapper.searchSetting", input);
+	}
+
 	
 	
 
