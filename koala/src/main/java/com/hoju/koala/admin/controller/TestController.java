@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.ModifyTeam;
 import com.hoju.koala.admin.model.vo.SqlCloud;
@@ -116,8 +118,18 @@ public class TestController {
 		// sqlCloud, sqlinvite, member, supporter, profile 조인...
 		// 30일날 하기
 		ArrayList<ModifyTeam> mt = adminService.selectOneTeam(teamNo);
-		System.out.println(mt);;
-		model.addAttribute("modify", mt);
+		model.addAttribute("modify", mt.get(0));
+		ArrayList<String> arr = new ArrayList<>();
+		ObjectMapper om = new ObjectMapper();
+		for(int i = 1; i < mt.size(); i++) {
+			try {
+				String jsonTest = om.writeValueAsString(mt.get(i));
+				arr.add(jsonTest);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+		model.addAttribute("test",arr);
 		return "fun/modifyTeam";
 	}
 }

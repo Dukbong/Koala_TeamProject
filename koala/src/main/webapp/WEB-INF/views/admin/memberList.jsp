@@ -24,7 +24,7 @@
         }
     .wrapper{
         width: 100%;
-        height: 800px;
+        height: 900px;
     }
     .body_content{
         display: flex;
@@ -119,8 +119,7 @@
 </style>
 <body >
 <%@include file="/WEB-INF/views/common/header.jsp"%>
-    <div class="wrapper">
-
+    <div class="wrapper" style="padding-top: 200px;">
         <div class="body_content">
             <div class="top_area">
                     <div class="board_title">
@@ -368,7 +367,7 @@
 								},
 								success : function(data){
 									alert("서포터즈로 초대하였습니다.");
-									location.href="member.list";
+									location.reload(true); // 그냥 reload할 경우 캐시를 이용하지만 true를 주면 새롭게 데이터를 받는다.
 								},
 								error : function(){
 									console.log("git hub waiting error")
@@ -388,7 +387,7 @@
 								},
 								success : function(data){
 									alert("초대를 취소하였습니다.");
-									location.href="member.list";
+									location.reload(true);
 								},
 								error : function(){
 									console.log("git hub error")

@@ -78,11 +78,10 @@
 </style>
 <body>
 	<%@include file="../common/header.jsp" %>
-	<br>
-	<div class="tagName">
+	<div class="tagName" style="padding-top : 200px;">
 		<h1 class="tit">@Issues</h1>
 	</div>
-	<br>
+	<br><br><br>
 		<div class="wrap">
 			<c:choose>
 			<c:when test="${not empty issues }">

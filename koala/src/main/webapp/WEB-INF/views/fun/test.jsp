@@ -416,8 +416,7 @@ span {
 		</script>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
-	<br>
-		<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
+		<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center; padding-top: 200px;">
 		TEAM
 		<button id="createTeam" class="ii" type="button" 
 				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
