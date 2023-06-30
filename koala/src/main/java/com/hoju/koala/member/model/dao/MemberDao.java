@@ -164,6 +164,12 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.selectNick", inputNick);
 	}
 
+	//메신저 닉네임으로 유저 검색
+	public ArrayList<Member> searchUser(SqlSessionTemplate sqlSession, String searchUser) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.searchUser", searchUser);
+	}
+
 
 
 

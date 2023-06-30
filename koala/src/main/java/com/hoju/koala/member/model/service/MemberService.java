@@ -83,6 +83,9 @@ public interface MemberService {
 	//닉네임 존재여부 확인
 	int selectNick(String inputNick);
 
+	//메신저 닉네임으로 유저 검색
+	ArrayList<Member> searchUser(String searchUser);
+
 	
 
 

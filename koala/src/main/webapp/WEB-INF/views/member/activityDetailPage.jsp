@@ -236,7 +236,24 @@
                 <div id="con2-area">
                 	<table>
                 		<tr>
-                			<th>Lv.${user.userLevel } 여기는 레벨에따라 조건</th>
+                			<th>
+                				Lv.${user.userLevel }
+                			<c:if test="${user.userLevel == 1 }">
+                				브론즈
+                			</c:if>
+                			<c:if test="${user.userLevel == 2 }">
+                				실버
+                			</c:if>
+                			<c:if test="${user.userLevel == 3 }">
+                				골드
+                			</c:if>
+                			<c:if test="${user.userLevel == 4 }">
+                				플레티넘
+                			</c:if>
+                			<c:if test="${user.userLevel == 5 }">
+                				다이아
+                			</c:if>
+                			</th>
                 		</tr>
                 		
                 		<tr>
@@ -248,7 +265,7 @@
                 		</tr>
                 		<tr>
                 			<c:if test="${user ne loginUser }">
-                				<th><button id="follow">Follow</button></th>
+                				<th><button id="follow" class="btn btn-secondary">Follow</button></th>
                 			</c:if>
                 		<tr>
                 	</table>

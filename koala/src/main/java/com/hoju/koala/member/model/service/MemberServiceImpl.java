@@ -256,6 +256,15 @@ public class MemberServiceImpl implements MemberService {
 		return cnt;
 	}
 
+	//메신저 닉네임으로 유저 검색
+	@Override
+	public ArrayList<Member> searchUser(String searchUser) {
+		
+		ArrayList<Member> mlist = memberDao.searchUser(sqlSession, searchUser);
+		
+		return mlist;
+	}
+
 
 
 

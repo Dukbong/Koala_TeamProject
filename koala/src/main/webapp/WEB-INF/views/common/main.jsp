@@ -122,8 +122,21 @@
         </div>
         
         <div class="search-area">
-        	<input type="search" placeholder="검색어를 입력하세요"><button>search</button>
+        	<input type="search" placeholder="검색어를 입력하세요"><button id="searchBtn">search</button>
         </div>
+        
+        <script>
+        	$(function(){
+        		$("#searchBtn").on("click", function(){
+        			var searchInput = $(".search-area>input[type=search]").val();
+        			
+        			location.href = "/koala/setting/search?input="+searchInput;
+        		});
+        	});
+        
+        </script>
+        
+        
 
         <div class="main_body">
             <div class="body1">
