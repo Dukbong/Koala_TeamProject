@@ -72,8 +72,10 @@ public class SettingController {
 	
 	//코드 작성 메소드
 	@RequestMapping("insert")
-	public String createCode(String input) {
-		System.out.println(input);
+	public String createCode(Setting setting, Model model) {
+		
+		int result = stService.insertCode(setting);
+		
 		return null;
 	}
 	

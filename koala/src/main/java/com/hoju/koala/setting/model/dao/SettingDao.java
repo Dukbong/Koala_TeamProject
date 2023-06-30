@@ -28,6 +28,12 @@ public class SettingDao {
 		return (ArrayList)sqlSession.selectList("settingMapper.selectVersionList", settingTitle);
 	}
 
+	//코드 입력 메소드
+	public int insertCode(SqlSessionTemplate sqlSession, Setting setting) {
+		
+		return sqlSession.insert("settingMapper.insertCode",setting);
+	}
+
 	
 	
 
