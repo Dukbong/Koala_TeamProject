@@ -44,8 +44,6 @@ public class Atest extends TextWebSocketHandler {
 		// Connect
 		ObjectMapper om = new ObjectMapper();
 		WebSocketVO msv = om.readValue((String)message.getPayload(), WebSocketVO.class); // json을 VO기반으로 읽어서 객체로 저장한다.
-		System.out.println(msv);
-		System.out.println(textMap);
 		if(msv.getMsg() != null) {
 			textMap.put(msv.getTeamNo(), msv.getMsg());
 		}
@@ -73,8 +71,14 @@ public class Atest extends TextWebSocketHandler {
 			}else {				
 				newMessage = new TextMessage((arraylist.toString()).replace(" ", ""));
 			}
+			System.out.println(">>>>>>>");
+			System.out.println(map.get(msv.getTeamNo()));
 			for(WebSocketSession m : map.get(msv.getTeamNo())) {
-				m.sendMessage(newMessage);
+				try {					
+					m.sendMessage(newMessage);
+				}catch (IllegalStateException e) {
+					map.remove(msv.getTeamNo());
+				}
 			}			
 		}else if(msv.getType().equals("Out")) {
 			int ref = 0;
@@ -101,14 +105,22 @@ public class Atest extends TextWebSocketHandler {
 			System.out.println("send >> " + msv.getMsg());
 			String text = msv.getMsg();
 			TextMessage newMessage = new TextMessage("SEND:"+text);
-			for(WebSocketSession m : map.get(msv.getTeamNo())) {
-				m.sendMessage(newMessage);
+			try {
+				for(WebSocketSession m : map.get(msv.getTeamNo())) {
+					m.sendMessage(newMessage);
+				}
+			}catch(NullPointerException e) {
+				System.out.println("SEND : msv.getTeamNo() : " + msv.getTeamNo());
 			}
 		} else if(msv.getType().equals("SAVE")) {
 			SqlCloud sql = adminService.selectSqlDate(msv.getTeamNo());
 			TextMessage newMessage = new TextMessage("SAVE:"+sql.getModifyDate());
-			for(WebSocketSession m : map.get(msv.getTeamNo())) {
-				m.sendMessage(newMessage);
+			try {
+				for(WebSocketSession m : map.get(msv.getTeamNo())) {
+					m.sendMessage(newMessage);
+				}
+			}catch(NullPointerException e) {
+				System.out.println("SAVE : msv.getTeamNo() : " + msv.getTeamNo());
 			}
 		}
 	}

@@ -249,8 +249,8 @@ span {
 								}
 							});						
 						}else if(e.data.includes("SAVE:")){
-							var modifyDate = e.data.split("SAVE:");
-							$(".topbinarea").html("&nbsp;&nbsp;&nbsp;&nbsp;Last Save : "+modifyDate.substring(1));
+							var modifyDate = e.data.replace("SAVE:","");
+							$(".topbinarea").html("&nbsp;&nbsp;&nbsp;&nbsp;Last Save : "+modifyDate);								
 						}else{
 							// 접속
 							var idArr = e.data.substring(1,e.data.length-1).split(",");
@@ -290,30 +290,11 @@ span {
 					form.appendChild(hidden);
 					document.body.appendChild(form);
 					form.submit();
-				})
-// 				on("dblclick", function(){
-// 					console.log($(this).parent().text());
-// 					alert("hi");
-// 					alert("name : " + $(this).parent().text().replace(/\s/,""));
-// 					$.ajax({
-// 						url : "teamDelete",
-// 						data : {
-// 							taemNo : "${teamNo}"
-// 						},
-// 						success : function(data){
-// // 							console.log(data);
-// // 							location.reload(true);
-// 						},
-// 						error : function(){
-// 							cconsole.log("error");
-// 						}
-// 					})
-// 				});
+				});
 				
 				$("#conbtn").on("click", function(){
 					connect();
 				});
-				
 				
 				$("#disconbtn").on("click", function(){
 					disconnect();
@@ -353,19 +334,19 @@ span {
 								sqlContent : $("#testarea").val()
 							},
 							type : "POST",
+							async: false,
 							success : function(data){
-								console.log(data);
 								if(data > 0){
 									alert("저장되었습니다.");
 									var text = {
-											type : "SAVE",
+											type : "SAVE:",
 											teamNo : "${teamNo}"
 									}
 									socket.send(JSON.stringify(text)); // 구분하기 위해
 								}else{
 									alert("저장되었습니다.");
 									var text = {
-											type : "SAVE",
+											type : "SAVE:",
 											teamNo : " "
 									}
 									socket.send(JSON.stringify(text)); // 구분하기 위해
@@ -398,7 +379,10 @@ span {
 					form.appendChild(hidden);
 					document.body.appendChild(form);
 					form.submit();
-// 					location.href="modifyTeam";
+				}).on("mouseenter", function(){
+					$(this).children().eq(0).addClass("fa-spin");
+				}).on("mouseleave", function(){
+					$(this).children().eq(0).removeClass("fa-spin");
 				});
 				
 				// 입력 (접속시 입력창 생성)
@@ -433,6 +417,10 @@ span {
 				
 				$("#teamQuit").on("click", function(){
 					location.href="teamQuit?teamNo=${teamNo}";
+				}).on("mouseenter", function(){
+					$(this).addClass("fa-shake");
+				}).on("mouseleave", function(){
+					$(this).removeClass("fa-shake");
 				});
 			});
 		</script>
@@ -450,16 +438,16 @@ span {
 			<c:when test="${not empty teamList }">
 				<c:forEach var="t" begin="0" end="${teamList.size()-1 }">
 					<c:choose>
-					<c:when test="${teamNo == teamList.get(t).getTeamNo() }">
+					<c:when test="${requestScope.teamNo == teamList.get(t).getTeamNo() }">
 						<div class="teamOne" style="color:red">
-							<button type="button" class="teamButton">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
+							<button type="button" class="teamButton btn btn-light">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
 							<input type="hidden" value="${teamList.get(t).getTeamNo() }">
 							${teamList.get(t).getTeamName() }
 						</div>
 					</c:when>
 					<c:otherwise>
 						<div class="ii teamOne">
-							<button type="button" class="teamButton">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
+							<button type="button" class="teamButton btn btn-light">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
 							<input type="hidden" value="${teamList.get(t).getTeamNo() }">
 							${teamList.get(t).getTeamName() }
 						</div>
@@ -485,15 +473,13 @@ span {
 		</c:otherwise>
 		</c:choose>
 		<c:choose>
-		<!-- Owner >> Update button -->
 		<c:when test="${loginUser.userNo.equals(creatorNo) }">
 			<button id="teamInvite" class="ii" type="button" 
-					style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
+					style="background-color: transparent; border: 0;"><i class="fa-solid fa-gear fa-xl" style="color: #ffffff;"></i></button>
 		</c:when>
-		<!-- member >> Quit button -->
 		<c:otherwise>
 			<button id="teamQuit" class="ii" type="button" 
-					style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>		
+					style="background-color: transparent; border: 0;"><i class="fa-solid fa-person-walking fa-xl" style="color: #ffffff;"></i></button>		
 		</c:otherwise>
 		</c:choose>
 	</div>
@@ -626,7 +612,7 @@ span {
 			<!-- sql 입력창 -->
 			<div class="middlebin ic ii" style="background-color: black"></div>
 			<div id="textare">
-				<textarea class="ic ii" id="testarea" class="testarea"
+				<textarea class="ic ii" spellcheck="false" id="testarea" class="testarea"
 					style="width: 100%; height: 100%; font-size: 22px; resize: none; outline: none; border: none;"></textarea>
 			</div>
 		</div>

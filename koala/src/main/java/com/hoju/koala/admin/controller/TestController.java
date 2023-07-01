@@ -73,7 +73,6 @@ public class TestController {
 	public String showCreatTeam(HttpServletRequest request, Model model) {
 		Supporters owner = adminService.selectMemberDetailInfo(((Member)request.getSession().getAttribute("loginUser")).getUserId());
 		model.addAttribute("owner", owner);
-		System.out.println(owner);
 		return "fun/createTeam";
 	}
 	
@@ -153,7 +152,7 @@ public class TestController {
 		return "fun/modifyTeam";
 	}
 	
-	// member Delete Button Click
+	// team & member Delete Button Click
 	@GetMapping("/teamDelete")
 	@ResponseBody
 	@Transactional
@@ -165,12 +164,14 @@ public class TestController {
 		return result1*result2;
 	}
 	
+	// member >> quit Team
 	@GetMapping("/teamQuit")
 	public String teamQuit(int teamNo, HttpSession session) {
 		SqlInvite sql = SqlInvite.builder().teamNo(teamNo).userNo(((Member)session.getAttribute("loginUser")).getUserNo()).build();
 		int result = adminService.teamQuit(sql);
+		System.out.println(result);
 		if(result > 0) {
-			return "redirect:sqlcloud"; 
+			return "redirect:sqlCloud"; 
 		}else {			
 			return ""; 
 		}

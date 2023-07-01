@@ -143,9 +143,9 @@ li{
 	<div class="selecter" style="padding : 50px; width: 50%; height: 100%; border-right: 1px solid white;">
 		<h2 class="mainText" style="display:inline;">MODIFY TEAM</h2>
 		<!-- Delete Team -->
-		<button id="delete" style="margin-left:450px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-repeat fa-2xl" style="color: #ffffff;"></i></button>
+		<button id="delete" style="margin-left:350px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-trash-can fa-2xl" style="color: #ffffff;"></i></button>
 		<!-- Update Team -->
-		<button id="create" style="margin-left:100px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-repeat fa-2xl" style="color: #ffffff;"></i></button>
+		<button id="create" style="margin-left:50px; text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-repeat fa-2xl" style="color: #ffffff;"></i></button>
 		<br><br><br>
 		<div class="input-box">
 			<label class="text-label" for="teamName">TEAM NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -339,20 +339,20 @@ li{
 			});
 			(function(){ // 즉시 함수
 				checkPoint.push("${modify.userId}");
-				consendarr.push(Number("${modify.userNo}"));		
-				if(modiData.length > 0){					
-					for(var i = 0; i < modiData.length; i++){
-						let obj = JSON.parse(modiData[i]);
-						let userId = obj.userId;
-						$("#memberInvite").val(userId); // 이름값
-						$("#memberInvite").trigger("keyup"); // 아래 뜨게 < click 으로 해서 변경>
-						$("#addBtn").trigger("click"); // 아래 뜬게 하나일때 클릭
-						$("#memberInvite").val("");
-						$("#memberInvite").trigger("keyup"); // 아래 뜨게 < click 으로 해서 변경>
+				consendarr.push(Number("${modify.userNo}"));	
+				if(modiData[0] != ""){
+					if(modiData.length > 0){					
+						for(var i = 0; i < modiData.length; i++){
+							let obj = JSON.parse(modiData[i]);
+							let userId = obj.userId;
+							$("#memberInvite").val(userId); // 이름값
+							$("#memberInvite").trigger("keyup"); // 아래 뜨게 < click 으로 해서 변경>
+							$("#addBtn").trigger("click"); // 아래 뜬게 하나일때 클릭
+							$("#memberInvite").val("");
+							$("#memberInvite").trigger("keyup"); // 아래 뜨게 < click 으로 해서 변경>
+						}
 					}
 				}
-				console.log(checkPoint);
-				console.log(consendarr);
 			})();
 			$(document).on("click", ".membershow", function() {
 				// 클릭해서 인원 뺴기.
@@ -419,7 +419,7 @@ li{
 				$.ajax({
 					url : "teamDelete",
 					data : {
-						teamNo : "#{teamNo}"
+						teamNo : "${teamNo}"
 					},
 					success : function(data){
 						if(!(data > 0)){
