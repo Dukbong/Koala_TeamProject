@@ -46,6 +46,13 @@ public class SettingServiceImpl implements SettingService {
 		return versionList;
 	}
 
+	//코드 입력 메소드
+	@Override
+	public int insertCode(Setting setting) {
+		
+		return stDao.insertCode(sqlSession, setting);
+	}
+
 	//메인페이지 search
 	@Override
 	public ArrayList<Setting> searchSetting(String input) {
