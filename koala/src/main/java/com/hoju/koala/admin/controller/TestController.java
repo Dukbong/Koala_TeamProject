@@ -90,6 +90,7 @@ public class TestController {
 	@GetMapping("/userInfo")
 	@ResponseBody
 	public Supporters userInfo(String userId) {
+		System.out.println(userId + "click 이벤트 발생");
 		Supporters info = adminService.selectMemberDetailInfo(userId);
 		return info;
 	}

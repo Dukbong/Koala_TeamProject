@@ -220,14 +220,15 @@ li{
 	</div>
 	<script>
 		$(function(){
-			console.log("${test}");
+			var modiData = '${test}'.replace("[","").replace("]","").replaceAll("}, ","}//").split("//");
 			
 			var checkPoint = [];
 			var consendarr = [];			
 			consendarr.push("${owner.userNo}");
 			checkPoint.push("${owner.userId}");
-			$("#memberInvite").on("keyup", function(){
+			$("#memberInvite").on("keyup click", function(){
 				var text = $("#memberInvite").val();
+				alert("keyup = " + text);
 				if(text || text != ""){
 					$.ajax({
 						url : "searchMember",
@@ -276,11 +277,17 @@ li{
 			});
 			
 			$("#addBtn").on("click", function(){
+				alert("클릭 이벤트 1");
 				if($(".memberpick").children().children().length / 2+1 <= 5){
+						alert("클릭 이벤트 2");
+						alert("member = " + $("#memberInvite").val());
+						alert("lenth = " + $("#memberDiv").children().children().length);
 					if($("#memberInvite").val() == "" || $("#memberDiv").children().children().length != 1){
+						alert("클릭 이벤트 3");
 						return;
 					}
 					var clickUserId = $("#memberInvite").val();
+					alert("클릭 이벤트 4");
 					$("#memberInvite").val("");
 					$("#memberInvite").trigger("keyup");
 					var oneLine = ($(".memberpick").children().children().length / 2+1) * 140 / 2 ;
@@ -334,17 +341,22 @@ li{
 					alert("정원이 초과되었습니다.");
 				}
 			});
-			
+			(function(){
+				for(var i = 0; i < modiData.length; i++){
+					let obj = JSON.parse(modiData[i]);
+					let userId = obj.userId;
+					console.log(userId);
+					$("#memberInvite").val(userId); // 이름값
+					$("#memberInvite").trigger("click"); // 아래 뜨게 < click 으로 해서 변경>
+						$("#addBtn").trigger("click"); // 아래 뜬게 하나일때 클릭
+						$("memberInvite").val("");
+						console.log($("#memberDiv").children().children());
+				}				
+			})();
 			$(document).on("click", ".membershow", function() {
 				// 클릭해서 인원 뺴기.
 				$(this).remove();
 				checkPoint = checkPoint.filter((e) => e!== $(this).eq(0).attr("id"));
-				console.log($(this).eq(0).attr("name"));
-				console.log("제거 전");
-				console.log(consendarr);
-				consendarr = consendarr.filter((e) => e!== Number($(this).eq(0).attr("name")));
-				console.log("제거 후");
-				console.log(consendarr);
 				if($(".memberpick").children().children().length != 0){
 					var oneLine = ($(".memberpick").children().children().length / 2) * 140 / 2 ;
 					$(".topL").css("height", 70 * ($(".memberpick").children().children().length / 2-1));
@@ -395,6 +407,8 @@ li{
 						}
 					});
 			});
+			
+			
 		});
 	</script>
 </body>
