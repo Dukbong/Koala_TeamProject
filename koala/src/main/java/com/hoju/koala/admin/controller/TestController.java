@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,7 +91,6 @@ public class TestController {
 	@GetMapping("/userInfo")
 	@ResponseBody
 	public Supporters userInfo(String userId) {
-		System.out.println(userId + "click 이벤트 발생");
 		Supporters info = adminService.selectMemberDetailInfo(userId);
 		return info;
 	}
@@ -98,7 +98,6 @@ public class TestController {
 	@GetMapping("/createTeam")
 	@ResponseBody
 	public int createTeam(String team, String teamName) {
-		System.out.println(team);
 		String[] arr = team.split(",");
 		SqlCloud sql = SqlCloud.builder().teamName(teamName).sqlContent(" ").creatorNo(Integer.parseInt(arr[0])).build();
 		int createTeam = adminService.insertSQLteam(sql); // teamCreate
@@ -112,13 +111,33 @@ public class TestController {
 		return insertMember;
 	}
 	
+	@GetMapping("/modifyTeamMember")
+	@ResponseBody
+	public int modifyTeamMember(String team, String teamName) {
+		String[] arr = team.split(",");
+		System.out.println("TeamName = " + teamName);
+		int teamNo = adminService.selectTeamTeamNo(teamName);
+		System.out.println("TeamNO = " + teamNo);
+		int updateMember = 0;
+		// delete로 다 날리고 다시 등록한다.
+		int deleteMember = adminService.deleteTeamMember(teamName);
+		if(deleteMember > 0) {
+			for(int i = 0; i < arr.length; i++) {
+				SqlInvite sqlIn = SqlInvite.builder().teamNo(teamNo).creatorNo(Integer.parseInt(arr[0])).userNo(Integer.parseInt(arr[i])).build();
+				System.out.println(sqlIn);
+				updateMember = adminService.updateSQLteamMember(sqlIn);
+			}
+		}
+		return updateMember;
+	}
+	
 	@PostMapping("/modifyTeam")
 	public String modifyTeam(int teamNo, Model model) {
-		System.out.println(teamNo);
 		// 필요한거 팀이름 / 오너아이디 / 유저 이름, 유저번호, 사진, 닉네임, 서포터즈 유무
 		// sqlCloud, sqlinvite, member, supporter, profile 조인...
 		// 30일날 하기
 		ArrayList<ModifyTeam> mt = adminService.selectOneTeam(teamNo);
+		System.out.println(mt);
 		model.addAttribute("modify", mt.get(0));
 		ArrayList<String> arr = new ArrayList<>();
 		ObjectMapper om = new ObjectMapper();
@@ -132,5 +151,28 @@ public class TestController {
 		}
 		model.addAttribute("test",arr);
 		return "fun/modifyTeam";
+	}
+	
+	// member Delete Button Click
+	@GetMapping("/teamDelete")
+	@ResponseBody
+	@Transactional
+	public int teamDelete(int teamNo) {
+		// 구분가능한 Team No로 분류 한다.
+		int result1 = adminService.deleteTeam(teamNo);
+		int result2 = adminService.deleteLastTeamInfo(teamNo);
+		
+		return result1*result2;
+	}
+	
+	@GetMapping("/teamQuit")
+	public String teamQuit(int teamNo, HttpSession session) {
+		SqlInvite sql = SqlInvite.builder().teamNo(teamNo).userNo(((Member)session.getAttribute("loginUser")).getUserNo()).build();
+		int result = adminService.teamQuit(sql);
+		if(result > 0) {
+			return "redirect:sqlcloud"; 
+		}else {			
+			return ""; 
+		}
 	}
 }

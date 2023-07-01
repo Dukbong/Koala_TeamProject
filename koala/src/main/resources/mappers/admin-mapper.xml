@@ -329,6 +329,9 @@
 	<insert id="insertSQLteamMember" parameterType="sqlInvite">
 		INSERT INTO SQLINVITE VALUES (#{creatorNo}, #{userNo}, SQL_TNO.CURRVAL)
 	</insert>
+	<insert id="updateSQLteamMember" parameterType="sqlInvite">
+		INSERT INTO SQLINVITE VALUES (#{creatorNo}, #{userNo}, #{teamNo})
+	</insert>
 	
 	<select id="selectOneTeam" parameterType="_int" resultMap="modifyTeamResultSet">
 		select s.teamname, z.user_id creatorId ,m.user_id, m.nickname, m.user_no, g.file_path, g.change_name, p.github_id
@@ -340,4 +343,26 @@
 		left join supporters p on(m.user_no = p.ref_uno)
 		where team_no = #{teamNo}
 	</select>
+	
+	<delete id="deleteTeamMember">
+		delete from sqlinvite
+		where team_no = 
+		(select team_no
+         from sqlcloud
+         where teamname = #{teamName})
+	</delete>
+	
+	<select id="selectTeamTeamNo" parameterType="string" resultType="_int">
+		SELECT TEAM_NO FROM SQLCLOUD WHERE TEAMNAME = #{teamName}
+	</select>
+	
+	<delete id="deleteTeam" parameterType="_int">
+		DELETE FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</delete>
+	<delete id="deleteLastTeamInfo" parameterType="_int">
+		DELETE FROM sqlinvite WHERE TEAM_NO = #{teamNo}
+	</delete>
+	<delete id="taemQuit" parameterType="sqlInvite">
+		DELETE FROM SQLINVITE WHERE team_no = #{teamNo} and user_no = #{userNo}
+	</delete>
 </mapper>

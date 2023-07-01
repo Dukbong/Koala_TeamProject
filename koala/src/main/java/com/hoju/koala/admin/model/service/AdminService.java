@@ -104,6 +104,23 @@ public interface AdminService {
 	// 팀원 수정
 	ArrayList<ModifyTeam> selectOneTeam(int teamNo);
 
+	// 팀원 삭제 후 다시 입력
+	int deleteTeamMember(String teamName);
+
+	// 팀번호 찾기
+	int selectTeamTeamNo(String teamName);
+
+	int updateSQLteamMember(SqlInvite sqlIn);
+	
+	// Team Delete
+	int deleteTeam(int teamNo);
+
+	// Team Member Delete
+	int deleteLastTeamInfo(int teamNo);
+
+	// member >> quit Team
+	int teamQuit(SqlInvite sql);
+
 
 
 

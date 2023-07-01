@@ -290,7 +290,25 @@ span {
 					form.appendChild(hidden);
 					document.body.appendChild(form);
 					form.submit();
-				});
+				})
+// 				on("dblclick", function(){
+// 					console.log($(this).parent().text());
+// 					alert("hi");
+// 					alert("name : " + $(this).parent().text().replace(/\s/,""));
+// 					$.ajax({
+// 						url : "teamDelete",
+// 						data : {
+// 							taemNo : "${teamNo}"
+// 						},
+// 						success : function(data){
+// // 							console.log(data);
+// // 							location.reload(true);
+// 						},
+// 						error : function(){
+// 							cconsole.log("error");
+// 						}
+// 					})
+// 				});
 				
 				$("#conbtn").on("click", function(){
 					connect();
@@ -412,6 +430,10 @@ span {
 						$("#testarea").val("");
 					}
 				});
+				
+				$("#teamQuit").on("click", function(){
+					location.href="teamQuit?teamNo=${teamNo}";
+				});
 			});
 		</script>
 <body>
@@ -450,17 +472,34 @@ span {
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<br><br>
+	<br><br><br>
 	<c:choose>
 	<c:when test="${not empty memberList }">
 	<div id="tttest" class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
-		TEAM MEMBER
-		<button id="teamInvite" class="ii" type="button" 
-				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
+		<c:choose>
+		<c:when test="${loginUser.userNo.equals(creatorNo) }">
+			UPDATE MEMBER
+		</c:when>
+		<c:otherwise>
+			TEAM MEMBER		
+		</c:otherwise>
+		</c:choose>
+		<c:choose>
+		<!-- Owner >> Update button -->
+		<c:when test="${loginUser.userNo.equals(creatorNo) }">
+			<button id="teamInvite" class="ii" type="button" 
+					style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
+		</c:when>
+		<!-- member >> Quit button -->
+		<c:otherwise>
+			<button id="teamQuit" class="ii" type="button" 
+					style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>		
+		</c:otherwise>
+		</c:choose>
 	</div>
 	<hr style="width: 80%; margin:auto; background-color: red;  height:5px; border: 0px;">
 	<div id="memberList" class="ii" style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center">
-		<br>
+<!-- 		<br> -->
 		<c:forEach var="m" begin="0" end="${memberList.size() - 1 }">
 			<c:choose>
 			<c:when test="${m % 3 == 0 }">

@@ -169,4 +169,29 @@ public class AdminDao {
 	public ArrayList<ModifyTeam> selectOneTeam(int teamNo, SqlSession sqlSession) {
 		return (ArrayList)sqlSession.selectList("adminMapper.selectOneTeam", teamNo);
 	}
+
+	public int deleteTeamMember(String teamName, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.deleteTeamMember", teamName);
+	}
+	
+
+	public int selectTeamTeamNo(String teamName, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectTeamTeamNo", teamName);
+	}
+
+	public int updateSQLteamMember(SqlInvite sqlIn, SqlSession sqlSession) {
+		return sqlSession.insert("adminMapper.updateSQLteamMember", sqlIn);
+	}
+
+	public int deleteTeam(int teamNo, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.deleteTeam", teamNo);
+	}
+
+	public int deleteLastTeamInfo(int teamNo, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.deleteLastTeamInfo", teamNo);
+	}
+
+	public int taemQuit(SqlInvite sql, SqlSession sqlSession) {
+		return sqlSession.delete("adminMapper.taemQuit", sql);
+	}
 }

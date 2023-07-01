@@ -214,6 +214,35 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectOneTeam(teamNo, sqlSession);
 	}
 
+	@Override
+	public int deleteTeamMember(String teamName) {
+		return adminDao.deleteTeamMember(teamName, sqlSession);
+	}
+
+	@Override
+	public int selectTeamTeamNo(String teamName) {
+		return adminDao.selectTeamTeamNo(teamName, sqlSession);
+	}
+
+	@Override
+	public int updateSQLteamMember(SqlInvite sqlIn) {
+		return adminDao.updateSQLteamMember(sqlIn, sqlSession);
+	}
+
+	@Override
+	public int deleteTeam(int teamNo) {
+		return adminDao.deleteTeam(teamNo, sqlSession);
+	}
+
+	@Override
+	public int deleteLastTeamInfo(int teamNo) {
+		return adminDao.deleteLastTeamInfo(teamNo, sqlSession);
+	}
+	@Override
+	public int teamQuit(SqlInvite sql) {
+		return adminDao.taemQuit(sql, sqlSession);
+	}
+
 
 
 
