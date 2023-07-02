@@ -9,6 +9,7 @@ import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.ModifyTeam;
+import com.hoju.koala.admin.model.vo.SettingDetail;
 import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
@@ -16,6 +17,7 @@ import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.setting.model.vo.Setting;
 
 public interface AdminService {
 	AllCount selectAllCount();
@@ -54,7 +56,7 @@ public interface AdminService {
 	
 	int insertSupporterGithubId(Supporters supporter);
 	
-	ErrorBoard selectIssueDetail(String settingTitle);
+	ArrayList<SettingDetail> selectIssueDetail(String settingTitle);
 	
 	
 	// intercepter에서  행해지는 curd
@@ -120,6 +122,15 @@ public interface AdminService {
 
 	// member >> quit Team
 	int teamQuit(SqlInvite sql);
+
+	// waitinglib
+	ArrayList<Setting> selectWaitingLib();
+
+	// lig approve
+	int approvelib(int settingNo);
+
+	// lib disapprove
+	int disapprovelib(int settingNo);
 
 
 

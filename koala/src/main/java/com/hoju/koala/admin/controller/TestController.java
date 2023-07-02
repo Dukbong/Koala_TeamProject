@@ -23,6 +23,7 @@ import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.setting.model.vo.Setting;
 
 @Controller
 @RequestMapping("/together")
@@ -44,7 +45,7 @@ public class TestController {
 	@GetMapping("/sqlCloud")
 	public String sqlCloud(HttpSession session, Model model,
 						   @RequestParam(value="teamNo", required = false, defaultValue = "0") int teamNo) {
-		// 현재 팀이 있는지 확인
+
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		ArrayList<SqlCloud> teamList = adminService.selectTeam(userNo); 
 		model.addAttribute("teamList", teamList); 
@@ -166,14 +167,15 @@ public class TestController {
 	
 	// member >> quit Team
 	@GetMapping("/teamQuit")
-	public String teamQuit(int teamNo, HttpSession session) {
+	public String teamQuit(int teamNo, HttpSession session, HttpServletRequest request) {
 		SqlInvite sql = SqlInvite.builder().teamNo(teamNo).userNo(((Member)session.getAttribute("loginUser")).getUserNo()).build();
 		int result = adminService.teamQuit(sql);
 		System.out.println(result);
 		if(result > 0) {
 			return "redirect:sqlCloud"; 
 		}else {			
-			return ""; 
+			String referer = request.getHeader("Referer");
+			return "redirect:"+ referer;
 		}
 	}
 }

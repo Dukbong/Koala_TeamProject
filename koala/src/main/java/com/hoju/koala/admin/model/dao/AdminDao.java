@@ -12,6 +12,7 @@ import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.ModifyTeam;
+import com.hoju.koala.admin.model.vo.SettingDetail;
 import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
@@ -19,6 +20,7 @@ import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.setting.model.vo.Setting;
 
 
 // rawtypes : 제네릭 타입이 불완전하다
@@ -110,8 +112,8 @@ public class AdminDao {
 		return sqlSession.update("adminMapper.insertSupporterGithubId", supporter);
 	}
 
-	public ErrorBoard selectIssueDetail(String settingTitle, SqlSession sqlSession) {
-		return sqlSession.selectOne("adminMapper.selectIssueDetail", settingTitle);
+	public ArrayList<SettingDetail> selectIssueDetail(String settingTitle, SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectIssueDetail", settingTitle);
 	}
 
 	public ArrayList<ErrorSet> selectErrorDetail(String settingTitle, SqlSession sqlSession) {
@@ -193,5 +195,17 @@ public class AdminDao {
 
 	public int taemQuit(SqlInvite sql, SqlSession sqlSession) {
 		return sqlSession.delete("adminMapper.taemQuit", sql);
+	}
+
+	public ArrayList<Setting> selectWaitingLib(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("adminMapper.selectWaitingLib");
+	}
+
+	public int approvelib(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.approvelib");
+	}
+
+	public int disapprovelib(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.disapprovelib");
 	}
 }

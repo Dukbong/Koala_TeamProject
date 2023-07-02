@@ -19,15 +19,15 @@ import com.hoju.koala.admin.model.service.AdminService;
 import com.hoju.koala.admin.model.vo.AllCount;
 import com.hoju.koala.admin.model.vo.BlockIp;
 import com.hoju.koala.admin.model.vo.Client;
-import com.hoju.koala.admin.model.vo.CreateSetting;
 import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
+import com.hoju.koala.admin.model.vo.SettingDetail;
 import com.hoju.koala.admin.model.vo.Supporters;
-import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
+import com.hoju.koala.setting.model.vo.Setting;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,10 +70,8 @@ public class AdminController {
 	@GetMapping("/issuearea.list")
 	public ModelAndView adminIssues(ModelAndView mav) {
 		ArrayList<IssuesAndError> issues = adminService.selectIssues();
-		System.out.println(issues);
 		mav.addObject("issues", issues);
 		mav.setViewName("admin/issues");
-//		mav.addObject("listCount", )
 		return mav;
 	}
 
@@ -86,12 +84,28 @@ public class AdminController {
 	}
 
 	@GetMapping("/waitingLibrary.list")
-	public String adminCreateSetting(Model model) {
-		ArrayList<CreateSetting> libraryList = adminService.selectCreateSetting();
-		for (CreateSetting c : libraryList) {
-			System.out.println(c);
-		}
-		return "";
+	public String waitingLibrary(Model model) {
+		// 서포터즈가 작성한 라이브러리는 승인이 필요하다.
+		// 승인이 필요한 라이브러리는 'w'의 상태값을 갖는다.
+		ArrayList<Setting> list = adminService.selectWaitingLib();
+		model.addAttribute("list", list);
+		return "admin/waitingLibrary";
+	}
+	
+	// 승인
+	@GetMapping("/waitlibApprove")
+	@ResponseBody
+	public int waitlibApprove(int settingNo) {
+		int result = adminService.approvelib(settingNo);
+		return result;
+	}
+	
+	// 거절
+	@GetMapping("/waitlibdisapprove")
+	@ResponseBody
+	public int waitlibdisapprove(int settingNo) {
+		int result = adminService.disapprovelib(settingNo);
+		return result;
 	}
 
 	@GetMapping("/errorcheck.list")
@@ -148,7 +162,9 @@ public class AdminController {
 	
 	@GetMapping("/issuesDetail")
 	public ModelAndView adminIssuesDetail(String settingTitle, ModelAndView mav) {
-		ErrorBoard errorBoard = adminService.selectIssueDetail(settingTitle);
+		System.out.println(settingTitle);
+		ArrayList<SettingDetail> errorBoard = adminService.selectIssueDetail(settingTitle);
+		System.out.println(errorBoard);
 		mav.addObject("issueDetail", errorBoard);
 		mav.setViewName("admin/issueDetail");
 		return mav;
@@ -189,4 +205,6 @@ public class AdminController {
 		response.addCookie(cookie);
 		return new Gson().toJson(cookie);
 	}
+	
+
 }

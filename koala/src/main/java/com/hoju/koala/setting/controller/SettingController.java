@@ -42,7 +42,7 @@ public class SettingController {
 	}
 	
 	//코드 작성 페이지 이동
-	@RequestMapping("create")
+	@RequestMapping("/create")
 	public String createCodePage() {
 		
 		return "board/errorBoard/createSettingForm";
