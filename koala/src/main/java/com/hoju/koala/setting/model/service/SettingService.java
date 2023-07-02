@@ -15,5 +15,11 @@ public interface SettingService {
 	//ajax 버전정보와 setting번호
 	ArrayList<Setting> selectVersionList(String settingTitle);
 
+	//코드 입력 메소드
+	int insertCode(Setting setting);
+
+	//메인페이지 search
+	ArrayList<Setting> searchSetting(String input);
+
 
 }

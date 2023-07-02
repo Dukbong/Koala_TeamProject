@@ -122,6 +122,15 @@
 	}
 	/* 페이징 버튼 처리 css */
 	#pagingArea {width:fit-content; margin:auto;}
+	
+	
+	.ac-wrap>i:hover{
+		cursor:pointer;
+	}
+	
+	.modal{
+		color: black;
+	}
 </style>
 <body>
 	<script>
@@ -179,10 +188,10 @@
                 			<c:when test='${path.contains("errorDetail")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
                 			</c:when>
-                		</c:choose>        		
+                		</c:choose>    
                 		</c:when>
-                		<c:when test='${path.contains("multi/play") || path.contains("together/ssss")}'>
-                			<h4 class="headerName" onclick="adminPage();">Koala SQL Cloud</h4>     
+                		<c:when test='${path.contains("together/sqlCloud")}'>
+                			<h4 class="headerName" onclick="sqlMain();">Koala SQL Cloud</h4>     
                 		</c:when>
                 		<c:when test='${path.contains("errorBoard")}'>
                 		<!-- koala/errorBoard/~~~ >> 설희 -->                		
@@ -237,6 +246,7 @@
                    		</c:when>
                    		<c:otherwise>
                    			<div class="ac-wrap">
+                   				<i id="message-icon" class="fa-regular fa-message fa-2xl" data-bs-toggle="modal" data-bs-target="#messengerModal"></i>
                    				<ul>
                    					<li>
 		                	   			<select id="myPage">
@@ -273,6 +283,158 @@
     	<i id="dark" class="fa-solid fa-sun fa-2xl" style="color: rgb(255, 246, 246)" onclick="changeMode(event);"></i> <br><br> <!-- 수정할 것 -->
     	<i id="white" class="fa-solid fa-moon fa-2xl" style="color: rgb(30, 30, 30)" onclick="changeMode(event);"></i>
     </div>
+    
+    <!-- 메신저 모달창 -->
+    <div class="modal fade" id="messengerModal" tabindex="-1">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">메신저</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	
+	      	<div class="input-group mb-3">
+			  <input type="text" id="searchUser" name="searchUser" class="form-control" placeholder="닉네임 검색">
+			  <button class="btn btn-outline-secondary" type="button" id="searchUserBtn">Search</button>
+			</div>
+	        
+        	<table id="searchList">
+        	</table>
+        	<hr>
+	        <p>최근 연락하던 유저</p>
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 메신저 스크립트 -->
+	<script>
+		$(function(){
+			$("#searchUserBtn").on("click", function(){
+				var searchUser = $("#messengerModal #searchUser").val();
+				
+				console.log(searchUser);
+				
+				$.ajax({
+					url:"/koala/member/searchUser",
+					data:{
+						searchUser:$("#messengerModal #searchUser").val()
+					},
+					success:function(list){
+						var str = "<tr><th>--검색결과--</th></tr>";
+						
+						if(list != null){
+							for(var i in list){
+								str += "<tr data-bs-toggle='modal' data-bs-target='#chatRoomModal'>"
+									 + "<td>"+list[i].nickName+"</td>"
+									 + "</tr>";
+							}
+						}else{
+							str += "<tr><td>조회된 회원이 없습니다.</td></tr>";
+						}
+						
+						
+						$("#searchList").html(str);
+					},
+					error:function(){
+						alert("유저 찾기 통신 오류");
+					},
+					complete:function(){
+						$("#searchUser").val("");
+					}
+				});
+				
+				
+			});
+			
+			$(".modal").on("hidden.bs.modal", function(){
+				$("#searchList").html("");
+			});
+		});
+	</script>
+	
+	<!-- 채팅방 모달창 -->
+    <div class="modal fade" id="chatRoomModal" tabindex="-1">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">채팅방</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      
+	      
+	       <div id="msgArea" style="overflow: auto; max-height: 300px;">
+				<pre>
+				sd
+				ㅁㄴㅇㅁㄴㅇ
+				ㅁㄴㅇㅁㄴ
+				ㅇ
+				ㅁㄴㅇ
+				ㅁㄴ
+				ㅇ
+				ㅁㄴㅇ
+				ㅁㄴㅇ
+				ㅁㄴ
+				ㅇ
+				ㅁ
+				asdf
+				asd
+				f
+				asdf
+				asd
+				fa
+				sdf
+				asd
+				f
+				asdf
+				asdf
+				asd
+				fa
+				dsf
+				sadf
+				asdf
+				sadf
+				</pre>
+				
+			</div>
+			<div class="col-6">
+			<div class="input-group mb-3">
+				<input type="text" id="msg" class="form-control">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button" id="sendMsg">전송</button>
+				</div>
+			</div>
+			</div>
+	      	
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 채팅방 스크립트 -->
+	<!-- <script>
+		$(function(){
+			var sock = new SockJS()
+			//메세지 입력
+			$("#msg").on("keydown", function(e){
+				if(e.keyCode == 13){
+					e.preventDefault();
+					$("#sendMsg").click();
+				}
+			});
+			
+			$("#sendMsg").on("click", function(){
+				console.log("hi");
+			});
+		})
+	</script> -->
+    
+    
+    
     
     <script>
 
@@ -329,6 +491,10 @@
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
         
+        // sqlCloudMain()
+        function sqlMain(){
+        	location.href="/koala/together/sqlCloud?teamNo=0";
+        }
         
         // admin page ()
        	function adminPage(){

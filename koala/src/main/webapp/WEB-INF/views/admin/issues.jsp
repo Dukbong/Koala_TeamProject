@@ -78,15 +78,14 @@
 </style>
 <body>
 	<%@include file="../common/header.jsp" %>
-	<br>
-	<div class="tagName">
+	<div class="tagName" style="padding-top : 200px;">
 		<h1 class="tit">@Issues</h1>
 	</div>
-	<br>
+	<br><br><br>
 		<div class="wrap">
 			<c:choose>
 			<c:when test="${not empty issues }">
-				<c:forEach var="i" begin="0" end="${issues.size() }" step="2" >
+				<c:forEach var="i" begin="0" end="${issues.size()-1 }" step="2" >
 					<div class="twoArea">
 						<div class="binArea"></div>
 						<div class="nobinArea ic">
@@ -118,14 +117,10 @@
 	<script>
 		$(function(){
 			$(".nobinArea").on("click", function(){
-				$.ajax({
-					url : "/koala/admin/issuesDetail",
-					data : {
-						settingTitle : $(this).children().eq(0).text().trim(),
-					}
-				});
-			})
-		})
+				var title = $(this).children().eq(0).text().trim();
+				location.href="issuesDetail?settingTitle="+title;					
+			});
+		});
 	</script>
 </body>
 </html>

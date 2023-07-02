@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.hoju.koala.board.model.service.QnABoardService;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
@@ -76,7 +77,8 @@ public class QnABoardController {
 	//qna게시글 상세 조회
 	@GetMapping("/detail")
 	public ModelAndView selectBoard(int boardNo,
-									ModelAndView mv) {
+									ModelAndView mv,
+									HttpSession session) {
 		
 		int result = qnaService.increateCount(boardNo);//조회수 증가
 		
@@ -86,6 +88,13 @@ public class QnABoardController {
 //			mv.addObject("r", r);
 			mv.addObject("b",b).setViewName("board/qnaBoard/qnaBoardDetail");
 		
+			
+			if(session.getAttribute("loginUser")!=null) {
+				int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
+				int likeYoN = qnaService.likeYesOrNo(liked);
+				mv.addObject("likeYoN",likeYoN);
+			}
 		if(b.getFileNo()!=0) {
 
 			ArrayList<BoardAttachment> at = qnaService.selectAttachment(boardNo);
@@ -287,6 +296,7 @@ public class QnABoardController {
 	        // 두번째 좋아요를 눌렀을 때
 	        System.out.println("두번째 누른 추천 그니까 취소");
 	        qnaService.pointDelete(boardNo); // member 테이블 포인트 차감 업데이트
+	        qnaService.deleteLike(boardNo); //board 테이블 liked 차감 업데이트
 	        response.put("isLiked", false);
 	    }
 	    
@@ -341,7 +351,7 @@ public class QnABoardController {
 									HttpSession session) {
 		
 		int result = qnaService.deleteBoard(boardNo);
-				
+		System.out.println("삭제 됐는지"+result);
 		if(result>0) {
 			if(!filePath.equals("")) {
 				new File(session.getServletContext().getRealPath(filePath)).delete();
@@ -354,5 +364,60 @@ public class QnABoardController {
 		
 		return mv;
 	}
-
+	
+	@RequestMapping("updateBoard")
+	public String updateForm(int boardNo,
+							 Model model) {
+		Board b = qnaService.selectBoard(boardNo);
+		
+		model.addAttribute("b",b);
+		return "board/qnaBoard/qnaBoardUpdateForm";
+	}
+	
+	@RequestMapping(value="update", method=RequestMethod.POST)
+	public ModelAndView updateBoard(Board b,
+									BoardAttachment at,
+									ModelAndView mv,
+									MultipartFile upFile,
+									HttpSession session) {
+		
+		int result;
+		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
+		b.setBoardWriter(userNo);
+		
+		if(upFile!= null && !upFile.getOriginalFilename().equals("")) {
+			
+			if(at.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(at.getChangeName())).delete();
+			}
+			String changeName = saveFile(upFile,session);
+			
+			at.setOriginName(upFile.getOriginalFilename());
+			at.setChangeName("/resources/uploadFiles");
+		
+			result = qnaService.updateFile(at);
+		}else {
+			result = qnaService.updateBoard(b);//글만 수정
+		}
+		
+		if(result>0) {
+			mv.addObject("alertMsg","수정 완료").setViewName("redirect:list");
+		}else {
+			mv.addObject("errorMsg","수정 실패").setViewName("common/error");
+		}
+		
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="getLikeStatus", produces="application/json; charset=UTF-8")
+	public boolean likeStatus(@RequestParam("boardNo") int boardNo,
+						  	  @RequestParam("userNo") int userNo) {
+		
+		Integer likeStatus = qnaService.likeStatus(boardNo,userNo);
+		
+		return likeStatus != null && likeStatus ==1;//1이면 좋아요 null이면 좋아요를 누르지 않음
+	}
+	
 }

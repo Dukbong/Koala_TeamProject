@@ -269,4 +269,13 @@
 		WHERE NICKNAME = #{inputNick}
 	</select>
 	
+	<!-- 메신저 닉네임으로 유저 검색 -->
+	<select id="searchUser" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE STATUS = 'Y'
+		AND NICKNAME LIKE '%'||#{serachUser}||'%'
+		ORDER BY NICKNAME
+	</select>
+	
 </mapper>

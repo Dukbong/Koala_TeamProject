@@ -101,7 +101,7 @@
         <!-- 드래그 우클릭  복사 등등 방지 -->
         <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
             <jsp:include page="/WEB-INF/views/common/header.jsp" />
-            <div class="wrapper">
+            <div class="wrapper" style="padding-top: 200px;">
             <c:if test="${supporterList.size()!= 0 }">
                 <div id="supporterLine">
                     <div id="showLine">

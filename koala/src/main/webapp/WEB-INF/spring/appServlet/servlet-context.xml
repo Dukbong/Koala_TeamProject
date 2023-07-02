@@ -36,6 +36,12 @@
 			<beans:bean class="com.hoju.koala.admin.interceptor.AdminInterceptor" id="AdminInterceptor"/>
 		</interceptor>
 		
+		<!-- 로그인 회원만 sqlCloud 이용 가능 -->
+		<interceptor>
+			<mapping path="/together/*"/>
+			<beans:bean class="com.hoju.koala.admin.interceptor.SqlCloudInterceptor" id="SqlCloudInterceptor"/>
+		</interceptor>
+		
 		<interceptor>
 <!-- 			서포터즈로 초대가 된 후 관리자 페이지를 제외한 나머지 페이지에 접근 하는 경우 초대를 받을지 말지 확인 할 수 있도록 한다.  -->
 			<mapping path="/**"/>
@@ -61,6 +67,22 @@
 			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
+	
+	
+	<!-- 채팅 핸들러 설정 -->
+	<websocket:handlers>
+		<websocket:mapping handler="chatHandler" path="/chat"/>
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+		<websocket:sockjs/>
+	</websocket:handlers>
+	<!-- 채팅 빈 -->
+	<beans:bean id="chatHandler" class="com.hoju.koala.member.chat.ChatHandler"/>
+	
+	
+	
+	
 	
 	<beans:bean id="websocketContainer"
 		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">

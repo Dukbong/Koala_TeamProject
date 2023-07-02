@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.hoju.koala.board.model.dao.QnABoardDao;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
+import com.hoju.koala.board.model.vo.Liked;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -187,6 +188,42 @@ public class QnABoardServiceImpl implements QnABoardService{
 	public String chkSelectedReply(int boardNo, Integer replyNo) {
 		
 		return qnaDao.chkSelectedReply(sqlSession,boardNo,replyNo);
+	}
+
+	//qna 게시글 상세보기 시 좋아요확인
+	@Override
+	public int likeYesOrNo(Liked liked) {
+		
+		return qnaDao.likeYesOrNo(sqlSession,liked);
+	}
+
+	//qna 좋아요 취소 시 보드 업데이트
+	@Override
+	public void deleteLike(int boardNo) {
+		
+		qnaDao.deleteLike(sqlSession,boardNo);
+		
+	}
+
+	//qna 좋아요 눌렀나 체크
+	@Override
+	public Integer likeStatus(int boardNo, int userNo) {
+		
+		return qnaDao.likeStatus(sqlSession,boardNo,userNo);
+	}
+
+	//qna 글만 수정
+	@Override
+	public int updateBoard(Board b) {
+		
+		return qnaDao.updateBoard(sqlSession,b);
+	}
+
+	//qna 파일 수정
+	@Override
+	public int updateFile(BoardAttachment at) {
+		
+		return qnaDao.updateFile(sqlSession,at);
 	}
 
 	//qna 좋아요 수

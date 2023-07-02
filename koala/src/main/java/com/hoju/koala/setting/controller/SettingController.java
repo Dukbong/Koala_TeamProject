@@ -8,10 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.setting.model.service.SettingService;
 import com.hoju.koala.setting.model.vo.Setting;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RequestMapping("/setting")
 @Controller
 public class SettingController {
@@ -34,15 +38,17 @@ public class SettingController {
 		}
 		
 		
-		return "setting/ex";
+		return "board/settingBoard/NewFile";
 	}
 	
 	//코드 작성 페이지 이동
-	@RequestMapping("create")
+	@RequestMapping("/create")
 	public String createCodePage() {
 		
 		return "board/errorBoard/createSettingForm";
 	}
+	
+	
 	@GetMapping("/detail")
 	public String selectSetting(int settingNo,
 								Model model) {
@@ -51,13 +57,35 @@ public class SettingController {
 		Setting s = stService.selectSetting(settingNo);
 		
 		if(s != null) {
-			//해당 세팅과 같은 라이브러리인 정보들 다 가져오기
+			
 			model.addAttribute("setting", s);
 		}
 		
 		return "";
 	}
 	
+	
+	//메인페이지 search
+	@GetMapping("/search")
+	public ModelAndView searchSetting(String input,
+									  ModelAndView mv) {
+		
+		ArrayList<Setting> searchList = stService.searchSetting(input);
+		
+		for(Setting s : searchList) {
+			log.debug("검색된 라이브러리 리스트 : {}", s);
+		}
+		
+		if(searchList.size() > 1) {
+			mv.addObject("slist", searchList);
+			mv.setViewName("board/settingBoard/NewFile");
+		}else {
+			mv.addObject("slist", searchList.get(0));
+			mv.setViewName("디테일");
+		}
+		
+		return mv;
+	}
 	
 	@ResponseBody
 	@GetMapping("/version")
@@ -72,8 +100,10 @@ public class SettingController {
 	
 	//코드 작성 메소드
 	@RequestMapping("insert")
-	public String createCode(String input) {
-		System.out.println(input);
+	public String createCode(Setting setting, Model model) {
+		
+		int result = stService.insertCode(setting);
+		
 		return null;
 	}
 	
