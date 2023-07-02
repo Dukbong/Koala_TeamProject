@@ -31,7 +31,7 @@
     #wrap{
         width: 1500px;
     	position: absolute;
-    	z-index: 1;
+    	z-index: 5;
     }
     #wrap>div{
     	width: 100%;
