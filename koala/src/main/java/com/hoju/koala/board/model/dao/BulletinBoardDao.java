@@ -172,4 +172,16 @@ public class BulletinBoardDao {
 		return sqlSession.selectOne("bulletinBoardMapper.selectBoardNo");
 	}
 
+	//게시글 첨부파일 삭제 메소드
+	public int deleteAttachment(SqlSessionTemplate sqlSession, String existedFiles) {
+		
+		return sqlSession.update("bulletinBoardMapper.deleteAttachment",existedFiles);
+	}
+
+	//게시글 수정 메소드
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.update("bulletinBoardMapper.updateBoard",b);
+	}
+
 }

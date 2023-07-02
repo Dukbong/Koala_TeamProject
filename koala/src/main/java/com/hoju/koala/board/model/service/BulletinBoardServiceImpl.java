@@ -167,4 +167,16 @@ public class BulletinBoardServiceImpl implements BulletinBoardService{
 		return bbDao.selectBoardNo(sqlSession);
 	}
 
+	@Override
+	public int deleteAttachment(String existedFiles) {
+		
+		return bbDao.deleteAttachment(sqlSession, existedFiles);
+	}
+
+	@Override
+	public int updateBoard(Board b) {
+		
+		return bbDao.updateBoard(sqlSession, b);
+	}
+
 }

@@ -135,7 +135,9 @@ public class BulletinBoardController {
 	@ResponseBody
  	@RequestMapping(value="like",produces="application/json;charset=UTF-8")
  	public int Like(int boardNo,int select,int loginUser) {	
-
+		System.out.println("boardNo:"+ boardNo);
+		System.out.println("select:"+ select);
+		System.out.println("loginUser:"+ loginUser);
 		Liked liked = Liked.builder().refUno(loginUser).refBno(boardNo).build();
 		
 		if(select==1) {
@@ -261,24 +263,15 @@ public class BulletinBoardController {
 				subContent = subContent.replaceFirst(pattern, replacement);
 			}
 		}
-		ArrayList<Integer> fileno = new ArrayList<>();
+		
 		for(int i = 0; i<existedFiles.length; i++) {
 			if(!subContent.contains(existedFiles[i])) {
 				new File(session.getServletContext().getRealPath(filePath[i]+"/"+existedFiles[i])).delete();
 				result = bbService.deleteAttachment(existedFiles[i]);
-				fileno.add(fileNos[i]);
 			}
 		}
-		fileno.add(existedFiles.length+1);
-		int y = 0;
 		if(!baList.isEmpty()) {
 			for(BoardAttachment ba: baList) {
-				if(fileno.get(y)!=0) {
-					ba.setFileNo(fileno.get(y));
-					y++;
-				}else {
-					ba.setFileNo(fileno.get(y-1));
-				}
 				result2 = bbService.insertBoardAttachment(ba);
 			}
 		}
@@ -300,7 +293,6 @@ public class BulletinBoardController {
 			session.setAttribute("errorMsg","첨부파일 저장 실패");
 			return "common/errorPage";
 		}
-		return null;
 	}
 	
 	//글 삭제 메소드

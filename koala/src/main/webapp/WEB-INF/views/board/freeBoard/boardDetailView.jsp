@@ -271,6 +271,7 @@
         		if(like.style.display === "none"){
         			like.style.display = "block";
         			dislike.style.display = "none";
+        			console.log(${b.boardNo});
         			$.ajax({
         				url:"like", 
         				data:{

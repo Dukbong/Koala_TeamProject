@@ -137,8 +137,8 @@
 	
 	<update id="deleteBoard">
 		UPDATE BOARD
-		SET STATUS = 'Y'
-		WHERE BOARDNO = #{boardNo}
+		SET STATUS = 'N'
+		WHERE BOARD_NO = #{boardNo}
 	</update>
 	
 	<select id="selectBoard" resultMap="boardResultSet">
@@ -194,6 +194,21 @@
 		ORDER BY BOARD_NO DESC
 	</select>
 	
+	<update id="updateBoard">
+		UPDATE BOARD
+		SET TITLE = #{title},
+			CONTENT = #{content},
+			CONTENT_CODE = #{contentCode}
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<update id="deleteAttachment">
+		UPDATE BOARD_ATTACHMENT
+		SET STATUS = 'N',
+			DELETE_DATE = SYSDATE
+		WHERE CHANGE_NAME = #{existedFiles}
+	</update>
 	
 	<!-- 공통으로 사용할 게시판 관련 resultMap -->
 	
