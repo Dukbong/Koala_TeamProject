@@ -188,10 +188,10 @@
                 			<c:when test='${path.contains("errorDetail")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
                 			</c:when>
-                		</c:choose>        		
+                		</c:choose>    
                 		</c:when>
-                		<c:when test='${path.contains("multi/play") || path.contains("together/ssss")}'>
-                			<h4 class="headerName" onclick="adminPage();">Koala SQL Cloud</h4>     
+                		<c:when test='${path.contains("together/sqlCloud")}'>
+                			<h4 class="headerName" onclick="sqlMain();">Koala SQL Cloud</h4>     
                 		</c:when>
                 		<c:when test='${path.contains("errorBoard")}'>
                 		<!-- koala/errorBoard/~~~ >> 설희 -->                		
@@ -491,6 +491,10 @@
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
         
+        // sqlCloudMain()
+        function sqlMain(){
+        	location.href="/koala/together/sqlCloud?teamNo=0";
+        }
         
         // admin page ()
        	function adminPage(){
