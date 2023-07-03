@@ -172,4 +172,34 @@ public class BulletinBoardDao {
 		return sqlSession.selectOne("bulletinBoardMapper.selectBoardNo");
 	}
 
+	//게시글 첨부파일 삭제 메소드
+	public int deleteAttachment(SqlSessionTemplate sqlSession, String existedFiles) {
+		
+		return sqlSession.update("bulletinBoardMapper.deleteAttachment",existedFiles);
+	}
+
+	//게시글 수정 메소드
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.update("bulletinBoardMapper.updateBoard",b);
+	}
+
+	//첨부파일 삭제 예정 조회 메소드
+	public ArrayList<BoardAttachment> selectDeleteAttachment(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("bulletinBoardMapper.selectDeleteAttachment");
+	}
+
+	//게시글 삭제 예정 조회 메소드
+	public ArrayList<Board> selectDeleteBoard(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("bulletinBoardMapper.selectDeleteBoard");
+	}
+
+	//게시글 삭제 예정 삭제 메소드
+	public int deleteScheduledBoard(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.delete("bulletinBoardMapper.deleteScheduledBoard");
+	}
+
 }
