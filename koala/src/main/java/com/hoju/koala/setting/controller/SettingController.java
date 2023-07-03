@@ -56,12 +56,19 @@ public class SettingController {
 		//해당 세팅 들고오기
 		Setting s = stService.selectSetting(settingNo);
 		
+		s.setInput("input/driverClassName,url,username,password");
+		
+		
 		if(s != null) {
 			
 			model.addAttribute("setting", s);
 		}
 		
+<<<<<<< HEAD
+		return "setting/choice";
+=======
 		return "setting/description";
+>>>>>>> be42c1181fae810ef1726b57fc5f40528534887b
 	}
 	
 	
