@@ -299,7 +299,7 @@ li{
 							// 성공시 필요한 것  : img, nickName, 서포터즈 유무
 							checkPoint.push(data.userId);
 							consendarr.push(data.userNo);
-							var str  = "<div id='"+ data.userid +"' name='"+ data.userNo +"' class='membershow' style='width:300px; height:140px;'>";
+							var str  = "<div id='"+ data.userId +"' name='"+ data.userNo +"' class='membershow' style='width:300px; height:140px;'>";
 								str	+= 		"<div style='width:30%; height:100%; float:left;'>";
 								str	+= 			"<div class='test' style='width:100%; height:50%; border-bottom:3px solid white;'></div>";
 								str	+= 		"</div>";

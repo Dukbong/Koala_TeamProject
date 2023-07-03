@@ -54,7 +54,7 @@
 	<%@include file="../common/header.jsp"%>
 	
 	<c:if test="${not empty errorSet }">
-	<div class="ebEnrollForm">
+	<div class="ebEnrollForm" style="padding-top: 200px;">
 		<script>
 			$(function(){
 				
