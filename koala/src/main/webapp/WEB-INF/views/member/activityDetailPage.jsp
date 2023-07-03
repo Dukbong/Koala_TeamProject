@@ -216,7 +216,7 @@
 	
 	
 	/* =====================================설희 작성 */
-	.contributions-outer{width: 100%; height: 560px; padding: 20px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
+	.contributions-outer{width: 100%; height: 560px; padding: 20px; margin-top:25px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
 	.contributions-area{width: 100%; height: 90%;}
 	.contributions-area>table{width: 1100px; margin: auto;}
 	.contributions-area>table tr{height: 38px;}
@@ -683,6 +683,7 @@
 	            	});
                 </script>
                 
+                <c:if test="${empty calList }">
                 <div class="bottom_area">
 		            <ul>
 		            	<c:choose>
@@ -708,6 +709,7 @@
 		            	
 		            </ul>
 		        </div>
+		        </c:if>
             </div>
         </div>
 
