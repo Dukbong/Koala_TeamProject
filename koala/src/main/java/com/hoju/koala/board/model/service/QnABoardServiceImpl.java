@@ -1,7 +1,10 @@
 package com.hoju.koala.board.model.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import com.hoju.koala.board.model.dao.QnABoardDao;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
 import com.hoju.koala.board.model.vo.Liked;
+import com.hoju.koala.board.model.vo.QnASelect;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -77,9 +81,36 @@ public class QnABoardServiceImpl implements QnABoardService{
 	@Override
 	public ArrayList<Reply> selectReply(int boardNo) {
 		
-		return qnaDao.selectReply(sqlSession,boardNo);
+		ArrayList<QnASelect> list = qnaDao.selectQnaReply(sqlSession, boardNo);
+		ArrayList<Reply> list2 = qnaDao.selectReply(sqlSession,boardNo);
+		ArrayList<Reply> returnList = new ArrayList<>();
+
+		Optional<QnASelect> q = list.stream()
+				.filter(e -> e.getReplySelect().equals("Y"))
+				.findAny();
+				
+		if (q.isPresent() == false) {
+			return list2;
+		}
+		else {
+			for(int i = 0 ; i < list2.size() ; i ++) {
+				if (list2.get(i).getReplyNo() == q.get().getReplyNo()) {
+					returnList.add(list2.get(i));
+					break;
+				}
+			}
+			
+			for(int i = 0 ; i < list2.size() ; i ++) {
+				if (list2.get(i).getReplyNo() != q.get().getReplyNo()) {
+					returnList.add(list2.get(i));
+				}
+			}
+			
+			return returnList;
+		}
 	}
 
+	
 	//qna 댓글 삽입
 	@Override
 	public int insertReply(Reply r) {

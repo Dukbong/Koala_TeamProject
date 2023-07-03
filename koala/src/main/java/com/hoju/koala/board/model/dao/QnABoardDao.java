@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.BoardAttachment;
 import com.hoju.koala.board.model.vo.Liked;
+import com.hoju.koala.board.model.vo.QnASelect;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
@@ -73,6 +74,10 @@ public class QnABoardDao {
 	public ArrayList<Reply> selectReply(SqlSessionTemplate sqlSession, int boardNo) {
 		
 		return (ArrayList)sqlSession.selectList("qnaBoardMapper.selectReply",boardNo);
+	}
+	
+	public ArrayList<QnASelect> selectQnaReply(SqlSessionTemplate sqlSession, int boardNo){
+		return (ArrayList)sqlSession.selectList("qnaBoardMapper.selectQnAReply" ,boardNo);
 	}
 
 	//qna 댓글 삽입
