@@ -141,7 +141,7 @@
     .ebDetailView button{border-radius: 6px;}
     .ebDetailView button:hover{opacity: 85%; border: 1px solid gray;}
     
-    .hover:hover{cursor: pointer;}
+    .hover:hover{cursor: pointer; opacity: 0.5;}
     
 	.scroll {overflow-y:auto;}
 	.scroll::-webkit-scrollbar {width: 4px;}
@@ -237,8 +237,9 @@
 		        		<input type="hidden" value="${re.replyNo }">
 						<table class="reply-table">
 	        				<tr>
-		        				<td rowspan="2" style="width: 13%; height: 70px;"><img alt="" src="${re.memberImage }" style="border-radius: 50%; padding: 3px;"></td>
-		        				<td style="width: 37%; vertical-align: bottom;">${re.replyWriter }</td>
+		        				<td rowspan="2" style="width: 13%; height: 70px;" class="hover"><img alt="" src="${re.memberImage }" style="border-radius: 50%; padding: 3px;"></td>
+		        				<td style="width: 37%; vertical-align: bottom;" class="hover">${re.replyWriter }
+		        					<c:if test="${re.supporters eq 'Y' }"> <i class="fa-solid fa-feather-pointed fa-sm" style="color: #3ddb5d;"></i></c:if></td>
 		        				<td colspan="2" style="width: 50%; position:relative;" class="replyBtnSet">
 		        					<c:if test="${re.replyWriter eq loginUser.nickName }">
 			        					<button id="updateReply">수정</button>
@@ -354,7 +355,7 @@
 		    				url : "selectId",
 		    				type : "GET",
 							data : {
-								nickName: $(this).parent().next().text()
+								nickName: $(this).parent().next().text().trim()
 							},
 							success : function(result){
 								if(result != null){
