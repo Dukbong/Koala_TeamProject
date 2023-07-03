@@ -278,4 +278,39 @@
 		ORDER BY NICKNAME
 	</select>
 	
+	<select id="selectblCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE BOARD_WRITER = (SELECT USER_NO
+							  FROM MEMBER
+							  WHERE USER_ID = #{userId})
+		AND STATUS = 'Y'	
+	</select>
+	
+	<select id="selectrlCount" resultType="_int">
+		SELECT COUNT(DISTINCT B.BOARD_NO)
+		FROM BOARD B
+		JOIN REPLY R ON (B.BOARD_NO = R.REF_BNO)
+		JOIN MEMBER M ON (R.REPLY_WRITER = M.USER_NO)
+		WHERE M.USER_ID = #{userId}
+		AND B.STATUS = 'Y'
+	</select>
+	
+	<select id="selectllCount" resultType="_int">
+		SELECT COUNT(DISTINCT B.BOARD_NO) AS LIKED_POST_COUNT
+		FROM BOARD B
+		JOIN LIKED L ON B.BOARD_NO = L.REF_BNO
+		JOIN MEMBER M ON L.REF_UNO = M.USER_NO
+		WHERE M.USER_ID = #{userId}
+		AND L.LIKED_TYPE = 1
+		AND B.STATUS = 'Y'
+	</select>
+	
+	<select id="selectflCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOW
+		WHERE FROM_USER = (SELECT USER_NO
+							FROM MEMBER
+							WHERE USER_ID = #{userId})
+	</select>
 </mapper>

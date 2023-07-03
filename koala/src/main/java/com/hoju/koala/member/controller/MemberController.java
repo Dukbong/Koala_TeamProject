@@ -4,6 +4,8 @@ package com.hoju.koala.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +19,15 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
+import com.hoju.koala.common.model.vo.PageInfo;
+import com.hoju.koala.common.template.Paging;
 import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Attendance;
@@ -99,6 +104,7 @@ public class MemberController {
 //			//System.out.println(profile);
 //			
 //			loginUser.setProfile(profile);
+			log.debug("로그인된 유저 : {}", loginUser);
 			
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
@@ -412,8 +418,17 @@ public class MemberController {
 	
 	//활동내역 boardList
 	@GetMapping("/boardList")
-	public ModelAndView boardList(ModelAndView mv,
+	public ModelAndView boardList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+								  ModelAndView mv,
 								  String userId) {
+		
+		//페이징처리
+		int listCount = memberService.selectblCount(userId);
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
@@ -421,11 +436,13 @@ public class MemberController {
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
-		ArrayList<Board> bList = memberService.boardList(userId);
+		ArrayList<Board> bList = memberService.boardList(pi, userId);
 		
+		mv.addObject("pi", pi);
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
 		mv.addObject("bList", bList);
+		mv.addObject("kind", "boardList");
 		mv.setViewName("member/activityDetailPage");
 		
 		
@@ -434,8 +451,16 @@ public class MemberController {
 	
 	//활동내역 replyList
 	@GetMapping("/replyList")
-	public ModelAndView replyList(ModelAndView mv,
+	public ModelAndView replyList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+								  ModelAndView mv,
 								  String userId) {
+		
+		//페이징처리
+		int listCount = memberService.selectrlCount(userId);
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
@@ -443,11 +468,13 @@ public class MemberController {
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
-		ArrayList<Board> rList = memberService.replyList(userId);
+		ArrayList<Board> rList = memberService.replyList(pi, userId);
 		
+		mv.addObject("pi", pi);
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
 		mv.addObject("rList", rList);
+		mv.addObject("kind", "replyList");
 		mv.setViewName("member/activityDetailPage");
 		
 		
@@ -456,8 +483,16 @@ public class MemberController {
 	
 	//활동내역 LikedList
 	@GetMapping("/likedList")
-	public ModelAndView likedList(ModelAndView mv,
+	public ModelAndView likedList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+								  ModelAndView mv,
 								  String userId) {
+		
+		//페이징처리
+		int listCount = memberService.selectllCount(userId);
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
@@ -465,11 +500,13 @@ public class MemberController {
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
-		ArrayList<Board> lList = memberService.likedList(userId);
+		ArrayList<Board> lList = memberService.likedList(pi, userId);
 		
+		mv.addObject("pi", pi);
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
 		mv.addObject("lList", lList);
+		mv.addObject("kind", "likedList");
 		mv.setViewName("member/activityDetailPage");
 		
 		
@@ -479,8 +516,17 @@ public class MemberController {
 	
 	//활동내역 Following
 	@GetMapping("/followingList")
-	public ModelAndView followingList(ModelAndView mv,
-								  String userId) {
+	public ModelAndView followingList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+									  ModelAndView mv,
+									  String userId) {
+		
+		//페이징처리
+		int listCount = memberService.selectflCount(userId);
+		int pageLimit = 5;
+		int boardLimit = 15;
+		
+		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
@@ -488,11 +534,13 @@ public class MemberController {
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
-		ArrayList<Member> fList = memberService.followingList(userId);
+		ArrayList<Member> fList = memberService.followingList(pi, userId);
 		
+		mv.addObject("pi", pi);
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
 		mv.addObject("fList", fList);
+		mv.addObject("kind", "followingList");
 		mv.setViewName("member/activityDetailPage");
 		
 		

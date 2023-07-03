@@ -34,7 +34,7 @@
     }
     
     #content2{
-    	height: 600px;
+    	height: 650px;
     }
     
     /* content1영역 */
@@ -179,7 +179,6 @@
 	.rel-user{
 		text-align: center;
 		float: left;
-		margin: auto;
 	}
 	
 	.rel-user:hover{
@@ -187,13 +186,32 @@
 		opacity: 0.7;
 	}
 	
+	#content2>div{
+		width: 100%;
+	}
+	
+	#content2>#result-area{
+		height: 90%;
+	}
+	
+	#ccontent2>.bottom-area{
+		height: 10%;
+	}
+	
+	#followList-area{
+		height: 100%;
+		width: 95%;
+		margin: auto;
+	}
+	
 	
    	.profile{
-	    width: 150px;
-	    height: 150px;
+	    width: 120px;
+	    height: 120px;
 	    border-radius: 70%;
 	    overflow: hidden;
 	    position: relative;
+	    margin: 0 30px;
 	}
 	
 	
@@ -212,6 +230,37 @@
 	.level-area>#image{width:45px; height:60px; position:absolute; left:8px; bottom:-20px;}
 	.level-area>#lessMore{width:auto; position:absolute; right:20px; bottom:0;}
 	.level-area>div>*{height: 25px; float:left; margin: 0px 5px;}
+/* 	.level-area>div{width: 230px; height: 30px; position:absolute; right:0; bottom:0;} */
+/* 	.level-area>div>*{height: 100%; float:left; margin: 0px 5px;} */
+/* 	.level-area>div>div{width:20px; height: 20px;} */
+	
+	
+	
+	.bottom_area{
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+        cursor: pointer;
+    }
+    .bottom_area>ul>li{
+        font-weight: bold;
+        list-style: none;
+        float: left;
+        margin-right: 10px;
+    }
+    .bottom_area>ul>li>a{
+        color: white;
+        text-decoration : none;
+    }
+    .bottom_area>ul>li>a:hover{
+        color: rgb(255, 201,20);
+    }
+
+    .bottom_area > ul{
+        margin: 0;
+        padding: 0;
+    }
+
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
@@ -368,19 +417,19 @@
                 </script>
                 
                 
-                <div id="result-area" >
+                <div id="result-area">
                 	
                 	<c:choose>
                 		<c:when test="${not empty bList}">
                 			<table class="rel-board" style="color:white;">
                 				<thead>
 									<tr>
-										<th scope="col"> </th>
-										<th scope="col">카테고리</th>
-										<th scope="col">제목</th>
-										<th scope="col">작성일</th>
-										<th scope="col">추천수</th>
-										<th scope="col">조회수</th>
+										<th scope="col" width="10"> </th>
+										<th scope="col" width="70">카테고리</th>
+										<th scope="col" width="250">제목</th>
+										<th scope="col" width="30">작성일</th>
+										<th scope="col" width="30">추천수</th>
+										<th scope="col" width="30">조회수</th>
 									</tr>
 								</thead>
 								
@@ -388,7 +437,7 @@
 	                				<c:forEach var="b" items="${bList }" varStatus="status">
 										<tr>
 											<input type="hidden" value="${b.boardNo }">
-											<th scope="row">${status.count }</th>
+											<th scope="row"></th>
 											<c:choose>
 												<c:when test="${b.category eq 'Q' }">
 													<td>질문게시판</td>
@@ -414,12 +463,12 @@
                 			<table class="rel-board" style="color:white;">
                 				<thead>
 									<tr>
-										<th scope="col"> </th>
-										<th scope="col">카테고리</th>
-										<th scope="col">제목</th>
-										<th scope="col">작성일</th>
-										<th scope="col">추천수</th>
-										<th scope="col">조회수</th>
+										<th scope="col" width="10"> </th>
+										<th scope="col" width="70">카테고리</th>
+										<th scope="col" width="250">제목</th>
+										<th scope="col" width="30">작성일</th>
+										<th scope="col" width="30">추천수</th>
+										<th scope="col" width="30">조회수</th>
 									</tr>
 								</thead>
 								
@@ -427,7 +476,7 @@
 	                				<c:forEach var="r" items="${rList }" varStatus="status">
 										<tr>
 											<input type="hidden" value="${r.boardNo }">
-											<th scope="row">${status.count }</th>
+											<th scope="row"></th>
 											<c:choose>
 												<c:when test="${r.category eq 'Q' }">
 													<td>질문게시판</td>
@@ -453,12 +502,12 @@
                 			<table class="rel-board" style="color:white;">
                 				<thead>
 									<tr>
-										<th scope="col"> </th>
-										<th scope="col">카테고리</th>
-										<th scope="col">제목</th>
-										<th scope="col">작성일</th>
-										<th scope="col">추천수</th>
-										<th scope="col">조회수</th>
+										<th scope="col" width="10"> </th>
+										<th scope="col" width="70">카테고리</th>
+										<th scope="col" width="250">제목</th>
+										<th scope="col" width="30">작성일</th>
+										<th scope="col" width="30">추천수</th>
+										<th scope="col" width="30">조회수</th>
 									</tr>
 								</thead>
 								
@@ -466,7 +515,7 @@
 	                				<c:forEach var="l" items="${lList }" varStatus="status">
 										<tr>
 											<input type="hidden" value="${l.boardNo }">
-											<th scope="row">${status.count }</th>
+											<th scope="row"></th>
 											<c:choose>
 												<c:when test="${l.category eq 'Q' }">
 													<td>질문게시판</td>
@@ -489,26 +538,28 @@
                 		</c:when>
                 		
                 		<c:when test="${not empty fList }">
-                			<c:forEach var="f" items="${fList }">
-								<table class="rel-user">
-				                    <tr>
-				                    	<input type="hidden" value="${f.userId }">
-				                        <th>
-				                        	<c:choose>
-												<c:when test="${f.profile != null }">
-												    <img class="profile" src="${pageContext.request.contextPath}${f.profile.filePath}${f.profile.changeName}"></img>
-												</c:when>
-												<c:otherwise>
-												    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
-												</c:otherwise>
-											</c:choose>
-				                        </th>
-				                    </tr>
-				                    <tr>
-				                        <th>${f.nickName}</th>
-				                    </tr>
-				                </table>
-							</c:forEach>
+                			<div id="followList-area">
+	                			<c:forEach var="f" items="${fList }">
+									<table class="rel-user">
+					                    <tr>
+					                    	<input type="hidden" value="${f.userId }">
+					                        <th>
+					                        	<c:choose>
+													<c:when test="${f.profile != null }">
+													    <img class="profile" src="${pageContext.request.contextPath}${f.profile.filePath}${f.profile.changeName}"></img>
+													</c:when>
+													<c:otherwise>
+													    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+													</c:otherwise>
+												</c:choose>
+					                        </th>
+					                    </tr>
+					                    <tr>
+					                        <th>${f.nickName}</th>
+					                    </tr>
+					                </table>
+								</c:forEach>
+                			</div>
                 		</c:when>
                 		
                 		<c:when test="${not empty calList }">
@@ -631,6 +682,32 @@
           				})
 	            	});
                 </script>
+                
+                <div class="bottom_area">
+		            <ul>
+		            	<c:choose>
+		            		<c:when test="${pi.currentPage eq 1 }">
+		                		<li class="pagingSection"><a class=page-link href="#">&lt;</a></li>
+		            		</c:when>
+		            		<c:otherwise>
+		                		<li class="pagingSection"><a class="page-link" href="/koala/member/${kind }?userId=${user.userId }&currentPage=${pi.currentPage -1}">&lt;</a></li>	
+		            		</c:otherwise>
+		            	</c:choose>
+						<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+		               		<li class="pagingSection"><a class="page-link" 
+							<c:if test="${p eq pi.currentPage }">style="color: rgb(255, 201,20);"</c:if> href="/koala/member/${kind }?userId=${user.userId }&currentPage=${p }">${p }</a></li>
+		            	</c:forEach>
+		            	<c:choose>
+		            		<c:when test="${pi.currentPage eq pi.maxPage }">
+		                		<li class="pagingSection"><a class="page-link" href="#">&gt;</a></li>
+		            		</c:when>
+		            		<c:otherwise>
+		            			<li class="pagingSection"><a class="page-link" href="/koala/member/${kind }?userId=${user.userId }&currentPage=${pi.currentPage + 1}">&gt;</a></li>	
+		            		</c:otherwise>
+		            	</c:choose>
+		            	
+		            </ul>
+		        </div>
             </div>
         </div>
 

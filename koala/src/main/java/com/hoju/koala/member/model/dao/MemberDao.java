@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
@@ -95,27 +96,27 @@ public class MemberDao {
 	}
 
 	//유저가쓴 게시글 조회
-	public ArrayList<Board> boardList(SqlSessionTemplate sqlSession, String userId) {
+	public ArrayList<Board> boardList(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.boardList", userId);
+		return (ArrayList)sqlSession.selectList("memberMapper.boardList", userId, pi.rowBounds());
 	}
 
 	//유저가 댓글쓴 게시글 조회
-	public ArrayList<Board> replyList(SqlSessionTemplate sqlSession, String userId) {
+	public ArrayList<Board> replyList(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.replyList", userId);
+		return (ArrayList)sqlSession.selectList("memberMapper.replyList", userId, pi.rowBounds());
 	}
 
 	//유저가 추천누른 게시글조회
-	public ArrayList<Board> likedList(SqlSessionTemplate sqlSession, String userId) {
+	public ArrayList<Board> likedList(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.likedList", userId);
+		return (ArrayList)sqlSession.selectList("memberMapper.likedList", userId, pi.rowBounds());
 	}
 
 	//해당 유저의 팔로잉 리스트 조회
-	public ArrayList<Member> followingList(SqlSessionTemplate sqlSession, String userId) {
+	public ArrayList<Member> followingList(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.followingList", userId);
+		return (ArrayList)sqlSession.selectList("memberMapper.followingList", userId, pi.rowBounds());
 	}
 	
 	//========================================================= 설희
@@ -168,6 +169,28 @@ public class MemberDao {
 	public ArrayList<Member> searchUser(SqlSessionTemplate sqlSession, String searchUser) {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.searchUser", searchUser);
+	}
+
+	
+	//활동내역페이지 보드리스트 개수
+	public int selectblCount(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.selectOne("memberMapper.selectblCount", userId);
+	}
+
+	public int selectrlCount(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.selectOne("memberMapper.selectrlCount", userId);
+	}
+
+	public int selectllCount(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.selectOne("memberMapper.selectllCount", userId);
+	}
+
+	public int selectflCount(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.selectOne("memberMapper.selectflCount", userId);
 	}
 
 

@@ -100,7 +100,7 @@
 
 
 <body>
-    <%@include file="../../common/header.jsp"%>
+    <%@include file="../common/header.jsp"%>
 	<script>
 		$(function(){
 			//input 옵션 생성
@@ -286,7 +286,7 @@
 	  	    }
         </script>
     </div>
-    <%@include file="../../common/footer.jsp"%>
+    <%@include file="../common/footer.jsp"%>
     
     
     	
