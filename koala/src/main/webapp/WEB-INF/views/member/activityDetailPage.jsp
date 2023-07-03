@@ -216,13 +216,23 @@
 	
 	
 	/* =====================================설희 작성 */
-	.contributions-outer div{border: 1px solid pink;}
-	.contributions-outer{width: 1200px; height: 400px; margin: auto;}
+	.contributions-outer{width: 100%; height: 560px; padding: 20px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
 	.contributions-area{width: 100%; height: 90%;}
+	.contributions-area>table{width: 1100px; margin: auto;}
+	.contributions-area>table tr{height: 38px;}
+	.contributions-area>table th{width: 60px; font-size: 16px; font-weight: 600;}
+ 	.contributions-area>table td{width: 35px; height:35px; position:relative;}
+ 	.contributions-area>table td>img{width:100%; height:100%;}
+ 	.contributions-area>table td>img:hover {width:110%; height:110%; cursor:pointer;}
+ 	.tolltip{z-index: 1; width: 255px; height: 40px; position:absolute; left:-70px; top:-50px; background: rgb(166,196,251);
+ 		border: 2px solid white; padding: 5px; border-radius:5px; color: rgb(80,80,80); font-weight:600; text-align: center; display: none;}
 	.level-area{width: 100%; height: 10%; position:relative;}
-	.level-area>div{width: 230px; height: 30px; position:absolute; right:0; bottom:0;}
-	.level-area>div>*{height: 100%; float:left; margin: 0px 5px;}
-	.level-area>div>div{width:20px; height: 20px;}
+	.level-area>#image{width:45px; height:60px; position:absolute; left:8px; bottom:-20px;}
+	.level-area>#lessMore{width:auto; position:absolute; right:20px; bottom:0;}
+	.level-area>div>*{height: 25px; float:left; margin: 0px 5px;}
+/* 	.level-area>div{width: 230px; height: 30px; position:absolute; right:0; bottom:0;} */
+/* 	.level-area>div>*{height: 100%; float:left; margin: 0px 5px;} */
+/* 	.level-area>div>div{width:20px; height: 20px;} */
 	
 	
 	
@@ -251,7 +261,6 @@
         padding: 0;
     }
 
-    
 </style>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
@@ -384,7 +393,9 @@
                         <li style="list-style-type: none;"><a id="replyList">Reply</a></li>
                         <li style="list-style-type: none;"><a id="likedList">Liked</a></li>
                         <li style="list-style-type: none;"><a id="followingList">Following</a></li>
-                        <li style="list-style-type: none;"><a id="contributions">contributions</a></li>
+                        <c:if test="${user eq loginUser }">
+               				<li style="list-style-type: none;"><a id="contributions">contributions</a></li>
+               			</c:if>
                     </ul>
                 </div>
             </div>
@@ -551,92 +562,55 @@
                 			</div>
                 		</c:when>
                 		
-                		<c:when test="${not empty attList }">
+                		<c:when test="${not empty calList }">
 							<div class="contributions-outer">
 								<div class="contributions-area">
-									<table border="1">
-										<tr>
-											<th>Jan.</th>
-											<c:forEach  var="a" items="attList">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Feb.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Mar.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Apr.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>May.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Jun.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Jul.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Aug.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Sep.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Oct.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Nov.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										<tr>
-											<th>Dec.</th>
-											<c:forEach begin="1" end="31">
-												<td></td>
-											</c:forEach>
-										</tr>
-										
+									<table>
+										<c:forEach var="cal" items="${calList }">
+											<tr>
+												<th>${cal.monthName }.</th>
+												<c:forEach var="day" items="${cal.dayList }">
+													<td>
+														<c:choose>
+															<c:when test="${day.level eq 1}">
+																<img alt="" src="/koala/resources/common/contributions/동전.png" style="padding:3px 5px;">
+															</c:when>
+															<c:when test="${day.level eq 2}">
+																<img alt="" src="/koala/resources/common/contributions/버섯.png" style="padding:3px 2px;">
+															</c:when>
+															<c:when test="${day.level eq 3}">
+																<img alt="" src="/koala/resources/common/contributions/마리오.png">
+															</c:when>
+															<c:otherwise>
+																<img alt="" src="/koala/resources/common/contributions/벽돌.png" style="padding:2px;">
+															</c:otherwise>
+														</c:choose>
+														<div class="tolltip">
+															<i class="fa-solid fa-cloud" style="color: #ffffff;"></i>&nbsp;&nbsp;${day.date }
+															<c:if test="${day.addPoint ne 0}"><span style="color:rgb(255,94,6); font-weight:700;"> +${day.addPoint }p</span></c:if>
+															&nbsp;&nbsp;<i class="fa-solid fa-cloud" style="color: #ffffff;"></i>
+														</div>
+													</td>
+												</c:forEach>
+												<c:forEach begin="1" end="${31-cal.dayList.size() }">
+													<td>
+														<img alt="" src="/koala/resources/common/contributions/물음표.png" style="padding:2px;">
+													</td>
+												</c:forEach>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 								<div class="level-area">
-									<div>
+									<div id="image">
+										<img alt="" src="/koala/resources/common/contributions/굴뚝.png" style="width:100%; height:100%;">
+									</div>
+									<div id="lessMore">
 										<span>Less</span>
-										<div style="background-color: rgb(74, 40, 4);"></div>
-										<div style="background-color: rgb(70, 93, 39);"></div>
-										<div style="background-color: rgb(53, 141, 53);"></div>
-										<i class="fa-solid fa-seedling fa-bounce" style="color: #1eff00;"></i>
+										<img alt="" src="/koala/resources/common/contributions/벽돌.png">
+										<img alt="" src="/koala/resources/common/contributions/동전.png">
+										<img alt="" src="/koala/resources/common/contributions/버섯.png">
+										<img alt="" src="/koala/resources/common/contributions/마리오.png">
 										<span>More</span>
 									</div>
 								</div>
@@ -698,6 +672,14 @@
 	                		console.log(uid);
 	                		location.href = "/koala/member/ad?userId="+uid;
 	                	});
+	                	
+	                	//=====================================설희 작성
+          				$(".contributions-area>table td").mouseover(function(){
+          					$(this).find(".tolltip").css("display", "block");
+          				})
+          				$(".contributions-area>table td").mouseleave(function(){
+          					$(this).find(".tolltip").css("display", "none");
+          				})
 	            	});
                 </script>
                 

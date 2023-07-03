@@ -21,5 +21,6 @@ public class Reply {
 	private String status; //댓글상태값
 	
 	private String memberImage; //프로필사진
+	private String supporters; //서포터즈 여부
 
 }

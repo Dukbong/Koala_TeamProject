@@ -28,7 +28,6 @@ import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.common.template.Paging;
-import com.hoju.koala.member.calendar.CalendarController;
 import com.hoju.koala.member.cookie.MemberCookie;
 import com.hoju.koala.member.model.service.MemberService;
 import com.hoju.koala.member.model.vo.Attendance;
@@ -552,7 +551,6 @@ public class MemberController {
 	@GetMapping("/contributions")
 	public ModelAndView selectContributions(ModelAndView mv,
 											String userId) {
-		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 				
@@ -565,7 +563,6 @@ public class MemberController {
 		
 		mv.addObject("user", m);
 		mv.addObject("followCnt", cnt);
-		mv.addObject("attList", attList);
 		mv.addObject("calList", calList);
 		mv.setViewName("member/activityDetailPage");
 		
