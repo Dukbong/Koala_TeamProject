@@ -283,16 +283,13 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusions&gt;</span> <br>
                     <span class="commonStyle">&lt;/dependency&gt;</span><br>
                     <span class="commonStyle">&lt;dependency&gt;</span><br>
-<<<<<<< HEAD
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeName">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
-=======
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="${changeName}">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
->>>>>>> be42c1181fae810ef1726b57fc5f40528534887b
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span name="changePwd">Koala.password</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br>
                     <span class="commonStyle">&lt;/dependency&gt;</span><br>
                     <div class="button_area">
-                        <button type="button" id="copyBtn" class="button1">Copy</button><button type="button" class="button2">Download</button>
+                        <button type="button" id="copyBtn" class="button1">Copy</button><button type="button" onclick="fileDownload();" class="button2">Download</button>
                     </div>
                 </div>
                 
