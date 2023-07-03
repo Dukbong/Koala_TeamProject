@@ -20,6 +20,7 @@
 	        display: flex;
 	        flex-direction: column;
 	        background-color: black;
+	        padding-top: 200px;
 	    }
 	    .CodeMirror {
 	        font-family: Arial, monospace;

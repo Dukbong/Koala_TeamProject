@@ -155,7 +155,7 @@
                     <span class="ii">Download</span>
                 </div>
             </div>
-            <div class="body3">
+            <div class="body3" onclick="location.href='/koala/setting/create'">
                 <div class="body_logo3">
                     <img src="/koala/resources/common/free-icon-cloud-upload-4007710.png" style="width: 110px;" alt="">
                 </div>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
 import com.hoju.koala.member.model.vo.Member;
@@ -51,16 +52,16 @@ public interface MemberService {
 	int nickCheck(String inputNick);
 
 	//유저가 쓴 게시글 조회
-	ArrayList<Board> boardList(String userId);
+	ArrayList<Board> boardList(PageInfo pi, String userId);
 
 	//유저가 쓴 댓글 조회
-	ArrayList<Board> replyList(String userId);
+	ArrayList<Board> replyList(PageInfo pi,String userId);
 
 	//유저가 추천누른 게시글 조회
-	ArrayList<Board> likedList(String userId);
+	ArrayList<Board> likedList(PageInfo pi, String userId);
 
 	//해당 유저의 팔로잉 조회
-	ArrayList<Member> followingList(String userId);
+	ArrayList<Member> followingList(PageInfo pi, String userId);
 
 	//========================================================= 설희
 	//해당 유저의 contributions 조회
@@ -85,6 +86,14 @@ public interface MemberService {
 
 	//메신저 닉네임으로 유저 검색
 	ArrayList<Member> searchUser(String searchUser);
+
+	int selectblCount(String userId);
+
+	int selectrlCount(String userId);
+
+	int selectllCount(String userId);
+
+	int selectflCount(String userId);
 
 	
 
