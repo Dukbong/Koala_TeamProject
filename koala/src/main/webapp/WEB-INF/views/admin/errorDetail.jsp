@@ -194,11 +194,12 @@
 					page : i
 				},
 				success : function(data){
-					if(i >= "${size }"){
-						alert("마지막 페이지 입니다. 처음으로 돌아갑니다.");
+					alert("${page >= size }")
+					if("${page}" >= "${size}"){
+						location.href="/koala/admin/errorDetail?settingTitle=${errorSet.createSetting.settingTitle }&page=1";
 						i = 1;
 					}else{						
-						i++;
+						i = Number("${page}") + 1;
 						location.href="/koala/admin/errorDetail?settingTitle=${errorSet.createSetting.settingTitle }&page="+i;
 					}
 				}, error : function(){
