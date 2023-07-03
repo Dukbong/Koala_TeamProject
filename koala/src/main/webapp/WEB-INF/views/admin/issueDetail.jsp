@@ -11,7 +11,7 @@
 	div{ box-sizing: border-box;}
     .ebEnrollForm{width: 1200px; margin: auto; padding-top: 50px;}
     .ebEnrollForm>*{width: 85%; margin: auto; padding-bottom: 50px;}
-    .option-area{padding-bottom: 20px; padding-left: 290px;}
+    .option-area{padding-bottom: 20px; padding-left: 230px;}
     div[class*='_b']{width: 100%; background-color: black;}
     .enrollForm-area span, .modifyBtn-area span, .modifyForm-top span{
         margin: 0px 10px;
@@ -47,8 +47,63 @@
      button{border-radius: 5px;}
      button:hover{cursor: pointer;} 
      .buttons{width: 25%; height: 50px; margin: auto; position: relative;} 
-     .buttons>button{ width: 120px; height: 40px; position:absolute; margin: auto;} 
+     .buttons>button{ width: 120px; height: 40px; position:absolute; margin: auto;}
+     
+     /*모달*/ 
+         .modal-wrap{
+        display: none;
+        width: 1100px;
+        height: 650px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -250px 0 0 -550px;
+        background-color: rgb(30, 30, 30);
+        border: 2px solid gray;
+        color: white;
+    }
+    .modal_close{
+    	background-color: rgb(30, 30, 30);
+        width: 27px;
+        height: 27px;
+        position: absolute;
+        top: -27px;
+        right: 0;
+    }
+    
+    .modifyForm-area{width: 95%; height: 95%; display: block; margin: auto;}
+    .modifyForm-top{width: 100%; height: 8%; position: relative;}
+    .modifyForm-top>span{ font-size: 20px; color: rgb(255, 201,20); position: absolute; margin: auto; bottom: 5px;}
+    .modifyForm-bottom{width: 100%; height: 92%;}
+    .modifyForm-bottom>div{height: 100%; float: left;}
+    .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding : 10px;}
+    .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
+    .reply-area textarea, .modal-area textarea{
+    	width: 100%;
+    	height: 100%;
+    	background-color: black;
+    	color : white;
+    	resize: none;
+    	border: none;
+        outline: none;
+        overflow-y:auto;
+    }
+    .modal-area{
+    	border: 1px solid gray;
+    	width: 100%;
+    	height: 100%;
+    }
+    .ebDetailView button:hover{
+    	opacity: 85%;
+    }
+    
+    .hover:hover{cursor: pointer;}
+    
+	.scroll {overflow-y:auto;}
+	.scroll::-webkit-scrollbar {width: 4px;}
+	.scroll::-webkit-scrollbar-thumb {background: gray; border-radius: 10px;}
 </style>
+
 
 <body>
 	<%@include file="../common/header.jsp"%>
@@ -75,8 +130,8 @@
 				<div class="option-area">
 					<span>category</span> <span id="settingTitle">${issueDetail.setting.settingTitle }</span>
 					<span>version</span> <span id="version">${issueDetail.setting.settingVersion }</span>
-					<div style="text-align: right; display:inline; padding-left: 310px; padding-top:50px">
 						<button id="nextError" type="button" class="btn btn-info">NEXT</button>					
+					<div style="text-align: right; display:inline; padding-left: 310px; padding-top:50px">
 					</div>
 				</div>
 				<div class="title_b" style="height: 30px;">
@@ -91,6 +146,7 @@
 					<textarea class="ii ic" name="content" id="eb_content" placeholder="내용을 작성하세요" readonly
 							style="width: 100%; height: 100%; padding: 5px 55px; resize: none">${issueDetail.board.content }</textarea>
 				</div>
+				<button type="button" id="testbtn">test</button>
 				<br>
 				<!-- paing 처리 -->
 				<span>남은 오류 개수 [ ${size } ]</span>
@@ -119,11 +175,34 @@
 			</div>
 			<div class="button-area">
 				<div class="buttons">
-					<button id="cancel" type="button">cancel</button>
+					<button id="cancelw" type="button">cancel</button>
 					<button id="errorSuccess" type="button" style="background-color: rgb(147, 208, 248); right:0;">submit</button>
 				</div>
 			</div>
 	</div>
+	
+	   	<!-- 모달창 영역 -->
+    <div class="modal-wrap">
+        <div class="modal_close" id="cancel"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>
+        <div class="modal-area">
+        	<div class="modifyForm-area">
+				<div class="modifyForm-top">
+					<span id="category">code/menual</span>
+				</div>
+				<div class="modifyForm-bottom">
+					<div class="modifyForm_1">
+						<textarea id="before" class="scroll" cols="30" rows="10" readonly>ajax로 해당 내용 가져오기</textarea>
+					</div>
+					<div class="modifyForm_2">
+						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i>
+					</div>
+					<div class="modifyForm_3">
+						<textarea id="after" class="scroll" cols="30" rows="10" readonly>ajax로 해당 내용 가져오기</textarea>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
 	<%@include file="../common/footer.jsp"%>
 	<script>
 		// Controller에서 버튼의 id값으로 구분하여 실행 $(this).attr("id")
@@ -173,6 +252,25 @@
 				}, error : function(){
 					console.log("ajax Error");					
 				}
+			});
+			
+// 			$("button[id*='DetailBtn']").on("click", function(){
+			$("#testbtn").on("click", function(){
+				$('html').animate({scrollTop : $(".ebDetailView").offset().top}, 100);
+				$(".modal-wrap").css("display", "block");
+				if($(this).val() == "code"){
+					$("#category").html("code");
+					$("#before").html(str1);
+					$("#after").html(str2);
+				}else{
+					$("#category").html("menual");
+					$("#before").html(str3);
+					$("#after").html(str4);
+				}
+			});
+			
+			$("#cancel").on("click", function(){
+				$(".modal-wrap").css("display", "none");
 			});
 		});
 	</script>
