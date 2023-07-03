@@ -36,6 +36,12 @@
 			<beans:bean class="com.hoju.koala.admin.interceptor.AdminInterceptor" id="AdminInterceptor"/>
 		</interceptor>
 		
+		<!-- 로그인 회원만 sqlCloud 이용 가능 -->
+		<interceptor>
+			<mapping path="/together/*"/>
+			<beans:bean class="com.hoju.koala.admin.interceptor.SqlCloudInterceptor" id="SqlCloudInterceptor"/>
+		</interceptor>
+		
 		<interceptor>
 <!-- 			서포터즈로 초대가 된 후 관리자 페이지를 제외한 나머지 페이지에 접근 하는 경우 초대를 받을지 말지 확인 할 수 있도록 한다.  -->
 			<mapping path="/**"/>

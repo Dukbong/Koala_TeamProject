@@ -12,6 +12,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
+<!-- sockjs 라이브러리 -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+
 </head>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <!-- font-awesome Copy Link Tag (아이콘 CDN) -->
@@ -53,7 +56,8 @@
     #header>div{height: 100%; float: left;}
     #header_1{width: 15%;}
     #header_2{width: 70%;}
-    #header_3{width: 15%;}
+    #header_3{width: 5%;}
+    #header_4{width: 10%;}
 
     #header_2>div{width: 100%;}
     #header_2_1{height: 70%;}
@@ -81,19 +85,22 @@
         color: rgb(248, 185, 147);
     }
     
-    #header_3_1{
+    #header_3{
+    	padding-top: 10px;
+    }
+    
+    #header_4_1{
     	height: 100%;
     	width: 100%;
         flex-direction: column;
     }
-    #header_3_1 div{width: 100%; height: 100%;}
-    #header_3_1 li{width: 150px; height: 30px;}
+    #header_4_1 div{width: 100%; height: 100%;}
+    #header_4_1 li{width: 150px; height: 30px;}
     #myPage{width: 100%; height: 100%; border: 0; text-align: center;}
 
     .ac-wrap>ul{
     	list-style-type: none;
-    	padding-top: 60px;
-    	padding-left: 90px;
+    	padding-top: 30px;
     }
     .ac-wrap>ul>li, .ac-wrap>ul>li>select{
 		border-radius: 50px;
@@ -131,6 +138,136 @@
 	.modal{
 		color: black;
 	}
+	
+	
+	/* 채팅방 css */
+
+#chat-room {
+    height:100%;
+    /* 임시 */
+    outline:2px solid black;
+    position:relative;
+}
+
+#chat-room .message-box {
+    padding:0 0.7rem;
+    overflow-y:scroll;
+    height:calc(100% - 4.4rem);
+}
+
+
+
+#chat-room .chat-message {
+    margin-left:3rem;
+    margin-top: 1rem;
+    position:relative;
+}
+
+#chat-room .chat-message > section {
+    position:absolute;
+    top:0;
+    left:-3rem;
+}
+
+#chat-room .chat-message > span {
+    display:block;
+}
+
+#chat-room .chat-message > section {
+    font-size:3rem;
+}
+
+
+#chat-room .chat-message::after {
+    content:"";
+    display:block;
+    clear:both;
+}
+
+#chat-room .chat-message > div {
+    background-color:white;
+    float:left;
+    padding:0.8rem;
+    border-radius:1rem;
+    clear:both;
+    font-weight:bold;
+    font-size:1.46rem;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+#chat-room .chat-message.mine > div {
+    background-color: skyblue;
+    float:right;
+    box-shadow: -1px 1px 0 rgba(0,0,0,0.3);
+}
+
+#chat-room .chat-message.mine > span {
+    display:none;
+}
+
+#chat-room .chat-message.mine > section {
+    display:none;
+}
+
+#chat-room .input-box {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+}
+
+#chat-room .input-box #text-input {
+    width:100%;
+    display:block;
+    border:0;
+    outline:none;
+    padding-right:8.5rem;
+    padding-left:1rem;
+    padding-top:0.1rem;
+    font-size:1.4rem;
+    line-height:4rem;
+    font-weight:bold;
+    box-sizing:border-box;
+}
+
+#chat-room .input-box .btn-plus {
+    position:absolute;
+    top:0;
+    left:0;
+    width:4rem;
+    height:100%;
+    background-color:#D1D1D1;
+}
+
+
+#chat-room .input-box .btn-submit {
+    position:absolute;
+    right:1rem;
+    top:50%;
+    transform:translateY(-50%);
+    padding:10px;
+    background-color:#fdf01b;
+    padding:10px;
+    color: black;
+    border-radius:3px;
+    font-size:1.3rem;
+    box-shadow:0 1px 10px rgba(0,0,0,0.2);
+    user-select:none;
+}
+
+#chat-room .input-box .btn-emo {
+    position:absolute;
+    right:6rem;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:2rem;
+    color:#CBCBCB;
+    user-select:none;
+}
+
+
+
+
 </style>
 <body>
 	<script>
@@ -188,10 +325,10 @@
                 			<c:when test='${path.contains("errorDetail")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
                 			</c:when>
-                		</c:choose>        		
+                		</c:choose>    
                 		</c:when>
-                		<c:when test='${path.contains("multi/play") || path.contains("together/ssss")}'>
-                			<h4 class="headerName" onclick="adminPage();">Koala SQL Cloud</h4>     
+                		<c:when test='${path.contains("together/sqlCloud")}'>
+                			<h4 class="headerName" onclick="sqlMain();">Koala SQL Cloud</h4>     
                 		</c:when>
                 		<c:when test='${path.contains("errorBoard")}'>
                 		<!-- koala/errorBoard/~~~ >> 설희 -->                		
@@ -204,7 +341,7 @@
 			                		<h4 class="">Enroll</h4>					
                 				</c:when>
                 				
-                				<c:when test="${path.contains('ad')}">
+                				<c:when test="${path.contains('ad') || path.contains('boardList') || path.contains('replyList') || path.contains('likedList') || path.contains('followingList') || path.contains('contributions')}">
                 					<h4 class="">Activity Details</h4>
                 				</c:when>
                 				
@@ -237,8 +374,16 @@
                 	</c:choose>
                 </div>
             </div>
+            
             <div id="header_3">
-                <div id="header_3_1">
+            	<c:if test="${not empty loginUser }">
+					${loginUser.nickName }님 <br>
+					<i id="message-icon" class="fa-regular fa-comment fa-2xl" data-bs-toggle="modal" data-bs-target="#messengerModal"></i>
+            	</c:if>
+            </div>
+            
+            <div id="header_4">
+                <div id="header_4_1">
                 	<c:choose>
                 		<c:when test="${empty loginUser }">
                				<div class="ac-wrap">
@@ -250,7 +395,6 @@
                    		</c:when>
                    		<c:otherwise>
                    			<div class="ac-wrap">
-                   				<i id="message-icon" class="fa-regular fa-message fa-2xl" data-bs-toggle="modal" data-bs-target="#messengerModal"></i>
                    				<ul>
                    					<li>
 		                	   			<select id="myPage">
@@ -331,7 +475,7 @@
 						
 						if(list != null){
 							for(var i in list){
-								str += "<tr data-bs-toggle='modal' data-bs-target='#chatRoomModal'>"
+								str += "<tr id='connectChat' data-bs-toggle='modal' data-bs-target='#chatRoomModal'>"
 									 + "<td>"+list[i].nickName+"</td>"
 									 + "</tr>";
 							}
@@ -370,56 +514,108 @@
 	      <div class="modal-body">
 	      
 	      
-	       <div id="msgArea" style="overflow: auto; max-height: 300px;">
-				<pre>
-				sd
-				ㅁㄴㅇㅁㄴㅇ
-				ㅁㄴㅇㅁㄴ
-				ㅇ
-				ㅁㄴㅇ
-				ㅁㄴ
-				ㅇ
-				ㅁㄴㅇ
-				ㅁㄴㅇ
-				ㅁㄴ
-				ㅇ
-				ㅁ
-				asdf
-				asd
-				f
-				asdf
-				asd
-				fa
-				sdf
-				asd
-				f
-				asdf
-				asdf
-				asd
-				fa
-				dsf
-				sadf
-				asdf
-				sadf
-				</pre>
-				
+	   		<div id="chat-room" style="height: 600px;">
+			    <div class="message-box">
+			        <div class="message-group">
+			            <div class="chat-message other">
+			                <section><i class="fa fa-user"></i></section>
+			                <span>관리자</span>
+			                <div>반갑소</div>
+			            </div>
+			            
+			            <div class="chat-message mine">
+			                <section><i class="fa fa-user"></i></section>
+			                <span>테스트</span>
+			                <div>어허이..</div>
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <div class="input-box">
+			        <input type="text" id="text-input">
+			        <div class="btn-emo">
+			            <i class="fa fa-smile-o" aria-hidden="true"></i>
+			        </div>
+			        <div class="btn-submit">
+			            <span>전송</span>
+			        </div>
+			    </div>
 			</div>
-			<div class="col-6">
-			<div class="input-group mb-3">
-				<input type="text" id="msg" class="form-control">
-				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button" id="sendMsg">전송</button>
-				</div>
-			</div>
-			</div>
-	      	
-	        
+			
 	      </div>
 	    </div>
 	  </div>
 	</div>
 	
 	<!-- 채팅방 스크립트 -->
+	<script>
+		$(function(){
+			
+			var sockJS;
+			
+			//chat채팅방 들어가면 웹소켓 생성
+			//$("#connectChat").on("click", function(){
+				//sockJS = new SockJS("/chat");
+			//});
+			
+			sockJS.onopen = function(){
+				console.log("sockjs open");
+			}
+			
+			sockJS.onclose = function(){
+				console.log("sockjs close");
+			}
+						
+			sockJS.onerror = function(){
+				console.log("sockjs error");
+			}
+			
+			//sockJS.onmessage = function(data){
+				
+			//}
+			
+			//모달닫히면 종료.
+			$("#chatRoomModal").on("hidden.bs.modal", function() {
+				//sockJS.close();
+		  	});
+			
+			
+			
+			
+			//입력하고 엔터하면 submit버튼 눌림
+			$("#chat-room>.input-box>input").on("keydown", function(e){
+				if(e.keyCode == 13){
+					e.preventDefault();
+					$("#chat-room>.input-box>.btn-submit").click();
+				}
+			});
+			
+			//submit버튼이 클릭 되면
+			$("#chat-room>.input-box>.btn-submit").on("click", function(){
+				var msg = $("#chat-room>.input-box>input").val();
+				console.log(msg);
+				
+				
+				
+				var str = "";
+				
+				str += "<div class='chat-message mine'>"
+					 + "<section><i class='fa fa-user'></i></section>"
+					 + "<span>${loginUser.nickName}</span>"
+					 + "<div>"+msg+"</div>"
+					 + "</div>";
+				
+				$("#chat-room>.message-box>.message-group").append(str);
+				   
+				$("#chat-room>.input-box>input").val("");
+				
+				//sockJS.send(msg);
+			});
+		    
+			
+		});
+		
+	</script>
 	<!-- <script>
 		$(function(){
 			var sock = new SockJS()
@@ -477,7 +673,7 @@
         
         
         // 쿠키를 보내기 위한 함수
-        function test(e){
+        /* function test(e){
         	$.ajax({
         		url : "/koala/admin/mode.check",
         		data : {
@@ -489,12 +685,16 @@
         			console.log("mode check aJax error");
         		}
         	});
-        }
+        } */
         
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
         //글자 색 - 다크모드:white / 라이트모드:black
         //컨텐트 박스 - 다크모드:black / 라이트모드:white
         
+        // sqlCloudMain()
+        function sqlMain(){
+        	location.href="/koala/together/sqlCloud?teamNo=0";
+        }
         
         // admin page ()
        	function adminPage(){

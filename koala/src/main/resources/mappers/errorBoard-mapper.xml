@@ -44,7 +44,7 @@
 		<result column="MODIFIED_CODE" property="errorBoard.modifiedCode"/>
 		<result column="MODIFIED_INFO" property="errorBoard.modifiedInfo"/>
 		
-<!-- 		<result column="SETTING_NO" property="settingNo"/> -->
+<!-- 		<result column="SETTING_NO" property="createSetting.settingNo"/> -->
 <!-- 		<result column="REF_UNO" property="refUno"/> -->
 		<result column="SETTING_TITLE" property="createSetting.settingTitle"/>
 		<result column="SETTING_VERSION" property="createSetting.settingVersion"/>

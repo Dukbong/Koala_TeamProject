@@ -4,6 +4,23 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="adminMapper">
+	<resultMap type="settingDetail" id="issuesDetailResultSet">
+		<result column="SETTING_NO" property="setting.settingNo"/>
+		<result column="BOARD_WRITER" property="board.boardWriter"/>
+		<result column="BOARD_NO" property="board.boardNo"/>
+		<result column="SETTING_TITLE" property="setting.settingTitle"/>
+		<result column="SORT_DESCRIPTION" property="setting.sortDescription"/>
+		<result column="SETTING_VERSION" property="setting.settingVersion" />
+		<result column="SETTING_INFO" property="setting.settingInfo"/>
+		<result column="SETTING_CODE" property="setting.settingCode"/>
+		<result column="TITLE" property="board.title"/>
+		<result column="USER_ID" property="member.userId"/>
+		<result column="CREATE_DATE" property="board.createDate"/>
+		<result column="CONTENT" property="board.content"/>
+		<result column="MODIFIED_CODE" property="errorBoard.modifiedCode"/>
+		<result column="MODIFIED_INFO" property="errorBoard.modifiedInfo"/>
+		<result column="INPUT" property="setting.input"/>
+	</resultMap>
 
 	<!-- 전체 개수를 알기 위해 별도의 VO를 작성 -->
 	<resultMap type="allTable" id="allTableResultSet">
@@ -39,6 +56,7 @@
 	
 	<resultMap type="issuesAndError" id="issuesAndErrorResultSet">
 		<result column="SETTING_TITLE" property="settingTitle"/>
+		<result column="SETTING_NO" property="settingNo"/>
 		<result column="CC" property="count"/>
 		<result column="SORT_DESCRIPTION" property="sortDescription"/>
 	</resultMap>
@@ -79,13 +97,14 @@
 		JOIN CREATE_SETTING C ON(E.REF_SNO = C.SETTING_NO)
         WHERE E.SOLVED = 'N' AND B.STATUS = 'Y' AND E.ERROR_TYPE = 'S'
         GROUP BY SETTING_TITLE, SORT_DESCRIPTION
+        ORDER BY CC DESC
 	</select>
 	<!-- 관리가 필요한 게시글 개수 및 회원수 -->
 	<select id="allCount" resultMap="allTableResultSet">
 		SELECT
 			(SELECT COUNT(*) FROM MEMBER WHERE STATUS = 'Y') member,
 			(SELECT COUNT(*) FROM SUPPORTERS S JOIN MEMBER M ON (S.REF_UNO = M.USER_NO) WHERE M.STATUS = 'Y' AND GITHUB_ID != ' ') supporters,
-			(SELECT COUNT(*) FROM CREATE_SETTING WHERE STATUS = 'W') createSetting,
+			(select count(*) from create_setting c join supporters using(ref_uno) join member m on (ref_uno = user_no) where github_id != ' ' and type=1 and ref_uno != 1 and m.status = 'Y' and c.status = 'W') createSetting,
 			(SELECT COUNT(*) FROM ERROR_BOARD E JOIN BOARD B ON(E.REF_BNO = B.BOARD_NO) WHERE E.SOLVED = 'N' AND B.STATUS = 'Y' AND E.ERROR_TYPE='N') errorBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'B') bulletinBoard,
 			(SELECT COUNT(*) FROM BOARD WHERE STATUS = 'Y' AND CATEGORY = 'Q') qnaBoard,
@@ -238,8 +257,16 @@
 			REPO_URL = #{repoUrl}
 		WHERE REF_UNO = #{refUno} 
 	</update>
-	<select id="selectIssueDetail" resultMap="errorBoardMapper.errorSetResultSet">
+	<select id="selectIssueDetail" resultMap="issuesDetailResultSet">
 		<!-- 세팅 작성 페이지가 완성되지 않았기 때문에 아직 모른다. -->
+		select c.setting_No,c.sort_description,b.board_no, c.setting_title, c.setting_version, b.board_writer, b.title, m.user_id, b.create_date, c.setting_info, c.setting_code, b.content, e.modified_code, e.modified_info, c.input
+		from error_board e
+		join create_setting c on (ref_sno = setting_no)
+		join board b on (b.board_no = e.ref_bno)
+		join member m on (b.board_writer = m.user_no)
+		where setting_title = #{settingTitle}
+		and e.solved = 'N'
+		and e.error_type = 'S'
 	</select>
 	
 	<select id="selectErrorDetail" resultMap="errorBoardMapper.errorSetResultSet">
@@ -329,6 +356,9 @@
 	<insert id="insertSQLteamMember" parameterType="sqlInvite">
 		INSERT INTO SQLINVITE VALUES (#{creatorNo}, #{userNo}, SQL_TNO.CURRVAL)
 	</insert>
+	<insert id="updateSQLteamMember" parameterType="sqlInvite">
+		INSERT INTO SQLINVITE VALUES (#{creatorNo}, #{userNo}, #{teamNo})
+	</insert>
 	
 	<select id="selectOneTeam" parameterType="_int" resultMap="modifyTeamResultSet">
 		select s.teamname, z.user_id creatorId ,m.user_id, m.nickname, m.user_no, g.file_path, g.change_name, p.github_id
@@ -339,5 +369,67 @@
 		left join member_image g on(m.user_no = g.ref_uno)
 		left join supporters p on(m.user_no = p.ref_uno)
 		where team_no = #{teamNo}
+	</select>
+	
+	<delete id="deleteTeamMember">
+		delete from sqlinvite
+		where team_no = 
+		(select team_no
+         from sqlcloud
+         where teamname = #{teamName})
+	</delete>
+	
+	<select id="selectTeamTeamNo" parameterType="string" resultType="_int">
+		SELECT TEAM_NO FROM SQLCLOUD WHERE TEAMNAME = #{teamName}
+	</select>
+	
+	<delete id="deleteTeam" parameterType="_int">
+		DELETE FROM SQLCLOUD WHERE TEAM_NO = #{teamNo}
+	</delete>
+	<delete id="deleteLastTeamInfo" parameterType="_int">
+		DELETE FROM sqlinvite WHERE TEAM_NO = #{teamNo}
+	</delete>
+	<delete id="taemQuit" parameterType="sqlInvite">
+		DELETE FROM SQLINVITE WHERE team_no = #{teamNo} and user_no = #{userNo}
+	</delete>
+	
+	<select id="selectWaitingLib" resultMap="settingMapper.settingResultSet">
+		select * from create_setting c
+		join supporters using(ref_uno)
+		join member m on (ref_uno = user_no)
+		where github_id != ' '
+		and type=1
+		and ref_uno != 1
+		and m.status = 'Y'
+		and c.status = 'W'
+	</select>
+	<update id="approvelib">
+		update create_setting
+		set status = 'Y'
+		where setting_no = #{settingNo}
+	</update>
+	<update id="disapprovelib">
+		update create_setting
+		set status = 'N'
+		where setting_no = #{settingNo}
+	</update>
+	
+	<update id="updateIssueSuccess">
+		UPDATE ERROR_BOARD
+		SET solved='Y'
+		WHERE REF_BNO = #{boardNo}
+	</update>
+	<update id="updateIssueDate">
+		UPDATE BOARD
+		SET MODIFY_DATE = SYSDATE
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<insert id="updateSetting" parameterType="setting">
+		INSERT INTO create_setting VALUES
+		(SEQ_SET.nextval, #{refUno}, #{settingTitle}, #{settingVersion}, #{sortDescription}, #{settingInfo}, #{settingCode}, #{input}, 'Y', SYSDATE)
+	</insert>
+	<select id="listDetail" resultMap="settingMapper.settingResultSet">
+		SELECT * FROM CREATE_SETTING WHERE SETTING_NO = #{settingNo}
 	</select>
 </mapper>

@@ -9,6 +9,7 @@ import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.ModifyTeam;
+import com.hoju.koala.admin.model.vo.SettingDetail;
 import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
@@ -16,6 +17,7 @@ import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.setting.model.vo.Setting;
 
 public interface AdminService {
 	AllCount selectAllCount();
@@ -54,7 +56,7 @@ public interface AdminService {
 	
 	int insertSupporterGithubId(Supporters supporter);
 	
-	ErrorBoard selectIssueDetail(String settingTitle);
+	ArrayList<SettingDetail> selectIssueDetail(String settingTitle);
 	
 	
 	// intercepter에서  행해지는 curd
@@ -103,6 +105,42 @@ public interface AdminService {
 
 	// 팀원 수정
 	ArrayList<ModifyTeam> selectOneTeam(int teamNo);
+
+	// 팀원 삭제 후 다시 입력
+	int deleteTeamMember(String teamName);
+
+	// 팀번호 찾기
+	int selectTeamTeamNo(String teamName);
+
+	int updateSQLteamMember(SqlInvite sqlIn);
+	
+	// Team Delete
+	int deleteTeam(int teamNo);
+
+	// Team Member Delete
+	int deleteLastTeamInfo(int teamNo);
+
+	// member >> quit Team
+	int teamQuit(SqlInvite sql);
+
+	// waitinglib
+	ArrayList<Setting> selectWaitingLib();
+
+	// lig approve
+	int approvelib(int settingNo);
+
+	// lib disapprove
+	int disapprovelib(int settingNo);
+
+	// 라이브러리 수정 완료
+	int updateIssueSuccess(int boardNo);
+	int updateSetting(Setting setting);
+	int updateIssueDate(int boardNo);
+	int updateSettingEtc(Setting setting);
+
+	Setting listDetail(int settingNo);
+
+
 
 
 

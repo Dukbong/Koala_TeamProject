@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>[Koala] Issues</title>
+<title>[Koala] WaitingLib</title>
 </head>
 <style>
 	.tagName{
@@ -64,7 +64,7 @@
 		line-height : 56px;
 		float : left;
 	}
-	.noIssues{
+	.nolist{
 		width : 100%;
 		height: 100%;
 		text-align: center;
@@ -79,26 +79,27 @@
 <body>
 	<%@include file="../common/header.jsp" %>
 	<div class="tagName" style="padding-top : 200px;">
-		<h1 class="tit">@Issues</h1>
+		<h1 class="tit">@Waiting Library</h1>
 	</div>
 	<br><br><br>
 		<div class="wrap">
 			<c:choose>
-			<c:when test="${not empty issues }">
-				<c:forEach var="i" begin="0" end="${issues.size()-1 }" step="2" >
+			<c:when test="${not empty list }">
+				<c:forEach var="i" begin="0" end="${list.size()-1 }" step="2" >
 					<div class="twoArea">
 						<div class="binArea"></div>
 						<div class="nobinArea ic">
-							<div class="liName ii">&nbsp;${issues.get(i).settingTitle }</div>
-							<div class="liCount">[ ${issues.get(i).count} ]</div>
-							<div class="lidescrip ii">${issues.get(i).sortDescription}</div>
+							<div id="settingNo" style="display: none">${list.get(i).settingNo }</div>
+							<div class="liName ii">&nbsp;${list.get(i).settingTitle }</div>
+							<div class="liCount"></div>
+							<div class="lidescrip ii">${list.get(i).sortDescription}</div>
 						</div>
 						<div class="binArea"></div>
-						<c:if test="${issues.size() > i+1 }">
+						<c:if test="${list.size() > i+1 }">
 							<div class="nobinArea ic">
-								<div class="liName ii">&nbsp;${issues.get(i+1).settingTitle }</div>
-								<div class="liCount">[ ${issues.get(i+1).count} ]</div>
-								<div class="lidescrip ii">${issues.get(i+1).sortDescription}</div>
+								<div class="liName ii">&nbsp;${list.get(i+1).settingTitle }</div>
+								<div class="liCount"></div>
+								<div class="lidescrip ii">${list.get(i+1).sortDescription}</div>
 							</div>
 							<div class="binArea"></div>
 						</c:if>
@@ -107,7 +108,7 @@
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
-				<div class="noIssues" style="display: block">Not Found Issue...!</div>
+				<div class="nolist" style="display: block">Not Found Issue...!</div>
 			</c:otherwise>
 			</c:choose>
 		</div>
@@ -118,7 +119,8 @@
 		$(function(){
 			$(".nobinArea").on("click", function(){
 				var title = $(this).children().eq(0).text().trim();
-				location.href="issuesDetail?settingTitle="+title;					
+				var no = $("#settingNo").text();
+				location.href="listDetail?settingNo="+no;					
 			});
 		});
 	</script>
