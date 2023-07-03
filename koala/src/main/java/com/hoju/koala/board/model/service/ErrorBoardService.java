@@ -63,6 +63,9 @@ public interface ErrorBoardService {
 	//댓글 삭제
 	int deleteReply(int replyNo);
 
+	//닉네임으로 아이디 구하기
+	String selectId(String nickName);
+
 
 
 }

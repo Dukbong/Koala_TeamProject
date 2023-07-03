@@ -129,9 +129,9 @@ public class MemberDao {
 	public void attendance(SqlSessionTemplate sqlSession, int userNo) {
 		
 		try {
-			int result = sqlSession.insert("memberMapper.attendance", userNo);
+			sqlSession.insert("memberMapper.attendance", userNo);
 		} catch(Exception e){   
-		    System.out.println("출석 중복");
+		    System.out.println("출석처리 중복");
 		}
 	}
 

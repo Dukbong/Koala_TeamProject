@@ -69,8 +69,11 @@ public class ErrorBoardController {
 			ebList = ebService.searchList(pi, hashMap);
 		}
 		
+		listCount = listCount - (currentPage-1)*boardLimit;
+		
 		model.addAttribute("pi", pi);
 		model.addAttribute("ebList", ebList);
+		model.addAttribute("listCount", listCount);
 		model.addAttribute("category", category);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("sort", sort);
@@ -240,15 +243,12 @@ public class ErrorBoardController {
 		return ebService.deleteReply(replyNo);
 	}
 	
-	//insert.cs 테스트용
-//	@PostMapping("insert.cs")
-//	public String createSettingTest(CreateSetting cs) {
-//		
-//		System.out.println(cs);
-//		
-//		return "";
-//	}
-	
-	
+	//닉네임으로 아이디 구하기
+	@ResponseBody
+	@GetMapping("selectId")
+	public String selectId(String nickName) {
+		
+		return ebService.selectId(nickName);
+	}
 	
 }

@@ -138,5 +138,11 @@ public class ErrorBoardDao {
 		
 		return sqlSession.delete("errorBoardMapper.deleteReply", replyNo);
 	}
+
+	//닉네임으로 아이디 구하기
+	public String selectId(SqlSessionTemplate sqlSession, String nickName) {
+		
+		return sqlSession.selectOne("errorBoardMapper.selectId", nickName);
+	}
 	
 }
