@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
+import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.dao.MemberDao;
 import com.hoju.koala.member.model.vo.Attendance;
 import com.hoju.koala.member.model.vo.Follow;
@@ -154,9 +155,9 @@ public class MemberServiceImpl implements MemberService {
 
 	//유저가 쓴 게시글 조회
 	@Override
-	public ArrayList<Board> boardList(String userId) {
+	public ArrayList<Board> boardList(PageInfo pi, String userId) {
 		
-		ArrayList<Board> blist = memberDao.boardList(sqlSession, userId);
+		ArrayList<Board> blist = memberDao.boardList(sqlSession, pi, userId);
 		
 		return blist;
 	}
@@ -164,9 +165,9 @@ public class MemberServiceImpl implements MemberService {
 
 	//유저가 쓴 댓글쓴 게시글 조회
 	@Override
-	public ArrayList<Board> replyList(String userId) {
+	public ArrayList<Board> replyList(PageInfo pi, String userId) {
 		
-		ArrayList<Board> rlist = memberDao.replyList(sqlSession, userId);
+		ArrayList<Board> rlist = memberDao.replyList(sqlSession, pi, userId);
 		
 		return rlist;
 	}
@@ -174,9 +175,9 @@ public class MemberServiceImpl implements MemberService {
 
 	//유저가 추천누른 게시글 조회
 	@Override
-	public ArrayList<Board> likedList(String userId) {
+	public ArrayList<Board> likedList(PageInfo pi, String userId) {
 		
-		ArrayList<Board> lList = memberDao.likedList(sqlSession, userId);
+		ArrayList<Board> lList = memberDao.likedList(sqlSession, pi, userId);
 		
 		return lList;
 	}
@@ -184,9 +185,9 @@ public class MemberServiceImpl implements MemberService {
 
 	//해당 유저의 팔로잉 조회
 	@Override
-	public ArrayList<Member> followingList(String userId) {
+	public ArrayList<Member> followingList(PageInfo pi, String userId) {
 		
-		ArrayList<Member> fList = memberDao.followingList(sqlSession, userId);
+		ArrayList<Member> fList = memberDao.followingList(sqlSession, pi, userId);
 		
 		return fList;
 	}
@@ -263,6 +264,43 @@ public class MemberServiceImpl implements MemberService {
 		ArrayList<Member> mlist = memberDao.searchUser(sqlSession, searchUser);
 		
 		return mlist;
+	}
+
+
+	//검색된 보드리스트 카운트
+	@Override
+	public int selectblCount(String userId) {
+		
+		int result = memberDao.selectblCount(sqlSession, userId);
+		
+		return result;
+	}
+
+
+	@Override
+	public int selectrlCount(String userId) {
+		
+		int result = memberDao.selectrlCount(sqlSession, userId);
+		
+		return result;
+	}
+
+
+	@Override
+	public int selectllCount(String userId) {
+		
+		int result = memberDao.selectllCount(sqlSession, userId);
+		
+		return result;
+	}
+
+
+	@Override
+	public int selectflCount(String userId) {
+		
+		int result = memberDao.selectflCount(sqlSession, userId);
+		
+		return result;
 	}
 
 

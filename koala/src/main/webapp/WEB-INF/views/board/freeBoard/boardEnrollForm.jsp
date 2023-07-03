@@ -12,6 +12,12 @@
     <link href="/koala/resources/codemirror-5.53.2/lib/codemirror.css" rel="stylesheet"/>
     <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/>
      <style>
+     	div{ box-sizing: border-box;}
+    	.enroll-outer{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
+    	.enroll-outer>div{width: 100%;}
+    
+    	
+    	.space{width: 16%;}
         * {
             padding:0;
             margin:0;
@@ -23,6 +29,7 @@
             color: white;
             margin: auto;
             justify-content: center;
+            padding-top: 200px;
         }
         .inner-outer{
             width: 80%;
@@ -52,14 +59,17 @@
             font-family: Arial, monospace;
             font-size: 25px;
             border: 1px solid white;
+            z-index: 0;
         }
         #submmit{
-            position: relative;
+            margin-left: 700px;
             margin-top: 20px;
-            width: 80px;
-            height: 30px;
-            left: 90%;
+            left: 0px;
         }
+        .enroll-outer button{border-radius: 5px;}
+     	button:hover{cursor: pointer;} 
+     	.buttons{width: 40%; height: 60px; margin: auto; position: relative;} 
+     	.buttons>button{ width: 45%; height: 100%; position:absolute; margin: auto;}
     </style>
 </head>
 <body>
@@ -87,7 +97,11 @@
                 <div id="fileList"></div> <br><br>
                 <p>Code:</p>
                 <textarea id="editor" name="contentCode" class="editor"></textarea>
-                <button type="submit" id="submmit">upload</button>
+                <div class="button-area">
+                	<div class="buttons">
+                		<button type="submit" id="submmit">upload</button>
+                	</div>
+                </div>
             </form>
             <br><br>
         </div>

@@ -177,7 +177,7 @@
   	<c:if test="${not empty msg }">
 		<script>
 			$(function(){
-				window.alert("${msg}");
+				alert("${msg}");
 			});
 		</script>
 		<c:remove var="msg" scope="session"/>

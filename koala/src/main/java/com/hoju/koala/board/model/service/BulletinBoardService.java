@@ -29,7 +29,7 @@ public interface BulletinBoardService {
 
 	//게시글 입력 메소드
 	int insertBoard(Board b);
-
+	
 	//좋아요 증가 메소드
 	int increaseLike(int boardNo);
 
@@ -83,5 +83,20 @@ public interface BulletinBoardService {
 
 	//게시글 번호 가져오기 메소드
 	int selectBoardNo();
+
+	//첨부파일 삭제 메소드
+	int deleteAttachment(String existedFiles);
+
+	//게시글 수정 메소드
+	int updateBoard(Board b);
+
+	//첨부파일 삭제 예정 조회 메소드
+	ArrayList<BoardAttachment> selectDeleteAttachment();
+
+	//게시글 삭제 예정 조회 메소드
+	ArrayList<Board> selectDeleteBoard();
+
+	//게시글 삭제 예정 삭제 메소드
+	int deleteScheduledBoard(int boardNo);
 
 }

@@ -15,7 +15,11 @@
     .wrapper{
         width: 100%;
         height: 1200px;
+<<<<<<< HEAD
         padding-top:200px;
+=======
+        padding-top: 200px;
+>>>>>>> be42c1181fae810ef1726b57fc5f40528534887b
     }
     .body_content{
         display: flex;
@@ -279,7 +283,11 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusions&gt;</span> <br>
                     <span class="commonStyle">&lt;/dependency&gt;</span><br>
                     <span class="commonStyle">&lt;dependency&gt;</span><br>
+<<<<<<< HEAD
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeName">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
+=======
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="${changeName}">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
+>>>>>>> be42c1181fae810ef1726b57fc5f40528534887b
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span name="changePwd">Koala.password</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br>
                     <span class="commonStyle">&lt;/dependency&gt;</span><br>
