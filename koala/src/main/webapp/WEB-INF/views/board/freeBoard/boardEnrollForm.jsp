@@ -23,6 +23,7 @@
             color: white;
             margin: auto;
             justify-content: center;
+            padding-top: 200px;
         }
         .inner-outer{
             width: 80%;

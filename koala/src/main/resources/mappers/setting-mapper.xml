@@ -54,5 +54,5 @@
 		AND STATUS = 'Y'
 		ORDER BY SETTING_TITLE
 	</select>
->>>>>>> refs/remotes/origin/main
+	
 </mapper>
