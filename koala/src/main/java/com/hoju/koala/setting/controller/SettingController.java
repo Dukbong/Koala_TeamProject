@@ -38,14 +38,14 @@ public class SettingController {
 		}
 		
 		
-		return "board/settingBoard/NewFile";
+		return "setting/libList";
 	}
 	
 	//코드 작성 페이지 이동
-	@RequestMapping("/create")
+	@GetMapping("/create")
 	public String createCodePage() {
 		
-		return "board/errorBoard/createSettingForm";
+		return "setting/createSettingForm";
 	}
 	
 	
@@ -61,7 +61,7 @@ public class SettingController {
 			model.addAttribute("setting", s);
 		}
 		
-		return "";
+		return "setting/description";
 	}
 	
 	
@@ -76,12 +76,17 @@ public class SettingController {
 			log.debug("검색된 라이브러리 리스트 : {}", s);
 		}
 		
-		if(searchList.size() > 1) {
+		if(!searchList.isEmpty()) {
 			mv.addObject("slist", searchList);
-			mv.setViewName("board/settingBoard/NewFile");
+			
+			if(searchList.size() == 1) {
+				mv.setViewName("setting/description");
+			}else {
+				mv.setViewName("setting/libList");
+			}
 		}else {
-			mv.addObject("slist", searchList.get(0));
-			mv.setViewName("디테일");
+			//없음
+			mv.setViewName("setting/libList");
 		}
 		
 		return mv;

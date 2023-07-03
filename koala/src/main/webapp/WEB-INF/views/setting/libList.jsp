@@ -69,21 +69,27 @@
         </div>
         <div class="body_content">
         
-        <c:forEach var="s" items="${slist }" >
-        
-        <div class="menubox">
-        	<input type="hidden" value="${s.settingNo }">
-            <div class="box_title">
-                <span>${s.settingTitle }</span>
-            </div>
-            <div class="box_content">
-                <p>
-                	${s.sortDescription }
-                </p>
-            </div>
-        </div>
-        
-        </c:forEach>
+        <c:if test="${not empty slist }">
+	        <c:forEach var="s" items="${slist }" >
+		        <div class="menubox">
+		        	<input type="hidden" value="${s.settingNo }">
+		            <div class="box_title">
+		                <span>${s.settingTitle }</span>
+		            </div>
+		                <c:if test="${(not empty loginUser) and (loginUser.type == 2)}">
+		                	<button onclick="location.href='/koala/setting/delete?settingNo=${s.settingNo}'" class="btn btn-danger">삭제</button>
+		                </c:if>
+		            <div class="box_content">
+		                <p>
+		                	${s.sortDescription }
+		                </p>
+		            </div>
+		        </div>
+	        </c:forEach>
+        </c:if>
+        <c:if test="${empty slist }">
+        	라이브러리가 존재하지 않습니다.
+        </c:if>
         
     	</div>
     	
