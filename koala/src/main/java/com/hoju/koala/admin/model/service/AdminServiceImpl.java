@@ -15,13 +15,14 @@ import com.hoju.koala.admin.model.vo.ErrorDivision;
 import com.hoju.koala.admin.model.vo.IssuesAndError;
 import com.hoju.koala.admin.model.vo.MemberSearch;
 import com.hoju.koala.admin.model.vo.ModifyTeam;
+import com.hoju.koala.admin.model.vo.SettingDetail;
 import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
-import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
+import com.hoju.koala.setting.model.vo.Setting;
 
 @Service
 @RequestMapping("/admin")
@@ -140,7 +141,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public ErrorBoard selectIssueDetail(String settingTitle) {
+	public ArrayList<SettingDetail> selectIssueDetail(String settingTitle) {
 		return adminDao.selectIssueDetail(settingTitle, sqlSession);
 	}
 
@@ -212,6 +213,50 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ArrayList<ModifyTeam> selectOneTeam(int teamNo) {
 		return adminDao.selectOneTeam(teamNo, sqlSession);
+	}
+
+	@Override
+	public int deleteTeamMember(String teamName) {
+		return adminDao.deleteTeamMember(teamName, sqlSession);
+	}
+
+	@Override
+	public int selectTeamTeamNo(String teamName) {
+		return adminDao.selectTeamTeamNo(teamName, sqlSession);
+	}
+
+	@Override
+	public int updateSQLteamMember(SqlInvite sqlIn) {
+		return adminDao.updateSQLteamMember(sqlIn, sqlSession);
+	}
+
+	@Override
+	public int deleteTeam(int teamNo) {
+		return adminDao.deleteTeam(teamNo, sqlSession);
+	}
+
+	@Override
+	public int deleteLastTeamInfo(int teamNo) {
+		return adminDao.deleteLastTeamInfo(teamNo, sqlSession);
+	}
+	@Override
+	public int teamQuit(SqlInvite sql) {
+		return adminDao.taemQuit(sql, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Setting> selectWaitingLib() {
+		return adminDao.selectWaitingLib(sqlSession);
+	}
+
+	@Override
+	public int approvelib(int settingNo) {
+		return adminDao.approvelib(settingNo, sqlSession);
+	}
+
+	@Override
+	public int disapprovelib(int settingNo) {
+		return adminDao.disapprovelib(settingNo, sqlSession);
 	}
 
 
