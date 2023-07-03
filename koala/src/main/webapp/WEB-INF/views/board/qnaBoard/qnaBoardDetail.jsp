@@ -20,6 +20,7 @@ body {
 .wrapper {
 	width: 100%;
 	height: 1200px;
+	padding-top : 200px;
 }
 
 .body_content {
@@ -227,6 +228,7 @@ body {
 	font-weight: bold;
 }
 
+
 .selected-reply {
 	color: red; /* 원하는 폰트 색상으로 변경 */
 }
@@ -389,7 +391,7 @@ body {
 
 										//게시글 작성자인 경우에만 채택 버튼 추가
 										if (loginUser === boardWriter && !selected) {
-											console.log(loginUser + "입니다.")
+											console.log(loginUser + "입니다.");
 											result += "<td>"
 													+ "<button class='selectBtn' style='background-color:lightseagreen'>채택"
 													+ "</button>" + "</td>"
@@ -591,24 +593,7 @@ body {
 
 			<div class="bottom_area">
 				<table id="reply_table">
-					<!--                     <tr> -->
-					<!--                         <td>백준왕(작성자)</td> -->
-					<!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->
-					<!--                         <td>23.06.02.22:10</td> -->
-					<!--                         <td><button class="selectBtn">채택</button></td> -->
-					<!--                     </tr> -->
-					<!--                     <tr> -->
-					<!--                         <td>백준왕(작성자)</td> -->
-					<!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->
-					<!--                         <td>23.06.02.22:10</td> -->
-					<!--                         <td><button class="selectBtn">채택</button></td> -->
-					<!--                     </tr> -->
-					<!--                     <tr> -->
-					<!--                         <td>백준왕(작성자)</td> -->
-					<!--                         <td>급해서 그런데.. 답변 좀 빨리 부탁 드립니다ㅠ</td> -->
-					<!--                         <td>23.06.02.22:10</td> -->
-					<!--                         <td><button onclick="choice();">채택</button></td> -->
-					<!--                     </tr> -->
+
 				</table>
 				<div class="reply_insert">
 					<c:choose>
