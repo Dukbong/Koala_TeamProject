@@ -15,11 +15,12 @@
 		<result column="SETTING_CODE" property="setting.settingCode"/>
 		<result column="TITLE" property="board.title"/>
 		<result column="USER_ID" property="member.userId"/>
+		<result column="NICKNAME" property="member.nickName"/>
 		<result column="CREATE_DATE" property="board.createDate"/>
 		<result column="CONTENT" property="board.content"/>
+		<result column="REF_SNO" property="errorBoard.refSno"/>
 		<result column="MODIFIED_CODE" property="errorBoard.modifiedCode"/>
 		<result column="MODIFIED_INFO" property="errorBoard.modifiedInfo"/>
-		<result column="INPUT" property="setting.input"/>
 	</resultMap>
 
 	<!-- 전체 개수를 알기 위해 별도의 VO를 작성 -->
@@ -259,7 +260,7 @@
 	</update>
 	<select id="selectIssueDetail" resultMap="issuesDetailResultSet">
 		<!-- 세팅 작성 페이지가 완성되지 않았기 때문에 아직 모른다. -->
-		select c.setting_No,c.sort_description,b.board_no, c.setting_title, c.setting_version, b.board_writer, b.title, m.user_id, b.create_date, c.setting_info, c.setting_code, b.content, e.modified_code, e.modified_info, c.input
+		select e.ref_sno, c.setting_No,c.sort_description,b.board_no, c.setting_title, c.setting_version, b.board_writer, b.title, m.user_id,m.nickName, b.create_date, c.setting_info, c.setting_code, b.content, e.modified_code, e.modified_info
 		from error_board e
 		join create_setting c on (ref_sno = setting_no)
 		join board b on (b.board_no = e.ref_bno)
@@ -431,5 +432,8 @@
 	</insert>
 	<select id="listDetail" resultMap="settingMapper.settingResultSet">
 		SELECT * FROM CREATE_SETTING WHERE SETTING_NO = #{settingNo}
+	</select>
+	<select id="selectprevSetting" resultMap="settingMapper.settingResultSet">
+		SELECT c.* FROM CREATE_SETTING C JOIN ERROR_BOARD E ON (REF_SNO = SETTING_NO) WHERE REF_SNO = #{refSno} and rownum =1
 	</select>
 </mapper>

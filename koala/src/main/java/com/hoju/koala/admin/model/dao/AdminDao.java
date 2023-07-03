@@ -228,4 +228,8 @@ public class AdminDao {
 	public int updateSettingEtc(Setting setting, SqlSession sqlSession) {
 		return sqlSession.update("adminMapper.updateSettingEtc", setting);
 	}
+
+	public Setting selectprevSetting(int refSno, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectprevSetting", refSno);
+	}
 }
