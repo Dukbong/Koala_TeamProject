@@ -161,7 +161,7 @@
 	</script>
 	
     <div class="createSettingForm">
-        <form method="post" onsubmit="return checkSubmit()">
+        <form action="/koala/setting/insert" method="post" onsubmit="return checkSubmit()">
         
             <!--이름/작성자 영역-->
             <div class="libraryName-author-area">
@@ -231,21 +231,21 @@
             </div>
         </form>
         <script>
-	        function checkSubmit(event){
+	        function checkSubmit(){
 	        	/*
 		        	| : 선택사항과 입력사항을 구분
 		        	/ : 큰 단위의 옵션 구분 
 		        	- : 선택사항 안 옵션사항 시작 기호
 		        	, : 선택사항 안 옵션사항 구분 
 	        	*/
-	        	event.preventDefault();
-	        	var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+	        	//event.preventDefault();
+	        	//var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 	        		  // Codemirror 설정 옵션
-	        	});
-	        	if (editor.getValue() === "") {
-	        		editor.prop("required", true); 
-	        		/* editor.focus(); */
-	        	}
+	        	//});
+	        	//if (editor.getValue() === "") {
+	        	//	editor.prop("required", true); 
+	        	//	/* editor.focus(); */
+	        	//}
 	        	
 	        	var str = "";
 	  		  
@@ -282,7 +282,7 @@
 	  		    
 	  		    $("input[name='input']").val(str);
 				
- 	  		    return false;
+ 	  		    return true;
 	  	    }
         </script>
     </div>

@@ -496,6 +496,7 @@
 			$(".modal").on("hidden.bs.modal", function(){
 				$("#searchList").html("");
 			});
+			
 		});
 	</script>
 	
@@ -554,7 +555,7 @@
 				//sockJS = new SockJS("/chat");
 			//});
 			
-			sockJS.onopen = function(){
+			/* sockJS.onopen = function(){
 				console.log("sockjs open");
 			}
 			
@@ -564,7 +565,7 @@
 						
 			sockJS.onerror = function(){
 				console.log("sockjs error");
-			}
+			} */
 			
 			//sockJS.onmessage = function(data){
 				
@@ -608,6 +609,7 @@
 				//sockJS.send(msg);
 			});
 		    
+			
 			
 		});
 		

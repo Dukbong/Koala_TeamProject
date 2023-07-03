@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -200,6 +201,17 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.selectContributions(sqlSession, userNo);
 	}
+	
+	//(관리자,서포터즈) libList 조회
+	@Override
+	public ArrayList<Board> libList(PageInfo pi, String userId) {
+		
+		ArrayList<Board> libList = memberDao.libList(sqlSession, pi, userId);
+		
+		return libList;
+	}
+	
+	
 	//로그인 시 출석 등록
 	@Override
 	public void attendance(int userNo) {
@@ -302,6 +314,38 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+
+	@Override
+	public int selectlibCount(String userId) {
+
+		int result = memberDao.selectlibCount(sqlSession, userId);
+		
+		return result;
+	}
+
+	
+	//로그인 유저 서포터즈 판별
+	@Override
+	public int selectSup(int userNo) {
+
+		int result = memberDao.selectSup(sqlSession, userNo);
+		
+		return result;
+	}
+
+
+	//해당 유저 서포터즈인지 확인
+	@Override
+	public Supporters selectSupport(String userId) {
+
+		Supporters sup = memberDao.selectSupport(sqlSession, userId);
+		
+		return sup;
+	}
+
+
+	
 
 
 
