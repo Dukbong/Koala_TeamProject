@@ -197,7 +197,8 @@
 	<!-- contributions 조회 -->
 	<select id="selectContributions" resultMap="attendanceResultSet">
 		SELECT ATT_DATE,
-			   ATT_LEVEL
+			   ATT_LEVEL,
+			   PRE_POINT
 		FROM ATTENDANCE
 		WHERE REF_UNO = #{userNo}
 	</select>
@@ -219,7 +220,10 @@
 		                             FROM MEMBER M
 		                             WHERE M.USER_NO = A.REF_UNO)>200 THEN 2
 		                       ELSE 1
-		                       END
+		                       END,
+		A.PRE_POINT = (SELECT M.POINT-A.PRE_POINT
+                       FROM MEMBER M
+                       WHERE M.USER_NO = A.REF_UNO)
 		WHERE A.ATT_DATE = TRUNC(SYSDATE-1)
 	</update>
 	

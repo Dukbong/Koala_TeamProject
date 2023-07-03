@@ -13,6 +13,14 @@
     <link href="/koala/resources/codemirror-5.53.2/theme/3024-night.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
 	<style>
+		div{ box-sizing: border-box;}
+    	.enroll-outer{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
+    	.enroll-outer>div{width: 100%;}
+    
+    	.total-area{height: 750px;}
+    	.total-area>div{height: 100%; float: left;}
+    	.board-area, .reply-area{width: 42%;}
+    	.space{width: 16%;}
         * {
             padding:0;
             margin:0;
@@ -53,6 +61,7 @@
             font-family: Arial, monospace;
             font-size: 25px;
             border: 1px solid white;
+            z-index: 0;
         }
         #submmit{
             position: relative;
@@ -67,7 +76,6 @@
     <%@include file="../../common/header.jsp" %>
     <div class="enroll-outer">
         <div class="inner-outer">
-        	<br>
         	<h1 align="center">let updateBoard</h1>
             <br><br>
             <form id="myForm" onsubmit="return submitForm();" method="POST" enctype="multipart/form-data">

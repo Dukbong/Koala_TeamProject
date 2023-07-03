@@ -34,7 +34,7 @@
     #wrap{
         width: 1500px;
     	position: absolute;
-    	z-index: 1;
+    	z-index: 5;
     }
     #wrap>div{
     	width: 100%;
@@ -354,6 +354,10 @@
                 		<c:when test='${path.contains("qnaBoard")}'>
                 		<!-- koala/qnaBoard/~~~ >> 지수 -->                		
 	                		<h4 class="headerName" onclick="qnaBoardPage();">QnaBoard</h4>
+                		</c:when>
+                		<c:when test='${path.contains("bulletinBoard")}'>
+                		<!-- BulletinBoard -->                		
+	                		<h4 class="headerName" onclick="bulletinBoardPage();">BulletinBoard</h4>
                 		</c:when>
                 		<c:when test='${path.contains("createSetting")}'>
                 		<!-- koala/createSetting/~~~ >> 공통 -->                		
@@ -703,6 +707,10 @@
         // qnaBoard page ()
        	function qnaBoardPage(){
         	location.href = "/koala/qnaBoard/list";
+        }
+     	// bulletinBoard page ()
+       	function bulletinBoardPage(){
+        	location.href = "/koala/bulletinBoard/list";
         }
         // main으로 Page()
         function mainPage(){

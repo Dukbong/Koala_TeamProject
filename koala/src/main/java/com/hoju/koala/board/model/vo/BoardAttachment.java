@@ -19,6 +19,7 @@ public class BoardAttachment {
 	private String changeName; //변경된파일명
 	private String filePath; //파일경로
 	private Date uploadDate; //업로드일
+	private Date deleteDate; //삭제일
 	private int fileLevel; //파일레벨(썸네일)
 	private String status; //활성화
 

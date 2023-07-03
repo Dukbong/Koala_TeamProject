@@ -141,4 +141,10 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.deleteReply(sqlSession, replyNo);
 	}
 
+	@Override //닉네임으로 아이디 구하기
+	public String selectId(String nickName) {
+		
+		return ebDao.selectId(sqlSession, nickName);
+	}
+
 }
