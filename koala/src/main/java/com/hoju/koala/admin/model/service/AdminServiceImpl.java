@@ -259,6 +259,33 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.disapprovelib(settingNo, sqlSession);
 	}
 
+	@Override
+	public int updateIssueSuccess(int boardNo) {
+		return adminDao.updateIssueSuccess(boardNo, sqlSession);
+	}
+
+	@Override
+	public int updateSetting(Setting setting) {
+		System.out.println("service");
+		System.out.println(setting);
+		return adminDao.updateSetting(setting, sqlSession);
+	}
+
+	@Override
+	public Setting listDetail(int settingNo) {
+		return adminDao.listDetail(settingNo, sqlSession);
+	}
+
+	@Override
+	public int updateIssueDate(int boardNo) {
+		return adminDao.updateIssueDate(boardNo, sqlSession);
+	}
+
+	@Override
+	public int updateSettingEtc(Setting setting) {
+		return adminDao.updateSettingEtc(setting, sqlSession);
+	}
+
 
 
 

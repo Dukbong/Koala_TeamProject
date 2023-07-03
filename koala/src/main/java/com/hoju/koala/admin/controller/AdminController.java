@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,7 +81,6 @@ public class AdminController {
 	@ResponseBody
 	public String adminSupportersDelete(String userId, Model model) {
 		int result = adminService.deleteSupporter(userId);
-		System.out.println("demote");
 		return new Gson().toJson(String.valueOf(result));
 	}
 
@@ -96,16 +97,14 @@ public class AdminController {
 	@GetMapping("/waitlibApprove")
 	@ResponseBody
 	public int waitlibApprove(int settingNo) {
-		int result = adminService.approvelib(settingNo);
-		return result;
+		return adminService.approvelib(settingNo);
 	}
 	
 	// 거절
 	@GetMapping("/waitlibdisapprove")
 	@ResponseBody
 	public int waitlibdisapprove(int settingNo) {
-		int result = adminService.disapprovelib(settingNo);
-		return result;
+		return adminService.disapprovelib(settingNo);
 	}
 
 	@GetMapping("/errorcheck.list")
@@ -161,15 +160,24 @@ public class AdminController {
 	}
 	
 	@GetMapping("/issuesDetail")
-	public ModelAndView adminIssuesDetail(String settingTitle, ModelAndView mav) {
-		System.out.println(settingTitle);
-		ArrayList<SettingDetail> errorBoard = adminService.selectIssueDetail(settingTitle);
-		System.out.println(errorBoard);
-		mav.addObject("issueDetail", errorBoard);
-		mav.setViewName("admin/issueDetail");
-		return mav;
+	public ModelAndView adminIssuesDetail(String settingTitle, ModelAndView mav,
+										  @RequestParam(value = "page", required=false, defaultValue="1") int page) {
+		ArrayList<SettingDetail> issueDetail = adminService.selectIssueDetail(settingTitle);
+		// 클릭시 해당 내용 가지고 수정 폼으로 이동
+		try {			
+			mav.addObject("issueDetail", issueDetail.get(page-1));
+			System.out.println(issueDetail.get(page-1));
+			mav.addObject("size", issueDetail.size());
+			mav.addObject("page",page);
+			mav.setViewName("admin/issueDetail");
+			return mav;
+		}catch (Exception e) {
+			mav.addObject("size", issueDetail.size());
+			mav.setViewName("redirect:issuearea.list");
+			return mav;
+		}
 	}
-	
+
 	
 	@GetMapping("/errorDetail")
 	public String adminErrorDetail(String settingTitle, Model m,
@@ -178,6 +186,7 @@ public class AdminController {
 		try {			
 			m.addAttribute("errorSet", pickError.get(page-1));
 			m.addAttribute("size", pickError.size());
+			m.addAttribute("page",page);
 			return "admin/errorDetail";
 		}catch(Exception e) {
 			m.addAttribute("size", pickError.size());
@@ -185,14 +194,19 @@ public class AdminController {
 		}
 	}
 	
+	@GetMapping("/listDetail")
+	public String listDetail(int settingNo, Model m) {
+		Setting setting = adminService.listDetail(settingNo); // null 나옴!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		System.out.println(setting);
+		m.addAttribute("detail", setting);
+		return "admin/listDetail";
+	}
+	
 	@GetMapping("/errorDivision")
 	@ResponseBody
 	public int adminErrorDivision(String tag, int bno) {
-		System.out.println(tag);
-		System.out.println(bno);
 		ErrorDivision ed = ErrorDivision.builder().tagName(tag).boardNo(bno).build();
-		int result = adminService.updateErrorType(ed);
-		return result; 
+		return adminService.updateErrorType(ed);
 	}
 	
 	// 모드를 쿠키로 저장할 메서드
@@ -206,5 +220,35 @@ public class AdminController {
 		return new Gson().toJson(cookie);
 	}
 	
+	@PostMapping("issuesSuccess")
+	@ResponseBody
+	@Transactional
+	public int issuesSuccess(int boardNo, Setting setting, int boardWriter) {
+		String version1 = setting.getSettingVersion();
+		int version2 = Integer.parseInt(version1.replace(".", ""))+1;
+		String[] version3 = String.valueOf(version2).split("");
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < version3.length; i++) {
+			sb.append(version3[i]);
+			if(i != version3.length-1)
+			sb.append(".");
+		}
+		setting.setSettingVersion(sb.toString());
+		setting.setRefUno(boardWriter);
+		if(setting.getSettingCode().equals("")) {
+			setting.setSettingCode(" ");
+		}
+		if(setting.getSettingInfo().equals("")) {
+			setting.setSettingInfo(" ");
+		}
+			
+		System.out.println("확인용");
+		System.out.println(setting);
+		System.out.println("=======================================");
+		int result1 = adminService.updateIssueSuccess(boardNo);
+		int result2 = adminService.updateIssueDate(boardNo);
+		int result3 = adminService.updateSetting(setting);
+		return result1 * result2 * result3;
+	}
 
 }
