@@ -90,4 +90,13 @@ public interface BulletinBoardService {
 	//게시글 수정 메소드
 	int updateBoard(Board b);
 
+	//첨부파일 삭제 예정 조회 메소드
+	ArrayList<BoardAttachment> selectDeleteAttachment();
+
+	//게시글 삭제 예정 조회 메소드
+	ArrayList<Board> selectDeleteBoard();
+
+	//게시글 삭제 예정 삭제 메소드
+	int deleteScheduledBoard(int boardNo);
+
 }

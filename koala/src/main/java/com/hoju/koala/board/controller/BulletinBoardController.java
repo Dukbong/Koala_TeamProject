@@ -135,9 +135,7 @@ public class BulletinBoardController {
 	@ResponseBody
  	@RequestMapping(value="like",produces="application/json;charset=UTF-8")
  	public int Like(int boardNo,int select,int loginUser) {	
-		System.out.println("boardNo:"+ boardNo);
-		System.out.println("select:"+ select);
-		System.out.println("loginUser:"+ loginUser);
+
 		Liked liked = Liked.builder().refUno(loginUser).refBno(boardNo).build();
 		
 		if(select==1) {
@@ -205,7 +203,11 @@ public class BulletinBoardController {
 				ba.setRefBno(boardNo);
 				result = bbService.insertBoardAttachment(ba);
 				if(result!=1) {
-					new File(session.getServletContext().getRealPath(ba.getFilePath())+"/"+ba.getChangeName()).delete();
+					if(new File(session.getServletContext().getRealPath(ba.getChangeName())).delete()){
+						System.out.println("파일이 성공적으로 삭제되었습니다.");
+					}else {
+						System.out.println("파일 삭제에 실패했습니다.");
+					}
 					model.addAttribute("errorMsg","첨부파일 저장 실패");
 					return "common/errorPage";
 				}
@@ -257,17 +259,25 @@ public class BulletinBoardController {
 	            list.add(replacement);
 			}
 		}
-		String pattern = "src=\"([^\\\"]*)\""; 
+		String pattern = "src=\"(?!\\/koala\\/)[^\"]*\""; 
+		String content = subContent;
+		
 		if(!list.isEmpty()) {
 			for (String replacement : list) {
-				subContent = subContent.replaceFirst(pattern, replacement);
+				content = content.replaceFirst(pattern, replacement);
 			}
 		}
 		
-		for(int i = 0; i<existedFiles.length; i++) {
-			if(!subContent.contains(existedFiles[i])) {
-				new File(session.getServletContext().getRealPath(filePath[i]+"/"+existedFiles[i])).delete();
-				result = bbService.deleteAttachment(existedFiles[i]);
+		if(existedFiles!=null) {
+			for(int i = 0; i<existedFiles.length; i++) {
+				if(!subContent.contains(existedFiles[i])) {
+					if(new File(filePath[i]+"/"+existedFiles[i]).delete()) {
+						System.out.println("파일이 성공적으로 삭제되었습니다.");
+					}else {
+						System.out.println("파일 삭제에 실패했습니다.");
+					}
+					result = bbService.deleteAttachment(existedFiles[i]);
+				}
 			}
 		}
 		if(!baList.isEmpty()) {
@@ -276,42 +286,53 @@ public class BulletinBoardController {
 			}
 		}
 		
-		String content = subContent;
 		b.setContent(content);
 		int result3 = 0;
 		
 		if(result*result2!=0) {
 			result3 = bbService.updateBoard(b);
 			if(result2==0) {
-				session.setAttribute("errorMsg","게시글 작성 실패");
+				model.addAttribute("errorMsg","게시글 작성 실패");
 				return "common/errorPage";
 			}else {
 				model.addAttribute("alertMsg","게시글 작성 성공");
 				return "redirect:/bulletinBoard/detail?boardNo="+b.getBoardNo();
 			}
 		}else {
-			session.setAttribute("errorMsg","첨부파일 저장 실패");
+			model.addAttribute("errorMsg","첨부파일 저장 실패");
 			return "common/errorPage";
 		}
 	}
 	
 	//글 삭제 메소드
 	@RequestMapping("delete")
-	public ModelAndView deleteBoard(int boardNo,String filePath, HttpSession session,ModelAndView mv) {
+	public String deleteBoard(int boardNo, HttpSession session, Model model) {
 		
-		//삭제대해서 물어보기
  		int result = bbService.deleteBoard(boardNo);
- 		
+ 		ArrayList<BoardAttachment> baList = bbService.selectBoardAttachment(boardNo);
  		if(result>0) {
- 			if(!filePath.equals("")) {//넘어온 파일정보가 있을때
- 				new File(session.getServletContext().getRealPath(filePath)).delete();
+ 			if(!baList.isEmpty()) {
+ 				for(BoardAttachment ba:baList) {
+ 					System.out.println(ba);
+ 					String existedFiles = ba.getChangeName();
+ 					int result2 = bbService.deleteAttachment(existedFiles);
+ 					//스케줄러가 처리
+// 					new File(session.getServletContext().getRealPath(ba.getFilePath())+"/"+ba.getChangeName()).delete();
+// 					String filePaths = (ba.getFilePath())+"/"+ba.getChangeName();
+// 					File file = new File(filePaths);
+// 					if (file.delete()) {
+// 			            System.out.println("파일이 성공적으로 삭제되었습니다.");
+// 			        } else {
+// 			            System.out.println("파일 삭제에 실패했습니다.");
+// 			        }
+ 				}
  			}
- 			session.setAttribute("alertMsg", "게시글 삭제 완료");
- 			mv.setViewName("redirect:bulletinboard.bo");
+ 			model.addAttribute("alertMsg", "게시글 삭제 완료");
+ 			return "redirect:/bulletinBoard/list";
  		}else {
- 			mv.addObject("errorMsg","게시글 삭제 실패").setViewName("common.errorPage");
+ 			model.addAttribute("errorMsg", "게시글 삭제 실패");
+ 			return "common.errorPage";
  		}
- 		return mv;
 	}
 	
 	//댓글 삭제 수정 메소드

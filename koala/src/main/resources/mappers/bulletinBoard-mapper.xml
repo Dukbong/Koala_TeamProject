@@ -74,10 +74,10 @@
 			AND USER_ID		
 		</if>
 		<if test="types == 'content'">
-			AND BOARD_CONTENT
+			AND CONTENT
 		</if>
 		<if test="types == 'title'">
-			AND BOARD_TITLE
+			AND TITLE
 		</if>
 		LIKE '%'||#{keyword}||'%'
 	</select>
@@ -137,7 +137,8 @@
 	
 	<update id="deleteBoard">
 		UPDATE BOARD
-		SET STATUS = 'N'
+		SET STATUS = 'N',
+			MODIFY_DATE = SYSDATE
 		WHERE BOARD_NO = #{boardNo}
 	</update>
 	
@@ -210,6 +211,26 @@
 		WHERE CHANGE_NAME = #{existedFiles}
 	</update>
 	
+	<select id="selectDeleteAttachment" resultMap="boardAttachmentResultSet">
+		SELECT FILE_PATH, CHANGE_NAME
+		FROM BOARD_ATTACHMENT
+		WHERE STATUS = 'N'
+		AND SYSDATE - DELETE_DATE > 30
+	</select>
+	
+	<select id="selectDeleteBoard" resultMap="boardResultSet">
+		SELECT FILE_PATH, CHANGE_NAME
+		FROM BOARD_ATTACHMENT
+		WHERE STATUS = 'N'
+		AND SYSDATE - MODIFIED_DATE > 30
+	</select>
+	
+	<delete id="deleteScheduledBoard">
+		DELETE FROM BOARD
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'N'
+	</delete>
+	
 	<!-- 공통으로 사용할 게시판 관련 resultMap -->
 	
 	<resultMap type="board" id="boardResultSet">
@@ -235,6 +256,7 @@
 		<result column="CHANGE_NAME" property="changeName"/>
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPLOAD_DATE" property="uploadDate"/>
+		<result column="DELETE_DATE" property="deleteDate"/>
 		<result column="FILE_LEVEL" property="fileLevel"/>
 		<result column="STATUS" property="status"/>
 	</resultMap>
