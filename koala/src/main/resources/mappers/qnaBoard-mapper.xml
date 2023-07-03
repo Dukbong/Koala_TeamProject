@@ -41,6 +41,12 @@
 	<result column="STATUS" property="status"/>
 	</resultMap>
 	
+	<resultMap type="qnaSelect" id="qnaReplySelectResultSet">
+	<result column="REPLY_NO" property="replyNo"/>
+	<result column="REF_BNO" property="refBno"/>
+	<result column="REPLY_SELECT" property="replySelect"/>
+	</resultMap>
+	
 	<resultMap type="liked" id="qnaLikedResultSet">
 	<result column="REF_UNO" property="refUno"/>
 	<result column="REF_BNO" property="refBno"/>
@@ -165,6 +171,15 @@
 		AND R.STATUS = 'W'
 		ORDER BY R.CREATE_DATE DESC
 	</select>
+	
+	<select id="selectQnAReply" resultMap="qnaReplySelectResultSet">
+		SELECT REPLY_NO,
+			   REF_BNO,
+			   REPLY_SELECT
+		FROM QNA_SELECT R
+		WHERE REF_BNO = #{boardNo}
+	</select>
+	
 	
 	<!-- 댓글 작성 insert문 -->
 	<insert id="insertReply">
@@ -370,5 +385,7 @@
 		AND STATUS = 'Y'
 		AND CATEGORY = 'Y'
 	</update>
+	
+	
 	
 </mapper>
