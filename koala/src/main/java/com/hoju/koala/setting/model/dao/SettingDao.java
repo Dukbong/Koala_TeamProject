@@ -21,6 +21,10 @@ public class SettingDao {
 		
 		return sqlSession.selectOne("settingMapper.selectSetting", settingNo);
 	}
+	public Setting selectSetting(SqlSessionTemplate sqlSession, String settingTitle) {
+		
+		return sqlSession.selectOne("settingMapper.selectSetting", settingTitle);
+	}
 
 	//버전정보와 
 	public ArrayList<Setting> selectVersionList(SqlSessionTemplate sqlSession, String settingTitle) {
@@ -40,10 +44,27 @@ public class SettingDao {
 		return (ArrayList)sqlSession.selectList("settingMapper.searchSetting", input);
 	}
 
+<<<<<<< HEAD
 	public int deletelib(SqlSessionTemplate sqlSession, int settingNo) {
 		return sqlSession.delete("settingMapper.deletelib",settingNo);
 	}
 
+=======
+	//라이브러리 작성 메소드
+	public int insertSetting(SqlSessionTemplate sqlSession, Setting setting) {
+		
+		return sqlSession.insert("settingMapper.insertSetting", setting);
+	}
+
+	//기존 버전 찾기
+	public String selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+		
+		return sqlSession.selectOne("settingMapper.selectVersion", settingTitle);
+	}
+
+	
+
+>>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
 	
 	
 

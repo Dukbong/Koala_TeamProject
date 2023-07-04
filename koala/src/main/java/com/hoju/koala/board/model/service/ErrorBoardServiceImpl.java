@@ -16,9 +16,6 @@ import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class ErrorBoardServiceImpl implements ErrorBoardService {
 	
@@ -145,6 +142,12 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	public String selectId(String nickName) {
 		
 		return ebDao.selectId(sqlSession, nickName);
+	}
+
+	@Override //유저에러 해결완료
+	public int updateSolved(int boardNo) {
+		
+		return ebDao.updateSolved(sqlSession, boardNo);
 	}
 
 }

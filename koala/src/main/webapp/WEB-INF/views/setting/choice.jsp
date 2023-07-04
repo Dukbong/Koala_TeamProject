@@ -15,11 +15,7 @@
     .wrapper{
         width: 100%;
         height: 1200px;
-<<<<<<< HEAD
         padding-top:200px;
-=======
-        padding-top: 200px;
->>>>>>> be42c1181fae810ef1726b57fc5f40528534887b
     }
     .body_content{
         display: flex;
@@ -414,7 +410,7 @@
 //      	$("#driverUrlInput").val(inputValues[1]);
 //      	$("#userNameInput").val(inputValues[2]);
 //      	$("#passwordInput").val(inputValues[3]);
-
+		
     </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

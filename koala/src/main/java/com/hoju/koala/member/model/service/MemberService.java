@@ -2,6 +2,7 @@ package com.hoju.koala.member.model.service;
 
 import java.util.ArrayList;
 
+import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -66,6 +67,10 @@ public interface MemberService {
 	//========================================================= 설희
 	//해당 유저의 contributions 조회
 	ArrayList<Attendance> selectContributions(int userNo);
+	
+	//(관리자,서포터즈) libList 조회
+	ArrayList<Board> libList(PageInfo pi, String userId);
+	
 	//로그인 시 출석 등록
 	void attendance(int userNo);
 
@@ -94,6 +99,16 @@ public interface MemberService {
 	int selectllCount(String userId);
 
 	int selectflCount(String userId);
+
+	int selectlibCount(String userId);
+
+	//로그인 유저 서포터즈 판별
+	int selectSup(int userNo);
+
+	//해당 유저 서포터즈 인지 확인
+	Supporters selectSupport(String userId);
+
+	
 
 	
 

@@ -216,7 +216,7 @@
 	
 	
 	/* =====================================설희 작성 */
-	.contributions-outer{width: 100%; height: 560px; padding: 20px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
+	.contributions-outer{width: 100%; height: 560px; padding: 20px; margin-top:25px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
 	.contributions-area{width: 100%; height: 90%;}
 	.contributions-area>table{width: 1100px; margin: auto;}
 	.contributions-area>table tr{height: 38px;}
@@ -266,7 +266,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 	
-    <div id="outer" >
+    <div id="outer">
 
         <div id="content">
             <div id="content1">
@@ -284,6 +284,9 @@
                     <div id="nickname">
                     	<div id="nickname-box">
 	                        <span>${user.nickName }</span>
+	                        <c:if test="${adSup ne null }">
+		                        <i class="fa-solid fa-handshake-angle fa-bounce"></i>
+	                        </c:if>
                     	</div>
                     </div>
                 </div>
@@ -321,8 +324,20 @@
                 			<c:if test="${user ne loginUser }">
                 				<th><button id="follow" class="btn btn-secondary">Follow</button></th>
                 			</c:if>
+                			<c:if test="${(user eq loginUser) and ((adSup != null) or (loginUser.type == 2)) }">
+                				<th><button id="libList" class="btn btn-success">Library Manage</button></th>
+                			</c:if>
                 		<tr>
                 	</table>
+                	
+                	<script>
+                		$(function(){
+                			$("#libList").on("click", function(){
+                				
+                				location.href = "/koala/member/libList?userId=${user.userId}";
+                			});
+                		});
+                	</script>
                 	
                 	<c:if test="${not empty loginUser && not empty user }">
                 	<script>
@@ -449,7 +464,8 @@
 													<td>자유게시판</td>
 												</c:when>
 											</c:choose>
-											<td>${b.title }</td>
+											<td>${b.title }&nbsp;&nbsp;
+												<c:if test="${b.userError eq 'Y' }"><button class="solvedBtn">해결완료</button></c:if></td>
 											<td>${b.createDate }</td>
 											<td>${b.liked }</td>
 											<td>${b.count }</td>
@@ -617,6 +633,43 @@
 							</div>
                 		</c:when>
                 		
+                		<c:when test="${not empty libList}">
+                			<table class="rel-board" style="color:white;">
+                				<thead>
+									<tr>
+										<th scope="col" width="10">No.</th>
+										<th scope="col" width="300">제목</th>
+										<th scope="col" width="60">버전</th>
+										<th scope="col" width="60">작성일</th>
+										<th scope="col" width="30">상태</th>
+									</tr>
+								</thead>
+								
+	                			<tbody>
+	                				<c:forEach var="lib" items="${libList }">
+										<tr>
+											<input type="hidden" value="${lib.settingNo }">
+											<th scope="row">${lib.settingNo }</th>
+											<td>${lib.settingTitle }</td>
+											<td>${lib.settingVersion }</td>
+											<td>${lib.createDate }</td>
+											<c:choose>
+												<c:when test="${lib.status eq 'Y' }">
+													<td style="color: green;">On</td>
+												</c:when>
+												<c:when test="${lib.status eq 'W' }">
+													<td style="color: orange;">Wait</td>
+												</c:when>
+												<c:when test="${lib.status eq 'N' }">
+													<td style="color: red;">Off</td>
+												</c:when>
+											</c:choose>
+										</tr>
+									</c:forEach>
+	                			</tbody>
+                			</table>
+                		</c:when>
+                		
                 		<c:otherwise>
                 			<table class="table table-hover" style="color:white;">
                 				<thead>
@@ -673,16 +726,32 @@
 	                		location.href = "/koala/member/ad?userId="+uid;
 	                	});
 	                	
+
+	                	//세팅페이지로 넘기기
+	                	$("#result-area>.rel-board>tbody>tr").on("click", function(){
+	                		
+	                		location.href = "/koala/setting/detail?settingNo="+$(this).find("input[type=hidden]").val();
+	                	});
+
+	                	
 	                	//=====================================설희 작성
+	                	//모달창 관련
           				$(".contributions-area>table td").mouseover(function(){
           					$(this).find(".tolltip").css("display", "block");
           				})
           				$(".contributions-area>table td").mouseleave(function(){
           					$(this).find(".tolltip").css("display", "none");
           				})
+          				//해결완료 버튼 클릭 시
+          				$(".rel-board ").on("click", "button", function(){
+          					var boardNo = $(this).parent().siblings().eq(0).val();
+          					location.href = "/koala/errorBoard/updateSolved?boardNo="+boardNo;
+          				});
+
 	            	});
                 </script>
                 
+                <c:if test="${empty calList }">
                 <div class="bottom_area">
 		            <ul>
 		            	<c:choose>
@@ -708,6 +777,7 @@
 		            	
 		            </ul>
 		        </div>
+		        </c:if>
             </div>
         </div>
 

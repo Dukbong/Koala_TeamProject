@@ -96,7 +96,7 @@
 					})
 				})
 				
-				//수정폼 카테고리 옵션 변경    //계속 실행되는건데 괜찮은지?
+				//수정폼 카테고리 옵션 변경 (매번 스크롤 될때마다 실행되는 메소드 괜찮은지)
 				$(window).scroll(function(){
 					if($(".modifyForm-area_code").css("display")=="block" && ($(".modifyForm-area_info").css("display")=="block")){
 						$(".modifyBtn-area").css("display", "none");
@@ -196,7 +196,7 @@
 			
 			<div class="modifyBtn-area">
 				<span style="color: rgb(241, 196, 15);">modify form</span>
-				<select name="category"> <!-- 이 값은 무시  -->
+				<select name="category"> <!-- 이 값은 받지 않음 -->
 					<option value="">--참고자료--</option>
 					<option value="code">코드</option>
 					<option value="info">설명서</option>

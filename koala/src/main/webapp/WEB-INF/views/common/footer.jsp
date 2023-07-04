@@ -91,7 +91,7 @@
         <div class="column">
             <div class="item itemhade">Why Koala</div>
             <div class="item">
-                <a class="footerAtag ii"  href="#">DownLoad & Copy</a>
+                <a class="footerAtag ii"  href="/koala/setting/list">Library Helper</a>
             </div>
             <div class="item">
                 <a class="footerAtag ii" href="/koala/errorBoard/list">Error_Board</a>

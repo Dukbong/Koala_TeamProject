@@ -165,7 +165,6 @@
                 		</c:when>
                 	</c:choose>
 	            </div>
-	            
 				<div class="board-box">
 					<div id="title"><span>&nbsp;${eb.board.title }&nbsp;</span></div>
 					<div id="writerDate"><b>작성자</b> ${eb.board.boardWriter } &nbsp;|&nbsp; <b>작성일</b> ${eb.board.createDate }</div>
@@ -182,7 +181,6 @@
 	               	</div>
 	            </div>
 	            <div class="updateDeleteBtn">
-	            <!-- 작성자 로그인유저 조건걸기 -->
 	            	<c:if test="${eb.board.boardWriter.equals(loginUser.nickName) }">
 		            	<button type="button" id="updateBtn" onclick="updateBoard();">수정하기</button>
 		            	<button type="button" id="deleteBtn" onclick="deleteBoard();">삭제하기</button>
@@ -192,7 +190,7 @@
 	        <!-- 게시글 관련 스크립트 -->
 	        <script>
 		        function updateBoard(){
-		        	if('${eb.errorBoard.solved}'=='N' && '${eb.errorBoard.errorType}'=='N'){ //사용자 오류일 경우에 게시글 수정할 수 있게 할지
+		        	if('${eb.errorBoard.solved}'=='N' && '${eb.errorBoard.errorType}'=='N'){
 		        		location.href="updateForm?boardNo="+${eb.board.boardNo};
 		        	}else{
 		        		alert("해당 게시글은 관리자 확인이 완료되어 수정이 불가능합니다.");
@@ -266,9 +264,6 @@
 	        <!-- 댓글 관련 스크립트 -->
 		    <script>
 		    	$(function(){
-		    		//서포터즈 댓글 표시
-		    		
-		    		
 		    		//댓글 수정폼
 		    		$(".reply-table").on("click", "button[id='updateReply']", function(){
 		    			$(this).css("display", "none");
@@ -307,7 +302,7 @@
 		    		});
 		    		
 		    		//댓글 작성
-		    		$("#insertReply").on("click", function(){ //비회원 댓글 못달게 조건걸기
+		    		$("#insertReply").on("click", function(){
 	    			
 		    			$.ajax({
 		    				url : "insertReply",

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -109,6 +110,14 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
+			//서포터즈 판별
+			int result = memberService.selectSup(loginUser.getUserNo());
+			
+			if(result>0) {
+				log.debug("해당 유저는 Supporter 입니다.");
+				session.setAttribute("mSup", true);
+			}
+			
 			if (keepId != null && keepId.equals("on")) { //뷰의 체크박스가 체크된상태로 넘어오면
 	            // 아이디를 쿠키에 저장
 	            mCookie.setCookie(response, "saveId", loginUser.getUserId(), 604800); //쿠키수명 7일
@@ -129,7 +138,9 @@ public class MemberController {
 	//로그아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
+		
 		session.removeAttribute("loginUser");
+		session.removeAttribute("mSup");
 		
 		return "redirect:/";
 	}
@@ -177,6 +188,13 @@ public class MemberController {
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -433,6 +451,13 @@ public class MemberController {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
@@ -465,6 +490,13 @@ public class MemberController {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
@@ -496,6 +528,13 @@ public class MemberController {
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -531,6 +570,13 @@ public class MemberController {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
@@ -553,6 +599,13 @@ public class MemberController {
 											String userId) {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 				
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -565,6 +618,45 @@ public class MemberController {
 		mv.addObject("followCnt", cnt);
 		mv.addObject("calList", calList);
 		mv.setViewName("member/activityDetailPage");
+		
+		return mv;
+	}
+	
+	//활동내역 LikedList
+	@GetMapping("/libList")
+	public ModelAndView libList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+								  ModelAndView mv,
+								  String userId) {
+		
+		//페이징처리
+		int listCount = memberService.selectlibCount(userId);
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Board> libList = memberService.libList(pi, userId);
+		
+		mv.addObject("pi", pi);
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("libList", libList);
+		mv.addObject("kind", "libList");
+		mv.setViewName("member/activityDetailPage");
+		
 		
 		return mv;
 	}
