@@ -18,11 +18,11 @@ public interface SettingService {
 	//메인페이지 search
 	ArrayList<Setting> searchSetting(String input);
 
+	int deletelib(int settingNo);
 	//라이브러리 작성 메소드
 	int insertSetting(Setting setting);
 
 	//기존 버전 찾기
 	String selectVersion(String settingTitle);
-
 
 }

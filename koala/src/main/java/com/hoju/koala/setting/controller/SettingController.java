@@ -18,6 +18,7 @@ import com.hoju.koala.setting.model.service.SettingService;
 import com.hoju.koala.setting.model.vo.Setting;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.GetProxy;
 
 @Slf4j
 @RequestMapping("/setting")
@@ -59,7 +60,6 @@ public class SettingController {
 		//해당 세팅 들고오기
 		Setting s = stService.selectSetting(setting);
 		if(s != null) {
-			
 			model.addAttribute("setting", s);
 		}
 
@@ -70,8 +70,10 @@ public class SettingController {
 			model.addAttribute("vList", versionList);
 		}
 		
-
 		return "setting/choice";
+//		return "setting/description";
+
+//		return "setting/choice";
 
 	}
 	
@@ -181,5 +183,17 @@ public class SettingController {
 	    
 	    return newVersion;
 	}
+	
+	@GetMapping("/delete")
+	public String deletelib(int settingNo, Model model) {
+		int result = stService.deletelib(settingNo);
+		if(result > 0) {
+			return "redirect:list";
+		}else {
+			model.addAttribute("deleteError","오류로 인해 삭제가 되지 않았습니다.");
+			return "setting/libList";
+		}
+	}
+	
 	
 }
