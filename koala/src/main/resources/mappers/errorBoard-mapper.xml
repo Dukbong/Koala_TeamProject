@@ -212,12 +212,20 @@
 	</select>
 	
 	<!-- 버전 리스트 조회 -->
-	<select id="selectVersion" resultType="string">
+	<select id="selectVersionList" resultType="string">
 		SELECT SETTING_VERSION
 		FROM CREATE_SETTING
 		WHERE SETTING_TITLE = #{settingTitle}
 		AND STATUS IN ('Y','N')
 		ORDER BY 1 DESC
+	</select>
+	
+	<!-- 최신 버전 조회 -->
+	<select id="selectVersion" resultType="string">
+		SELECT MAX(SETTING_VERSION)
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		AND STATUS IN ('Y','N')
 	</select>
 	
 	<!-- 세팅 글번호 조회 -->
@@ -304,7 +312,7 @@
 		       NICKNAME,
                NVL2(GITHUB_ID, 'Y', 'N') SUPPORTERS,
 		       TO_CHAR(R.CREATE_DATE, 'YY/MM/DD AMHH:MI') AS CREATE_DATE,
-		       FILE_PATH||CHANGE_NAME AS MEMBER_IMAGE
+		       NVL(FILE_PATH||CHANGE_NAME, '/koala/resources/memberImage/default.jpg') AS MEMBER_IMAGE 
 		FROM REPLY R
 		JOIN MEMBER M ON(R.REPLY_WRITER = M.USER_NO)
 		LEFT JOIN MEMBER_IMAGE I ON(M.USER_NO = I.REF_UNO)

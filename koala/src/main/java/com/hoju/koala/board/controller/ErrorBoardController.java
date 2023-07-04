@@ -117,12 +117,22 @@ public class ErrorBoardController {
 	
 	//버전 리스트 조회
 	@ResponseBody
-	@RequestMapping(value="version", produces="text/json; charset=UTF-8")
-	public String selectVersion(String settingTitle) {
+	@RequestMapping(value="versionList", produces="text/json; charset=UTF-8")
+	public String selectVersionList(String settingTitle) {
 		
-		ArrayList<String> vList = ebService.selectVersion(settingTitle);
+		ArrayList<String> vList = ebService.selectVersionList(settingTitle);
 		
 		return new Gson().toJson(vList);  //이게 맞나?
+	}
+	
+	//최신 버전 조회
+	@ResponseBody
+	@RequestMapping(value="version")
+	public String selectVersion(String settingTitle) {
+		
+		String version = ebService.selectVersion(settingTitle);
+		
+		return version;
 	}
 	
 	//게시글 작성 메소드
