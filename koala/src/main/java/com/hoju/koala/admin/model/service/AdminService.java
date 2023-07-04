@@ -140,6 +140,8 @@ public interface AdminService {
 
 	Setting listDetail(int settingNo);
 
+	Setting selectprevSetting(int refSno);
+
 
 
 

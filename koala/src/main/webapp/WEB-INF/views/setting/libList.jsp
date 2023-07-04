@@ -75,10 +75,12 @@
 		        	<input type="hidden" value="${s.settingNo }">
 		            <div class="box_title">
 		                <span>${s.settingTitle }</span>
-		            </div>
-		                <c:if test="${(not empty loginUser) and (loginUser.type == 2)}">
-		                	<button onclick="location.href='/koala/setting/delete?settingNo=${s.settingNo}'" class="btn btn-danger">삭제</button>
+		                 <c:if test="${(not empty loginUser) and (loginUser.type == 2)}">
+		                 	<div style="padding-left:250px; display: inline"></div>
+		                	<button type="button" onclick="location.href='/koala/setting/delete?settingNo=${s.settingNo}'" class="btn btn-danger">삭제</button>
 		                </c:if>
+		            </div>
+		               
 		            <div class="box_content">
 		                <p>
 		                	${s.sortDescription }
@@ -97,7 +99,6 @@
     		$(function(){
     			$(".menubox").on("click", function(){
     				var settingNo = $(this).find("input[type=hidden]").val();
-    				
     				location.href="/koala/setting/detail?settingNo="+settingNo;
     			});
     		});

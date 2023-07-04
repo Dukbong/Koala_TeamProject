@@ -266,8 +266,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public int updateSetting(Setting setting) {
-		System.out.println("service");
-		System.out.println(setting);
 		return adminDao.updateSetting(setting, sqlSession);
 	}
 
@@ -284,6 +282,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateSettingEtc(Setting setting) {
 		return adminDao.updateSettingEtc(setting, sqlSession);
+	}
+
+	@Override
+	public Setting selectprevSetting(int refSno) {
+		return adminDao.selectprevSetting(refSno, sqlSession);
 	}
 
 
