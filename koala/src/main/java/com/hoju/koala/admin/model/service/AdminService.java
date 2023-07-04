@@ -144,6 +144,8 @@ public interface AdminService {
 
 	SettingDetail selectOneError(SettingDetail sd);
 
+	int updateSettingN(int settingNo);
+
 
 
 

@@ -242,6 +242,7 @@ public class AdminController {
 	@Transactional
 	public int issuesSuccess(int boardNo, Setting setting, int boardWriter) {
 		System.out.println(boardPack);
+		System.out.println("settingNO = " + setting.getSettingNo());
 		String version1 = setting.getSettingVersion();
 		int version2 = Integer.parseInt(version1.replace(".", ""))+1;
 		String[] version3 = String.valueOf(version2).split("");
@@ -266,6 +267,7 @@ public class AdminController {
 			result2 = adminService.updateIssueDate(boardPack.get(i));
 		}
 		int result3 = adminService.updateSetting(setting);
+		int result4 = adminService.updateSettingN(setting.getSettingNo());
 		if(result1*result2*result3 > 0) {
 			boardPack.clear();
 		}			

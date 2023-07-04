@@ -49,11 +49,10 @@
 		AND STATUS = 'Y'
 		ORDER BY SETTING_TITLE
 	</select>
-<<<<<<< HEAD
-	<select id="deletelib">
+	<delete id="deletelib">
 		DELETE FROM CREATE_SETTING
 		WHERE SETTING_NO = #{setting_no}
-=======
+	</delete>
 	
 	<!-- 라이브러리 작성 -->
 	<insert id="insertSetting">
@@ -61,14 +60,13 @@
 		VALUES(SEQ_SET.NEXTVAL, #{refUno}, #{settingTitle}, #{settingVersion}, #{sortDescription}, #{settingInfo}, #{settingCode}, #{input})
 	</insert>
 	
-	<!-- 기존버전 찾기 -->
-	<select id="selectVersion">
-		SELECT SETTING_VERSION
-		FROM CREATE_SETTING
-		WHERE SETTING_TITLE = #{settingTitle}
-		ORDER BY CREATE_DATE DESC
-		LIMIT 1
->>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
-	</select>
+	<!-- 기존버전 찾기  >> jang : resultMap이 필요-->
+<!-- 	<select id="selectVersion"> -->
+<!-- 		SELECT SETTING_VERSION -->
+<!-- 		FROM CREATE_SETTING -->
+<!-- 		WHERE SETTING_TITLE = #{settingTitle} -->
+<!-- 		ORDER BY CREATE_DATE DESC -->
+<!-- 		LIMIT 1 -->
+<!-- 	</select> -->
 
 </mapper>

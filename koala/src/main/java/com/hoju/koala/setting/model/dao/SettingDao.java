@@ -44,12 +44,10 @@ public class SettingDao {
 		return (ArrayList)sqlSession.selectList("settingMapper.searchSetting", input);
 	}
 
-<<<<<<< HEAD
 	public int deletelib(SqlSessionTemplate sqlSession, int settingNo) {
 		return sqlSession.delete("settingMapper.deletelib",settingNo);
 	}
 
-=======
 	//라이브러리 작성 메소드
 	public int insertSetting(SqlSessionTemplate sqlSession, Setting setting) {
 		
@@ -64,7 +62,6 @@ public class SettingDao {
 
 	
 
->>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
 	
 	
 

@@ -236,4 +236,8 @@ public class AdminDao {
 	public SettingDetail selectOneError(SettingDetail sd, SqlSession sqlSession) {
 		return sqlSession.selectOne("adminMapper.selectOneError", sd);
 	}
+
+	public int updateSettingN(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateSettingN", settingNo);
+	}
 }

@@ -295,6 +295,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectOneError(sd, sqlSession);
 	}
 
+	@Override
+	public int updateSettingN(int settingNo) {
+		return adminDao.updateSettingN(settingNo, sqlSession);
+	}
+
 
 
 

@@ -63,13 +63,11 @@ public class SettingServiceImpl implements SettingService {
 		return searchList;
 	}
 
-<<<<<<< HEAD
 	@Override
 	public int deletelib(int settingNo) {
 		return stDao.deletelib(sqlSession, settingNo);
 	}
 
-=======
 	//라이브러리 작성 메소드
 	@Override
 	public int insertSetting(Setting setting) {
@@ -90,7 +88,6 @@ public class SettingServiceImpl implements SettingService {
 
 	
 
->>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
 	
 	
 }

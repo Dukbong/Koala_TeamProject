@@ -57,10 +57,7 @@ public class SettingController {
 								Model model) {
 		//해당 세팅 들고오기
 		Setting s = stService.selectSetting(settingNo);
-<<<<<<< HEAD
 		s.setInput("input/driverClassName,url,username,password");
-=======
->>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
 		if(s != null) {
 			model.addAttribute("setting", s);
 		}
@@ -68,18 +65,15 @@ public class SettingController {
 		//해당 세팅의 버전 정보(settingNo, settingVersion)
 		ArrayList<Setting> versionList = stService.selectVersionList(s.getSettingTitle());
 		
-<<<<<<< HEAD
-		return "setting/choice";
-//		return "setting/description";
-=======
 		if(!versionList.isEmpty()) {
 			model.addAttribute("vList", versionList);
 		}
 		
-
 		return "setting/choice";
+//		return "setting/description";
 
->>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
+//		return "setting/choice";
+
 	}
 	
 	
@@ -179,7 +173,6 @@ public class SettingController {
 
 	}
 	
-<<<<<<< HEAD
 	@GetMapping("/delete")
 	public String deletelib(int settingNo, Model model) {
 		int result = stService.deletelib(settingNo);
@@ -192,6 +185,4 @@ public class SettingController {
 	}
 	
 	
-=======
->>>>>>> 31570aa13b24612278ff93965002bc2b1a0862e1
 }

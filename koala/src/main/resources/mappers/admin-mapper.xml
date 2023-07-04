@@ -450,4 +450,9 @@
 	<select id="selectprevSetting" resultMap="settingMapper.settingResultSet">
 		SELECT c.* FROM CREATE_SETTING C JOIN ERROR_BOARD E ON (REF_SNO = SETTING_NO) WHERE REF_SNO = #{refSno} and rownum =1
 	</select>
+	<update id="updateSettingN">
+		UPDATE CREATE_SETTING
+		SET STATUS = 'N'
+		WHERE SETTING_NO = #{settingNo}
+	</update>
 </mapper>
