@@ -155,7 +155,7 @@
                     <span class="ii">Download</span>
                 </div>
             </div>
-            <div class="body3" onclick="location.href='/koala/setting/create'">
+            <div class="body3">
                 <div class="body_logo3">
                     <img src="/koala/resources/common/free-icon-cloud-upload-4007710.png" style="width: 110px;" alt="">
                 </div>
@@ -167,6 +167,29 @@
 
     </div>
     <%@include file="footer.jsp" %>
+    
+    <c:choose>
+    <c:when test="${(loginUser.type == 2) || (mSup == true) }">
+    	<script>
+    		$(function(){
+    			$(".main_body>.body3").on("click", function(){
+    				location.href = "/koala/setting/create";
+    			});
+    		});
+    	</script>
+    </c:when>
+    
+    <c:otherwise>
+    	<script>
+    		$(function(){
+    			$(".main_body>.body3").on("click", function(){
+    				alert("이용 권한이 없습니다.");
+    			});
+    		});
+    	</script>
+    </c:otherwise>
+    </c:choose>
+    
     
     <c:if test="${not empty msgc}">
     	<script>

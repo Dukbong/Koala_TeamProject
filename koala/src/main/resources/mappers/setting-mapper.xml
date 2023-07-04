@@ -30,9 +30,22 @@
 	<!-- 해당 Setting 정보 조회 -->
 	<select id="selectSetting" resultMap="settingResultSet">
 		SELECT *
-		FROM CREATE_SETTING
-		WHERE SETTING_NO = #{settingNo}
+		FROM (SELECT *
+				FROM CREATE_SETTING
+				WHERE 
+				<choose>
+					<when test="settingNo == 0">
+						SETTING_TITLE = #{settingTitle}
+					</when>
+					<otherwise>
+						SETTING_NO = #{settingNo}
+					</otherwise>
+				</choose>
+				ORDER BY SETTING_NO DESC
+				)
+		WHERE ROWNUM = 1
 	</select>
+	
 	
 	<select id="selectVersionList" resultMap="settingResultSet">
 		SELECT SETTING_NO, SETTING_VERSION
@@ -52,17 +65,19 @@
 	
 	<!-- 라이브러리 작성 -->
 	<insert id="insertSetting">
-		INSERT INTO CREATE_SETTING(SETTING_NO, REF_UNO, SETTING_TITLE, SETTING_VERSION,SORT_DESCRIPTION,SETTING_INFO,SETTING_CODE,INPUT)
-		VALUES(SEQ_SET.NEXTVAL, #{refUno}, #{settingTitle}, #{settingVersion}, #{sortDescription}, #{settingInfo}, #{settingCode}, #{input})
+		INSERT INTO CREATE_SETTING(SETTING_NO, REF_UNO, SETTING_TITLE, SETTING_VERSION,SORT_DESCRIPTION,SETTING_INFO,SETTING_CODE,INPUT<if test="userType == 2">, STATUS</if>)
+		VALUES(SEQ_SET.NEXTVAL, #{refUno}, #{settingTitle}, DEFAULT, #{sortDescription}, #{settingInfo}, #{settingCode}, #{input}<if test="userType == 2">, 'Y'</if>)
 	</insert>
 	
 	<!-- 기존버전 찾기 -->
 	<select id="selectVersion">
 		SELECT SETTING_VERSION
-		FROM CREATE_SETTING
-		WHERE SETTING_TITLE = #{settingTitle}
-		ORDER BY CREATE_DATE DESC
-		LIMIT 1
+		FROM (SELECT *
+			  FROM CREATE_SETTING
+			  WHERE SETTING_TITLE = #{settingTitle}
+			  ORDER BY CREATE_DATE DESC
+		)
+		WHERE ROWNUM = 1
 	</select>
 
 </mapper>
