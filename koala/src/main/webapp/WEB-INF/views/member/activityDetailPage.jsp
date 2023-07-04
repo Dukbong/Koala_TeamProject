@@ -216,7 +216,7 @@
 	
 	
 	/* =====================================설희 작성 */
-	.contributions-outer{width: 100%; height: 560px; padding: 20px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
+	.contributions-outer{width: 100%; height: 560px; padding: 20px; margin-top:25px; background-image: url('/koala/resources/common/contributions/하늘배경.png');}
 	.contributions-area{width: 100%; height: 90%;}
 	.contributions-area>table{width: 1100px; margin: auto;}
 	.contributions-area>table tr{height: 38px;}
@@ -449,7 +449,8 @@
 													<td>자유게시판</td>
 												</c:when>
 											</c:choose>
-											<td>${b.title }</td>
+											<td>${b.title }&nbsp;&nbsp;
+												<c:if test="${b.userError eq 'Y' }"><button class="solvedBtn">해결완료</button></c:if></td>
 											<td>${b.createDate }</td>
 											<td>${b.liked }</td>
 											<td>${b.count }</td>
@@ -674,15 +675,22 @@
 	                	});
 	                	
 	                	//=====================================설희 작성
+	                	//모달창 관련
           				$(".contributions-area>table td").mouseover(function(){
           					$(this).find(".tolltip").css("display", "block");
           				})
           				$(".contributions-area>table td").mouseleave(function(){
           					$(this).find(".tolltip").css("display", "none");
           				})
+          				//해결완료 버튼 클릭 시
+          				$(".rel-board ").on("click", "button", function(){
+          					var boardNo = $(this).parent().siblings().eq(0).val();
+          					location.href = "/koala/errorBoard/updateSolved?boardNo="+boardNo;
+          				});
 	            	});
                 </script>
                 
+                <c:if test="${empty calList }">
                 <div class="bottom_area">
 		            <ul>
 		            	<c:choose>
@@ -708,6 +716,7 @@
 		            	
 		            </ul>
 		        </div>
+		        </c:if>
             </div>
         </div>
 

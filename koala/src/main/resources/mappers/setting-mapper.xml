@@ -42,8 +42,8 @@
 	</select>
 	
 	<insert id="insertCode">
-		INSERT INTO TABLE CREATE_SETTING (SETTING_NO, REF_UNO, SETTING_TITLE, SETTING_VERSION,SORT_DESCRIPTION,SETTING_INFO,SETTING_CODE,INPUT)
-		VALUES (SEQ_SET.NEXTVAL,#{refUno},#{settingTitle},#{settingVersion},#{sortDescription},#{settingInfo},#{settingCode},#{input})
+		INSERT INTO CREATE_SETTING (SETTING_NO, REF_UNO, SETTING_TITLE,SORT_DESCRIPTION,SETTING_INFO,SETTING_CODE,INPUT)
+		VALUES (SEQ_SET.NEXTVAL,#{refUno},#{settingTitle},#{sortDescription},#{settingInfo},#{settingCode},#{input})
 	</insert>
 	
 	<!-- 메인 search -->

@@ -399,7 +399,7 @@
 		join supporters using(ref_uno)
 		join member m on (ref_uno = user_no)
 		where github_id != ' '
-		and type=1
+		and type = 1
 		and ref_uno != 1
 		and m.status = 'Y'
 		and c.status = 'W'

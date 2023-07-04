@@ -59,8 +59,8 @@ public class CalendarController {
         }
         
         //마지막 해당 달 반복문은 따로 작성해주기
-//    	monthName = today.getMonth().toString().substring(0,3);
     	monthName = start.getMonth().toString().substring(0,3);
+    	
     	ArrayList<HashMap<String,String>> dayList = new ArrayList<>();
     	LocalDate startDate =  today.withDayOfMonth(1);
     	
