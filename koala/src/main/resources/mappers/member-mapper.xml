@@ -143,7 +143,12 @@
 	
 	<!-- 유저가쓴 게시글 조회 -->
 	<select id="boardList" resultMap="boardMapper.boardResultSet">
-		SELECT BOARD_NO, CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE
+		SELECT BOARD_NO, CATEGORY, NICKNAME, TITLE, COUNT, LIKED, B.CREATE_DATE,
+		      (CASE WHEN BOARD_NO IN (SELECT BOARD_NO
+		       FROM BOARD B
+		       JOIN ERROR_BOARD E ON(B.BOARD_NO = E.REF_BNO)
+		       WHERE B.STATUS = 'Y'
+		       AND SOLVED||ERROR_TYPE = 'NU') THEN 'Y' ELSE 'N' END) AS USER_ERROR
 		FROM BOARD B
 		JOIN MEMBER M ON (B.BOARD_WRITER = M.USER_NO)
 		WHERE M.USER_ID = #{userId}
@@ -202,6 +207,18 @@
 		FROM ATTENDANCE
 		WHERE REF_UNO = #{userNo}
 	</select>
+	
+	<!-- (관리자,서포터즈) libList -->
+	<select id="libList" resultMap="settingMapper.settingResultSet">
+		SELECT *
+		FROM CREATE_SETTING
+		WHERE REF_UNO = (SELECT USER_NO
+						 FROM MEMBER
+						 WHERE USER_ID = #{userId})
+		ORDER BY SETTING_NO DESC
+	</select>
+	
+	
 	<!-- 출석 등록 -->
 	<insert id="attendance" parameterType='attendance'>
 		INSERT INTO ATTENDANCE
@@ -313,4 +330,34 @@
 							FROM MEMBER
 							WHERE USER_ID = #{userId})
 	</select>
+	
+	<select id="selectlibCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM CREATE_SETTING
+		WHERE REF_UNO = (SELECT USER_NO
+						 FROM MEMBER
+						 WHERE USER_ID = #{userId})
+	</select>
+	
+	<!-- 로그인유저 서포터즈 판별 -->
+	<select id="selectSup" resultType="_int">
+		SELECT COUNT(*)
+		FROM SUPPORTERS
+		WHERE REF_UNO = #{userNo }
+	</select>
+	
+	<select id="selectSupport" resultMap="supportersResultSet">
+		SELECT *
+		FROM SUPPORTERS
+		WHERE REF_UNO = (SELECT USER_NO
+						 FROM MEMBER
+						 WHERE USER_ID = #{userId})
+	</select>
+	
+	<resultMap type="supporters" id="supportersResultSet">
+		<result column="REF_UNO" property="refUno"/>
+		<result column="GITHUB_ID" property="githubId"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="REPO_URL" property="repoUrl"/>
+	</resultMap>
 </mapper>

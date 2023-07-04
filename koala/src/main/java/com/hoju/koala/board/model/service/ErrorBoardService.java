@@ -34,7 +34,10 @@ public interface ErrorBoardService {
 	ErrorSet selectBoard(int boardNo);
 
 	//버전 리스트 조회
-	ArrayList<String> selectVersion(String settingTitle);
+	ArrayList<String> selectVersionList(String settingTitle);
+	
+	//최신 버전 조회
+	String selectVersion(String settingTitle);
 
 	//세팅 글번호 조회
 	int selectSettingNo(CreateSetting c);
@@ -66,6 +69,7 @@ public interface ErrorBoardService {
 	//닉네임으로 아이디 구하기
 	String selectId(String nickName);
 
-
+	//유저에러 해결완료
+	int updateSolved(int boardNo);
 
 }

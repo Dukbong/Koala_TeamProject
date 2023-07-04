@@ -29,7 +29,6 @@ import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/errorBoard")
 public class ErrorBoardController {
@@ -85,7 +84,6 @@ public class ErrorBoardController {
 	@GetMapping("/detail")
 	public String enrollForm(int boardNo,
 							 Model model) {
-		
 		//조회수 증가 메소드
 		int result = ebService.increaseCount(boardNo);
 		
@@ -107,7 +105,6 @@ public class ErrorBoardController {
 		}
 	}
 	
-	
 	//게시글 작성폼 이동
 	@GetMapping("/enrollForm")
 	public String enrollForm(Model model) {
@@ -120,12 +117,22 @@ public class ErrorBoardController {
 	
 	//버전 리스트 조회
 	@ResponseBody
-	@RequestMapping(value="version", produces="text/json; charset=UTF-8")
-	public String selectVersion(String settingTitle) {
+	@RequestMapping(value="versionList", produces="text/json; charset=UTF-8")
+	public String selectVersionList(String settingTitle) {
 		
-		ArrayList<String> vList = ebService.selectVersion(settingTitle);
+		ArrayList<String> vList = ebService.selectVersionList(settingTitle);
 		
 		return new Gson().toJson(vList);  //이게 맞나?
+	}
+	
+	//최신 버전 조회
+	@ResponseBody
+	@RequestMapping(value="version")
+	public String selectVersion(String settingTitle) {
+		
+		String version = ebService.selectVersion(settingTitle);
+		
+		return version;
 	}
 	
 	//게시글 작성 메소드
@@ -249,6 +256,23 @@ public class ErrorBoardController {
 	public String selectId(String nickName) {
 		
 		return ebService.selectId(nickName);
+	}
+	
+	//유저에러 해결완료
+	@GetMapping("updateSolved")
+	public String updateSolved(int boardNo,
+							   HttpSession session) {
+		
+		int result =  ebService.updateSolved(boardNo);
+		String userId = String.valueOf(((Member)session.getAttribute("loginUser")).getUserId());
+		
+		if(result>0) {
+			session.setAttribute("msg", "해당 게시글의 상태값이 해결완료로 변경되었습니다.");
+			return "redirect:/member/boardList?userId="+userId;
+		}else {	
+			session.setAttribute("errorMsg", "게시글 상태값 변경에 실패했습니다.");
+			return "common/error";
+		}
 	}
 	
 }

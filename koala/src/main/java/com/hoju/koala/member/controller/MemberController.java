@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.common.model.vo.EmailCheck;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -109,6 +111,14 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("msg", "로그인 완료");
 			
+			//서포터즈 판별
+			int result = memberService.selectSup(loginUser.getUserNo());
+			
+			if(result>0) {
+				log.debug("해당 유저는 Supporter 입니다.");
+				session.setAttribute("mSup", true);
+			}
+			
 			if (keepId != null && keepId.equals("on")) { //뷰의 체크박스가 체크된상태로 넘어오면
 	            // 아이디를 쿠키에 저장
 	            mCookie.setCookie(response, "saveId", loginUser.getUserId(), 604800); //쿠키수명 7일
@@ -129,7 +139,9 @@ public class MemberController {
 	//로그아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
+		
 		session.removeAttribute("loginUser");
+		session.removeAttribute("mSup");
 		
 		return "redirect:/";
 	}
@@ -177,6 +189,13 @@ public class MemberController {
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -262,28 +281,36 @@ public class MemberController {
 		
 		log.debug("이메일에 대한 회원 정보 : {}", m);
 		
-		String newPwd = null;
-		
 		if(m != null) {
 			//이메일에대한 아이디가 존재하면 임시비밀번호 생성하고 아이디와 함꼐 이메일보내기
-			newPwd = ec.forgetUserEmail(userEmail, m.getUserId());
-			
-			log.debug("임시비밀번호 : {}", newPwd);
-			//임시비밀번호 암호화
-			String encPwd = pwdEncoder.encode(newPwd);
-			
-			m.setUserPwd(encPwd);
-			
-			//회원정보도 업데이트
-			int result = memberService.updatePwd(m);
-			
-			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
+			//에서 -> 아이디만 보내고 사용자가 링크를 눌렀을때 기존 pwd에서 임시비밀번호로 발급
+			try {
+				ec.forgetUserEmail(userEmail, m.getUserId());
+				
 				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요.");
 				mv.setViewName("redirect:/member/login");
-			}else {
+				
+			} catch (MessagingException e) {
 				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
 				mv.setViewName("redirect:/member/login");
 			}
+			
+//			log.debug("임시비밀번호 : {}", newPwd);
+//			//임시비밀번호 암호화
+//			String encPwd = pwdEncoder.encode(newPwd);
+//			
+//			m.setUserPwd(encPwd);
+//			
+//			//회원정보도 업데이트
+//			int result = memberService.updatePwd(m);
+//			
+//			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
+//				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요.");
+//				mv.setViewName("redirect:/member/login");
+//			}else {
+//				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
+//				mv.setViewName("redirect:/member/login");
+//			}
 		}else {
 			//없다면
 			request.getSession().setAttribute("msg", "존재하지 않는 이메일입니다.");
@@ -404,13 +431,20 @@ public class MemberController {
 	//이메일 인증코드 보내기
 	@ResponseBody
 	@GetMapping("/emailCheck")
-	public String emailCheck(String inputEmail) {
+	public String emailCheck(String inputEmail,
+							 HttpServletRequest request) {
 		
-		
+		String certiCode = "";
 		//이메일전송후 인증번호 반환(현재 전송 막아논 상태)
-		String certiCode = ec.joinEmail(inputEmail);
+		try {
+			certiCode = ec.joinEmail(inputEmail);
+			
+			log.debug("인증 번호  : {}", certiCode);
+			
+		}catch (MessagingException e) {
+			request.getSession().setAttribute("msg", "이메일 전송 과정에서  오류");
+		}
 		
-		log.debug("인증 번호  : {}", certiCode);
 		
 		return certiCode;
 	}
@@ -432,6 +466,13 @@ public class MemberController {
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -465,6 +506,13 @@ public class MemberController {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
@@ -496,6 +544,13 @@ public class MemberController {
 		
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -531,6 +586,13 @@ public class MemberController {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
 		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
 		
@@ -553,6 +615,13 @@ public class MemberController {
 											String userId) {
 		//조회해온 유저담기
 		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
 				
 		//해당 유저팔로우수 조회
 		int cnt = memberService.selectFollowCount(m.getUserNo());
@@ -565,6 +634,45 @@ public class MemberController {
 		mv.addObject("followCnt", cnt);
 		mv.addObject("calList", calList);
 		mv.setViewName("member/activityDetailPage");
+		
+		return mv;
+	}
+	
+	//활동내역 LikedList
+	@GetMapping("/libList")
+	public ModelAndView libList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+								  ModelAndView mv,
+								  String userId) {
+		
+		//페이징처리
+		int listCount = memberService.selectlibCount(userId);
+		int pageLimit = 5;
+		int boardLimit = 10;
+		
+		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		//조회해온 유저담기
+		Member m = memberService.selectMember(userId);
+		
+		//해당 유저가 서포터인지
+		Supporters sup = memberService.selectSupport(userId);
+		
+		if(sup != null) {
+			mv.addObject("adSup", sup);
+		}
+		
+		//해당 유저팔로우수 조회
+		int cnt = memberService.selectFollowCount(m.getUserNo());
+		
+		ArrayList<Board> libList = memberService.libList(pi, userId);
+		
+		mv.addObject("pi", pi);
+		mv.addObject("user", m);
+		mv.addObject("followCnt", cnt);
+		mv.addObject("libList", libList);
+		mv.addObject("kind", "libList");
+		mv.setViewName("member/activityDetailPage");
+		
 		
 		return mv;
 	}

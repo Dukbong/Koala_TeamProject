@@ -64,7 +64,7 @@
 		<script>
 			$(function(){
 				
-				//수정폼 카테고리 옵션 변경    //계속 실행되는건데 괜찮은지?
+				//수정폼 카테고리 옵션 변경
 				$(window).scroll(function(){
 					if($(".modifyForm-area_code").css("display")=="block" && ($(".modifyForm-area_info").css("display")=="block")){
 						$(".modifyBtn-area").css("display", "none");
@@ -168,7 +168,6 @@
 						}
 					};
 					
-					
 					//수정폼 생성(비동기)
 					$(".modifyBtn-area").on("click", "button", function(){
 						
@@ -186,9 +185,6 @@
 							$('html').animate({scrollTop : $(".modifyForm-area_info").offset().top}, 300);
 						}
 						$("select[name='category']").find('option:first').prop('selected', true);
-							
-							
-						
 					});
 					
 					//수정폼 선택 삭제

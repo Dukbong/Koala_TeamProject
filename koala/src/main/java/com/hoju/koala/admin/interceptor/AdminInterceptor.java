@@ -28,7 +28,6 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		log.debug(">>");
 		HttpSession session = request.getSession();
 		Member member = (Member)session.getAttribute("loginUser");
 		
@@ -58,14 +57,15 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 //			}else {
 //				session.setAttribute("msg", "IP가 차단되어 이용이 불가능합니다.");
 //			}
-//			return false;
-			return true; // TEST
+			response.sendRedirect("/koala");
+			return false;
+//			return true; // TEST
 		}
 		if(member.getType() != 2) { // 회원이지만 관리자 x 
 //			session.setAttribute("msg", "관리자 외에는 접근이 불가능합니다."); // 테스트 단계에서 뺴기
 			response.sendRedirect("/koala");
-//			return false; 
-			return true; // TEST
+			return false; 
+//			return true; // TEST
 		}else { // 관리자
 			return true;
 		}
