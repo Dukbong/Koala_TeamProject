@@ -40,12 +40,7 @@
 		WHERE SETTING_TITLE = #{settingTitle}
 		ORDER BY CREATE_DATE DESC
 	</select>
-	
-	<insert id="insertCode">
-		INSERT INTO CREATE_SETTING (SETTING_NO, REF_UNO, SETTING_TITLE,SORT_DESCRIPTION,SETTING_INFO,SETTING_CODE,INPUT)
-		VALUES (SEQ_SET.NEXTVAL,#{refUno},#{settingTitle},#{sortDescription},#{settingInfo},#{settingCode},#{input})
-	</insert>
-	
+
 	<!-- 메인 search -->
 	<select id="searchSetting" resultMap="settingResultSet">
 		SELECT *
@@ -53,6 +48,21 @@
 		WHERE (SETTING_TITLE LIKE '%'||#{input}||'%' OR SORT_DESCRIPTION LIKE '%'||#{input}||'%')
 		AND STATUS = 'Y'
 		ORDER BY SETTING_TITLE
+	</select>
+	
+	<!-- 라이브러리 작성 -->
+	<insert id="insertSetting">
+		INSERT INTO CREATE_SETTING(SETTING_NO, REF_UNO, SETTING_TITLE, SETTING_VERSION,SORT_DESCRIPTION,SETTING_INFO,SETTING_CODE,INPUT)
+		VALUES(SEQ_SET.NEXTVAL, #{refUno}, #{settingTitle}, #{settingVersion}, #{sortDescription}, #{settingInfo}, #{settingCode}, #{input})
+	</insert>
+	
+	<!-- 기존버전 찾기 -->
+	<select id="selectVersion">
+		SELECT SETTING_VERSION
+		FROM CREATE_SETTING
+		WHERE SETTING_TITLE = #{settingTitle}
+		ORDER BY CREATE_DATE DESC
+		LIMIT 1
 	</select>
 
 </mapper>
