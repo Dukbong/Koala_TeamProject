@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -280,28 +281,36 @@ public class MemberController {
 		
 		log.debug("이메일에 대한 회원 정보 : {}", m);
 		
-		String newPwd = null;
-		
 		if(m != null) {
 			//이메일에대한 아이디가 존재하면 임시비밀번호 생성하고 아이디와 함꼐 이메일보내기
-			newPwd = ec.forgetUserEmail(userEmail, m.getUserId());
-			
-			log.debug("임시비밀번호 : {}", newPwd);
-			//임시비밀번호 암호화
-			String encPwd = pwdEncoder.encode(newPwd);
-			
-			m.setUserPwd(encPwd);
-			
-			//회원정보도 업데이트
-			int result = memberService.updatePwd(m);
-			
-			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
+			//에서 -> 아이디만 보내고 사용자가 링크를 눌렀을때 기존 pwd에서 임시비밀번호로 발급
+			try {
+				ec.forgetUserEmail(userEmail, m.getUserId());
+				
 				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요.");
 				mv.setViewName("redirect:/member/login");
-			}else {
+				
+			} catch (MessagingException e) {
 				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
 				mv.setViewName("redirect:/member/login");
 			}
+			
+//			log.debug("임시비밀번호 : {}", newPwd);
+//			//임시비밀번호 암호화
+//			String encPwd = pwdEncoder.encode(newPwd);
+//			
+//			m.setUserPwd(encPwd);
+//			
+//			//회원정보도 업데이트
+//			int result = memberService.updatePwd(m);
+//			
+//			if(result > 0) { //임시비밀번호 암호화하고 회원정보 업데이트까지 완료되었다면
+//				request.getSession().setAttribute("msg", "이메일 발송이 완료되었습니다. 이메일을 확인해주세요.");
+//				mv.setViewName("redirect:/member/login");
+//			}else {
+//				request.getSession().setAttribute("msg", "이메일 전송처리 과정에서  오류");
+//				mv.setViewName("redirect:/member/login");
+//			}
 		}else {
 			//없다면
 			request.getSession().setAttribute("msg", "존재하지 않는 이메일입니다.");
@@ -422,13 +431,20 @@ public class MemberController {
 	//이메일 인증코드 보내기
 	@ResponseBody
 	@GetMapping("/emailCheck")
-	public String emailCheck(String inputEmail) {
+	public String emailCheck(String inputEmail,
+							 HttpServletRequest request) {
 		
-		
+		String certiCode = "";
 		//이메일전송후 인증번호 반환(현재 전송 막아논 상태)
-		String certiCode = ec.joinEmail(inputEmail);
+		try {
+			certiCode = ec.joinEmail(inputEmail);
+			
+			log.debug("인증 번호  : {}", certiCode);
+			
+		}catch (MessagingException e) {
+			request.getSession().setAttribute("msg", "이메일 전송 과정에서  오류");
+		}
 		
-		log.debug("인증 번호  : {}", certiCode);
 		
 		return certiCode;
 	}

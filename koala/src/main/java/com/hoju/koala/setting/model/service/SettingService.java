@@ -10,8 +10,7 @@ public interface SettingService {
 	ArrayList<Setting> selectSettingList();
 
 	//해당 setting조회
-	Setting selectSetting(int settingNo);
-	Setting selectSetting(String settingTitle);
+	Setting selectSetting(Setting setting);
 
 	//ajax 버전정보와 setting번호
 	ArrayList<Setting> selectVersionList(String settingTitle);

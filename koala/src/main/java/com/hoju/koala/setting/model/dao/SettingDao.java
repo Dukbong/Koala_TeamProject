@@ -17,15 +17,11 @@ public class SettingDao {
 	}
 
 	//해당 Setting 조회
-	public Setting selectSetting(SqlSessionTemplate sqlSession, int settingNo) {
+	public Setting selectSetting(SqlSessionTemplate sqlSession, Setting setting) {
 		
-		return sqlSession.selectOne("settingMapper.selectSetting", settingNo);
+		return sqlSession.selectOne("settingMapper.selectSetting", setting);
 	}
-	public Setting selectSetting(SqlSessionTemplate sqlSession, String settingTitle) {
-		
-		return sqlSession.selectOne("settingMapper.selectSetting", settingTitle);
-	}
-
+	
 	//버전정보와 
 	public ArrayList<Setting> selectVersionList(SqlSessionTemplate sqlSession, String settingTitle) {
 		
