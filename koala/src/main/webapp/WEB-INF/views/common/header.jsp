@@ -675,7 +675,7 @@
         
         
         // 쿠키를 보내기 위한 함수
-        /* function test(e){
+         function test(e){
         	$.ajax({
         		url : "/koala/admin/mode.check",
         		data : {
@@ -687,7 +687,7 @@
         			console.log("mode check aJax error");
         		}
         	});
-        } */
+        } 
         
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
         //글자 색 - 다크모드:white / 라이트모드:black

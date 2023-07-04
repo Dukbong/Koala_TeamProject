@@ -28,7 +28,8 @@
         }
     .wrapper{
         width: 100%;
-        height: 700px; 
+        height: 900px; 
+        padding-top:200px;
     }
     .header{
         width: 100%;
@@ -154,7 +155,7 @@
                     <span>QnA</span>
                 </div>
                 <div class="button_area">
-                    <button type="reset" id="back">취소</button>
+                    <button type="reset" id="back" style="width: 70px;">취소</button>
                     <button type="submit">등록</button>
                 </div>
             </div>

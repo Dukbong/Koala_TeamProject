@@ -320,6 +320,38 @@ public class MemberController {
 		
 		return mv;
 	}
+	
+	@GetMapping("/tempPwd")
+	public void tempPwd(String userId,
+						String token,
+						ModelAndView mv) {
+		
+		//ec필드에 저장한 토큰 가져오기
+		String getToken = ec.getTokenMap().get(userId);
+		
+		if(token == getToken) { //내가 뿌린 토큰과 매핑주소로 접근했을때 토큰이 일치하는지 확인
+			
+			String newPwd = ec.makeRandomPwd();
+			
+			log.debug("임시비밀번호 : {}", newPwd);
+			
+			//임시비밀번호 암호화
+			String encPwd = pwdEncoder.encode(newPwd);
+			
+			//만들어놓은 updatePwd메소드 사용하기 위해 userId로 해당 Member객체 조회해오고 객체에 encPwd 넣고 메소드 수행
+			Member m = memberService.selectMember(userId);
+			m.setUserPwd(encPwd);
+			
+			int result = memberService.updatePwd(m);
+			
+			if(result>0) {
+				mv.addObject("msg", "비밀번호 변경이 완료되었습니다.");
+				mv.setViewName("");
+			}else {
+				
+			}
+		}
+	}
 
 	//계정설정 페이지 이동
 	@GetMapping("/as")
