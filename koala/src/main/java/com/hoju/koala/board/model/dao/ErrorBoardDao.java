@@ -59,9 +59,15 @@ public class ErrorBoardDao {
 	}
 	
 	//버전 리스트 조회
-	public ArrayList<String> selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+	public ArrayList<String> selectVersionList(SqlSessionTemplate sqlSession, String settingTitle) {
 		
-		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersion", settingTitle);
+		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersionList", settingTitle);
+	}
+	
+	//최신 버전 조회
+	public String selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+		
+		return sqlSession.selectOne("errorBoardMapper.selectVersion", settingTitle);
 	}
 	
 	//세팅 글번호 조회

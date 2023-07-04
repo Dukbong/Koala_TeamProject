@@ -224,16 +224,12 @@
  	.contributions-area>table td{width: 35px; height:35px; position:relative;}
  	.contributions-area>table td>img{width:100%; height:100%;}
  	.contributions-area>table td>img:hover {width:110%; height:110%; cursor:pointer;}
- 	.tolltip{z-index: 1; width: 255px; height: 40px; position:absolute; left:-70px; top:-50px; background: rgb(166,196,251);
+ 	.tolltip{z-index: 1; width: 270px; height: 40px; position:absolute; left:-70px; top:-50px; background: rgb(166,196,251);
  		border: 2px solid white; padding: 5px; border-radius:5px; color: rgb(80,80,80); font-weight:600; text-align: center; display: none;}
 	.level-area{width: 100%; height: 10%; position:relative;}
 	.level-area>#image{width:45px; height:60px; position:absolute; left:8px; bottom:-20px;}
 	.level-area>#lessMore{width:auto; position:absolute; right:20px; bottom:0;}
 	.level-area>div>*{height: 25px; float:left; margin: 0px 5px;}
-/* 	.level-area>div{width: 230px; height: 30px; position:absolute; right:0; bottom:0;} */
-/* 	.level-area>div>*{height: 100%; float:left; margin: 0px 5px;} */
-/* 	.level-area>div>div{width:20px; height: 20px;} */
-	
 	
 	
 	.bottom_area{

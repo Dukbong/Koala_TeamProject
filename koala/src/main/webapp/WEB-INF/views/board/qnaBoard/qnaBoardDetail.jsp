@@ -307,14 +307,14 @@ body {
 						<c:when test="${b.boardWriter != loginUser.nickName }">
 							<button type="submit" onclick="updateLike(this);" class="likeIt">
 								<i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount">
-<%-- 									 ${b.liked } --%>
+									 ${b.liked }
 								</span>
 							</button>
 						</c:when>
 						<c:otherwise>
 							<button type="submit" disabled>
 								<i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount">
-<%-- 									 ${b.liked }  --%>
+									 ${b.liked } 
 								</span>
 							</button>
 						</c:otherwise>
@@ -361,10 +361,8 @@ body {
 					selectReplyList();
 				});
 
-				function selectReply(loginUser) {
-
-					$
-							.ajax({
+				function selectReply(loginUser) {	
+							$.ajax({
 								url : "selectReply.bo",
 								data : {
 									boardNo : "${b.boardNo}",
@@ -611,14 +609,14 @@ body {
 				</div>
 
 				<div class="repBtn_area">
-					<button type="button" id="back">목륵으로</button>
+					<button type="button" id="backList" style="width:60px;">목륵으로</button>
 					<c:if test="${not empty loginUser }">
 						<button type="submit" onclick="insertBoard();">글쓰기</button>
 					</c:if>
 				</div>
 
 				<script>
-					document.querySelector('#back').onclick = function() {
+					document.querySelector('#backList').onclick = function() {
 						history.back();
 					}
 

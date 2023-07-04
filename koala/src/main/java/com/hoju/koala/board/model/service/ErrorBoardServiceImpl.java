@@ -68,7 +68,13 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	}
 	
 	@Override //버전 리스트 조회
-	public ArrayList<String> selectVersion(String settingTitle) {
+	public ArrayList<String> selectVersionList(String settingTitle) {
+		
+		return ebDao.selectVersionList(sqlSession, settingTitle);
+	}
+	
+	@Override //최신 버전 조회
+	public String selectVersion(String settingTitle) {
 		
 		return ebDao.selectVersion(sqlSession, settingTitle);
 	}
