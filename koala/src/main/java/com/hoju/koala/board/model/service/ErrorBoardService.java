@@ -66,6 +66,7 @@ public interface ErrorBoardService {
 	//닉네임으로 아이디 구하기
 	String selectId(String nickName);
 
-
+	//유저에러 해결완료
+	int updateSolved(int boardNo);
 
 }

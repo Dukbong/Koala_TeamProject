@@ -13,9 +13,6 @@ import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Repository
 public class ErrorBoardDao {
 	
@@ -35,7 +32,6 @@ public class ErrorBoardDao {
 	public ArrayList<ErrorSet> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
 
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
-		
 	}
 	
 	//검색된 게시글 목록 조회
@@ -143,6 +139,12 @@ public class ErrorBoardDao {
 	public String selectId(SqlSessionTemplate sqlSession, String nickName) {
 		
 		return sqlSession.selectOne("errorBoardMapper.selectId", nickName);
+	}
+
+	//유저에러 해결완료
+	public int updateSolved(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.update("errorBoardMapper.updateSolved", boardNo);
 	}
 	
 }

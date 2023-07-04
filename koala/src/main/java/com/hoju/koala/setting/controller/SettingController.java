@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,19 +57,14 @@ public class SettingController {
 		//해당 세팅 들고오기
 		Setting s = stService.selectSetting(settingNo);
 		
-		s.setInput("input/driverClassName,url,username,password");
-		
-		
 		if(s != null) {
 			
 			model.addAttribute("setting", s);
 		}
 		
-<<<<<<< HEAD
+
 		return "setting/choice";
-=======
-		return "setting/description";
->>>>>>> be42c1181fae810ef1726b57fc5f40528534887b
+
 	}
 	
 	
@@ -111,12 +107,15 @@ public class SettingController {
 	
 	
 	//코드 작성 메소드
-	@RequestMapping("insert")
+	@PostMapping("insert")
 	public String createCode(Setting setting, Model model) {
+		
+		System.out.println("setting : "+setting);
+		System.out.println("setting.getInput() : "+setting.getInput());
 		
 		int result = stService.insertCode(setting);
 		
-		return null;
+		return "redirect:/setting/list";
 	}
 	
 	

@@ -22,6 +22,7 @@
 		<result column="MODIFIED_DATE" property="modifyDate"/>
 		<result column="NOTICE" property="notice"/>
 		<result column="STATUS" property="status"/>
+		<result column="USER_ERROR" property="userError"/>
 	</resultMap>
 	
 	<resultMap type="boardAttachment" id="boardAttachmentResultSet">

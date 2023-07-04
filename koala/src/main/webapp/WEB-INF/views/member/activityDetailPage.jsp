@@ -449,7 +449,8 @@
 													<td>자유게시판</td>
 												</c:when>
 											</c:choose>
-											<td>${b.title }</td>
+											<td>${b.title }&nbsp;&nbsp;
+												<c:if test="${b.userError eq 'Y' }"><button class="solvedBtn">해결완료</button></c:if></td>
 											<td>${b.createDate }</td>
 											<td>${b.liked }</td>
 											<td>${b.count }</td>
@@ -674,12 +675,18 @@
 	                	});
 	                	
 	                	//=====================================설희 작성
+	                	//모달창 관련
           				$(".contributions-area>table td").mouseover(function(){
           					$(this).find(".tolltip").css("display", "block");
           				})
           				$(".contributions-area>table td").mouseleave(function(){
           					$(this).find(".tolltip").css("display", "none");
           				})
+          				//해결완료 버튼 클릭 시
+          				$(".rel-board ").on("click", "button", function(){
+          					var boardNo = $(this).parent().siblings().eq(0).val();
+          					location.href = "/koala/errorBoard/updateSolved?boardNo="+boardNo;
+          				});
 	            	});
                 </script>
                 
