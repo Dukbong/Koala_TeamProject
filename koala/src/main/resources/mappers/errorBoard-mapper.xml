@@ -359,4 +359,11 @@
 		WHERE REF_BNO = #{boardNo}
 	</update>
 	
+	<!-- 포인트 등록 -->
+	<update id="increasePoint" parameterType="hashmap">
+		UPDATE MEMBER
+		SET POINT = POINT + #{point}
+		WHERE USER_NO = #{userNo}
+	</update>
+	
 </mapper>

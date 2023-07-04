@@ -72,4 +72,7 @@ public interface ErrorBoardService {
 	//유저에러 해결완료
 	int updateSolved(int boardNo);
 
+	//포인트 등록
+	int increasePoint(HashMap<String, Object> setPoint);
+
 }
