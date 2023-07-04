@@ -40,6 +40,10 @@ public class SettingDao {
 		return (ArrayList)sqlSession.selectList("settingMapper.searchSetting", input);
 	}
 
+	public int deletelib(SqlSessionTemplate sqlSession, int settingNo) {
+		return sqlSession.delete("settingMapper.deletelib",settingNo);
+	}
+
 	
 	
 

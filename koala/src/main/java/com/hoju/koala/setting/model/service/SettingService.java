@@ -21,5 +21,7 @@ public interface SettingService {
 	//메인페이지 search
 	ArrayList<Setting> searchSetting(String input);
 
+	int deletelib(int settingNo);
+
 
 }

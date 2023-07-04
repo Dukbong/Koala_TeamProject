@@ -370,7 +370,6 @@
 		    </script>
 	    </div>
     </div>
-    
    	<!-- 모달창 영역 -->
     <div class="modal-wrap">
         <div class="modal_close" id="cancel"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>

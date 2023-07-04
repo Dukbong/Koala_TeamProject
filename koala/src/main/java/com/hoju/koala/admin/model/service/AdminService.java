@@ -142,6 +142,8 @@ public interface AdminService {
 
 	Setting selectprevSetting(int refSno);
 
+	SettingDetail selectOneError(SettingDetail sd);
+
 
 
 

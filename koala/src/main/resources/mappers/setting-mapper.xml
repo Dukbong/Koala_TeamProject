@@ -21,7 +21,7 @@
 	
 	<!-- Setting리스트 조회 -->
 	<select id="selectSettingList" resultMap="settingResultSet">
-		SELECT *
+		SELECT distinct setting_title, setting_no, ref_uno, setting_version, sort_description, setting_info, setting_code, input, status, create_date
 		FROM CREATE_SETTING
 		WHERE STATUS = 'Y'
 		ORDER BY SETTING_TITLE
@@ -53,6 +53,10 @@
 		WHERE (SETTING_TITLE LIKE '%'||#{input}||'%' OR SORT_DESCRIPTION LIKE '%'||#{input}||'%')
 		AND STATUS = 'Y'
 		ORDER BY SETTING_TITLE
+	</select>
+	<select id="deletelib">
+		DELETE FROM CREATE_SETTING
+		WHERE SETTING_NO = #{setting_no}
 	</select>
 
 </mapper>

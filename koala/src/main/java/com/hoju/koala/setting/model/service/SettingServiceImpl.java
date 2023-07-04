@@ -62,6 +62,11 @@ public class SettingServiceImpl implements SettingService {
 		return searchList;
 	}
 
+	@Override
+	public int deletelib(int settingNo) {
+		return stDao.deletelib(sqlSession, settingNo);
+	}
+
 	
 	
 }

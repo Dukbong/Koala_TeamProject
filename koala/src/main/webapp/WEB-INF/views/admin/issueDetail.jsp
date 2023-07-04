@@ -273,6 +273,67 @@ p {
 	font-family: Arial, monospace;
 	fonc
 }
+
+
+ .modal-wrap{
+        display: none;
+        width: 1100px;
+        height: 650px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -250px 0 0 -550px;
+        background-color: rgb(30, 30, 30);
+        border: 2px solid gray;
+        color: white;
+    }
+    .modal_close{
+    	background-color: rgb(30, 30, 30);
+        width: 27px;
+        height: 27px;
+        position: absolute;
+        top: -27px;
+        right: 0;
+    }
+    
+    .modifyForm-area{width: 95%; height: 95%; display: block; margin: auto;}
+    .modifyForm-top{width: 100%; height: 8%; position: relative;}
+    .modifyForm-top>span{ font-size: 20px; color: rgb(255, 201,20); position: absolute; margin: auto; bottom: 5px;}
+    .modifyForm-bottom{width: 100%; height: 92%;}
+    .modifyForm-bottom>div{height: 100%; float: left;}
+    .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding : 10px;}
+    .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
+    .reply-area textarea, .modal-area textarea{
+    	width: 100%;
+    	height: 100%;
+    	background-color: black;
+    	color : white;
+    	resize: none;
+    	border: none;
+        outline: none;
+        overflow-y:auto;
+    }
+    .modal-area{
+    	border: 1px solid gray;
+    	width: 100%;
+    	height: 100%;
+    }
+    
+    .ebDetailView button{border-radius: 6px;}
+    .ebDetailView button:hover{opacity: 85%; border: 1px solid gray;}
+    
+    .hover:hover{cursor: pointer; opacity: 0.5;}
+    
+	.scroll {overflow-y:auto;}
+	.scroll::-webkit-scrollbar {width: 4px;}
+	.scroll::-webkit-scrollbar-thumb {background: gray; border-radius: 10px;}
+
+
+
+
+
+
+
 </style>
 
 
@@ -352,8 +413,6 @@ p {
 			<div id="boardNo" style="display: none;">${issueDetail.board.boardNo }</div>
 			<div id="boardWriter" style="display: none;">${issueDetail.board.boardWriter }</div>
 			<div id="settingNo" style="display: none;">${issueDetail.setting.settingNo }</div>
-			<%-- 				<div id="settingInfo" style="display:none;">${issueDetail.setting.settingInfo}</div> --%>
-			<%-- 				<div id="settingCode" style="display:none;">${issueDetail.setting.settingCode }</div> --%>
 			<div id="sortDescription" style="display: none;">${issueDetail.setting.sortDescription }</div>
 
 
@@ -372,7 +431,8 @@ p {
 					placeholder="내용을 작성하세요" readonly
 					style="width: 100%; height: 100%; padding: 5px 55px; resize: none">${issueDetail.board.content }</textarea>
 			</div>
-			<span>남은 이슈 개수 [ ${size } ]</span> <br>
+			<button id="testtest" class="btn btn-warning">Issue 내용 보기</button>
+			<span>전체 Issue : [ ${size } ]</span> <br>
 			<br>
 		</div>
 
@@ -448,24 +508,51 @@ p {
 		<br>
 		<br>
 		<br>
+	</div>
+	   	<!-- 모달창 영역 -->
+    <div class="modal-wrap">
+        <div class="modal_close" id="cancel"><i class="fa-solid fa-square-xmark fa-2xl" style="color: #ffd814;"></i></div>
+        <div class="modal-area">
+        	<div class="modifyForm-area">
+				<div class="modifyForm-top">
+					<span id="category">code/menual</span>
+				</div>
+				<div class="modifyForm-bottom">
+					<div class="modifyForm_1">
+						<textarea id="before" class="scroll" cols="30" rows="10" readonly>ajax로 해당 내용 가져오기</textarea>
+					</div>
+					<div class="modifyForm_2">
+<!-- 						<i class="fa-solid fa-angles-right fa-2x" style="color: #ffffff;"></i> -->
+					</div>
+					<div class="modifyForm_3">
+						<textarea id="after" class="scroll" cols="30" rows="10" readonly>ajax로 해당 내용 가져오기</textarea>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+    <!-- 모달창 스크립트 -->
+    <script>
+		$(function(){ //모달창 열고 닫기
+// 			
+		});
+	</script>
+	
+	
+	
 		<script>
         	$(function(){
-        		var i = 1;
-        		
-        		
-        		// input value 뿌리기
+        		var page = 1;
         		var fullInput = "${prevSetting.input}";
-        		if(fullInput != ""){ // 여기 오류남
-	//         		input
-	        		var inputele = fullInput.split("|")[1].split("/");
+        		if(fullInput != ""){ 
+	        		var inputele = fullInput.split("|")[1].split("/"); // input
 	        		for(var i = 0; i < inputele.length; i++){
 		        		$("#addBtn_input").trigger("click");
 	        			$(".ajax-input").children().eq(i).children().eq(0).val(inputele[i]);
 	        		}
-	        		// select
 	        		var k = 0;
 	        		var selectTest = [];
-	        		var selectele = fullInput.split("|")[0].split("/")
+	        		var selectele = fullInput.split("|")[0].split("/") // select
 	        		for(var i = 0; i < selectele.length; i++){
 	        			$("#addBtn_select").trigger("click");
 	        			var selectele2 = selectele[i].split(/-|,|Z/);
@@ -482,23 +569,11 @@ p {
 	        		}
         		}
         		
-        		
-        		
         		$("#submitBtn").on("click", function checkSubmit(){ 
-        		
-    	        	/*
-    		        	| : 선택사항과 입력사항을 구분
-    		        	/ : 큰 단위의 옵션 구분 
-    		        	- : 선택사항 안 옵션사항 시작 기호
-    		        	, : 선택사항 안 옵션사항 구분 
-    	        	*/
     	        	var str = ""; // 최종본
-    	  		  
     	  		  	//선택사항
     	  		  	$('.select_n').each(function(index, item){ //선택사항 반복
-    	  			  
     	  				str += $(this).val()+'-';
-    	   				  
     	  				var length = $(this).siblings().eq(2).find('.option_n').length;
     	   				$($(this).siblings().eq(2).find('.option_n')).each(function(index, item){ //옵션사항 반복
     	   				  
@@ -507,12 +582,11 @@ p {
     	       				}else{
     		   					str += $(this).val();
     	       				}
-    	       			})
-    	          		  
+    	       			});
     	  				if(index < ($(".select_n").length-1) ){
     	          			str += '/'
     	  				}
-    	  		    })
+    	  		    });
     	  		  
     	  		    str += '|'; //구분 기호
     	  		  
@@ -523,10 +597,8 @@ p {
     	  				}else{
     	  			 		str += $(this).val();
     	  				}
-    	  		    })
+    	  		    });
     	  		    $("input[name='input']").val(str);
-    				
-    	  		    alert(str);
         			$.ajax({
         				url : "issuesSuccess",
         				data : {
@@ -553,23 +625,39 @@ p {
         			});
     	  	    });
         		
-//         		$("#submitBtn").on("click", function(){
-//         		});		
-
+       
+	    			var str3 = '${issueDetail.errorBoard.modifiedInfo}';
+	    			var str4 = '${issueDetail.errorBoard.modifiedCode}';
+				
+        		
         		$("#nextError").on("click", function(){
+        			if(page > "${size}"){
+        				page = 1;
+        			}
+        			console.log("현재 page" + page)
         			$.ajax({
-        				url : "issuesDetail",
+        				url : "nextDetail",
         				data : {
         					settingTitle : "${issueDetail.setting.settingTitle }",
-        					page : i
+        					page : page
         				},
         				success : function(data){
-        					if("${page}" >= "${size}"){
-        						alert("마지막 페이지 입니다. 처음으로 돌아갑니다.");
-        						location.href="/koala/admin/issuesDetail?settingTitle=${issueDetail.setting.settingTitle }&page=1";
-        					}else{						
-        						i = Number("${page}") + 1;
-        						location.href="/koala/admin/issuesDetail?settingTitle=${issueDetail.setting.settingTitle }&page="+i;
+        					++page;
+        					console.log("다음 page " + page);
+        					if(page > "${size}"){
+        						alert("last page");
+        					}
+        					var jsonData = JSON.parse(data);
+        					console.log(JSON.parse(data));
+        					$("#eb_title").val(jsonData.board.title);
+        					$("#eb_content").val(jsonData.board.content);
+        					str3 = jsonData.errorBoard.modifiedInfo;
+        					str4 = jsonData.errorBoard.modifiedCode;
+        					if(!jsonData.errorBoard.modifiedInfo){
+        						str3 = "";
+        					}
+        					if(!jsonData.errorBoard.modifiedCode){
+        						str4 = "";
         					}
         				},
         				error : function(){
@@ -577,12 +665,20 @@ p {
         				}
         			});
         		});
-        		
-        		
+    			
+    			$("#testtest").on("click", function(){
+    				$('html').animate({scrollTop : $(".createSettingForm").offset().top}, 100);
+    				$(".modal-wrap").css("display", "block");
+    				$("#category").html("Issue");
+    				$("#before").html(str3);
+    				$("#after").html(str4);
+    			});
+    			
+    			$("#cancel").on("click", function(){
+    				$(".modal-wrap").css("display", "none");
+    			});
         	});
-	        
         </script>
-	</div>
 	<%@include file="../common/footer.jsp"%>
 </body>
 </html>
