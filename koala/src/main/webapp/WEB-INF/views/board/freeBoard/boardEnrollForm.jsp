@@ -15,8 +15,8 @@
      	div{ box-sizing: border-box;}
     	.enroll-outer{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
     	.enroll-outer>div{width: 100%;}
-    
-    	
+    	.lib-info{height: 5%; position: relative;}
+        #libTitle{color: rgb(255, 201,20);left: 0; height: 45px; padding-top: 7px;}
     	.space{width: 16%;}
         * {
             padding:0;
@@ -24,24 +24,32 @@
             box-sizing: border-box;
         }
         .enroll-outer{
-            display: flex;
-            background-color: black;
             color: white;
             margin: auto;
-            justify-content: center;
             padding-top: 200px;
         }
         .inner-outer{
-            width: 80%;
-            justify-content: center;
+            width: 100%;
+        }
+        .inner-content{
+        	width: 100%;
+        	display: flex;
+        	justify-content: center;
             align-items: center;
+        }
+        ::placeholder {
+  			color: ;
+  		}
+        .inner-content>form{
+        	width:70%;
         }
         #divcontent{
             width:100%;
             height: 300px;
-            background-color: white;
-            color: black;
+            color: white;
             overflow: auto;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            line-height: 20px;
         }
         #notice{
             display: inline-block;
@@ -49,24 +57,30 @@
         #notice-box{
             align-items: center;
         }
-        #contentCode{
-            background-color: black;
-        }
         #title,#contentCode{
             width: 100%;
+        }
+        #title{
+        	background-color: transparent;
+        	border: none;
+        	color: white;
         }
         .CodeMirror {
             font-family: Arial, monospace;
             font-size: 25px;
-            border: 1px solid white;
             z-index: 0;
         }
         #submmit{
-            margin-left: 700px;
+            margin-left: 500px;
             margin-top: 20px;
             left: 0px;
         }
-        .enroll-outer button{border-radius: 5px;}
+        button{
+	    	background-color: rgb(255, 201,20);
+        	border-radius: 5px;
+        	font-weight: bold;
+        	font-size: 14px;
+	    }
      	button:hover{cursor: pointer;} 
      	.buttons{width: 40%; height: 60px; margin: auto; position: relative;} 
      	.buttons>button{ width: 45%; height: 100%; position:absolute; margin: auto;}
@@ -76,34 +90,36 @@
 	<%@include file="../../common/header.jsp" %>
     <div class="enroll-outer">
         <div class="inner-outer">
-        	<br>
-        	<h1 align="center">let enrollBoard</h1>
-            <br><br>
-            <form id="myForm" onsubmit="return submitForm();" method="POST" enctype="multipart/form-data">
-                <c:if test="${loginUser.nickName eq '관리자' }">
-	                <div id="notice-box">
-	                    <p id="notice">공지사항 여부:</p>
-	                    <input type="checkbox" name="notice" id="yes" value="Y" onclick="check('Y');"><label for="yes">yes</label>
-	                    <input type="checkbox" name="notice" id="no" value="N" onclick="check('N');"><label for="no">no</label><br><br>
+        	<div class="lib-info">
+            	<div id="libTitle">&nbsp;&nbsp;<span style="font-size: 18px;"><b>let enrollBoard</b></span></div>
+            </div>
+            <hr>
+            <div class="inner-content">
+	            <form id="myForm" onsubmit="return submitForm();" method="POST" enctype="multipart/form-data">
+	                <c:if test="${loginUser.nickName eq '관리자' }">
+		                <div id="notice-box">
+		                    <p id="notice">공지사항 여부:</p>
+		                    <input type="checkbox" name="notice" id="yes" value="Y" onclick="check('Y');"><label for="yes">yes</label>
+		                    <input type="checkbox" name="notice" id="no" value="N" onclick="check('N');"><label for="no">no</label><br><br>
+		                </div>
+	                </c:if>
+	                <input type="hidden" value="${loginUser.userNo }" name="boardWriter">
+	                <p>Title:</p>
+	                <input type="text" name="title" id="title" placeholder="제목을 입력해주세요"><br><br>
+	                <p>Content:</p>
+	                <textarea id="content" name="subContent" style="display:none"></textarea>
+	                <div id="divcontent" contentEditable="true" ></div><br>
+	                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple />
+	                <div id="fileList"></div> <br><br>
+	                <p>Code:</p>
+	                <textarea id="editor" name="contentCode" class="editor"></textarea>
+	                <div class="button-area">
+	                	<div class="buttons">
+	                		<button type="submit" id="submmit">upload</button>
+	                	</div>
 	                </div>
-                </c:if>
-                <input type="hidden" value="${loginUser.userNo }" name="boardWriter">
-                <p>Title:</p>
-                <input type="text" name="title" id="title"><br><br>
-                <p>Content:</p>
-                <textarea id="content" name="subContent" style="display:none"></textarea>
-                <div id="divcontent" contentEditable="true" style="border: solid 1px;line-height: 20px;"></div><br>
-                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple />
-                <div id="fileList"></div> <br><br>
-                <p>Code:</p>
-                <textarea id="editor" name="contentCode" class="editor"></textarea>
-                <div class="button-area">
-                	<div class="buttons">
-                		<button type="submit" id="submmit">upload</button>
-                	</div>
-                </div>
-            </form>
-            <br><br>
+	            </form>
+            </div>
         </div>
     </div>
     <script>

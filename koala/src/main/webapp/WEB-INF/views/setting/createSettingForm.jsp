@@ -244,7 +244,7 @@
 	        	});
 	        	if (editor.getValue() === "") {
 	        		editor.prop("required", true); 
-	        		/* editor.focus(); */
+	        		editor.focus();
 	        	}
 	        	
 	        	var str = "";
