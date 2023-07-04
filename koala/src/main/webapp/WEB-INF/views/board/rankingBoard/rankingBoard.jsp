@@ -19,7 +19,8 @@
         }
     .wrapper{
         width: 100%;
-        height: 800px;
+        height: 1000px;
+        padding-top:200px;
     }
     .body_content{
         display: flex;
