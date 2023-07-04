@@ -502,7 +502,7 @@ p {
 		<div class="button-area">
 			<div>
 				<button id="cancelBtn" type="button">cancel</button>
-				<button id="submitBtn" type="button">submit</button>
+				<button id="submitBtn" type="button">Version Update</button>
 			</div>
 		</div>
 		<br>
@@ -543,7 +543,7 @@ p {
 		<script>
         	$(function(){
         		var page = 1;
-        		var fullInput = "${prevSetting.input}";
+        		var fullInput = "${detail.input}";
         		if(fullInput != ""){ 
 	        		var inputele = fullInput.split("|")[1].split("/"); // input
 	        		for(var i = 0; i < inputele.length; i++){
@@ -677,6 +677,10 @@ p {
     			$("#cancel").on("click", function(){
     				$(".modal-wrap").css("display", "none");
     			});
+    			
+    			$("#cancelBtn").on("click", function(){
+    				location.href="issuesDetail";
+    			})
         	});
         </script>
 	<%@include file="../common/footer.jsp"%>
