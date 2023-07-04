@@ -22,40 +22,26 @@
 <!-- 		<collection property="errorBoard" resultMap="errorBoardResultSet"/> -->
 <!-- 		<collection property="createSetting" resultMap="adminMapper.createSettingResultSet"/> -->
 <!-- 	</resultMap> -->
-
 	<resultMap type="errorSet" id="errorSetResultSet">
 		<result column="BOARD_NO" property="board.boardNo"/>
-<!-- 		<result column="CATEGORY" property="category"/> -->
 		<result column="NICKNAME" property="board.boardWriter"/> <!-- 닉네임으로 조회 -->
 		<result column="TITLE" property="board.title"/>
 		<result column="CONTENT" property="board.content"/>
-<!-- 		<result column="CONTENT_CODE" property="contentCode"/> -->
 		<result column="COUNT" property="board.count"/>
-<!-- 		<result column="LIKED" property="liked"/> -->
 		<result column="CREATE_DATE" property="board.createDate"/>
-<!-- 		<result column="MODIFIED_DATE" property="modifyDate"/> -->
 		<result column="NOTICE" property="board.notice"/>
-<!-- 		<result column="STATUS" property="status"/> -->
 		
 		<result column="REF_BNO" property="errorBoard.refBno"/>
-<!-- 		<result column="REF_SNO" property="refSno"/> -->
 		<result column="SOLVED" property="errorBoard.solved"/>
 		<result column="ERROR_TYPE" property="errorBoard.errorType"/>
 		<result column="MODIFIED_CODE" property="errorBoard.modifiedCode"/>
 		<result column="MODIFIED_INFO" property="errorBoard.modifiedInfo"/>
 		
-<!-- 		<result column="SETTING_NO" property="createSetting.settingNo"/> -->
-<!-- 		<result column="REF_UNO" property="refUno"/> -->
 		<result column="SETTING_TITLE" property="createSetting.settingTitle"/>
 		<result column="SETTING_VERSION" property="createSetting.settingVersion"/>
-<!-- 		<result column="SORT_DESCRIPTION" property="sortDescription"/> -->
 		<result column="SETTING_INFO" property="createSetting.settingInfo"/>
 		<result column="SETTING_CODE" property="createSetting.settingCode"/>
 		<result column="INPUT" property="createSetting.input"/>
-<!-- 		<result column="SETTING_PATH" property="settingPath"/> -->
-<!-- 		<result column="STATUS" property="status"/> -->
-<!-- 		<result column="CREATE_DATE" property="createDate"/> -->
-<!-- 		<result column="MODIFY_DATE" property="modifyDate"/> -->
 		
 		<result column="REPLY_COUNT" property="replyCount"/>
 	</resultMap>
@@ -287,7 +273,7 @@
 								 #{modifiedInfo})
 	</insert>
 	
-	<!-- 게시글 수정 - Board  //확인전 -->
+	<!-- 게시글 수정 - Board -->
 	<update id="updateBoard">
 		UPDATE BOARD
 		SET TITLE = #{title},
@@ -297,7 +283,7 @@
 		AND STATUS = 'Y'
 	</update>
 	
-	<!-- 게시글 수정 - ErrorBoard  //확인전 -->
+	<!-- 게시글 수정 - ErrorBoard -->
 	<update id="updateErrorBoard">
 		UPDATE ERROR_BOARD
 		SET MODIFIED_CODE = #{modifiedCode},
@@ -316,14 +302,16 @@
 		SELECT REPLY_NO,
 		       REPLY_CONTENT,
 		       NICKNAME,
+               NVL2(GITHUB_ID, 'Y', 'N') SUPPORTERS,
 		       TO_CHAR(R.CREATE_DATE, 'YY/MM/DD AMHH:MI') AS CREATE_DATE,
 		       FILE_PATH||CHANGE_NAME AS MEMBER_IMAGE
 		FROM REPLY R
 		JOIN MEMBER M ON(R.REPLY_WRITER = M.USER_NO)
 		LEFT JOIN MEMBER_IMAGE I ON(M.USER_NO = I.REF_UNO)
+        LEFT JOIN SUPPORTERS S ON(M.USER_NO = S.REF_UNO)
 		WHERE R.REF_BNO = #{boardNo}
 		AND R.STATUS IN ('Y', 'W')
-		ORDER BY 1 DESC
+		ORDER BY 4 DESC, 1 DESC
 	</select>
 	
 	<!-- 댓글 작성  -->
@@ -349,5 +337,18 @@
 		WHERE REPLY_NO = #{replyNo}
 	</delete>
 	
+	<!-- 닉네임으로 아이디 구하기 -->
+	<select id="selectId" resultType="string">
+		SELECT USER_ID
+		FROM MEMBER
+		WHERE NICKNAME = #{nickName}
+	</select>
+	
+	<!-- 유저에러 해결완료 -->
+	<update id="updateSolved">
+		UPDATE ERROR_BOARD
+		SET SOLVED = 'Y'
+		WHERE REF_BNO = #{boardNo}
+	</update>
 	
 </mapper>

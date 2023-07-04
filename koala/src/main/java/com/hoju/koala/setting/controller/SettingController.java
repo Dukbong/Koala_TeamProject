@@ -61,7 +61,7 @@ public class SettingController {
 			
 			model.addAttribute("setting", s);
 		}
-		
+
 		//해당 세팅의 버전 정보(settingNo, settingVersion)
 		ArrayList<Setting> versionList = stService.selectVersionList(s.getSettingTitle());
 		
@@ -69,7 +69,9 @@ public class SettingController {
 			model.addAttribute("vList", versionList);
 		}
 		
-		return "setting/description";
+
+		return "setting/choice";
+
 	}
 	
 	
@@ -121,7 +123,7 @@ public class SettingController {
 		if(result>0) {
 			//라이브러리 등록 성공
 			mv.addObject("msg", "라이브러리 등록이 완료되었습니다.");
-			mv.setViewName("/setting/list");
+			mv.setViewName("redirect:/setting/list");
 			
 		}else {
 			mv.addObject("msg", "등록 실패");
@@ -132,9 +134,11 @@ public class SettingController {
 	}
 	
 	
+
 	//버전 업 메소드
 	public String VersionUp(String settingTitle) {
-		
+
+
 		String preVersion = stService.selectVersion(settingTitle);
 	    
 	    // 버전 분리
@@ -164,6 +168,7 @@ public class SettingController {
 	    String newVersion = firstNum + "." + middleNum + "." + lastNum;
 	    
 	    return newVersion;
+
 	}
 	
 }

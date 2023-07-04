@@ -40,8 +40,7 @@
 		WHERE SETTING_TITLE = #{settingTitle}
 		ORDER BY CREATE_DATE DESC
 	</select>
-	
-	
+
 	<!-- 메인 search -->
 	<select id="searchSetting" resultMap="settingResultSet">
 		SELECT *

@@ -82,14 +82,14 @@ public class QnABoardController {
 		
 		int result = qnaService.increateCount(boardNo);//조회수 증가
 		
-		if(result>0) {
+		if(result > 0) {
 			Board b = qnaService.selectBoard(boardNo);
 //			ArrayList<Reply> r = qnaService.selectReplyList(boardNo);			
 //			mv.addObject("r", r);
 			mv.addObject("b",b).setViewName("board/qnaBoard/qnaBoardDetail");
 		
 			
-			if(session.getAttribute("loginUser")!=null) {
+			if(session.getAttribute("loginUser") != null) {
 				int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
 				int likeYoN = qnaService.likeYesOrNo(liked);

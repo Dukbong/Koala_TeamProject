@@ -7,10 +7,18 @@
 <title>ErrorBoard_EnrollForm</title>
 </head>
 
+<!-- 코드 미러 CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js" integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/blackboard.min.css" integrity="sha512-KnHAkH0/78Cyjs1tjV9/+00HK8gu1uKRCCKcWFxX0+rehRh9SYJqiG/2fY4St7H8rPItOsBkgQjN0m4rL5Wobw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="/koala/resources/codemirror-5.53.2/mode/xml/xml.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ayu-dark.min.css" integrity="sha512-mV3RUXi1gt22jDb4UyRBFhZVFgAIiOfRE6ul+2l1Hcj6glyg6x4xlnjPH+neGm/t6XrFmsMRu4++McQu0asjqg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
 <style>
 	div{ box-sizing: border-box;}
     .ebEnrollForm{width: 1400px; margin: auto; padding-top: 200px;}
-    .ebEnrollForm>form>*{width: 85%; margin: auto; padding-bottom: 50px;}
+    .ebEnrollForm>form>*{width: 88%; margin: auto; padding-bottom: 50px;}
     .option-area{width: max-content; margin:auto; padding-bottom: 20px;}
     div[class*='_b']{width: 100%; background-color: black;}
     .enrollForm-area span, .modifyBtn-area span, .modifyForm-top span{
@@ -27,13 +35,13 @@
         font-size: 15px;
     }
 /* ======================================================= 수정폼 영역 */
-    div[class*='modifyForm-area']{width: 85%; height: 700px; display: none;}
+    div[class*='modifyForm-area']{width: 88%; height: 700px; display: none;}
     .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
-    .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding: 10px;}
+    .modifyForm_1, .modifyForm_3{width: 46%; background-color: black; padding: 10px;}
     .modifyForm-area_info .modifyForm_1, .modifyForm-area_info .modifyForm_3{padding: 10px;}
-    .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
+    .modifyForm_2{width: 8%; display: flex; justify-content: center; align-items: center;}
     .ebEnrollForm textarea{
     	width: 100%;
     	height: 100%;
@@ -42,19 +50,22 @@
     	border: none;
         outline: none;
     	resize: none;
+    	overflow-y:auto;
     }
     .reset{cursor:pointer;}
 /* ======================================================== 버튼 관련 */
      .ebEnrollForm button{border-radius: 5px;}
-     button:hover{cursor: pointer;} 
+     .ebEnrollForm button:hover{cursor: pointer; opacity: 0.5;} 
      .buttons{width: 40%; height: 60px; margin: auto; position: relative;} 
      .buttons>button{ width: 45%; height: 100%; position:absolute; margin: auto;}
-     
-     .CodeMirror {
-		width: 100%;
-		height: 100%;
-		box-sizing: border-box;
-	}
+/* ======================================================== 스크롤 관련 */     
+	.ebEnrollForm textarea::-webkit-scrollbar {width: 4px;}
+	.ebEnrollForm textarea::-webkit-scrollbar-thumb {background: gray; border-radius: 10px;}
+/* ======================================================== 코드미러 */       
+    .CodeMirror{
+    	font-family: Arial, monospace;
+    	fonc
+    }
 </style>
 
 <body>
@@ -85,7 +96,7 @@
 					})
 				})
 				
-				//수정폼 카테고리 옵션 변경    //계속 실행되는건데 괜찮은지?
+				//수정폼 카테고리 옵션 변경 (매번 스크롤 될때마다 실행되는 메소드 괜찮은지)
 				$(window).scroll(function(){
 					if($(".modifyForm-area_code").css("display")=="block" && ($(".modifyForm-area_info").css("display")=="block")){
 						$(".modifyBtn-area").css("display", "none");
@@ -111,7 +122,7 @@
 				</div>
 				<div class="title_b" style="height: 30px;">
 					<span>title</span> <input type="text" name="title" id="eb_title"
-						style="width: 85%;" placeholder="제목을 작성하세요" required>
+						style="width: 90%;" placeholder="제목을 작성하세요" required>
 				</div>
 				<div style="height: 5px;"></div><!-- 간격용 -->
 				<div class="content_1_b">
@@ -119,7 +130,7 @@
 				</div>
 				<div class="content_2_b" style="height: 150px;">
 					<textarea name="content" id="eb_content" placeholder="내용을 작성하세요" required
-							style="width: 85%; height: 90%; padding: 5px 55px;"></textarea>
+							style="width: 100%; height: 90%; padding: 5px 55px;"></textarea>
 				</div>
 			</div>
 
@@ -142,38 +153,28 @@
 			</div>
 			
 			<script>
-		
-		$(function() {
-			$(".codeMirror").on("change keyup paste", function() {
-				var text = $(".codeMirror").val();
-				//console.log(text);
-			});
-			
-            var codeEditor = null;
-            var showCodeEditor = false;
-            
-            
-            
-            var textArea = document.getElementById("beforeCode");
-            
-            //console.log(textArea.value);
-            
-			function initializeCodeMirror(){
-                //textarea 태그의 element 지정
-               // var textArea = document.getElementById("textZone");
-                //에디터 설정
-                 codeEditor = CodeMirror.fromTextArea(textArea,{
-                    lineNumbers:true,
-                    lineWrapping:true,
-                    theme:"darcula",
-                    mode:"text/x-sql",
-                    val:textArea.value
-                });
+		    // textarea 태그의 element를 지정
+		    var textarea = document.getElementById('editor');
+		    // 에디터 설정
+		    var editor = CodeMirror.fromTextArea(textarea, {
+		        lineNumbers: true,  //왼쪽 라인넘버 표기
+		        lineWrapping: true, //줄바꿈. 음.. break-word;
+		        matchBrackets: true,
+//	 	        theme: "ayu-dark",   //테마는 맘에드는 걸로.
+//	 	        mode: 'text/x-java', //모드
+		        theme: "blackboard",   //테마는 맘에드는 걸로.
+		        mode: 'text/html', //모드
+		        val: textarea.value
+		    });
+		    
+		    editor.setSize("100%","100%");
 
-
-            }
-		})
-	</script>
+//	 	    function fn_msg() {
+//	 	        // 에디터에 입력된 값은 아래와 같이 가져올 수 있다.
+//	 	        var text = editor.getValue();
+//	 	        alert(text);
+//	 	    }
+			</script>
 			
 			<div class="modifyForm-area_info">
 				<div class="modifyForm-top">
@@ -195,7 +196,7 @@
 			
 			<div class="modifyBtn-area">
 				<span style="color: rgb(241, 196, 15);">modify form</span>
-				<select name="category"> <!-- 이 값은 무시  -->
+				<select name="category"> <!-- 이 값은 받지 않음 -->
 					<option value="">--참고자료--</option>
 					<option value="code">코드</option>
 					<option value="info">설명서</option>

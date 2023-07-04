@@ -8,13 +8,13 @@
 </head>
 <style>
     div{ box-sizing: border-box;}
-    .ebDetailView{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
+    .ebDetailView{width: 1350px; margin: auto; padding: 250px 0px 130px 0px;}
     .ebDetailView>div{width: 100%;}
     
     .total-area{height: 750px;}
     .total-area>div{height: 100%; float: left;}
-    .board-area, .reply-area{width: 42%;}
-    .space{width: 16%;}
+    .board-area, .reply-area{width: 45%;}
+    .space{width: 10%;}
 /* ======================================================= 게시글 영역 */
     .board-area>*{width: 100%;}
     .lib-info{height: 7%; position: relative;}
@@ -48,22 +48,21 @@
     #codeDetailBtn, #infoDetailBtn{
         background-color: rgb(255, 201, 20);
     	width: 120px;
-    	height: 30px;
+    	height: 35px;
     	margin-left: 10px;
     	float: right;
-    	border-radius: 5px;
     }
     
     #updateBtn, #deleteBtn{
-    	width:120px; 
-    	height: 35px; 
+    	width:130px; 
+    	height: 40px; 
     	position: absolute; 
     	margin: auto; 
-    	bottom: 5px;
-    	border-radius: 6px;
+    	bottom: 0;
+    	color: black;
     }
-    #updateBtn{left: 160px;}
-    #deleteBtn{right: 160px;}
+    #updateBtn{left: 160px; background-color: rgb(180,180,180);}
+    #deleteBtn{right: 160px; background-color: rgb(255,90,70);}
 /* ======================================================= 댓글 영역 */
 	.reply-area>div{width: 100%;}
 	.replyWrite-area{height: 15%;}
@@ -85,10 +84,15 @@
  		margin-left: 5px;
  		margin-top: 25px;
 		margin-bottom: 25px;
-		border: 3px solid rgb(80,80,80);
+		border: 2px solid rgb(80,80,80);
 	}
     
     .replyList-area img{width:100%; height: 100%;}
+    .replyBtnSet button{position: absolute; top: 7px;}
+    #updateReply, #updateCancel{right: 55px; background-color: rgb(180,180,180);}
+    #deleteReply{right: 7px; background-color: rgb(255,90,70);}
+    
+    #replyBtn{height: 60px; width:55px; margin: 0 0 3px 0;}
 /* ======================================================= 모달창  */
     .modal-wrap{
         display: none;
@@ -133,11 +137,11 @@
     	width: 100%;
     	height: 100%;
     }
-    .ebDetailView button:hover{
-    	opacity: 85%;
-    }
     
-    .hover:hover{cursor: pointer;}
+    .ebDetailView button{border-radius: 6px;}
+    .ebDetailView button:hover{opacity: 85%; border: 1px solid gray;}
+    
+    .hover:hover{cursor: pointer; opacity: 0.5;}
     
 	.scroll {overflow-y:auto;}
 	.scroll::-webkit-scrollbar {width: 4px;}
@@ -161,7 +165,6 @@
                 		</c:when>
                 	</c:choose>
 	            </div>
-	            
 				<div class="board-box">
 					<div id="title"><span>&nbsp;${eb.board.title }&nbsp;</span></div>
 					<div id="writerDate"><b>작성자</b> ${eb.board.boardWriter } &nbsp;|&nbsp; <b>작성일</b> ${eb.board.createDate }</div>
@@ -178,7 +181,6 @@
 	               	</div>
 	            </div>
 	            <div class="updateDeleteBtn">
-	            <!-- 작성자 로그인유저 조건걸기 -->
 	            	<c:if test="${eb.board.boardWriter.equals(loginUser.nickName) }">
 		            	<button type="button" id="updateBtn" onclick="updateBoard();">수정하기</button>
 		            	<button type="button" id="deleteBtn" onclick="deleteBoard();">삭제하기</button>
@@ -188,7 +190,7 @@
 	        <!-- 게시글 관련 스크립트 -->
 	        <script>
 		        function updateBoard(){
-		        	if('${eb.errorBoard.solved}'=='N' && '${eb.errorBoard.errorType}'=='N'){ //사용자 오류일 경우에 게시글 수정할 수 있게 할지
+		        	if('${eb.errorBoard.solved}'=='N' && '${eb.errorBoard.errorType}'=='N'){
 		        		location.href="updateForm?boardNo="+${eb.board.boardNo};
 		        	}else{
 		        		alert("해당 게시글은 관리자 확인이 완료되어 수정이 불가능합니다.");
@@ -233,9 +235,10 @@
 		        		<input type="hidden" value="${re.replyNo }">
 						<table class="reply-table">
 	        				<tr>
-		        				<td rowspan="2" style="width: 13%; height: 70px;"><img alt="" src="${re.memberImage }"></td>
-		        				<td style="width: 37%; vertical-align: bottom;">${re.replyWriter }</td>
-		        				<td colspan="2" style="width: 50%; text-align: right;">
+		        				<td rowspan="2" style="width: 13%; height: 70px;" class="hover"><img alt="" src="${re.memberImage }" style="border-radius: 50%; padding: 3px;"></td>
+		        				<td style="width: 37%; vertical-align: bottom;" class="hover">${re.replyWriter }
+		        					<c:if test="${re.supporters eq 'Y' }"> <i class="fa-solid fa-feather-pointed fa-sm" style="color: #3ddb5d;"></i></c:if></td>
+		        				<td colspan="2" style="width: 50%; position:relative;" class="replyBtnSet">
 		        					<c:if test="${re.replyWriter eq loginUser.nickName }">
 			        					<button id="updateReply">수정</button>
 			        					<button id="updateCancel" style="display: none;">취소</button>
@@ -252,7 +255,7 @@
 							<!-- 댓글 수 정 시 -->		        			
 		        			<tr style="display: none;">
 		        				<td colspan="3" style="width:90%;"><textarea class="scroll" style="border: 1px solid white; padding: 5px;">${re.replyContent }</textarea></td>
-		        				<td style="width: 10%;"><button id="replyBtn">수정하기</button></td>
+		        				<td style="width: 10%;"><button id="replyBtn">수정</button></td>
 		        			</tr>
 		        		</table>
         			</c:forEach>
@@ -261,9 +264,6 @@
 	        <!-- 댓글 관련 스크립트 -->
 		    <script>
 		    	$(function(){
-		    		//서포터즈 댓글 표시
-		    		
-		    		
 		    		//댓글 수정폼
 		    		$(".reply-table").on("click", "button[id='updateReply']", function(){
 		    			$(this).css("display", "none");
@@ -302,7 +302,7 @@
 		    		});
 		    		
 		    		//댓글 작성
-		    		$("#insertReply").on("click", function(){ //비회원 댓글 못달게 조건걸기
+		    		$("#insertReply").on("click", function(){
 	    			
 		    			$.ajax({
 		    				url : "insertReply",
@@ -342,6 +342,25 @@
 			    			});
 		    			}
 		    		});
+		    		
+		    		//해당 유저 상세페이지로
+		    		$(".reply-table ").on("click", "img", function(){
+		    			
+		    			$.ajax({
+		    				url : "selectId",
+		    				type : "GET",
+							data : {
+								nickName: $(this).parent().next().text().trim()
+							},
+							success : function(result){
+								if(result != null){
+									location.href="/koala/member/ad?userId=" + result;
+								}else{
+									alert("탈퇴 또는 사용 정지된 회원입니다.")
+								}
+							}
+		    			});
+		    		})
 		    	});
 		    </script>
 	    </div>

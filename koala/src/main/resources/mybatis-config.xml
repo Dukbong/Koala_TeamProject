@@ -37,6 +37,7 @@
   		<typeAlias type="com.hoju.koala.board.model.vo.Reply" alias="reply"/>		
   		<typeAlias type="com.hoju.koala.board.model.vo.ErrorBoard" alias="errorBoard"/>
   		<typeAlias type="com.hoju.koala.board.model.vo.ErrorSet" alias="errorSet"/>
+  		<typeAlias type="com.hoju.koala.board.model.vo.QnASelect" alias="qnaSelect"/>
   	</typeAliases>
   
 	<typeHandlers>

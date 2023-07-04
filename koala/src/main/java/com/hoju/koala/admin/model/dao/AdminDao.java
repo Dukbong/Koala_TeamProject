@@ -202,10 +202,34 @@ public class AdminDao {
 	}
 
 	public int approvelib(int settingNo, SqlSession sqlSession) {
-		return sqlSession.update("adminMapper.approvelib");
+		return sqlSession.update("adminMapper.approvelib", settingNo);
 	}
 
 	public int disapprovelib(int settingNo, SqlSession sqlSession) {
-		return sqlSession.update("adminMapper.disapprovelib");
+		return sqlSession.update("adminMapper.disapprovelib", settingNo);
+	}
+
+	public int updateIssueSuccess(int boardNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateIssueSuccess", boardNo);
+	}
+
+	public int updateSetting(Setting setting, SqlSession sqlSession) {
+		return sqlSession.insert("adminMapper.updateSetting", setting);
+	}
+
+	public Setting listDetail(int settingNo, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.listDetail", settingNo);
+	}
+
+	public int updateIssueDate(int boardNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateIssueDate", boardNo);
+	}
+
+	public int updateSettingEtc(Setting setting, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateSettingEtc", setting);
+	}
+
+	public Setting selectprevSetting(int refSno, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectprevSetting", refSno);
 	}
 }

@@ -34,6 +34,7 @@ public interface QnABoardService {
 
 	//qna 댓글 조회
 	ArrayList<Reply> selectReply(int boardNo);
+	
 
 	//qna 댓글 삽입
 	int insertReply(Reply r);

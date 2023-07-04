@@ -32,8 +32,8 @@
     .board_title{
         width: 30%;
         float: left;
-        margin-left: 65px;
-        margin-right: -65px;
+        margin-left: 80px;
+        margin-right: -120px;
     }
     .board_title>span{
         color: rgb(255, 201,20);
@@ -239,12 +239,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                    	<c:forEach var="eb" items="${ebList}">
+                    	<c:forEach var="eb" items="${ebList}" varStatus="status">
+                    	<input type="hidden" name="boardNo" value="${eb.board.boardNo }">
                     		<c:choose>
 								<c:when test="${eb.board.notice ne 'Y' }"><tr style="height: 47px;"></c:when>
 								<c:otherwise><tr style="height: 47px;" class="notice"></c:otherwise>
 							</c:choose>
-								<td>${eb.board.boardNo }</td>
+								<td>${listCount - status.index }</td>
 								<td>${eb.createSetting.settingTitle }</td>
 								<td>${eb.board.title } [ ${eb.replyCount } ]</td>
 								<td>${eb.board.boardWriter }</td>
@@ -297,7 +298,7 @@
 	<script>
 		$(function(){
 			$("tbody>tr").click(function(){
-				var bno = $(this).children().eq(0).text();
+				var bno = $(this).prev().val();
 				location.href="detail?boardNo="+bno;
 			});
 		});

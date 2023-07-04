@@ -132,6 +132,18 @@ public interface AdminService {
 	// lib disapprove
 	int disapprovelib(int settingNo);
 
+	// 라이브러리 수정 완료
+	int updateIssueSuccess(int boardNo);
+	int updateSetting(Setting setting);
+	int updateIssueDate(int boardNo);
+	int updateSettingEtc(Setting setting);
+
+	Setting listDetail(int settingNo);
+
+	Setting selectprevSetting(int refSno);
+
+
+
 
 
 

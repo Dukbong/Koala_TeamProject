@@ -6,18 +6,21 @@
 <mapper namespace="adminMapper">
 	<resultMap type="settingDetail" id="issuesDetailResultSet">
 		<result column="SETTING_NO" property="setting.settingNo"/>
+		<result column="BOARD_WRITER" property="board.boardWriter"/>
 		<result column="BOARD_NO" property="board.boardNo"/>
 		<result column="SETTING_TITLE" property="setting.settingTitle"/>
+		<result column="SORT_DESCRIPTION" property="setting.sortDescription"/>
 		<result column="SETTING_VERSION" property="setting.settingVersion" />
 		<result column="SETTING_INFO" property="setting.settingInfo"/>
 		<result column="SETTING_CODE" property="setting.settingCode"/>
 		<result column="TITLE" property="board.title"/>
 		<result column="USER_ID" property="member.userId"/>
+		<result column="NICKNAME" property="member.nickName"/>
 		<result column="CREATE_DATE" property="board.createDate"/>
 		<result column="CONTENT" property="board.content"/>
+		<result column="REF_SNO" property="errorBoard.refSno"/>
 		<result column="MODIFIED_CODE" property="errorBoard.modifiedCode"/>
 		<result column="MODIFIED_INFO" property="errorBoard.modifiedInfo"/>
-		<result column="INPUT" property="setting.input"/>
 	</resultMap>
 
 	<!-- 전체 개수를 알기 위해 별도의 VO를 작성 -->
@@ -255,9 +258,9 @@
 			REPO_URL = #{repoUrl}
 		WHERE REF_UNO = #{refUno} 
 	</update>
-	<select id="selectIssueDetail" resultMap="settingMapper.settingResultSet">
+	<select id="selectIssueDetail" resultMap="issuesDetailResultSet">
 		<!-- 세팅 작성 페이지가 완성되지 않았기 때문에 아직 모른다. -->
-		select c.setting_No,b.board_no, c.setting_title, c.setting_version, b.title, m.user_id, b.create_date, c.setting_info, c.setting_code, b.content, e.modified_code, e.modified_info, c.input
+		select e.ref_sno, c.setting_No,c.sort_description,b.board_no, c.setting_title, c.setting_version, b.board_writer, b.title, m.user_id,m.nickName, b.create_date, c.setting_info, c.setting_code, b.content, e.modified_code, e.modified_info
 		from error_board e
 		join create_setting c on (ref_sno = setting_no)
 		join board b on (b.board_no = e.ref_bno)
@@ -396,7 +399,7 @@
 		join supporters using(ref_uno)
 		join member m on (ref_uno = user_no)
 		where github_id != ' '
-		and type=1
+		and type = 1
 		and ref_uno != 1
 		and m.status = 'Y'
 		and c.status = 'W'
@@ -411,4 +414,26 @@
 		set status = 'N'
 		where setting_no = #{settingNo}
 	</update>
+	
+	<update id="updateIssueSuccess">
+		UPDATE ERROR_BOARD
+		SET solved='Y'
+		WHERE REF_BNO = #{boardNo}
+	</update>
+	<update id="updateIssueDate">
+		UPDATE BOARD
+		SET MODIFY_DATE = SYSDATE
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<insert id="updateSetting" parameterType="setting">
+		INSERT INTO create_setting VALUES
+		(SEQ_SET.nextval, #{refUno}, #{settingTitle}, #{settingVersion}, #{sortDescription}, #{settingInfo}, #{settingCode}, #{input}, 'Y', SYSDATE)
+	</insert>
+	<select id="listDetail" resultMap="settingMapper.settingResultSet">
+		SELECT * FROM CREATE_SETTING WHERE SETTING_NO = #{settingNo}
+	</select>
+	<select id="selectprevSetting" resultMap="settingMapper.settingResultSet">
+		SELECT c.* FROM CREATE_SETTING C JOIN ERROR_BOARD E ON (REF_SNO = SETTING_NO) WHERE REF_SNO = #{refSno} and rownum =1
+	</select>
 </mapper>

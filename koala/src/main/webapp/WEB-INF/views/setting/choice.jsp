@@ -15,7 +15,7 @@
     .wrapper{
         width: 100%;
         height: 1200px;
-        padding-top: 200px;
+        padding-top:200px;
     }
     .body_content{
         display: flex;
@@ -29,7 +29,7 @@
     }
     .block{
         /* border: 1px solid red; */
-        height: 80%;
+        height: 100%;
         width: 50%;
         display: flex;
         flex-direction: column;
@@ -57,6 +57,7 @@
         background-color: rgb(41, 23, 44);
         color: white;
         font-weight: bold;
+        font-size : 10px;
     }
 
     .choice_title{
@@ -153,6 +154,9 @@
         color: #D9D2D9;
     } */
 
+	.desArea{
+		display : none;
+	}
 
 </style>
 <body>
@@ -162,6 +166,34 @@
             <div class="block">
                 <div class="block_title">
                     <span>commons</span>
+                </div>
+                <div class="desArea">
+                <div class="description">
+	              <p id="description_part1"><!--  ${s.sortDescription }-->
+	              
+	              Commons Library(http://commons.apache.org/)는 아파치 재단에서 관리하고 있는 라이브러리로 
+		                        프로그램 개발 시 재사용 가능한 자바 컴포넌트들을 모아둔 라이브러리다. <br> 
+		                        아파치 재단에서는 프로젝트에서 유틸리티 클래스와 공통적으로 사용되는 기능 등을 다른 프로젝트에서 재사용 가능하도록 
+		                        컴포넌트 형태로 개발해 Apache Commons Library라는 이름으로 배포하고 있다. <br>
+		                        대부분의 아파치 프로젝트에서는 중복 개발을 피하기 위해 Commons Library를 기본적으로 사용하고 있고, 
+		                        전 세계적으로도 많은 개발자들이 Commons Library를 사용하고 있다. <br>
+		                        그 숫자는 지금도 증가하고 있으며 Commons Library는 구글 라이브러리와 더불어 전 세계적으로 가장 많이 사용되고 있는 라이브러리다. </p>
+	                </div>
+	                <div class="howTo">
+	                    <span class="block_title">다운로드 방법</span>
+	                    <div id="description_part2">
+	                        <span class="desTitle">How To Copy Code?</span> <br>
+	                        <p class="desContent">
+	                        <!-- ${s.settingInfo} -->
+	                        Press the Copy Button at the bottom<br>
+	                        Or Drag the whole content
+	                        </p>
+	                        <br><br>
+	                        <span class="desTitle">How To DownLoad File?</span><br>
+	                        <p class="desContent">Press the DownLoad button at the bottom<br>
+	                        You can check the generated zip file</p>
+	                    </div>
+	                </div>
                 </div>
                 <div class="choice_area">
                     <!-- <form action="code.bo"> -->
@@ -178,25 +210,25 @@
                         <div class="chArea">
 
                             <div class="choice_title">
-                                <span>&lt;driver class name&gt;</span>
+                                <span name="input">&lt;driver class name&gt;</span>
                             </div>
                             <div class="choice_content" id="classInput">
                                 <input type="text" id="driverClassNameInput" placeholder="Koala.driveClassName">
                             </div>
                             <div class="choice_title">
-                                <span>&lt;url&gt;</span>
+                                <span name="input">&lt;url&gt;</span>
                             </div>
                             <div class="choice_content" id="urlInput">
                                 <input type="text" id="driverUrlInput" placeholder="Koala.url">
                             </div>
                             <div class="choice_title">
-                                <span>&lt;user name&gt;</span>
+                                <span name="input">&lt;user name&gt;</span>
                             </div>
                             <div class="choice_content" id="nameInput">
                                 <input type="text" id="userNameInput" placeholder="Koala.userName">
                             </div>
                             <div class="choice_title">
-                                <span>&lt;password&gt;</span>
+                                <span name="input">&lt;password&gt;</span>
                             </div>
                             <div class="choice_content" id="pwdInput">
                                 <input type="text" id="passwordInput" placeholder="Koala.password">
@@ -211,8 +243,18 @@
             <hr>
             <div class="block">
                 <div class="block_title">
-                    <span>commons 1.0</span>
+                    <span><!-- ${s.settingTitle} -->commons 1.0</span>
                     <select name="version" id="versionHistory">
+<%--                     <c:forEach> --%>
+<%--                     	<c:choose> --%>
+<%--                     		<c:when test="${option == s.settingVersion }"> --%>
+<%--                     			<option value="${option }" selected>${option}</option> --%>
+<%--                     		</c:when> --%>
+<%--                     		<c:otherwise> --%>
+<%--                     			<option value="${option }">${option }</option> --%>
+<%--                     		</c:otherwise> --%>
+<%--                     	</c:choose> --%>
+<%--                     </c:forEach> --%>
                         <option value="commons 2.0.7">commons 2.0.7</option>
                         <option value="commons 2.0.7">commons 2.0.7</option>
                         <option value="commons 2.0.7">commons 2.0.7</option>
@@ -220,7 +262,10 @@
                         <option value="commons 2.0.7">commons 2.0.7</option>
                     </select>
                 </div>
-                <div class="code_content" id="copy_code">
+<!--                 <div class="code_mirrorZone" id="mirror"> -->
+                
+<!--                 </div> -->
+                <div class="code_content" id="copy_code">               
                     <span class="commonStyle">&lt;dependency&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span>org.springframework</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span>spring-context</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
@@ -234,12 +279,13 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusions&gt;</span> <br>
                     <span class="commonStyle">&lt;/dependency&gt;</span><br>
                     <span class="commonStyle">&lt;dependency&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeName">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="${changeName}">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span name="changePwd">Koala.password</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br>
                     <span class="commonStyle">&lt;/dependency&gt;</span><br>
                     <div class="button_area">
-                        <button type="button" id="copyBtn" class="button1">Copy</button><button type="button" class="button2">Download</button>
+                        <button type="button" id="copyBtn" class="button1">Copy</button><button type="button" onclick="fileDownload();" class="button2">Download</button>
                     </div>
                 </div>
                 
@@ -250,6 +296,8 @@
     <script>
         //코드 카피하기
         var codeArea = document.getElementById("copy_code");
+        
+        var setting = '${setting}';
 
         document.getElementById("copyBtn").onclick=()=>{
 
@@ -266,15 +314,41 @@
         }
 
 
+        var list = [];
+        list.forEach(function(s){
+        	if(s.input!=null){
+        		var choiceTitle = document.createElement('div');
+        		choiceTtile.className = 'choice_title';
+        		
+        		var span = document.createElement('span');
+        		span.setAttribute('name', s.input);
+        		choiceTitle.appendChild(span);
+        		
+        		var choiceContent = document.createElement('div');
+        		choiceContent.className = 'choice_content';
+        		
+        		var input = document.createElement('input');
+        		input.setAttribute('type', 'text');
+        		input.setAttribute('id','driverClassNameInput');
+        		input.setAttribute('placeholder','Koala.'+s.input);
+        		choiceContent.appendChild(input);
+        		
+        		document.getElementByClassName('chArea')[0].appendChild(choiceTitle);
+        		document.getElementByClassName('chArea')[0].appendChild(choiceContent);
+        	}
+        });
 
  
 
+        //submit 이벤트
+        
         var driverClassNameInput = document.getElementById("driverClassNameInput");
         var urlInput = document.getElementById("driverUrlInput");     
         var userNameInput = document.getElementById("userNameInput");
         var passwordInput = document.getElementById("passwordInput");
+		var desArea = document.querySelector(".desArea");
+		var choiceArea = document.querySelector(".choice_area");
         
-
         //입력창 내용 옮기기
         document.getElementById("choiceSub").addEventListener("click",function(){
 
@@ -296,10 +370,47 @@
             for (var i = 0; i < passwordElements.length; i++) {
                 passwordElements[i].textContent = passwordInput.value;
             }
+            
+            desArea.style.display = "block"; //설명 보여주기
+            choiceArea.style.display = "none"; //선택 창 가리기
+            
         });
 
 
+        //span태그에 각각 input값 넣어주기
+//         var inputVal = $("span[name='input']").text();
 
+// 		if(inputVal){
+// 			var inputVals = inputVal.split('/'); //구분자로 값 분리하기
+			
+// 			for(var i=0; i<inputVals.length; i++){
+// 				var inputId = "";
+// 				var placeholderVal = inputVals[i];
+				
+// 				if(i===0){
+// 					inputId = "#driverClassNameInput";
+// 				}else if(i===1){
+// 					inputId = "#driverUrlInput";
+// 				}else if(i===2){
+// 					inputId = "#userNameInput";
+// 				}else if(i===3){
+// 					inputId = "#passwordInput";
+// 				}
+				
+// 				$(inputId).val(placeholderVal);
+// 				$(inputId).attr("placeholder",placeholderVal);
+// 			}
+// 		}else{
+// 			//입력값이 없을 때....가 있나? 그때는 그냥 기본 설정
+// // 			$(".chArea").show();		
+// 		}
+
+//      	// 각각의 값을 <span> 태그에 할당
+//      	$("#driverClassNameInput").val(inputValues[0]);
+//      	$("#driverUrlInput").val(inputValues[1]);
+//      	$("#userNameInput").val(inputValues[2]);
+//      	$("#passwordInput").val(inputValues[3]);
+		
     </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

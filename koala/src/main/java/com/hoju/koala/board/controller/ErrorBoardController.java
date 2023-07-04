@@ -29,7 +29,6 @@ import com.hoju.koala.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/errorBoard")
 public class ErrorBoardController {
@@ -69,8 +68,11 @@ public class ErrorBoardController {
 			ebList = ebService.searchList(pi, hashMap);
 		}
 		
+		listCount = listCount - (currentPage-1)*boardLimit;
+		
 		model.addAttribute("pi", pi);
 		model.addAttribute("ebList", ebList);
+		model.addAttribute("listCount", listCount);
 		model.addAttribute("category", category);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("sort", sort);
@@ -82,7 +84,6 @@ public class ErrorBoardController {
 	@GetMapping("/detail")
 	public String enrollForm(int boardNo,
 							 Model model) {
-		
 		//조회수 증가 메소드
 		int result = ebService.increaseCount(boardNo);
 		
@@ -103,7 +104,6 @@ public class ErrorBoardController {
 			return "common/error";
 		}
 	}
-	
 	
 	//게시글 작성폼 이동
 	@GetMapping("/enrollForm")
@@ -240,15 +240,29 @@ public class ErrorBoardController {
 		return ebService.deleteReply(replyNo);
 	}
 	
-	//insert.cs 테스트용
-//	@PostMapping("insert.cs")
-//	public String createSettingTest(CreateSetting cs) {
-//		
-//		System.out.println(cs);
-//		
-//		return "";
-//	}
+	//닉네임으로 아이디 구하기
+	@ResponseBody
+	@GetMapping("selectId")
+	public String selectId(String nickName) {
+		
+		return ebService.selectId(nickName);
+	}
 	
-	
+	//유저에러 해결완료
+	@GetMapping("updateSolved")
+	public String updateSolved(int boardNo,
+							   HttpSession session) {
+		
+		int result =  ebService.updateSolved(boardNo);
+		String userId = String.valueOf(((Member)session.getAttribute("loginUser")).getUserId());
+		
+		if(result>0) {
+			session.setAttribute("msg", "해당 게시글의 상태값이 해결완료로 변경되었습니다.");
+			return "redirect:/member/boardList?userId="+userId;
+		}else {	
+			session.setAttribute("errorMsg", "게시글 상태값 변경에 실패했습니다.");
+			return "common/error";
+		}
+	}
 	
 }

@@ -22,6 +22,7 @@
 		<result column="MODIFIED_DATE" property="modifyDate"/>
 		<result column="NOTICE" property="notice"/>
 		<result column="STATUS" property="status"/>
+		<result column="USER_ERROR" property="userError"/>
 	</resultMap>
 	
 	<resultMap type="boardAttachment" id="boardAttachmentResultSet">
@@ -42,7 +43,8 @@
 		<result column="NICKNAME" property="replyWriter"/> <!-- 닉네임으로 조회 -->
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
-		<result column="MEMBER_IMAGE" property="memberImage"/> <!-- 프로필사진 추가 -->
+		<result column="MEMBER_IMAGE" property="memberImage"/> <!-- 프로필사진  -->
+		<result column="SUPPORTERS" property="supporters"/> <!-- 서포터즈 여부 -->
 	</resultMap>
 	
 	<resultMap type="liked" id="likedResultSet">

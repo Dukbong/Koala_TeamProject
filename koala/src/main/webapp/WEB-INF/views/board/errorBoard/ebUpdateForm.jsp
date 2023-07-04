@@ -10,7 +10,7 @@
 <style>
 	div{ box-sizing: border-box;}
     .ebEnrollForm{width: 1400px; margin: auto; padding-top: 200px;}
-    .ebEnrollForm>form>*{width: 85%; margin: auto; padding-bottom: 50px;}
+    .ebEnrollForm>form>*{width: 88%; margin: auto; padding-bottom: 50px;}
     .option-area{width: max-content; margin:auto; padding-bottom: 20px;}
     div[class*='_b']{width: 100%; background-color: black;}
     .enrollForm-area span, .modifyBtn-area span, .modifyForm-top span{
@@ -27,12 +27,12 @@
         font-size: 15px;
     }
 /* ======================================================= 수정폼 영역 */
-    div[class*='modifyForm-area']{width: 85%; height: 700px; display: none;}
+    div[class*='modifyForm-area']{width: 88%; height: 700px; display: none;}
     .modifyForm-top{width: 100%; height: 8%; position:relative;}
     .modifyForm-bottom{width: 100%; height: 92%;}
     .modifyForm-bottom>div{height: 100%; float: left;}
-    .modifyForm_1, .modifyForm_3{width: 47%; background-color: black; padding : 10px;}
-    .modifyForm_2{width: 6%; display: flex; justify-content: center; align-items: center;}
+    .modifyForm_1, .modifyForm_3{width: 46%; background-color: black; padding : 10px;}
+    .modifyForm_2{width: 8%; display: flex; justify-content: center; align-items: center;}
     .ebEnrollForm textarea{
     	width: 100%;
     	height: 100%;
@@ -41,13 +41,17 @@
     	resize: none;
     	border: none;
         outline: none;
+        overflow-y:auto;
     }
     .reset{cursor:pointer;}
 /* ======================================================== 버튼 관련 */
-     button{border-radius: 5px;}
-     button:hover{cursor: pointer;} 
+     .ebEnrollForm button{border-radius: 5px;}
+     .ebEnrollForm button:hover{cursor: pointer; opacity: 0.5;} 
      .buttons{width: 25%; height: 50px; margin: auto; position: relative;} 
      .buttons>button{ width: 120px; height: 40px; position:absolute; margin: auto;} 
+/* ======================================================== 스크롤 관련 */     
+	.ebEnrollForm textarea::-webkit-scrollbar {width: 4px;}
+	.ebEnrollForm textarea::-webkit-scrollbar-thumb {background: gray; border-radius: 10px;}
 </style>
 
 <body>
@@ -60,7 +64,7 @@
 		<script>
 			$(function(){
 				
-				//수정폼 카테고리 옵션 변경    //계속 실행되는건데 괜찮은지?
+				//수정폼 카테고리 옵션 변경
 				$(window).scroll(function(){
 					if($(".modifyForm-area_code").css("display")=="block" && ($(".modifyForm-area_info").css("display")=="block")){
 						$(".modifyBtn-area").css("display", "none");
@@ -79,7 +83,7 @@
 				</div>
 				<div class="title_b" style="height: 30px;">
 					<span>title</span> <input type="text" name="title" id="eb_title"
-						style="width: 85%;" placeholder="제목을 작성하세요" value="${eb.board.title }" required>
+						style="width: 90%;" placeholder="제목을 작성하세요" value="${eb.board.title }" required>
 				</div>
 				<div style="height: 5px;"></div><!-- 간격용 -->
 				<div class="content_1_b">
@@ -87,7 +91,7 @@
 				</div>
 				<div class="content_2_b" style="height: 150px;">
 					<textarea name="content" id="eb_content" placeholder="내용을 작성하세요" required
-							style="width: 85%; height: 90%; padding: 5px 55px;">${eb.board.content }</textarea>
+							style="width: 100%; height: 90%; padding: 5px 55px;">${eb.board.content }</textarea>
 				</div>
 			</div>
 
@@ -164,7 +168,6 @@
 						}
 					};
 					
-					
 					//수정폼 생성(비동기)
 					$(".modifyBtn-area").on("click", "button", function(){
 						
@@ -182,9 +185,6 @@
 							$('html').animate({scrollTop : $(".modifyForm-area_info").offset().top}, 300);
 						}
 						$("select[name='category']").find('option:first').prop('selected', true);
-							
-							
-						
 					});
 					
 					//수정폼 선택 삭제
