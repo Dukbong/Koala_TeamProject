@@ -16,34 +16,41 @@
 		div{ box-sizing: border-box;}
     	.enroll-outer{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
     	.enroll-outer>div{width: 100%;}
-    
-    	.total-area{height: 750px;}
-    	.total-area>div{height: 100%; float: left;}
-    	.board-area, .reply-area{width: 42%;}
-    	.space{width: 16%;}
+    	.lib-info{height: 5%; position: relative;}
+        #libTitle{color: rgb(255, 201,20);left: 0; height: 45px; padding-top: 7px;}
         * {
             padding:0;
-            margin:0;
+            margin: 0;
             box-sizing: border-box;
         }
         .enroll-outer{
-            display: flex;
+        	width: 100%;
             background-color: black;
             color: white;
             margin: auto;
-            justify-content: center;
         }
-        .inner-outer{
-            width: 80%;
-            justify-content: center;
+        .updateContent{
+        	width: 100%;
+        	display: flex;
+        	justify-content: center;
             align-items: center;
         }
+        .updateContent>form{
+        	width:70%;
+        }
+        #title{
+        	background-color: transparent;
+        	border: 1px solid rgba(255, 255, 255, 0.5);
+        	color: white;
+        	width: 100%;
+        }
         #divcontent{
-            width:100%;
             height: 300px;
-            background-color: white;
-            color: black;
+            background-color: none;
+            color: white;
             overflow: auto;
+            line-height: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         #notice{
             display: inline-block;
@@ -54,57 +61,68 @@
         #contentCode{
             background-color: black;
         }
-        #title,#contentCode{
-            width: 100%;
-        }
         .CodeMirror {
             font-family: Arial, monospace;
             font-size: 25px;
-            border: 1px solid white;
             z-index: 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         #submmit{
-            position: relative;
+            margin-left: 500px;
             margin-top: 20px;
-            width: 80px;
-            height: 30px;
-            left: 90%;
+            left: 0px;
         }
+        button{
+	    	background-color: rgb(255, 201,20);
+        	border-radius: 5px;
+        	font-weight: bold;
+        	font-size: 14px;
+	    }
+     	button:hover{cursor: pointer;} 
+     	.buttons{width: 40%; height: 60px; margin: auto; position: relative;} 
+     	.buttons>button{ width: 45%; height: 100%; position:absolute; margin: auto;}
     </style>
 </head>
 <body>
     <%@include file="../../common/header.jsp" %>
     <div class="enroll-outer">
         <div class="inner-outer">
-        	<h1 align="center">let updateBoard</h1>
-            <br><br>
-            <form id="myForm" onsubmit="return submitForm();" method="POST" enctype="multipart/form-data">
-                <c:if test="${loginUser.nickName eq '관리자' }">
-	                <div id="notice-box">
-	                    <p id="notice">공지사항 여부:</p>
-	                    <input type="checkbox" name="notice" id="yes" value="Y" onclick="check('Y');"><label for="yes">yes</label>
-	                    <input type="checkbox" name="notice" id="no" value="N" onclick="check('N');"><label for="no">no</label><br><br>
+        	<div class="lib-info">
+            	<div id="libTitle">&nbsp;&nbsp;<span style="font-size: 18px;"><b>let updateBoard</b></span></div>
+            </div>
+            <hr>
+            <div class="updateContent">
+	            <form id="myForm" onsubmit="return submitForm();" method="POST" enctype="multipart/form-data">
+	                <c:if test="${loginUser.nickName eq '관리자' }">
+		                <div id="notice-box">
+		                    <p id="notice">공지사항 여부:</p>
+		                    <input type="checkbox" name="notice" id="yes" value="Y" onclick="check('Y');"><label for="yes">yes</label>
+		                    <input type="checkbox" name="notice" id="no" value="N" onclick="check('N');"><label for="no">no</label><br><br>
+		                </div>
+	                </c:if>
+	                <input type="hidden" value="${b.boardNo }" name="boardNo">
+	                <p>Title:</p>
+	                <input type="text" name="title" id="title" value="${b.title }"><br><br>
+	                <p>Content:</p>
+	                <textarea id="content" name="subContent" style="display:none"></textarea>
+	                <div id="divcontent" contentEditable="true">${b.content }</div><br>
+	                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple />
+	                <div id="fileList">
+	                <c:forEach var="b" items="${baList }">
+	                	<input name="existedFiles" type="text" style="display:none" value="${b.changeName }">
+	                	<input name="filePath" type="text" style="display:none" value="${b.filePath }">
+	                	<input name="fileNos" type="text" style="display:none" value="${b.fileNo }">
+	                </c:forEach>
+	                </div> <br><br>
+	                <p>Code:</p>
+	                <textarea id="editor" name="contentCode" class="editor">${b.contentCode }</textarea>
+	                <div class="button-area">
+	                	<div class="buttons">
+	                		<button type="submit" id="submmit">update</button>
+	                	</div>
 	                </div>
-                </c:if>
-                <input type="hidden" value="${b.boardNo }" name="boardNo">
-                <p>Title:</p>
-                <input type="text" name="title" id="title" value="${b.title }"><br><br>
-                <p>Content:</p>
-                <textarea id="content" name="subContent" style="display:none"></textarea>
-                <div id="divcontent" contentEditable="true" style="border: solid 1px;line-height: 20px;">${b.content }</div><br>
-                <input id="browse" name="upfiles" type="file" onchange="previewFiles()" multiple />
-                <div id="fileList">
-                <c:forEach var="b" items="${baList }">
-                	<input name="existedFiles" type="text" style="display:none" value="${b.changeName }">
-                	<input name="filePath" type="text" style="display:none" value="${b.filePath }">
-                	<input name="fileNos" type="text" style="display:none" value="${b.fileNo }">
-                </c:forEach>
-                </div> <br><br>
-                <p>Code:</p>
-                <textarea id="editor" name="contentCode" class="editor">${b.contentCode }</textarea>
-                <button type="submit" id="submmit">update</button>
-            </form>
-            <br><br>
+	            </form>
+            </div>
         </div>
     </div>
     <script>

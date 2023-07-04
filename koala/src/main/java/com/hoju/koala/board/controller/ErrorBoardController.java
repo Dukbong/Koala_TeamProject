@@ -159,9 +159,24 @@ public class ErrorBoardController {
 		int result = ebService.insertBoard(b,eb);
 		
 		if(result>0) {
-			session.setAttribute("msg", "게시글 작성이 완료되었습니다.");
+			
+			//게시글 500p 등록
+			HashMap<String, Object> setPoint = new HashMap<>();
+			setPoint.put("userNo", userNo);
+			setPoint.put("point", 500);
+			
+			int result2 = ebService.increasePoint(setPoint);
+			
+			if(result2>0) {
+				session.setAttribute("msg", "게시글 작성이 완료되었습니다.");
+			}else {
+				session.setAttribute("msg", "포인트 등록에 실패했습니다.");
+			}
+			
 			return "redirect:list";
+			
 		}else { //실패
+			session.setAttribute("errorMsg", "게시글 등록에 실패했습니다.");
 			return "common/error";
 		}
 	}

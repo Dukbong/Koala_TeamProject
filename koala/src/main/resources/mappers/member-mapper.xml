@@ -232,10 +232,10 @@
 		UPDATE ATTENDANCE A
 		SET A.ATT_LEVEL = CASE WHEN (SELECT M.POINT-A.PRE_POINT
 		                             FROM MEMBER M
-		                             WHERE M.USER_NO = A.REF_UNO)>300 THEN 3
+		                             WHERE M.USER_NO = A.REF_UNO)>500 THEN 3
 		                       WHEN (SELECT M.POINT-A.PRE_POINT
 		                             FROM MEMBER M
-		                             WHERE M.USER_NO = A.REF_UNO)>200 THEN 2
+		                             WHERE M.USER_NO = A.REF_UNO)>300 THEN 2
 		                       ELSE 1
 		                       END,
 		A.PRE_POINT = (SELECT M.POINT-A.PRE_POINT
