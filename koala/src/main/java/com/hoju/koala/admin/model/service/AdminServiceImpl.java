@@ -19,6 +19,7 @@ import com.hoju.koala.admin.model.vo.SettingDetail;
 import com.hoju.koala.admin.model.vo.SqlCloud;
 import com.hoju.koala.admin.model.vo.SqlInvite;
 import com.hoju.koala.admin.model.vo.Supporters;
+import com.hoju.koala.board.model.vo.ErrorBoard;
 import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.common.model.vo.PageInfo;
 import com.hoju.koala.member.model.vo.Member;
@@ -287,6 +288,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Setting selectprevSetting(int refSno) {
 		return adminDao.selectprevSetting(refSno, sqlSession);
+	}
+
+	@Override
+	public SettingDetail selectOneError(SettingDetail sd) {
+		return adminDao.selectOneError(sd, sqlSession);
+	}
+
+	@Override
+	public int updateSettingN(int settingNo) {
+		return adminDao.updateSettingN(settingNo, sqlSession);
 	}
 
 
