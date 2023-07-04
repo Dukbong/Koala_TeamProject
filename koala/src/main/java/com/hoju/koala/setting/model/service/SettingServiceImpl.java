@@ -30,9 +30,9 @@ public class SettingServiceImpl implements SettingService {
 
 	//해당 Setting 조회
 	@Override
-	public Setting selectSetting(int settingNo) {
+	public Setting selectSetting(Setting setting) {
 
-		Setting s = stDao.selectSetting(sqlSession, settingNo);
+		Setting s = stDao.selectSetting(sqlSession, setting);
 		
 		return s;
 	}
@@ -46,12 +46,6 @@ public class SettingServiceImpl implements SettingService {
 		return versionList;
 	}
 
-	//코드 입력 메소드
-	@Override
-	public int insertCode(Setting setting) {
-		
-		return stDao.insertCode(sqlSession, setting);
-	}
 
 	//메인페이지 search
 	@Override
@@ -61,6 +55,31 @@ public class SettingServiceImpl implements SettingService {
 		
 		return searchList;
 	}
+
+	@Override
+	public int deletelib(int settingNo) {
+		return stDao.deletelib(sqlSession, settingNo);
+	}
+
+	//라이브러리 작성 메소드
+	@Override
+	public int insertSetting(Setting setting) {
+		
+		int result = stDao.insertSetting(sqlSession, setting);
+		
+		return result;
+	}
+
+	//기존 버전 찾기
+	@Override
+	public String selectVersion(String settingTitle) {
+		
+		String preVersion = stDao.selectVersion(sqlSession, settingTitle);
+		
+		return preVersion;
+	}
+
+	
 
 	
 	

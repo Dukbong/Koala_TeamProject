@@ -36,4 +36,6 @@ CREATE_DATE	DATE
 	private String status;
 	private Date createDate;
 	
+	private int userType;
+	
 }

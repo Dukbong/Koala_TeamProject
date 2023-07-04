@@ -91,7 +91,7 @@
         <div class="column">
             <div class="item itemhade">Why Koala</div>
             <div class="item">
-                <a class="footerAtag ii"  href="#">DownLoad & Copy</a>
+                <a class="footerAtag ii"  href="/koala/setting/list">Library Helper</a>
             </div>
             <div class="item">
                 <a class="footerAtag ii" href="/koala/errorBoard/list">Error_Board</a>
@@ -141,7 +141,7 @@
                 SQL Cloud
             </div>
             <div class="QuizPlay">
-                <a class="footerAtag" href="/koala/multi/play">Play</a>
+                <a class="footerAtag" id="sqlCloud">Play</a>
             </div>
         </div>
     </div>
@@ -152,6 +152,24 @@
             Copyright @ 20230107-20230707 KH academy C lecture room
         </div>
     </div>
+    
+    <script>
+    	$(function(){
+    		$("#sqlCloud").on("click", function(){    			
+				var form = document.createElement("form");
+				form.setAttribute("method","GET");
+				form.setAttribute("action", "/koala/together/sqlCloud");
+				document.charset = "utf-8";
+				var hidden = document.createElement("input");
+				hidden.setAttribute("type","hidden");
+				hidden.setAttribute("name","teamNo");
+				hidden.setAttribute("value",0);
+				form.appendChild(hidden);
+				document.body.appendChild(form);
+				form.submit();
+    		});
+    	})
+    </script>
   
 </body>
 </html>

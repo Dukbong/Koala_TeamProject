@@ -34,7 +34,7 @@
  	<!-- setting-config 에 이메일 개인정보 추가 -->
  	<context:property-placeholder location="WEB-INF/spring/setting-config.properties"/>
  	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="mailSender">
- 		<property name="host" value="stmp.gmail.com"/>
+ 		<property name="host" value="smtp.naver.com"/>
  		<property name="port" value="587"/>
  		<property name="username" value="${email.account}"/>
  		<property name="password" value="${email.password}"/>
@@ -46,7 +46,7 @@
 				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
 				<prop key="mail.smtp.starttls.enable">true</prop>
 				<prop key="mail.debug">true</prop>
-				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.trust">*</prop>
 				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
 			</props>
 		</property>

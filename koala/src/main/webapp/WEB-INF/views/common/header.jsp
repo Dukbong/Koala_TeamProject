@@ -500,6 +500,7 @@
 			$(".modal").on("hidden.bs.modal", function(){
 				$("#searchList").html("");
 			});
+			
 		});
 	</script>
 	
@@ -558,7 +559,7 @@
 				//sockJS = new SockJS("/chat");
 			//});
 			
-			sockJS.onopen = function(){
+			/* sockJS.onopen = function(){
 				console.log("sockjs open");
 			}
 			
@@ -568,7 +569,7 @@
 						
 			sockJS.onerror = function(){
 				console.log("sockjs error");
-			}
+			} */
 			
 			//sockJS.onmessage = function(data){
 				
@@ -612,6 +613,7 @@
 				//sockJS.send(msg);
 			});
 		    
+			
 			
 		});
 		
@@ -727,12 +729,12 @@
         	var blockIp;
         	if(blockIp != ""){
         		// 배포시 주석 풀기... (차단 되어 사용이 불가능하다.)
-/*          		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
-        			parent.window.close();
-        		}else{
-        			alert("진짜 꺼져");
-        			parent.window.open("about:black","_self").close();
-        		}   */
+//           		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
+//         			parent.window.close();
+//         		}else{
+//         			alert("차단되어 사용이 불가능합니다.");
+//         			parent.window.open("about:black","_self").close();
+//         		}   
         	}})
          </script>
     
