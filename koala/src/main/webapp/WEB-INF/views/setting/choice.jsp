@@ -412,6 +412,15 @@
 //      	$("#passwordInput").val(inputValues[3]);
 		
     </script>
+    
+    <c:if test="${not empty msg }">
+    	<script>
+    		$(function(){
+	    		alert("${msg}");
+    		});
+    	</script>
+    	<c:remove var="msg" scope="session"/>
+    </c:if>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

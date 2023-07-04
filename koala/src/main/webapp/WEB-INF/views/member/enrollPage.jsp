@@ -58,7 +58,7 @@
 		width: 80%;
 		height: 1050px;
 		padding: 5% 0;
-		background-color: gray;
+		background-color: #534b43;
 	}
 	
 	#center>table{

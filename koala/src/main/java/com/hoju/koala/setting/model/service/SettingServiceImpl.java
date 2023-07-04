@@ -30,16 +30,9 @@ public class SettingServiceImpl implements SettingService {
 
 	//해당 Setting 조회
 	@Override
-	public Setting selectSetting(int settingNo) {
+	public Setting selectSetting(Setting setting) {
 
-		Setting s = stDao.selectSetting(sqlSession, settingNo);
-		
-		return s;
-	}
-	@Override
-	public Setting selectSetting(String settingTitle) {
-		
-		Setting s = stDao.selectSetting(sqlSession, settingTitle);
+		Setting s = stDao.selectSetting(sqlSession, setting);
 		
 		return s;
 	}
