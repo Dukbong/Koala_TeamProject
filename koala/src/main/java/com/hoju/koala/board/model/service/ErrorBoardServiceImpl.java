@@ -156,4 +156,10 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 		return ebDao.updateSolved(sqlSession, boardNo);
 	}
 
+	@Override //포인트 등록
+	public int increasePoint(HashMap<String, Object> setPoint) {
+		
+		return ebDao.increasePoint(sqlSession, setPoint);
+	}
+
 }
