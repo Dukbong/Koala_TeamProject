@@ -1,6 +1,9 @@
 package com.hoju.koala.common.model.vo;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -29,6 +32,9 @@ public class EmailCheck {
 	private int certiNum;
 	private String randomPwd;
 	
+	//강제 임시비밀번호 발급을 막기 위한 토근
+	private Map<String, String> tokenMap = new HashMap<>();
+	
 	//램덤숫자(6자리) 생성후 인증번호에 집어넣기
 	public void makeRandomNumber() {
 		
@@ -39,7 +45,7 @@ public class EmailCheck {
 	}
 	
 	//8자리 임시비밀번호 생성
-	public void makeRandomPwd() {
+	public String makeRandomPwd() {
 		
 		//초기 인덱스 초기화
 		int index = 0;
@@ -65,13 +71,13 @@ public class EmailCheck {
 			password.append(charSet[index]);
 		}
 		
-		randomPwd = password.toString();
-		
+//		randomPwd = password.toString();
+		return password.toString();
 	}
 	
 	
 	//이메일 전송 메소드
-	public void mailSend(String setFrom, String toMail, String title, String content) { 
+	public void mailSend(String setFrom, String toMail, String title, String content) throws MessagingException { 
 		MimeMessage message = mailSender.createMimeMessage();
 		// true 매개값을 전달하면 multipart 형식의 메세지 전달이 가능.문자 인코딩 설정도 가능하다.
 		try {
@@ -88,9 +94,9 @@ public class EmailCheck {
 	}
 	
 	//가입시 이메일
-	public String joinEmail(String email) {
+	public String joinEmail(String email) throws MessagingException {
 		makeRandomNumber();
-		String setFrom = ".com"; // config에 설정한 서버 이메일 주소를 입력 
+		String setFrom = "koala123test@naver.com"; // config에 설정한 서버 이메일 주소를 입력 
 		String toMail = email;
 		String title = "회원 가입 인증 이메일 입니다."; // 이메일 제목 
 //		String content = 
@@ -108,27 +114,40 @@ public class EmailCheck {
 		String content = buf.toString();
 		
 		
-//		mailSend(setFrom, toMail, title, content);
+		mailSend(setFrom, toMail, title, content);
 		return Integer.toString(certiNum);
 	}
 	
 	//아이디와 임시 비밀번호 보내기
-	public String forgetUserEmail(String email, String userId) {
+	//에서 -> 아이디만 보내고 사용자가 링크를 눌렀을때 기존 pwd에서 임시비밀번호로 발급
+	public void forgetUserEmail(String email, String userId) throws MessagingException {
 		
-		makeRandomPwd();
-		String setFrom = ".com"; // config에 설정한 서버 이메일 주소를 입력 
+//		makeRandomPwd();
+		String setFrom = "koala123test@naver.com"; // config에 설정한 서버 이메일 주소를 입력 
 		String toMail = email;
 		String title = "Koala사이트에서 회원정보를 보냈습니다."; // 이메일 제목 
+		
+		//고유 식별자 토큰 생성
+		String token = UUID.randomUUID().toString();
+		
+		//맵에 해당유저와 토큰값저장
+		tokenMap.put(userId, token);
 		
 		StringBuffer buf = new StringBuffer();
 		buf.append("<h3>Koala 회원 정보 입니다.</h3><br><br>아이디 : ");
 		buf.append(userId);
-		buf.append("임시비밀번호를 발급받으시려면 버튼을 눌러주세요.	");
+		buf.append("<br>");
+		buf.append("임시비밀번호를 발급받으시려면 링크를 눌러주세요.	 <a href='http://localhost:8888/koala/member/tempPwd?userId=");
+		buf.append(userId);
+		buf.append("&token=");
+		buf.append(token);
+		buf.append("'>링크입니다.</a>");
 		
 		String content = buf.toString();
-//		mailSend(setFrom, toMail, title, content);
+		mailSend(setFrom, toMail, title, content);
 		
-		return randomPwd;
+//		return randomPwd;
+		
 	}
 	
 			

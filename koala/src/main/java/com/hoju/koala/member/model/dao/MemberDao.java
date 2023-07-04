@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.hoju.koala.admin.model.vo.Supporters;
 import com.hoju.koala.board.model.vo.Board;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
@@ -125,6 +126,14 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.selectContributions", userNo);
 	}
+	
+	//(관리자,서포터즈) libList 조회
+	public ArrayList<Board> libList(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.libList", userId, pi.rowBounds());
+	}
+	
+	
 	//로그인 시 출석 등록
 	public void attendance(SqlSessionTemplate sqlSession, int userNo) {
 		
@@ -192,6 +201,25 @@ public class MemberDao {
 		
 		return sqlSession.selectOne("memberMapper.selectflCount", userId);
 	}
+
+	public int selectlibCount(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.selectOne("memberMapper.selectlibCount", userId);
+	}
+
+	//로그인 유저 서포터즈 판별
+	public int selectSup(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapper.selectSup", userNo);
+	}
+
+	//해당 유저 서포터즈인지 확인
+	public Supporters selectSupport(SqlSessionTemplate sqlSession, String userId) {
+		
+		return sqlSession.selectOne("memberMapper.selectSupport", userId);
+	}
+
+	
 
 
 

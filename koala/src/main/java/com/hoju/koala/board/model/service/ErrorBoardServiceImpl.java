@@ -16,9 +16,6 @@ import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class ErrorBoardServiceImpl implements ErrorBoardService {
 	
@@ -71,7 +68,13 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	}
 	
 	@Override //버전 리스트 조회
-	public ArrayList<String> selectVersion(String settingTitle) {
+	public ArrayList<String> selectVersionList(String settingTitle) {
+		
+		return ebDao.selectVersionList(sqlSession, settingTitle);
+	}
+	
+	@Override //최신 버전 조회
+	public String selectVersion(String settingTitle) {
 		
 		return ebDao.selectVersion(sqlSession, settingTitle);
 	}
@@ -145,6 +148,18 @@ public class ErrorBoardServiceImpl implements ErrorBoardService {
 	public String selectId(String nickName) {
 		
 		return ebDao.selectId(sqlSession, nickName);
+	}
+
+	@Override //유저에러 해결완료
+	public int updateSolved(int boardNo) {
+		
+		return ebDao.updateSolved(sqlSession, boardNo);
+	}
+
+	@Override //포인트 등록
+	public int increasePoint(HashMap<String, Object> setPoint) {
+		
+		return ebDao.increasePoint(sqlSession, setPoint);
 	}
 
 }

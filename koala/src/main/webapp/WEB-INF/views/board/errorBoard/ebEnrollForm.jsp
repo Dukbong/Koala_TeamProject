@@ -77,11 +77,26 @@
 		<script>
 			$(function(){
 				
-				//라이브러리 버전 가져오기
+				//라이브러리 최신 버전 가져오기
 				$("select[name='settingTitle']").change(function(){
 					
 					$.ajax({
 						url : "version",
+						data : {settingTitle : $("select[name='settingTitle']").val()},
+						success : function(version){
+							$("#version").text("version "+version);
+							$("input[name='settingVersion']").val(version);
+						},
+						error : function(){
+							console.log("실패");
+						}
+					})
+				})
+				/* 라이브러리 버전 리스트 가져오기
+				$("select[name='settingTitle']").change(function(){
+					
+					$.ajax({
+						url : "versionList",
 						data : {settingTitle : $("select[name='settingTitle']").val()},
 						success : function(vList){
 							var str = "";
@@ -95,8 +110,9 @@
 						}
 					})
 				})
+				*/
 				
-				//수정폼 카테고리 옵션 변경    //계속 실행되는건데 괜찮은지?
+				//수정폼 카테고리 옵션 변경 (매번 스크롤 될때마다 실행되는 메소드 괜찮은지)
 				$(window).scroll(function(){
 					if($(".modifyForm-area_code").css("display")=="block" && ($(".modifyForm-area_info").css("display")=="block")){
 						$(".modifyBtn-area").css("display", "none");
@@ -116,9 +132,10 @@
 							<option value="${c.settingTitle }">${c.settingTitle}</option>
 						</c:forEach>
 					</select>
-					<span>version</span>
-					<select name="settingVersion">
-					</select>
+					<span id="version">version </span>
+					<input type="hidden" name="settingVersion" value="">
+					<!--<select name="settingVersion">
+						</select>-->
 				</div>
 				<div class="title_b" style="height: 30px;">
 					<span>title</span> <input type="text" name="title" id="eb_title"
@@ -196,7 +213,7 @@
 			
 			<div class="modifyBtn-area">
 				<span style="color: rgb(241, 196, 15);">modify form</span>
-				<select name="category"> <!-- 이 값은 무시  -->
+				<select name="category"> <!-- 이 값은 받지 않음 -->
 					<option value="">--참고자료--</option>
 					<option value="code">코드</option>
 					<option value="info">설명서</option>
@@ -222,7 +239,8 @@
 						
 						var $category = $("select[name='category']").val();
 						
-						if($("select[name='settingVersion']").val() == null){
+						console.log($("input[name='settingVersion']").val());
+						if($("input[name='settingVersion']").val() == ""){
 							alert("category를 먼저 선택해주세요 !");
 							$("select[name='settingTitle']").focus();
 						}else{
@@ -231,7 +249,7 @@
 								url : "modifyForm",
 								data : {
 									settingTitle : $("select[name='settingTitle']").val(),
-									settingVersion : $("select[name='settingVersion']").val(),
+									settingVersion : $("input[name='settingVersion']").val(),
 									category : $category
 								},
 								success : function(str){

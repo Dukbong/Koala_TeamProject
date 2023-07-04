@@ -30,5 +30,5 @@ public class Board {
 	private String status; //상태값(Y/N)
 	private int fileNo;
 	private int replyCount;//댓글 수
-
+	private String userError; //에러게시판 유저에러 여부
 }

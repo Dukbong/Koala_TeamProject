@@ -6,37 +6,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.hoju.koala.member.model.vo.Member;
 
 
-
+@Component
 public class RankCal {
 	// 새로운 데이터  List
-	private Properties rankings;
+	private Properties rankings;//프로퍼티 파일의 랭킹 변수
 	private List<Member> previousData; // 이전 데이터 ( 현재 데이터
 	
-	public RankCal(Properties rankings) {
+	public RankCal(@Autowired Properties rankings) {
 		this.rankings = rankings;
+		this.previousData = new ArrayList<>();
 	}
 	
     public void setPreviousData(List<Member> previousData) {
         this.previousData = previousData;
     }
-//    private Map<String, Integer> previousRanks; // 예전 등수 저장 맵
+    
+    public List<Member> getPreviousData(){
+    	return previousData;
+    }
 
-//    public RankCal(List<Member> previousData) {
-//    	// 새로운데이터 List= previousData
-//        this.previousData = previousData; // 조회문 
-//        this.previousRanks = new HashMap<>();
-//        for(Member m : previousData) { // 새로운데이터로 put
-//        	previousRanks.put(m.getUserId(), m.getRank());
-//        }
-
-        // 이전 데이터의 등수 정보를 previousRanks 맵에 저장하기
-//        for (Member m : previousData) {
-//            previousRanks.put(m.getUserId(), m.getRank());
-//        }
-//    }
  // 아이디로 갖고오기
     private Member findMemWithRank(String userId) {
     	
@@ -46,10 +40,10 @@ public class RankCal {
     		
     		if(user.equals(userId)) {
     			//등수에 해당하는 회원을 찾았을 때
-    			int previousRankStored = Integer.parseInt(rank.substring(5));
+    			int rankIndex = Integer.parseInt(rank.substring(5));
     			
     			for(Member m : previousData) {
-    				if(m.getRank() == previousRankStored) {
+    				if(m.getUserId().equals(user) && m.getRank() == rankIndex) {
     					return m;
     				}
     			}
@@ -57,15 +51,7 @@ public class RankCal {
     	}
     	
     	return null;
-//        Integer previousRankStored  = previousRanks.get(userId);
-//        if (previousRankStored  != null && previousRankStored > 0) {
-//            for (Member m : previousData) {
-//                if (m.getRank() == previousRankStored ) {
-//                    return m;
-//                }
-//            }
-//        }
-//        return null;
+
     }
 
     public List<Member> calculateRank() {

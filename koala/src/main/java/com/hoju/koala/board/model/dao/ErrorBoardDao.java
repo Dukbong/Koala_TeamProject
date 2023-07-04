@@ -13,9 +13,6 @@ import com.hoju.koala.board.model.vo.ErrorSet;
 import com.hoju.koala.board.model.vo.Reply;
 import com.hoju.koala.common.model.vo.PageInfo;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Repository
 public class ErrorBoardDao {
 	
@@ -35,7 +32,6 @@ public class ErrorBoardDao {
 	public ArrayList<ErrorSet> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
 
 		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectList", null, pi.rowBounds());
-		
 	}
 	
 	//검색된 게시글 목록 조회
@@ -63,9 +59,15 @@ public class ErrorBoardDao {
 	}
 	
 	//버전 리스트 조회
-	public ArrayList<String> selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+	public ArrayList<String> selectVersionList(SqlSessionTemplate sqlSession, String settingTitle) {
 		
-		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersion", settingTitle);
+		return (ArrayList)sqlSession.selectList("errorBoardMapper.selectVersionList", settingTitle);
+	}
+	
+	//최신 버전 조회
+	public String selectVersion(SqlSessionTemplate sqlSession, String settingTitle) {
+		
+		return sqlSession.selectOne("errorBoardMapper.selectVersion", settingTitle);
 	}
 	
 	//세팅 글번호 조회
@@ -143,6 +145,18 @@ public class ErrorBoardDao {
 	public String selectId(SqlSessionTemplate sqlSession, String nickName) {
 		
 		return sqlSession.selectOne("errorBoardMapper.selectId", nickName);
+	}
+
+	//유저에러 해결완료
+	public int updateSolved(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		return sqlSession.update("errorBoardMapper.updateSolved", boardNo);
+	}
+
+	//포인트 등록
+	public int increasePoint(SqlSessionTemplate sqlSession, HashMap<String, Object> setPoint) {
+		
+		return sqlSession.update("errorBoardMapper.increasePoint", setPoint);
 	}
 	
 }

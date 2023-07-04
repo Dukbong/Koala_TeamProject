@@ -140,6 +140,12 @@ public interface AdminService {
 
 	Setting listDetail(int settingNo);
 
+	Setting selectprevSetting(int refSno);
+
+	SettingDetail selectOneError(SettingDetail sd);
+
+	int updateSettingN(int settingNo);
+
 
 
 

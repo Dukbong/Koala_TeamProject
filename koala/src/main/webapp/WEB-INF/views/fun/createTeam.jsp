@@ -385,7 +385,6 @@ li{
 							team : consendarr.toString(),
 						},
 						success : function(data){
-							alert(data);
 							if(data > 0){
 								location.href = "sqlCloud"								
 							}

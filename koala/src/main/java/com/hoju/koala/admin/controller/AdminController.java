@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,9 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin")
 public class AdminController {
 
-	private int i = 0;
 	private PageInfo page;
-
+	private ArrayList<Integer> boardPack = new ArrayList<>();
 	@Autowired
 	Client client;
 
@@ -164,9 +164,16 @@ public class AdminController {
 										  @RequestParam(value = "page", required=false, defaultValue="1") int page) {
 		ArrayList<SettingDetail> issueDetail = adminService.selectIssueDetail(settingTitle);
 		// 클릭시 해당 내용 가지고 수정 폼으로 이동
+		for(int i = 0; i < issueDetail.size(); i++) {
+			int bn = issueDetail.get(i).getBoard().getBoardNo();
+			boardPack.add(bn);
+		}
+		
 		try {			
+			int refSno = issueDetail.get(page-1).getErrorBoard().getRefSno();
+			Setting prevSetting = adminService.selectprevSetting(refSno);
 			mav.addObject("issueDetail", issueDetail.get(page-1));
-			System.out.println(issueDetail.get(page-1));
+			mav.addObject("prevSetting", prevSetting);
 			mav.addObject("size", issueDetail.size());
 			mav.addObject("page",page);
 			mav.setViewName("admin/issueDetail");
@@ -176,6 +183,16 @@ public class AdminController {
 			mav.setViewName("redirect:issuearea.list");
 			return mav;
 		}
+	}
+	
+	@RequestMapping(value="/nextDetail", method = RequestMethod.GET, produces = "applictaion/text; charset=UTF-8")
+	@GetMapping("/nextDetail")
+	@ResponseBody
+	public String nextDetail(String settingTitle, int page) {
+		Setting set = Setting.builder().settingTitle(settingTitle).build();
+		SettingDetail sd = SettingDetail.builder().setting(set).page(page).build();
+		SettingDetail error = adminService.selectOneError(sd);
+		return new Gson().toJson(error);
 	}
 
 	
@@ -210,7 +227,7 @@ public class AdminController {
 	}
 	
 	// 모드를 쿠키로 저장할 메서드
-	@GetMapping("mode.check")
+	@GetMapping("/mode.check")
 	@ResponseBody
 	public String displayMode(String mode, Model model, HttpServletResponse response) {
 		Cookie cookie = new Cookie("mode", mode);
@@ -220,10 +237,12 @@ public class AdminController {
 		return new Gson().toJson(cookie);
 	}
 	
-	@PostMapping("issuesSuccess")
+	@PostMapping("/issuesSuccess")
 	@ResponseBody
 	@Transactional
 	public int issuesSuccess(int boardNo, Setting setting, int boardWriter) {
+		System.out.println(boardPack);
+		System.out.println("settingNO = " + setting.getSettingNo());
 		String version1 = setting.getSettingVersion();
 		int version2 = Integer.parseInt(version1.replace(".", ""))+1;
 		String[] version3 = String.valueOf(version2).split("");
@@ -241,14 +260,18 @@ public class AdminController {
 		if(setting.getSettingInfo().equals("")) {
 			setting.setSettingInfo(" ");
 		}
-			
-		System.out.println("확인용");
-		System.out.println(setting);
-		System.out.println("=======================================");
-		int result1 = adminService.updateIssueSuccess(boardNo);
-		int result2 = adminService.updateIssueDate(boardNo);
+		int result1 = 0;
+		int result2 = 0;
+		for(int i = 0; i < boardPack.size(); i++) {			
+			result1 = adminService.updateIssueSuccess(boardPack.get(i));
+			result2 = adminService.updateIssueDate(boardPack.get(i));
+		}
 		int result3 = adminService.updateSetting(setting);
-		return result1 * result2 * result3;
+		int result4 = adminService.updateSettingN(setting.getSettingNo());
+		if(result1*result2*result3 > 0) {
+			boardPack.clear();
+		}			
+		return result1*result2*result3;
 	}
 
 }

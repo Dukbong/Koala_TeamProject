@@ -500,6 +500,7 @@
 			$(".modal").on("hidden.bs.modal", function(){
 				$("#searchList").html("");
 			});
+			
 		});
 	</script>
 	
@@ -558,7 +559,7 @@
 				//sockJS = new SockJS("/chat");
 			//});
 			
-			sockJS.onopen = function(){
+			/* sockJS.onopen = function(){
 				console.log("sockjs open");
 			}
 			
@@ -568,7 +569,7 @@
 						
 			sockJS.onerror = function(){
 				console.log("sockjs error");
-			}
+			} */
 			
 			//sockJS.onmessage = function(data){
 				
@@ -612,6 +613,7 @@
 				//sockJS.send(msg);
 			});
 		    
+			
 			
 		});
 		
@@ -673,7 +675,7 @@
         
         
         // 쿠키를 보내기 위한 함수
-        /* function test(e){
+         function test(e){
         	$.ajax({
         		url : "/koala/admin/mode.check",
         		data : {
@@ -685,7 +687,7 @@
         			console.log("mode check aJax error");
         		}
         	});
-        } */
+        } 
         
         //배경 색 - 다크모드:rgb(30, 30, 30) / 라이트모드:rgb(255, 246, 246)
         //글자 색 - 다크모드:white / 라이트모드:black
@@ -727,12 +729,12 @@
         	var blockIp;
         	if(blockIp != ""){
         		// 배포시 주석 풀기... (차단 되어 사용이 불가능하다.)
-/*          		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
-        			parent.window.close();
-        		}else{
-        			alert("진짜 꺼져");
-        			parent.window.open("about:black","_self").close();
-        		}   */
+//           		if(navigator.appVersion.indexOf("MSIE6.0") >= 0){
+//         			parent.window.close();
+//         		}else{
+//         			alert("차단되어 사용이 불가능합니다.");
+//         			parent.window.open("about:black","_self").close();
+//         		}   
         	}})
          </script>
     

@@ -99,7 +99,7 @@
                             <li><a href="">ex2CreateCode</a></li>
                         </ul>
                     </li>
-                    <li><a href="">ORDER BY RANKING DESC;</a></li>
+                    <li><a href="/koala/rankingBoard/rankingPage">ORDER BY RANKING DESC;</a></li>
                 </ul>
                 <div id="comment" style="font-size: 12px; color: rgb(181, 181, 181); padding-top: 10px;">ex1CreateCodeCodeex1CreateCodeCode<br>ex1CreateCodeCodeex1CreateCodeCodeex1CreateCodeCode<br>넣을지 말지 고민</div>
             </div>
