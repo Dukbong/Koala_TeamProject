@@ -127,11 +127,12 @@
                             <button type="submmit" id="deleteBtn">Delete</button>
                         </form>
                     </div>
-                <hr>
                 </c:if>
                 <div class="board-box">
                     <div class="board-area">
-                        <p name="boardTitle" id="title">${b.title }</p>
+                        <p name="boardTitle" id="title">
+	                        ${b.notice == "Y" ? '[공지]' : ''} ${b.title }
+                        </p>
                         <hr>
                         <p name="boardWriter" id="boardWriter">by ${b.boardWriter } create_date ${b.createDate}</p>
                         <hr>
