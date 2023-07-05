@@ -325,10 +325,22 @@
                 			<c:when test='${path.contains("errorDetail")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
                 			</c:when>
+                			<c:when test='${path.contains("issuesDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala IssuesDetail</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("listDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala WaitingLibrary</h4>     
+                			</c:when>
                 		</c:choose>    
                 		</c:when>
                 		<c:when test='${path.contains("together/sqlCloud")}'>
                 			<h4 class="headerName" onclick="sqlMain();">Koala SQL Cloud</h4>     
+                		</c:when>
+                		<c:when test='${path.contains("setting/list")}'>
+                			<h4 class="headerName" onclick="adminPage();">Koala LibraryList</h4>     
+                		</c:when>
+                		<c:when test='${path.contains("setting/detail")}'>
+                			<h4 class="headerName" onclick="adminPage();">Koala LibraryDetail</h4>     
                 		</c:when>
                 		<c:when test='${path.contains("errorBoard")}'>
                 		<!-- koala/errorBoard/~~~ >> 설희 -->                		

@@ -67,7 +67,6 @@
 			  WHERE SETTING_TITLE = #{settingTitle}
 			  ORDER BY CREATE_DATE DESC
 		)
-		WHERE ROWNUM = 1
 	</select>
 
 </mapper>
