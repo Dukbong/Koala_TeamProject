@@ -209,13 +209,14 @@ span {
 				}
 				socket.onopen = function (e) {
 					sendEnter(teamNo, "Enter")
-					alert("Connect Success");
+// 					alert("Connect Success");
 				}
 				socket.onclose = function () {
 					
-					alert("disconnnect Success");
+// 					alert("disconnnect Success");
 				}
 				socket.onmessage = function (e) {
+// 					alert(e.data);
 					if(e.data.includes("SEND:")){
 						// 메시지 전송을위한 경우
 						$("#testarea").val(e.data.replace("SEND:",""));
@@ -320,9 +321,11 @@ span {
 
 					var a = document.createElement('a');
 					a.href = URL.createObjectURL(fileBlob);
+// 					var teamName = $("#")
 					a.download = 'koalaSQL.sql';
 					a.click();
 				});
+				
 				
 				// Save (DB에 저장할 내용)
 				$("#sss").on("click", function() {
@@ -440,7 +443,7 @@ span {
 					<c:choose>
 					<c:when test="${requestScope.teamNo == teamList.get(t).getTeamNo() }">
 						<div class="teamOne" style="color:red">
-							<button type="button" class="teamButton btn btn-light">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
+							<button type="button" class="teamButton btn btn-secondary">${teamList.get(t).getTeamName().substring(0,1) }</button><br>
 							<input type="hidden" value="${teamList.get(t).getTeamNo() }">
 							${teamList.get(t).getTeamName() }
 						</div>
@@ -475,7 +478,7 @@ span {
 		<c:choose>
 		<c:when test="${loginUser.userNo.equals(creatorNo) }">
 			<button id="teamInvite" class="ii" type="button" 
-					style="background-color: transparent; border: 0;"><i class="fa-solid fa-gear fa-xl" style="color: #ffffff;"></i></button>
+					style="background-color: transparent; border: 0;"><i class="fa-solid fa-gear fa-xl ii ic" style="color: #ffffff;"></i></button>
 		</c:when>
 		<c:otherwise>
 			<button id="teamQuit" class="ii" type="button" 
@@ -494,7 +497,10 @@ span {
 				<div class="mlarea">
 					<div class="mlinfo">
 						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
-						<div class="concheck"><i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i></div>
+						<div class="concheck">
+<!-- 						<i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i> -->
+							<i class="fa-solid fa-circle-check fa-2xs pingCheck" style="color: #d9d9d9;"></i>
+						</div>
 						<div class="mlmain">${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">
@@ -514,7 +520,10 @@ span {
 					<div class="mlarea">
 					<div class="mlinfo">
 						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
-						<div class="concheck"><i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i></div>
+						<div class="concheck">
+<!-- 						<i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i> -->
+						<i class="fa-solid fa-circle-check fa-2xs pingCheck" style="color: #d9d9d9;"></i>
+						</div>
 						<div class="mlmain">${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">
@@ -535,7 +544,10 @@ span {
 				<div class="mlarea">
 					<div class="mlinfo">
 						<div class="mlid mlmain">${memberList.get(m).getUserId() }</div>
-						<div class="concheck"><i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i></div>
+						<div class="concheck">
+<!-- 						<i class="fa-solid fa-circle fa-2xs pingCheck" style="color: #d9d9d9;"></i> -->
+						<i class="fa-solid fa-circle-check fa-2xs pingCheck" style="color: #d9d9d9;"></i>
+						</div>
 						<div class="mlmain" >${memberList.get(m).getNickName() }</div>					
 					</div>
 					<div class="mlsup">

@@ -1,6 +1,11 @@
 package com.hoju.koala.common.model.vo;
 
+import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -29,6 +34,11 @@ public class EmailCheck {
 	private int certiNum;
 	private String randomPwd;
 	
+	//강제 임시비밀번호 발급을 막기 위한 토근
+	private Map<String, String> tokenMap = new HashMap<>();
+	
+	private Properties prop;
+	
 	//램덤숫자(6자리) 생성후 인증번호에 집어넣기
 	public void makeRandomNumber() {
 		
@@ -39,7 +49,7 @@ public class EmailCheck {
 	}
 	
 	//8자리 임시비밀번호 생성
-	public void makeRandomPwd() {
+	public String makeRandomPwd() {
 		
 		//초기 인덱스 초기화
 		int index = 0;
@@ -65,8 +75,8 @@ public class EmailCheck {
 			password.append(charSet[index]);
 		}
 		
-		randomPwd = password.toString();
-		
+//		randomPwd = password.toString();
+		return password.toString();
 	}
 	
 	
@@ -121,11 +131,25 @@ public class EmailCheck {
 		String toMail = email;
 		String title = "Koala사이트에서 회원정보를 보냈습니다."; // 이메일 제목 
 		
+		//고유 식별자 토큰 생성
+		String token = UUID.randomUUID().toString();
+		
+		//맵에 해당유저와 토큰값저장
+		tokenMap.put(userId, token);
+		
+		prop = new Properties();
+		
 		StringBuffer buf = new StringBuffer();
 		buf.append("<h3>Koala 회원 정보 입니다.</h3><br><br>아이디 : ");
 		buf.append(userId);
 		buf.append("<br>");
-		buf.append("임시비밀번호를 발급받으시려면 링크를 눌러주세요.	 <a href='http://localhost:8888/koala/member/'>링크입니다.</a>");
+		buf.append("임시비밀번호를 발급받으시려면 링크를 눌러주세요.<br>	 <a href='http://");
+//		buf.append(localhost)
+		buf.append("/koala/member/tempPwd?userId=");
+		buf.append(userId);
+		buf.append("&token=");
+		buf.append(tokenMap.get(userId));
+		buf.append("'>링크입니다.</a>");
 		
 		String content = buf.toString();
 		mailSend(setFrom, toMail, title, content);

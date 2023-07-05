@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ErrorBoard_UpdateForm</title>
+<title>Create Setting</title>
 </head>
 
 <!-- 코드 미러 CDN -->

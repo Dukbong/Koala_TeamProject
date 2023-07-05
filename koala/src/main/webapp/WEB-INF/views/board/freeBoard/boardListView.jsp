@@ -13,37 +13,30 @@
     	padding: 200px 0px 80px 0px;
     }
     .body_content{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
         width: 100%;
         margin: auto;
     }
     .top_area{
-     	margin-top: 20px;
         width: 100%;
         height: 15%;
         display: flex;
-        align-items: center;
-        margin-bottom: 30px;
+  		align-items: center;
     }
     .board_title{
-        width: 30%;
-        float: left;
-        margin-left: 65px;
-        margin-right: -65px;
+       width: 30%;
+       display: inline-block;
     }
     .board_title>span{
         color: rgb(255, 201,20);
-        font-size: 40px;
+        font-size: 31px;
         font-weight: bold;
+        float: right;
     }
     #search-area{
-        margin-top: 25px;
-        margin-left: 80px;
-        width: 100%;
-        float: left;
+        width: 60%;
+        display: inline-block;
+        margin-left: 30px;
+    
     }
     #search-area select{
         width: 10%;
@@ -51,7 +44,7 @@
         text-align: center;
     }
     #search-area input{
-        width: 30%;
+        width: 40%;
         height: 30px;
         border: 2px solid rgb(120, 74, 207);
     }
@@ -75,20 +68,19 @@
     #search-area button:hover{
         background-color: rgb(78, 72, 178);
         color: white;
-        
     }
     .middle_area{
         color: white;
-        width: 90%;
+        width: 100%;
         height: 500px;
-        text-align: center;
     }
     .middle_area table{
-        width: 100%;
+        width: 70%;
         font-size: 14px;
         border-top: 1px solid grey;
         border-bottom: 1px solid grey;
 	    border-collapse : collapse;
+	    margin:auto;
     }
     .middle_area table>thead{
         height: 10%;
@@ -104,22 +96,19 @@
     .middle_area table > tbody > tr:hover{
         opacity: 85%;
     }
-    .middle_area i:hover{
-    	cursor: pointer;
-    }
     .notice{
         color: rgb(206, 145, 120);
         font-weight: bold;
     }
     .insertBtn_area{
-        width: 100%;
-        height: 30px;
+        width: 80%;
+        height: 40px;
         margin-right: 130px;
         margin-top: 0px;
     }
     .insertBtn_area button{
         background-color: rgb(255, 201,20);
-        width: 5%;
+        width: 10%;
         height: 100%;
         border-radius: 5px;
         font-weight: bold;
@@ -176,7 +165,7 @@
 						<option value="content">내용</option>
 						<option value="title">제목</option>
 					</select>
-					<input type="text" name="keyword" value="${keyword }">
+					<input type="search" name="keyword" value="${keyword }">
 					<button type="submit">검색</button>
 				</form>
 			</div>

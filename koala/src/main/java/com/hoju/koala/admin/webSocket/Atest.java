@@ -112,7 +112,7 @@ public class Atest extends TextWebSocketHandler {
 			}catch(NullPointerException e) {
 				System.out.println("SEND : msv.getTeamNo() : " + msv.getTeamNo());
 			}
-		} else if(msv.getType().equals("SAVE")) {
+		} else if(msv.getType().equals("SAVE:")) {
 			SqlCloud sql = adminService.selectSqlDate(msv.getTeamNo());
 			TextMessage newMessage = new TextMessage("SAVE:"+sql.getModifyDate());
 			try {
@@ -120,7 +120,7 @@ public class Atest extends TextWebSocketHandler {
 					m.sendMessage(newMessage);
 				}
 			}catch(NullPointerException e) {
-				System.out.println("SAVE : msv.getTeamNo() : " + msv.getTeamNo());
+				System.out.println("SAVE: msv.getTeamNo() : " + msv.getTeamNo());
 			}
 		}
 	}

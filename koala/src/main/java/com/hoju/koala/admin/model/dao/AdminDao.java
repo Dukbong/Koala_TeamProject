@@ -229,8 +229,8 @@ public class AdminDao {
 		return sqlSession.update("adminMapper.updateSettingEtc", setting);
 	}
 
-	public Setting selectprevSetting(int refSno, SqlSession sqlSession) {
-		return sqlSession.selectOne("adminMapper.selectprevSetting", refSno);
+	public Setting selectprevSetting(String settingTitle, SqlSession sqlSession) {
+		return sqlSession.selectOne("adminMapper.selectprevSetting", settingTitle);
 	}
 
 	public SettingDetail selectOneError(SettingDetail sd, SqlSession sqlSession) {
@@ -239,5 +239,13 @@ public class AdminDao {
 
 	public int updateSettingN(int settingNo, SqlSession sqlSession) {
 		return sqlSession.update("adminMapper.updateSettingN", settingNo);
+	}
+
+	public int updateStatueSetting(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateStatueSetting", settingNo);
+	}
+
+	public int settingDisApprove(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.settingDisApprove", settingNo);
 	}
 }
