@@ -197,4 +197,10 @@ public class BulletinBoardServiceImpl implements BulletinBoardService{
 		return bbDao.deleteScheduledBoard(sqlSession);
 	}
 
+	@Override
+	public ArrayList<Board> selectNoticeList() {
+		
+		return bbDao.selectNoticeList(sqlSession);
+	}
+
 }
