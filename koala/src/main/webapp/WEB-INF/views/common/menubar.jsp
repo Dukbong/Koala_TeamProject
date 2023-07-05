@@ -39,7 +39,9 @@
     #menu-title>h1{font-size: 50px; font-weight: 700; color: rgb(255, 201, 15); text-shadow: 2px 2px 2px rgb(40,30,223); margin:0; padding-top: 40px;}
     #menubar{height: 60%;}
     #icon-area{height: 25%;}
-    #icons{width: 20%; height: 100%; background-color: rgb(76, 179, 240); float: right;}
+    #icons{width: 20%; height: 100%; float: right; position: relative;}
+    #icons>a>img{width: 50px; height: 50px; position: absolute; margin: auto; bottom: 50px; right: 50px;}
+/*     #icons>img:hover{cursor: pointer;} */
     
     #navi{
         list-style-type: none;
@@ -84,27 +86,22 @@
             </div>
             <div id="menubar">
                 <ul id="navi">
-                    <li><a href="">CreateCode && DownloadFile</a></li>
-                    <li><a href="/koala/bulletinBoard/list">Community(All user);</a></li>
-                    <li><a href="/koala/errorBoard/list">try{} catch(Error){}</a>
+                    <li><a href="">CreateCode && DownloadFile</a>
                         <ul>
                             <li><a href="">ex1CreateCodeCode</a></li>
                             <li><a href="">ex2CreateCode</a></li>
                             <li><a href="">ex3CreateCodeCode</a></li>
                         </ul>
                     </li>
-                    <li><a href="/koala/qnaBoard/list">response.getWriter().print(QnA);</a>
-                        <ul>
-                            <li><a href="">ex1CreateCodeCode</a></li>
-                            <li><a href="">ex2CreateCode</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/koala/bulletinBoard/list">Community(All user);</a></li>
+                    <li><a href="/koala/errorBoard/list">try{} catch(Error){}</a></li>
+                    <li><a href="/koala/qnaBoard/list">response.getWriter().print(QnA);</a></li>
                     <li><a href="/koala/rankingBoard/rankingPage">ORDER BY RANKING DESC;</a></li>
                 </ul>
-                <div id="comment" style="font-size: 12px; color: rgb(181, 181, 181); padding-top: 10px;">ex1CreateCodeCodeex1CreateCodeCode<br>ex1CreateCodeCodeex1CreateCodeCodeex1CreateCodeCode<br>넣을지 말지 고민</div>
+                <div id="comment" style="font-size: 12px; color: rgb(181, 181, 181); padding-top: 10px;">koala initializr koala initializr koala initializr<br>koala initializr koala initializr koala initializr koala initializr</div>
             </div>
             <div id="icon-area">
-                <div id="icons">아이콘 영역</div>
+                <div id="icons"><a href="https://github.com/1000baamK/Koala_TeamProject"><img alt="" src="/koala/resources/common/깃허브.png"></a></div>
             </div>
         </div>
     </div>

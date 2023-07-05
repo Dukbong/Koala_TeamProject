@@ -141,10 +141,10 @@
         <div class="main_body">
             <div class="body1">
                 <div class="body_logo2">
-                    <img src="/koala/resources/common/download.png" style="width: 80px;" alt="">
+                    <i class="fa-solid fa-trophy fa-5x" style="color: #ffffff;"></i>
                 </div>
                 <div class="body_title" style="margin-top: 10px;">
-                    <span class="ii">Download</span>
+                    <span class="ii">Ranking</span>
                 </div>
             </div>
             <div class="body2">
@@ -178,7 +178,6 @@
     		});
     	</script>
     </c:when>
-    
     <c:otherwise>
     	<script>
     		$(function(){
@@ -189,6 +188,16 @@
     	</script>
     </c:otherwise>
     </c:choose>
+    <script>
+	    $(function(){
+			$(".main_body>.body1").on("click", function(){
+				location.href = "/koala/rankingBoard/rankingPage";
+			});
+			$(".main_body>.body2").on("click", function(){
+				location.href = "/koala/setting/list";
+			});
+		});
+    </script>
     
     
     <c:if test="${not empty msgc}">
