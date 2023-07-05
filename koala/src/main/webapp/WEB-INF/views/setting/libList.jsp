@@ -14,7 +14,7 @@
 	}
 	.wrap{
 		width: 80%;
-		height:1500px;
+		height:1400px;
 		margin: auto;
 		box-sizing: border-box;
 	}
