@@ -59,22 +59,17 @@ public class SettingController {
 								Model model) {
 		//해당 세팅 들고오기
 		Setting s = stService.selectSetting(setting);
+		ArrayList<Setting> versionList = null;
 		if(s != null) {
 			model.addAttribute("setting", s);
+			versionList = stService.selectVersionList(s.getSettingTitle());
+			if(!versionList.isEmpty()) {
+				model.addAttribute("vList", versionList);
+			}
 		}
-
-		//해당 세팅의 버전 정보(settingNo, settingVersion)
-		ArrayList<Setting> versionList = stService.selectVersionList(s.getSettingTitle());
-		
-		if(!versionList.isEmpty()) {
-			model.addAttribute("vList", versionList);
-		}
-		
+		System.out.println(s);
+		System.out.println(versionList);
 		return "setting/choice";
-//		return "setting/description";
-
-//		return "setting/choice";
-
 	}
 	
 	

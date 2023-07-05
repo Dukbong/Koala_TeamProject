@@ -29,21 +29,7 @@
 	
 	<!-- 해당 Setting 정보 조회 -->
 	<select id="selectSetting" resultMap="settingResultSet">
-		SELECT *
-		FROM (SELECT *
-				FROM CREATE_SETTING
-				WHERE 
-				<choose>
-					<when test="settingNo == 0">
-						SETTING_TITLE = #{settingTitle}
-					</when>
-					<otherwise>
-						SETTING_NO = #{settingNo}
-					</otherwise>
-				</choose>
-				ORDER BY SETTING_NO DESC
-				)
-		WHERE ROWNUM = 1
+		SELECT * FROM CREATE_SETTING where SETTING_NO = #{settingNo}
 	</select>
 	
 	
