@@ -44,7 +44,7 @@ public class RankingBoardController {
 	
 	
 	// 랭킹페이지
-		@GetMapping("rankingPage")
+		@GetMapping("/rankingPage")
 		public String rankingList(Model model) {
 			ArrayList<Member> newData = rnkService.rankingList(); // 새로운 데이터 ( 저장된거 불러온거 )
 

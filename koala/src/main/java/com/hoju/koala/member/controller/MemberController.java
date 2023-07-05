@@ -91,11 +91,6 @@ public class MemberController {
 		log.debug("아이디 저장 상태 : {}", request.getParameter("keepId"));
 
 		
-		//로그인 시 출석 등록 ======================================== 설희
-
-		int userNo =  loginUser.getUserNo();
-		memberService.attendance(userNo);
-		//======================================================
 
 		
 		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
@@ -126,6 +121,11 @@ public class MemberController {
 	            // 쿠키에서 아이디 삭제
 	            mCookie.deleteCookie(response, "saveId");
 	        }
+			
+			//로그인 시 출석 등록 ======================================== 설희
+			int userNo =  loginUser.getUserNo();
+			memberService.attendance(userNo);
+			//======================================================
 			
 			mv.setViewName("redirect:/");
 		}else {
