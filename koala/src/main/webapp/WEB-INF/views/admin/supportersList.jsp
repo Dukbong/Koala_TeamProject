@@ -140,7 +140,8 @@
                                         <div class="num3" style="width: 40%; height: 100%">
 <%--                                             Point : ${support.point } --%>
 <!-- 												<a class="ii" href="#" style="">Koala Style GitHub</a> -->
-											일단 대기... 뭐할지 모름
+<!-- 											일단 대기... 뭐할지 모름 -->
+Point : ${support.point }
 											<!-- 1. 레파지토리 구경  -->
                                         </div>
                                     </div>

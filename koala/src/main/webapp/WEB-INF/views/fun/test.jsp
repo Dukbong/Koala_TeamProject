@@ -478,7 +478,7 @@ span {
 		<c:choose>
 		<c:when test="${loginUser.userNo.equals(creatorNo) }">
 			<button id="teamInvite" class="ii" type="button" 
-					style="background-color: transparent; border: 0;"><i class="fa-solid fa-gear fa-xl" style="color: #ffffff;"></i></button>
+					style="background-color: transparent; border: 0;"><i class="fa-solid fa-gear fa-xl ii ic" style="color: #ffffff;"></i></button>
 		</c:when>
 		<c:otherwise>
 			<button id="teamQuit" class="ii" type="button" 
