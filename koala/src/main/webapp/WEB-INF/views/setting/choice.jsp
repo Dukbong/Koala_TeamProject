@@ -17,11 +17,7 @@
     .wrapper{
         width: 100%;
         height: 1200px;
-<<<<<<< HEAD
-        padding-top: 200px;
-=======
         padding-top:200px;
->>>>>>> 8a39556855a2c0dd5aa0ce6669f17a07a09aea62
     }
     .body_content{
         display: flex;
