@@ -553,30 +553,39 @@
 	
 	<!-- 채팅방 스크립트 -->
 	<script>
-		$(function(){
+		//sockjs연결
+		
+		var sock;
+		
+		function connectChatServer(){
+			sock = new SockJS("/chat");
 			
-			var sockJS;
-			
-			//chat채팅방 들어가면 웹소켓 생성
-			//$("#connectChat").on("click", function(){
-				//sockJS = new SockJS("/chat");
-			//});
-			
-			/* sockJS.onopen = function(){
+			sock.onopen = function(){
 				console.log("sockjs open");
 			}
 			
-			sockJS.onclose = function(){
+			sock.onmessage = function(e){
+				var data = e.data;
+				console.log(data);
+			}
+			
+			sock.onclose = function(){
 				console.log("sockjs close");
 			}
 						
-			sockJS.onerror = function(){
+			sock.onerror = function(){
 				console.log("sockjs error");
-			} */
+			}
 			
-			//sockJS.onmessage = function(data){
-				
-			//}
+		}
+		
+		$(function(){
+			
+			//채팅방이 열리면 sockjs 
+			$("#chatRoomModal").on("show.bs.modal", function(){
+				connectChatServer();
+			});
+			
 			
 			//모달닫히면 종료.
 			$("#chatRoomModal").on("hidden.bs.modal", function() {
