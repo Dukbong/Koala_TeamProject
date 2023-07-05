@@ -108,10 +108,10 @@
 				var str = "<div><input class=\"input_n\" type=\"text\" name=\"\" id=\"\" required><i class=\"fa-solid fa-circle-minus minus_input\" style=\"color: #a0a0a0; margin-left: 10px;\"></i></i></div>";
 				$(".ajax-input").append(str);
 			});
-			//input 옵션 삭제
-			$(".input-box").on("click", "i[class*='minus_input']", function(){
-				$(this).parent().remove();	
-			})
+// 			//input 옵션 삭제
+// 			$(".input-box").on("click", "i[class*='minus_input']", function(){
+// 				$(this).parent().remove();	
+// 			})
 			//select 부모 옵션 생성
 			$("#addBtn_select").on("click", function(){
 				var str = "<div>";
@@ -129,23 +129,23 @@
 				$(".ajax-select").append(str);
 			});
 			//select 부모 옵션 삭제
-			$(".select-box").on("click", "i[class$='minus_select']", function(){
-				$(this).parent().remove();	
-			})
+// 			$(".select-box").on("click", "i[class$='minus_select']", function(){
+// 				$(this).parent().remove();	
+// 			})
 			//select 자식 옵션 생성
 			$(".select-box").on("click", "i[class*='addBtn_select_child']", function(){
 				var str = "<div><input class=\"option_n\" type=\"text\" name=\"\" id=\"\" required><i class=\"fa-solid fa-circle-minus minus_select_child\" style=\"color: #a0a0a0; margin-left: 10px;\"></i></i></div>"
 				$(this).parent().prev().append(str);
 			});
-			//select 자식 옵션 삭제
-			$(".select-box").on("click", "i[class*='minus_select_child']", function(){
+// 			//select 자식 옵션 삭제
+// 			$(".select-box").on("click", "i[class*='minus_select_child']", function(){
 				
-				if($(this).parent().siblings().length != 0){
-					$(this).parent().remove();	
-				}else{ //옵션이 하나도 없을 시
-					alert("옵션항목은 최소 한개 이상 존재해야 합니다.");
-				}
-			})
+// 				if($(this).parent().siblings().length != 0){
+// 					$(this).parent().remove();	
+// 				}else{ //옵션이 하나도 없을 시
+// 					alert("옵션항목은 최소 한개 이상 존재해야 합니다.");
+// 				}
+// 			})
 			//select 자식 옵션 접기/풀기
 			$(".select-box").on("click", "span[class*='hide']", function(){
 				if(($(this).html()).includes('up')){
@@ -171,6 +171,7 @@
                     <span class="ii">Author : &nbsp;</span>
                     <input type="text" name="" value="${loginUser.nickName }" readonly>
                 	<input type="text" name="refUno" value="${detail.getRefUno() }" style="display:none">
+                	<input type="hidden" id="settingNo" value="${detail.getSettingNo() }">
                 </div>
             </div>
             
@@ -257,56 +258,57 @@
         			}
         		}
     		}
+    		var inputfull = $("input");
+    		for(var inp in inputfull){
+				inputfull[inp].readOnly = true;
+    		}
+//     		$(".ajax-select .addBtn").off("click");
+    		$("#addBtn_select").off("click");
+    		$("#addBtn_input").off("click");
+  	 		$(".select-box").off("click");
     		
     		// 승인
-    		$("#submitBtn").on("click", function checkSubmit(){ 
-	        	var str = ""; // 최종본
-	  		  	//선택사항
-	  		  	$('.select_n').each(function(index, item){ //선택사항 반복
-	  				str += $(this).val()+'-';
-	  				var length = $(this).siblings().eq(2).find('.option_n').length;
-	   				$($(this).siblings().eq(2).find('.option_n')).each(function(index, item){ //옵션사항 반복
+    		$("#submitBtn").on("click", function (){
+//     			alert("click");
+// 	        	var str = ""; // 최종본
+// 	  		  	//선택사항
+// 	  		  	$('.select_n').each(function(index, item){ //선택사항 반복
+// 	  				str += $(this).val()+'-';
+// 	  				var length = $(this).siblings().eq(2).find('.option_n').length;
+// 	   				$($(this).siblings().eq(2).find('.option_n')).each(function(index, item){ //옵션사항 반복
 	   				  
-	       				if(index < (length-1) ){
-	        				str += $(this).val()+',';
-	       				}else{
-		   					str += $(this).val();
-	       				}
-	       			});
-	  				if(index < ($(".select_n").length-1) ){
-	          			str += '/'
-	  				}
-	  		    });
+// 	       				if(index < (length-1) ){
+// 	        				str += $(this).val()+',';
+// 	       				}else{
+// 		   					str += $(this).val();
+// 	       				}
+// 	       			});
+// 	  				if(index < ($(".select_n").length-1) ){
+// 	          			str += '/'
+// 	  				}
+// 	  		    });
 	  		  
-	  		    str += '|'; //구분 기호
+// 	  		    str += '|'; //구분 기호
 	  		  
-	  		    //입력사항
-	  		    $('.input_n').each(function(index, item){
-	  				if(index < ($(".input_n").length-1) ){
-	      				str += $(this).val()+'/';
-	  				}else{
-	  			 		str += $(this).val();
-	  				}
-	  		    });
-	  		    $("input[name='input']").val(str);
+// 	  		    //입력사항
+// 	  		    $('.input_n').each(function(index, item){
+// 	  				if(index < ($(".input_n").length-1) ){
+// 	      				str += $(this).val()+'/';
+// 	  				}else{
+// 	  			 		str += $(this).val();
+// 	  				}
+// 	  		    });
+// 	  		    $("input[name='input']").val(str);
+// 				alert($("#settingNo").val());
     			$.ajax({
-    				url : "issuesSuccess",
+    				url : "settingApprove",
     				data : {
-    					boardNo : $("#boardNo").text(),
-    					settingNo : $("#settingNo").text(),
-    					settingTitle : $("#settingTitle").text(),
-    					settingInfo : $("#settingInfo").val(),
-    					settingCode : $("#settingCode").val(),
-    					settingVersion : $("#settingVersion").text(),
-    					boardWriter : $("#boardWriter").text(),
-    					sortDescription : $("#sortDescription").text(),
-    					input : str
+    					settingNo : $("#settingNo").val()
     				},
-    				type:"POST",
     				success : function(data){
     					if(data > 0){						
-    						alert("setting update success");
-    						location.reload()
+    						alert("setting approve");
+    						location.href="waitingLibrary.list";
     					}
     				},
     				error : function(){
@@ -332,74 +334,66 @@
 			
 			// 거절
 			$("#cancelBtn").on("click", function(){
-				location.href="issuesDetail";
-			})
+				$.ajax({
+    				url : "settingDisApprove",
+    				data : {
+    					settingNo : $("#settingNo").val()
+    				},
+    				success : function(data){
+    					if(data > 0){						
+    						alert("setting approve");
+    						location.href="waitingLibrary.list";
+    					}
+    				},
+    				error : function(){
+    					console.log("error");
+    				}
+    			});
+			});
     	});
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-	        function checkSubmit(){
 
-	        	var str = "";
+        
+// 	        function checkSubmit(){
+
+// 	        	var str = "";
 	  		  
-	  		  	//선택사항
-	  		  	$('.select_n').each(function(index, item){ //선택사항 반복
+// 	  		  	//선택사항
+// 	  		  	$('.select_n').each(function(index, item){ //선택사항 반복
 	  			  
-	  				str += $(this).val()+'-';
+// 	  				str += $(this).val()+'-';
 	   				  
-	  				var length = $(this).siblings().eq(2).find('.option_n').length;
-	   				$($(this).siblings().eq(2).find('.option_n')).each(function(index, item){ //옵션사항 반복
+// 	  				var length = $(this).siblings().eq(2).find('.option_n').length;
+// 	   				$($(this).siblings().eq(2).find('.option_n')).each(function(index, item){ //옵션사항 반복
 	   				  
-	       				if(index < (length-1) ){
-	        				str += $(this).val()+',';
-	       				}else{
-		   					str += $(this).val();
-	       				}
-	       			})
+// 	       				if(index < (length-1) ){
+// 	        				str += $(this).val()+',';
+// 	       				}else{
+// 		   					str += $(this).val();
+// 	       				}
+// 	       			})
 	          		  
-	  				if(index < ($(".select_n").length-1) ){
-	          			str += '/'
-	  				}
-	  		    })
+// 	  				if(index < ($(".select_n").length-1) ){
+// 	          			str += '/'
+// 	  				}
+// 	  		    })
 	  		  
-	  		    str += '|'; //구분 기호
+// 	  		    str += '|'; //구분 기호
 	  		  
-	  		    //입력사항
-	  		    $('.input_n').each(function(index, item){
-	  				if(index < ($(".input_n").length-1) ){
-	      				str += $(this).val()+'/';
-	  				}else{
-	  			 		str += $(this).val();
-	  				}
-	  		    })
+// 	  		    //입력사항
+// 	  		    $('.input_n').each(function(index, item){
+// 	  				if(index < ($(".input_n").length-1) ){
+// 	      				str += $(this).val()+'/';
+// 	  				}else{
+// 	  			 		str += $(this).val();
+// 	  				}
+// 	  		    })
 	  		    
-	  		    console.log(str);
+// 	  		    console.log(str);
 	  		    
-	  		    $("input[name='input']").val(str);
+// 	  		    $("input[name='input']").val(str);
 				
- 	  		    return true;
-	  	    }
+//  	  		    return true;
+// 	  	    }
         </script>
     </div>
     <%@include file="../common/footer.jsp"%>
@@ -421,11 +415,11 @@
 	        val: textarea.value
 	    });
 	    $(editor).attr("pointer-events", "none");
-	   	console.log($(editor.display.lineDiv.children[0]).prop("ariaDisabled", true));
-	   	console.log($(editor.display.lineDiv.children[0].children[1]).attr("pointer-events", "none"));
+// 	   	console.log($(editor.display.lineDiv.children[0]).prop("ariaDisabled", true));
+// 	   	console.log($(editor.display.lineDiv.children[0].children[1]).attr("pointer-events", "none"));
 	    
 	    editor.setSize("100%","100%");
-
+// 		$("input").attr("disabled", true);
 	</script>
 </body>
 </html>
