@@ -1,6 +1,7 @@
 package com.hoju.koala.common.model.vo;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -139,17 +140,31 @@ public class EmailCheck {
 		
 		prop = new Properties();
 		
+		String localhost = "";
+		String port = "";
+		try {
+			prop.load(new FileInputStream("file:src/main/webapp/WEB-INF/spring/setting-config.properties"));
+			
+			localhost = prop.getProperty("localhost");
+			port = prop.getProperty("port");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		StringBuffer buf = new StringBuffer();
 		buf.append("<h3>Koala 회원 정보 입니다.</h3><br><br>아이디 : ");
 		buf.append(userId);
 		buf.append("<br>");
 		buf.append("임시비밀번호를 발급받으시려면 링크를 눌러주세요.<br>	 <a href='http://");
-//		buf.append(localhost)
+		buf.append(localhost);
+		buf.append(":");
+		buf.append(port);
 		buf.append("/koala/member/tempPwd?userId=");
 		buf.append(userId);
 		buf.append("&token=");
 		buf.append(tokenMap.get(userId));
-		buf.append("'>링크입니다.</a>");
+		buf.append("'>임시비밀번호 발급</a>");
 		
 		String content = buf.toString();
 		mailSend(setFrom, toMail, title, content);
