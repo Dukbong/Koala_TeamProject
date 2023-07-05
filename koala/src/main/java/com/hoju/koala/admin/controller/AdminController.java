@@ -110,6 +110,8 @@ public class AdminController {
 	@GetMapping("/errorcheck.list")
 	public String adminErrorBoard(Model model) {
 		ArrayList<IssuesAndError> errorBoardList = adminService.selectErrorBoardCount(); // 해결 되지 않은 라이브러리, 개수, 설명을 가지고 있다.
+		System.out.println(errorBoardList);
+		System.out.println(errorBoardList.size());
 		model.addAttribute("errorList", errorBoardList);
 		return "admin/errorcheckList";
 	}
@@ -171,7 +173,7 @@ public class AdminController {
 		
 		try {			
 			int refSno = issueDetail.get(page-1).getErrorBoard().getRefSno();
-			Setting prevSetting = adminService.selectprevSetting(refSno);
+			Setting prevSetting = adminService.selectprevSetting(settingTitle);
 			mav.addObject("issueDetail", issueDetail.get(page-1));
 			mav.addObject("prevSetting", prevSetting);
 			mav.addObject("size", issueDetail.size());

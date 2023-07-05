@@ -404,6 +404,9 @@
 			                   			</select>
                    					</li>
                    					<li><a href="/koala/member/logout">Logout</a></li>
+                   					<c:if test="${loginUser.type == 2 }">
+                   						<li><a href="/koala/admin/main">Admin</a></li>
+                   					</c:if>
                    				</ul>
                    			</div>
                    			
