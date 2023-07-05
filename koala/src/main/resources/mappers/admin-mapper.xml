@@ -273,7 +273,7 @@
 	</select>
 	<select id="selectOneError" resultMap="issuesDetailResultSet">
 		select * from
-		(select RANK() OVER (ORDER BY user_id DESC) rank,  b.board_no, b.board_writer, b.title, m.user_id,m.nickName, b.create_date, b.content, e.modified_code, e.modified_info 
+		(select RANK() OVER (ORDER BY board_no DESC) rank,  b.board_no, b.board_writer, b.title, m.user_id,m.nickName, b.create_date, b.content, e.modified_code, e.modified_info 
 		from error_board e
 		join create_setting c on (ref_sno = setting_no)
 		join board b on (b.board_no = e.ref_bno)
@@ -281,7 +281,7 @@
 		where setting_title = #{setting.settingTitle}
 		and e.solved = 'N'
 		and e.error_type = 'S'
-		order by m.user_Id) x
+		order by board_no) x
         where rank = #{page}
 	</select>
 	

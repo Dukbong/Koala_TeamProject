@@ -175,7 +175,7 @@ li{
 						<c:choose>
 							<c:when test="${not empty modify.getFilePath() }">
 								<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-									<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${modify.getFilePath()}" + "${modify.getChangeName()}"' alt="s"></div>
+									<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src="/koala${modify.getFilePath()}${modify.getChangeName()}" alt="s"></div>
 									<span style="font-size: 15px; font-weight:bold; color:white;">${modify.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 								</div>
 							</c:when>
@@ -191,7 +191,7 @@ li{
 				<c:choose>
 					<c:when test="${not empty modify.getFilePath() }">
 						<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-							<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${modify.getFilePath()}" + "${modify.getChangeName()}"' alt="s"></div>
+							<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src="/koala${modify.getFilePath()}${modify.getChangeName()}" alt="s"></div>
 							<span style="font-size: 15px; font-weight:bold; color:white;">${modify.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 						</div>
 					</c:when>
