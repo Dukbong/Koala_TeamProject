@@ -282,7 +282,7 @@ p {
         position: absolute;
         top: 50%;
         left: 50%;
-        margin: -250px 0 0 -550px;
+        margin: 50px 0 0 -550px;
         background-color: rgb(30, 30, 30);
         border: 2px solid gray;
         color: white;
@@ -502,7 +502,7 @@ p {
 		<div class="button-area">
 			<div>
 				<button id="cancelBtn" type="button">cancel</button>
-				<button id="submitBtn" type="button">submit</button>
+				<button id="submitBtn" type="button">Version Update</button>
 			</div>
 		</div>
 		<br>
@@ -634,7 +634,7 @@ p {
         			if(page > "${size}"){
         				page = 1;
         			}
-        			console.log("현재 page" + page)
+//         			console.log("현재 page" + page)
         			$.ajax({
         				url : "nextDetail",
         				data : {
@@ -643,12 +643,12 @@ p {
         				},
         				success : function(data){
         					++page;
-        					console.log("다음 page " + page);
+//         					console.log("다음 page " + page);
         					if(page > "${size}"){
         						alert("last page");
         					}
         					var jsonData = JSON.parse(data);
-        					console.log(JSON.parse(data));
+//         					console.log(JSON.parse(data));
         					$("#eb_title").val(jsonData.board.title);
         					$("#eb_content").val(jsonData.board.content);
         					str3 = jsonData.errorBoard.modifiedInfo;
@@ -676,6 +676,10 @@ p {
     			
     			$("#cancel").on("click", function(){
     				$(".modal-wrap").css("display", "none");
+    			});
+    			
+    			$("#cancelBtn").on("click", function(){
+    				location.href="issuesDetail";
     			});
         	});
         </script>

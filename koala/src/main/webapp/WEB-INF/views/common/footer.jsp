@@ -167,6 +167,8 @@
 				form.appendChild(hidden);
 				document.body.appendChild(form);
 				form.submit();
+    		}).on("mouseenter", function(){
+    			$(this).css("cursor", "pointer");
     		});
     	})
     </script>

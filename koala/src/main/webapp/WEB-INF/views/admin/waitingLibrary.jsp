@@ -97,6 +97,7 @@
 						<div class="binArea"></div>
 						<c:if test="${list.size() > i+1 }">
 							<div class="nobinArea ic">
+								<div id="settingNo" style="display: none">${list.get(i+1).settingNo }</div>
 								<div class="liName ii">&nbsp;${list.get(i+1).settingTitle }</div>
 								<div class="liCount"></div>
 								<div class="lidescrip ii">${list.get(i+1).sortDescription}</div>
@@ -118,8 +119,7 @@
 	<script>
 		$(function(){
 			$(".nobinArea").on("click", function(){
-				var title = $(this).children().eq(0).text().trim();
-				var no = $("#settingNo").text();
+				var no = $(this).children().eq(0).text();
 				location.href="listDetail?settingNo="+no;					
 			});
 		});

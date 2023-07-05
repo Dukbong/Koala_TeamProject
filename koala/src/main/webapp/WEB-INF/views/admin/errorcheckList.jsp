@@ -88,7 +88,7 @@
 			<c:when test="${not empty errorList }">
 				<c:forEach var="i" begin="0" end="${errorList.size() }" step="2" >
 					<div class="twoArea">
-						<c:if test="${errorList.size() > i+1 }">
+						<c:if test="${errorList.size() >= i+1 }">
 						<div class="binArea"></div>
 						<div class="nobinArea ic">
 							<div class="liName ii">&nbsp;${errorList.get(i).settingTitle }</div>

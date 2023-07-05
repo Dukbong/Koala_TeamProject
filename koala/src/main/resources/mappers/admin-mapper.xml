@@ -139,10 +139,11 @@
             SELECT SETTING_TITLE, SORT_DESCRIPTION ,NVL(COUNT(REF_SNO),0) CC
 		FROM CREATE_SETTING C
 		LEFT JOIN ERROR_BOARD E ON (C.SETTING_NO = E.REF_SNO)
-		WHERE ERROR_TYPE= 'N' AND SOLVED = 'N'
+		WHERE ERROR_TYPE= 'N' AND SOLVED = 'N' AND C.STATUS = 'Y'
 		GROUP BY SETTING_TITLE, SORT_DESCRIPTION, REF_SNO
 		ORDER BY CC DESC
         ) a  using (setting_title)
+        WHERE C.STATUS = 'Y'
         order by CC desc
 	</select>
 	
@@ -448,11 +449,17 @@
 		SELECT * FROM CREATE_SETTING WHERE SETTING_NO = #{settingNo}
 	</select>
 	<select id="selectprevSetting" resultMap="settingMapper.settingResultSet">
-		SELECT c.* FROM CREATE_SETTING C JOIN ERROR_BOARD E ON (REF_SNO = SETTING_NO) WHERE REF_SNO = #{refSno} and rownum =1
+		SELECT * FROM CREATE_SETTING WHERE SETTING_TITLE=#{settingTitle} AND STATUS = 'Y'
 	</select>
 	<update id="updateSettingN">
 		UPDATE CREATE_SETTING
 		SET STATUS = 'N'
 		WHERE SETTING_NO = #{settingNo}
+	</update>
+	<update id="updateStatueSetting">
+		update create_setting set status = 'Y' where setting_no = #{settingNo}
+	</update>
+		<update id="settingDisApprove">
+		update create_setting set status = 'N' where setting_no = #{settingNo}
 	</update>
 </mapper>

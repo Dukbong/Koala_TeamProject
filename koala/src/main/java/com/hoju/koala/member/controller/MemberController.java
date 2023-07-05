@@ -322,9 +322,11 @@ public class MemberController {
 	}
 	
 	@GetMapping("/tempPwd")
-	public void tempPwd(String userId,
+	public ModelAndView tempPwd(String userId,
 						String token,
 						ModelAndView mv) {
+		
+		System.out.println("hi");
 		
 		//ec필드에 저장한 토큰 가져오기
 		String getToken = ec.getTokenMap().get(userId);
@@ -346,11 +348,13 @@ public class MemberController {
 			
 			if(result>0) {
 				mv.addObject("msg", "비밀번호 변경이 완료되었습니다.");
-				mv.setViewName("");
+				mv.setViewName("common/emailProcessing");
 			}else {
-				
+				mv.addObject("msg", "비밀번호 변경과정에서 오류");
+				mv.setViewName("common/emailProcessing");
 			}
 		}
+		return mv;
 	}
 
 	//계정설정 페이지 이동
