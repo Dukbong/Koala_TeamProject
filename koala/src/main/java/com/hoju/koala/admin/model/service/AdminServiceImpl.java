@@ -300,6 +300,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateSettingN(settingNo, sqlSession);
 	}
 
+	@Override
+	public int updateStatueSetting(int settingNo) {
+		return adminDao.updateStatueSetting(settingNo, sqlSession);
+	}
+
+	@Override
+	public int settingDisApprove(int settingNo) {
+		return adminDao.settingDisApprove(settingNo, sqlSession);
+	}
+
 
 
 

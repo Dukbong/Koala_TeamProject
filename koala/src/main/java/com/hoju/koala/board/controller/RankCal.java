@@ -15,13 +15,15 @@ import com.hoju.koala.member.model.vo.Member;
 @Component
 public class RankCal {
 	// 새로운 데이터  List
-	private Properties rankings;//프로퍼티 파일의 랭킹 변수
+//	private Properties rankings;//프로퍼티 파일의 랭킹 변수
 	private List<Member> previousData; // 이전 데이터 ( 현재 데이터
+	public static HashMap<String, ArrayList<Member>> map = new HashMap<>();
 	
-	public RankCal(@Autowired Properties rankings) {
-		this.rankings = rankings;
-		this.previousData = new ArrayList<>();
-	}
+	
+//	public RankCal(@Autowired Properties rankings) {
+////		this.rankings = rankings;
+//		this.previousData = new ArrayList<>();
+//	}
 	
     public void setPreviousData(List<Member> previousData) {
         this.previousData = previousData;
@@ -32,23 +34,17 @@ public class RankCal {
     }
 
  // 아이디로 갖고오기
-    private Member findMemWithRank(String userId) {
+    private Member findMemWithRank(String userId , int currentRank) {
     	
-    	for(Object key : rankings.keySet()) {
-    		String rank = (String) key;
-    		String user = rankings.getProperty(rank);
-    		
-    		if(user.equals(userId)) {
-    			//등수에 해당하는 회원을 찾았을 때
-    			int rankIndex = Integer.parseInt(rank.substring(5));
-    			
-    			for(Member m : previousData) {
-    				if(m.getUserId().equals(user) && m.getRank() == rankIndex) {
-    					return m;
-    				}
-    			}
-    		}
-    	}
+    	if (map.containsKey(userId)) {
+            ArrayList<Member> memberList = map.get(userId);
+            for (Member member : memberList) {
+                if (member.getRank() == currentRank) {
+                    return member;
+                }
+            }
+        }
+    	
     	
     	return null;
 
@@ -63,8 +59,21 @@ public class RankCal {
             System.out.println("현재 순위 : " + currentRank);
 
             String userId = newMember.getUserId();
-            Member previousMember = findMemWithRank(userId); // 프로퍼티에서 예전 등수 가져오기
+//            Member previousMember = findMemWithRank(userId); // 프로퍼티에서 예전 등수 가져오기
 
+            //기존 등수 map에서 가져오기
+            Member previousMember = null;
+            
+            if(map.containsKey(userId)) {
+            	ArrayList<Member> memberList = map.get(userId);
+            	for(Member m : memberList) {
+            		if(m.getRank() == currentRank) {
+            			previousMember = m;
+            			break;
+            		}
+            	}
+            }
+            
             if (previousMember != null) { // 예전 등수가 있을 때
                 int previousRankStored = previousMember.getRank(); // 예전등수 가져오기
                 System.out.println("예전 등수 : " + previousRankStored);
@@ -77,6 +86,8 @@ public class RankCal {
 
                 newMember.setRank(currentRank);
                 newMember.setRankChange(rankChange);
+                
+                
             } else { // 예전 등수가 없을 경우
                 System.out.println("예전 등수 없음");
 //                previousRanks.put(userId, currentRank);

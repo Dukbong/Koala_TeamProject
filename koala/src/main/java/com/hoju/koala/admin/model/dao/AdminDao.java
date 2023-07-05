@@ -240,4 +240,12 @@ public class AdminDao {
 	public int updateSettingN(int settingNo, SqlSession sqlSession) {
 		return sqlSession.update("adminMapper.updateSettingN", settingNo);
 	}
+
+	public int updateStatueSetting(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.updateStatueSetting", settingNo);
+	}
+
+	public int settingDisApprove(int settingNo, SqlSession sqlSession) {
+		return sqlSession.update("adminMapper.settingDisApprove", settingNo);
+	}
 }

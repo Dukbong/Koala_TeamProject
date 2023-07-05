@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @EnableScheduling
 @RequestMapping("/rankingBoard")
 public class RankingBoardController {
+	
+		
 
 	@Autowired
 	private RankingBoardService rnkService;
@@ -39,16 +42,16 @@ public class RankingBoardController {
 	@Autowired
 	private RankCal rankCal;
 	
-	@Autowired
-	private Properties rankings;
+//	@Autowired
+//	private Properties rankings;
 	
 	
 	// 랭킹페이지
-		@GetMapping("rankingPage")
+		@GetMapping("/rankingPage")
 		public String rankingList(Model model) {
 			ArrayList<Member> newData = rnkService.rankingList(); // 새로운 데이터 ( 저장된거 불러온거 )
 
-			rankings.clear();//기존 랭킹 데이터 초기화
+//			rankings.clear();//기존 랭킹 데이터 초기화
 			
 //			//properties 객체 생성 및 초기화
 //			rankings = new Properties();
@@ -61,6 +64,7 @@ public class RankingBoardController {
 
 			model.addAttribute("list", calculatedData);
 
+			System.out.println("dd");
 			return "board/rankingBoard/rankingBoard";
 		}
 		
@@ -77,9 +81,10 @@ public class RankingBoardController {
 				for(Member m : previousData) {
 					String userId = m.getUserId();
 					String rankKey = "rank." + rank;
+					log.info("여기도 안들어왔나?"+userId+rankKey);
 					properties.setProperty(rankKey, userId);
 					rank ++;
-					log.info("등수 저장 완료!");
+					log.info("등수 저장 완료"+rank);
 				}
 				
 				properties.store(outputStream, null);

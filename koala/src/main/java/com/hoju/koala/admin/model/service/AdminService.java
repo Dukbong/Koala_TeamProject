@@ -147,6 +147,10 @@ public interface AdminService {
 
 	Setting selectprevSetting(String settingTitle);
 
+	int updateStatueSetting(int settingNo);
+
+	int settingDisApprove(int settingNo);
+
 
 
 

@@ -3,6 +3,7 @@ package com.hoju.koala.admin.controller;
 import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +175,12 @@ public class AdminController {
 		try {			
 			int refSno = issueDetail.get(page-1).getErrorBoard().getRefSno();
 			Setting prevSetting = adminService.selectprevSetting(settingTitle);
+			
 			mav.addObject("issueDetail", issueDetail.get(page-1));
+			System.out.println("===========================================");
+			System.out.println("page= " + page);
+			System.out.println(prevSetting);
+			System.out.println("===========================================");
 			mav.addObject("prevSetting", prevSetting);
 			mav.addObject("size", issueDetail.size());
 			mav.addObject("page",page);
@@ -274,6 +280,19 @@ public class AdminController {
 			boardPack.clear();
 		}			
 		return result1*result2*result3;
+	}
+	
+	@GetMapping("/settingApprove")
+	@ResponseBody
+	public int settingApprove(int settingNo) {
+		int result = adminService.updateStatueSetting(settingNo);
+		return result;
+	}
+	@GetMapping("/settingDisApprove")
+	@ResponseBody
+	public int settingDisApprove(int settingNo) {
+		int result = adminService.settingDisApprove(settingNo);
+		return result;
 	}
 
 }

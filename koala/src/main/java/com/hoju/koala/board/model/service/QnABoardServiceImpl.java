@@ -257,6 +257,12 @@ public class QnABoardServiceImpl implements QnABoardService{
 		return qnaDao.updateFile(sqlSession,at);
 	}
 
+	@Override
+	public int selectLastBoardNo() {
+		
+		return qnaDao.selectLastBoardNo(sqlSession);
+	}
+
 	//qna 좋아요 수
 //	@Override
 //	public int countLike(int boardNo) {

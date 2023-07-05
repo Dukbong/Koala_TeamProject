@@ -456,4 +456,10 @@
 		SET STATUS = 'N'
 		WHERE SETTING_NO = #{settingNo}
 	</update>
+	<update id="updateStatueSetting">
+		update create_setting set status = 'Y' where setting_no = #{settingNo}
+	</update>
+		<update id="settingDisApprove">
+		update create_setting set status = 'N' where setting_no = #{settingNo}
+	</update>
 </mapper>
