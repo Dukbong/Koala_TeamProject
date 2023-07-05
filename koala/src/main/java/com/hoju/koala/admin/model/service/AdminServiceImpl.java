@@ -286,8 +286,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Setting selectprevSetting(int refSno) {
-		return adminDao.selectprevSetting(refSno, sqlSession);
+	public Setting selectprevSetting(String settingTitle) {
+		return adminDao.selectprevSetting(settingTitle, sqlSession);
 	}
 
 	@Override
@@ -299,6 +299,8 @@ public class AdminServiceImpl implements AdminService {
 	public int updateSettingN(int settingNo) {
 		return adminDao.updateSettingN(settingNo, sqlSession);
 	}
+
+
 
 
 

@@ -15,23 +15,28 @@
     <style>
         div{ box-sizing: border-box;}
         .content-outer{width: 1400px; margin: auto; padding: 250px 0px 130px 0px;}
-        .content-outer>div{width: 100%;}
-        
+        p{margin-bottom:0;}
         .board-area, .reply-area{
-            width: 100%;
+            width: 70%;
+            margin: auto;
         }
         .space{width: 16%;}
-	    .board-content{width: 100%;}
         .lib-info{height: 7%; position: relative;}
-        #libTitle{left: 0; height: 45px; padding-top: 7px;}
-        .board-box{background-color: black; padding: 10px;}
+        #libTitle{color: rgb(255, 201,20);left: 0; height: 45px; padding-top: 7px;}
+        .board-box{ padding: 10px;}
         .updateDeleteBtn{height: 5%; position: relative;}
         #likesession{
             padding-top: 20px;
             padding-bottom: 20px;
             text-align: center;
         }
-        .board-box>div{width: 100%; margin: auto;}
+        #likesession>button{
+        	background-color: rgb(255, 201,20);
+        	border-radius: 5px;
+        	font-weight: bold;
+        	font-size: 14px;
+        }
+        .board-box>div{ margin: auto;}
         #title{
             align-self: center;
             height: 10%; 
@@ -47,11 +52,10 @@
             pointer-events: none;
         }
         #title>span{background: linear-gradient(to top, rgb(60, 60, 60) 40%, transparent 40%);}
+        #content>p{color:white;}
         #content, #editor{
             height: 53%;
             width: 100%;
-            border: 1px solid black;
-            background-color: white;
         }
         #updateBtn, #deleteBtn{
             width:90px; 
@@ -66,17 +70,24 @@
         .reply-area>div{width: 100%;}
         .reply>input{
             height: 50px;
-            width: 94%;
+            width: 93%;
         }
         .reply>button{
             height: 50px;
-            width: 5%;
+            width: 6%;
+            border-radius: 6px;
         }
         .replyList-area{
             width: 100%;
             margin-top: 25px;
             margin-bottom: 25px;
             border: 3px solid rgb(80,80,80);
+	    }
+	    button{
+	    	background-color: rgb(255, 201,20);
+        	border-radius: 5px;
+        	font-weight: bold;
+        	font-size: 14px;
 	    }
         #replyContent{
             width: 100%;
@@ -89,7 +100,6 @@
         .CodeMirror {
 	        font-family: Arial, monospace;
 	        font-size: 25px;
-	        border: 1px solid white;
 	        height: auto;
 	        pointer-events: none;
 	        z-index: 0;
@@ -108,6 +118,7 @@
                 <div class="lib-info">
                     <div id="libTitle">&nbsp;&nbsp;<span style="font-size: 18px;"><b>BoardEnrollPage</b></span></div>
                 </div>
+                <hr>
                 <c:if test="${loginUser.nickName eq b.boardWriter }">
                     <div class="updateDeleteBtn">
                         <button onclick="location.href='update?boardNo=${b.boardNo}'" id="updateBtn">Edit</button>
@@ -116,11 +127,14 @@
                             <button type="submmit" id="deleteBtn">Delete</button>
                         </form>
                     </div>
+                <hr>
                 </c:if>
                 <div class="board-box">
                     <div class="board-area">
-                        <input type="text" name="boardTitle" id="title" value="${b.title }" readonly><br>
-                        <input type="text" name="boardWriter" id="boardWriter" value="by ${b.boardWriter } create_date ${b.createDate}" readonly><br>
+                        <p name="boardTitle" id="title">${b.title }</p>
+                        <hr>
+                        <p name="boardWriter" id="boardWriter">by ${b.boardWriter } create_date ${b.createDate}</p>
+                        <hr>
                         <div name="content" id="content" >${b.content }</div>
                         <c:if test="${b.contentCode ne '비어있습니다.' }">
                             <textarea id="editor" name="contentCode" class="editor">${b.contentCode }</textarea>
@@ -176,8 +190,6 @@
                     <input type="hidden" value="${b.boardNo }" id="refBno">
                 </div>
             </div>
-            <br>
-            <br>
         </div>
     </div>
     <script>
@@ -193,6 +205,24 @@
 	        matchBrackets: true,
 	    });
 	    editor.setSize("100%");
+	    
+	    window.addEventListener('load', function() {
+	    	var divElements = document.querySelectorAll('#content div');
+	    	var Elements = document.querySelectorAll('#content span');
+	    	
+	    	divElements.forEach(function(divElement) {
+	    	    var spanElements = divElement.querySelectorAll('span');
+	    	    
+	    	    spanElements.forEach(function(spanElement) {
+	    	      spanElement.style.color = 'white'; // 새로운 글자 색상을 설정합니다.
+	    	    });
+	    	});
+	    	Elements.forEach(function(Element) {
+	    	    Elements.forEach(function(Element) {
+	    	    	Element.style.color = 'white'; // 새로운 글자 색상을 설정합니다.
+	    	    });
+	    	});
+	    });
 	    
     	function upadatereply(e){
     		var button = event.target;

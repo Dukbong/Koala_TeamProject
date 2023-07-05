@@ -152,5 +152,11 @@ public class ErrorBoardDao {
 		
 		return sqlSession.update("errorBoardMapper.updateSolved", boardNo);
 	}
+
+	//포인트 등록
+	public int increasePoint(SqlSessionTemplate sqlSession, HashMap<String, Object> setPoint) {
+		
+		return sqlSession.update("errorBoardMapper.increasePoint", setPoint);
+	}
 	
 }
