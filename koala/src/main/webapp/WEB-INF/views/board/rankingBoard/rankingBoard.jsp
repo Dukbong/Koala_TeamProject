@@ -6,9 +6,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Koala_Ranking</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -208,87 +207,7 @@
                             </td>
                         </tr>                    	
                     </c:forEach>
-<!--                         <tr> -->
-<!--                             <td>2</td> -->
-<!--                             <td><i class="fa-solid fa-up-long"></i></td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/비브라늄.png" alt=""></td> -->
-<!--                             <td>공대생</td> -->
-<!--                             <td>dkdleldlq</td> -->
-<!--                             <td>비브라늄</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>3</td> -->
-<!--                             <td><i class="fa-solid fa-down-long"></i></td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
-<!--                             <td>roswoa</td> -->
-<!--                             <td>dkdlwl</td> -->
-<!--                             <td>플래티넘</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>4</td> -->
-<!--                             <td><i class="fa-solid fa-down-long"></i></td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
-<!--                             <td>코딩외길인생</td> -->
-<!--                             <td>asdflkj</td> -->
-<!--                             <td>플래티넘</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>5</td> -->
-<!--                             <td>-</td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
-<!--                             <td>dlrpslr</td> -->
-<!--                             <td>dlrpwlsWkslr</td> -->
-<!--                             <td>플래티넘</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>6</td> -->
-<!--                             <td><i class="fa-solid fa-down-long"></i></td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/플래티넘.png" alt=""></td> -->
-<!--                             <td>sdflksdf</td> -->
-<!--                             <td>aslkjf</td> -->
-<!--                             <td>플래티넘</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>7</td> -->
-<!--                             <td>-</td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
-<!--                             <td>에에올</td> -->
-<!--                             <td>eeall</td> -->
-<!--                             <td>골드</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>8</td> -->
-<!--                             <td><img src="/koala/resources/common/rank_new.gif" alt=""></td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
-<!--                             <td>닉할게없다</td> -->
-<!--                             <td>nickharlge</td> -->
-<!--                             <td>골드</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>9</td> -->
-<!--                             <td>-</td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
-<!--                             <td>거의끝나간다</td> -->
-<!--                             <td>almostdone</td> -->
-<!--                             <td>골드</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
-<!--                         <tr> -->
-<!--                             <td>10</td> -->
-<!--                             <td>-</td> -->
-<!--                             <td><img class="rank_img" src="/koala/resources/common/골드.png" alt=""></td> -->
-<!--                             <td>나는솔로</td> -->
-<!--                             <td>iamSolo</td> -->
-<!--                             <td>골드</td> -->
-<!--                             <td>129,000</td> -->
-<!--                         </tr> -->
+
                     </tbody>
                 </table>
             </div>

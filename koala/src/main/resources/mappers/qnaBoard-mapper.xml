@@ -88,13 +88,17 @@
 			   NICKNAME,
 			   CONTENT,
 			   COUNT,
+			   CATEGORY,
 			   TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD')"CREATE_DATE",
+			   COUNT(FILE_NO)"FILE_NO",
 			   LIKED
 		FROM BOARD B
 		JOIN MEMBER ON(USER_NO = BOARD_WRITER)
+		LEFT JOIN BOARD_ATTACHMENT A ON (BOARD_NO = REF_BNO)
 		WHERE BOARD_NO = #{boardNo}
 		AND CATEGORY = 'Q'
-		AND B.STATUS = 'Y' 
+		AND B.STATUS = 'Y'
+		GROUP BY BOARD_NO, TITLE, NICKNAME, CONTENT, COUNT, CATEGORY, TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD'), LIKED
 	</select>
 	
 	<!-- 조회수 증가 update문 -->
@@ -194,7 +198,7 @@
 	</insert>
 	
 	<!-- 게시글 글 작성 insert문 -->
-	<insert id="insertBoard">
+	<insert id="insertBoard" >
 		INSERT INTO BOARD(BOARD_NO,
 						  CATEGORY,
 						  BOARD_WRITER,
@@ -206,6 +210,11 @@
 			   #{title},
 			   #{content})
 	</insert>
+	
+	<!-- 게시글 첨부파일 있을 시 refBno -->
+	<select id="selectLastBoardNo" resultType="int">
+		SELECT MAX(BOARD_NO) FROM BOARD
+	</select>
 	
 	<!-- 게시글 파일 첨부 insert문 -->
 	<insert id="insertBoardFile">
@@ -220,6 +229,8 @@
 			   #{changeName},
 			   #{filePath})
 	</insert>
+	
+	
 	
 	<!-- 공지글 삽입 insert문 -->
 	<insert id="insertNotice">
