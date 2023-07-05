@@ -91,11 +91,6 @@ public class MemberController {
 		log.debug("아이디 저장 상태 : {}", request.getParameter("keepId"));
 
 		
-		//로그인 시 출석 등록 ======================================== 설희
-
-		int userNo =  loginUser.getUserNo();
-		memberService.attendance(userNo);
-		//======================================================
 
 		
 		//가져온 유저정보와 사용자가 로그인창에 입력한 아이디 비밀번호가 일치하는지 확인
@@ -126,6 +121,11 @@ public class MemberController {
 	            // 쿠키에서 아이디 삭제
 	            mCookie.deleteCookie(response, "saveId");
 	        }
+			
+			//로그인 시 출석 등록 ======================================== 설희
+			int userNo =  loginUser.getUserNo();
+			memberService.attendance(userNo);
+			//======================================================
 			
 			mv.setViewName("redirect:/");
 		}else {
@@ -322,9 +322,11 @@ public class MemberController {
 	}
 	
 	@GetMapping("/tempPwd")
-	public void tempPwd(String userId,
+	public ModelAndView tempPwd(String userId,
 						String token,
 						ModelAndView mv) {
+		
+		System.out.println("hi");
 		
 		//ec필드에 저장한 토큰 가져오기
 		String getToken = ec.getTokenMap().get(userId);
@@ -346,11 +348,13 @@ public class MemberController {
 			
 			if(result>0) {
 				mv.addObject("msg", "비밀번호 변경이 완료되었습니다.");
-				mv.setViewName("");
+				mv.setViewName("common/emailProcessing");
 			}else {
-				
+				mv.addObject("msg", "비밀번호 변경과정에서 오류");
+				mv.setViewName("common/emailProcessing");
 			}
 		}
+		return mv;
 	}
 
 	//계정설정 페이지 이동

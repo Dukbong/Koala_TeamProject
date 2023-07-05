@@ -115,16 +115,16 @@ public class TestController {
 	@ResponseBody
 	public int modifyTeamMember(String team, String teamName) {
 		String[] arr = team.split(",");
-		System.out.println("TeamName = " + teamName);
+//		System.out.println("TeamName = " + teamName);
 		int teamNo = adminService.selectTeamTeamNo(teamName);
-		System.out.println("TeamNO = " + teamNo);
+//		System.out.println("TeamNO = " + teamNo);
 		int updateMember = 0;
 		// delete로 다 날리고 다시 등록한다.
 		int deleteMember = adminService.deleteTeamMember(teamName);
 		if(deleteMember > 0) {
 			for(int i = 0; i < arr.length; i++) {
 				SqlInvite sqlIn = SqlInvite.builder().teamNo(teamNo).creatorNo(Integer.parseInt(arr[0])).userNo(Integer.parseInt(arr[i])).build();
-				System.out.println(sqlIn);
+//				System.out.println(sqlIn);
 				updateMember = adminService.updateSQLteamMember(sqlIn);
 			}
 		}
@@ -137,7 +137,7 @@ public class TestController {
 		// sqlCloud, sqlinvite, member, supporter, profile 조인...
 		// 30일날 하기
 		ArrayList<ModifyTeam> mt = adminService.selectOneTeam(teamNo);
-		System.out.println(mt);
+//		System.out.println(mt);
 		model.addAttribute("modify", mt.get(0));
 		ArrayList<String> arr = new ArrayList<>();
 		ObjectMapper om = new ObjectMapper();
@@ -170,7 +170,7 @@ public class TestController {
 	public String teamQuit(int teamNo, HttpSession session, HttpServletRequest request) {
 		SqlInvite sql = SqlInvite.builder().teamNo(teamNo).userNo(((Member)session.getAttribute("loginUser")).getUserNo()).build();
 		int result = adminService.teamQuit(sql);
-		System.out.println(result);
+//		System.out.println(result);
 		if(result > 0) {
 			return "redirect:sqlCloud"; 
 		}else {			

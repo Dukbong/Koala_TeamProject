@@ -84,22 +84,24 @@ public class QnABoardController {
 		
 		if(result > 0) {
 			Board b = qnaService.selectBoard(boardNo);
-//			ArrayList<Reply> r = qnaService.selectReplyList(boardNo);			
-//			mv.addObject("r", r);
+
 			mv.addObject("b",b).setViewName("board/qnaBoard/qnaBoardDetail");
 		
-			
+			System.out.println(b);
 			if(session.getAttribute("loginUser") != null) {
 				int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
 				int likeYoN = qnaService.likeYesOrNo(liked);
+//				System.out.println("쪼아요를 했는가? : "+likeYoN);
 				mv.addObject("likeYoN",likeYoN);
 			}
+			
+//			System.out.println("파일 번호 : "+b.getFileNo());
 		if(b.getFileNo()!=0) {
 
 			ArrayList<BoardAttachment> at = qnaService.selectAttachment(boardNo);
 			mv.addObject("at",at).setViewName("board/qnaBoard/qnaBoardDetail");;
-			
+			System.out.println("파일 있음");
 		}
 		
 		
@@ -152,46 +154,46 @@ public class QnABoardController {
 	}
 	
 	//글 작성 
-	@RequestMapping("insert")
-	public ModelAndView insertBoard(BoardAttachment at,
-									Board b,
+	@RequestMapping(value="insert", method=RequestMethod.POST)
+	public ModelAndView insertBoard(Board b,
 									ModelAndView mv,
-									MultipartFile upFile,
+									@RequestParam("upFile") MultipartFile upFile,
+									@RequestParam("uploadFile") MultipartFile uploadFile,
 									HttpSession session) {
 		
 		int result;
-//		Member m = (Member)session.getAttribute("loginUser");
+
 		String userNo = String.valueOf(((Member)session.getAttribute("loginUser")).getUserNo());
 		b.setBoardWriter(userNo);
-//		b.setTitle(b.getTitle());
-//		b.setContent(b.getContent());
-		System.out.println("====================");
+		result = qnaService.insertBoard(b);//그냥 글만 있을 때
 		
-		//게시글 작성자 설정
-//		if(!b.getNotice().equals("Y")) {
+		//upFile 처리
 			if(upFile!=null && !upFile.getOriginalFilename().equals("")) {
+//				System.out.println("여기로 들어와야됨");
 				String changeName = saveFile(upFile,session);
-				at.setOriginName(upFile.getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/"+changeName);
-				result = qnaService.insertBoardFile(at);//파일 첨부 있을 때
+				String originName = upFile.getOriginalFilename();
+				String savePath = session.getServletContext().getRealPath("/resources/uploadFiles");
 				
-				//filePath확인
-				String filePath = at.getFilePath();
-				System.out.println(filePath);
-			}else {
-				result = qnaService.insertBoard(b);//그냥 글만 있을 때
-				System.out.println(b);
+				//게시글 번호 가져오기
+				int boardNo = qnaService.selectLastBoardNo();
+
+				BoardAttachment at = BoardAttachment.builder().refBno(boardNo).originName(originName).changeName(changeName).filePath(savePath).build();
+				System.out.println("refBno: " + at.getRefBno());
+				result = qnaService.insertBoardFile(at);//파일 첨부 있을 때
+				System.out.println("결과 : "+result);
 			}
-////		}else {
-//			if(m.getUserId().equals("admin")) {
-//				result = qnaService.insertNotice(b);//어드민만 쓸 수 있게				
-//			}else {
-//				mv.addObject("errorMsg", "공지 게시글은 운영자만 작성 가능합니다.").setViewName("common/error");
-//				return mv;
-//			}
-////		}
-		
-		
+			
+			if(uploadFile!=null && !uploadFile.getOriginalFilename().equals("")) {
+				String changeName = saveFile(uploadFile,session);
+				String originName = uploadFile.getOriginalFilename();
+				String savePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+				//게시글 번호 가져오기
+				int boardNo = qnaService.selectLastBoardNo();
+				
+				BoardAttachment at = BoardAttachment.builder().refBno(boardNo).originName(originName).changeName(changeName).filePath(savePath).build();
+				result = qnaService.insertBoardFile(at);//파일 첨부 있을 때
+				System.out.println("결과 : "+result);
+			}
 		
 		if(result>0) {
 			System.out.println("글 작성 완료");
@@ -218,7 +220,7 @@ public class QnABoardController {
 		
 		String changeName = currentTime+ran+ext;
 		
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
 		
 		try {
 			upFile.transferTo(new File(savePath+changeName));
@@ -307,15 +309,6 @@ public class QnABoardController {
 	    return response;
 	}
 	
-//	@ResponseBody
-//	@RequestMapping(value="getLikeCount", produces="application/json; charset=UTF-8")
-//	public int getLikeCount(@RequestParam("boardNo")int boardNo) {
-//		
-//		
-//		Integer getLikeCount = qnaService.getLikeCount(boardNo);
-//		int likeCount = getLikeCount != null ? getLikeCount : 0; //null일때는 0
-//		return likeCount;
-//	}
 	
 	//댓글 채택
 	@ResponseBody
