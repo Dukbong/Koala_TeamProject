@@ -243,6 +243,13 @@ public class QnABoardDao {
 		return sqlSession.selectOne("qnaBoardMapper.selectLastBoardNo");
 	}
 
+	//좋아요 0만들기
+	public void makeZeroLike(SqlSessionTemplate sqlSession, int boardNo) {
+		
+		sqlSession.update("qnaBoardMapper.makeZeroLike",boardNo);
+		
+	}
+
 	//qna 좋아요 수
 //	public int countLike(SqlSessionTemplate sqlSession, int boardNo) {
 //		
