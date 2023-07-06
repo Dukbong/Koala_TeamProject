@@ -6,9 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DownloadFiles</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <style>
     body{
         background-color: black;
@@ -286,25 +286,26 @@
                     </select>
                 </div>
 
-                <div class="code_content" id="copy_code">               
-                    <span class="commonStyle">&lt;dependency&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span>org.springframework</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span>spring-context</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;exclusions&gt;</span> <br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="addStyle">&lt;--Exclude Commons Logging in favor of SLF4j --&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;exclusion&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeClass">Koala.driveClassName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifactId&gt;</span><span name="changeUrl">Koala.url</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusion&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusions&gt;</span> <br>
-                    <span class="commonStyle">&lt;/dependency&gt;</span><br>
-                    <span class="commonStyle">&lt;dependency&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeName">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="${changeName}">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span name="changePwd">Koala.password</span><span class="commonStyle">&lt;/artifactId&gt;</span><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br>
-                    <span class="commonStyle">&lt;/dependency&gt;</span><br>
+                <div class="code_content" id="copy_code">
+                <textarea id="codeZoneId" cols="60" rows="14" style="background-color: transparent; border:none; color:white;">${setting.settingCode }</textarea>               
+<!--                     <span class="commonStyle">&lt;dependency&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span>org.springframework</span><span class="commonStyle">&lt;/groupId&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span>spring-context</span><span class="commonStyle">&lt;/artifactId&gt;</span><br> -->
+<%--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br> --%>
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;exclusions&gt;</span> <br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="addStyle">&lt;--Exclude Commons Logging in favor of SLF4j --&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;exclusion&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeClass">Koala.driveClassName</span><span class="commonStyle">&lt;/groupId&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifactId&gt;</span><span name="changeUrl">Koala.url</span><span class="commonStyle">&lt;/artifactId&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusion&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;/exclusions&gt;</span> <br> -->
+<!--                     <span class="commonStyle">&lt;/dependency&gt;</span><br> -->
+<!--                     <span class="commonStyle">&lt;dependency&gt;</span><br> -->
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="changeName">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br> -->
+<%--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;groupId&gt;</span><span name="${changeName}">Koala.userName</span><span class="commonStyle">&lt;/groupId&gt;</span><br> --%>
+<!--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;artifacId&gt;</span><span name="changePwd">Koala.password</span><span class="commonStyle">&lt;/artifactId&gt;</span><br> -->
+<%--                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="commonStyle">&lt;version&gt;</span><span>${org.springframework-version}</span><span class="commonStyle">&lt;/version&gt;</span><br> --%>
+<!--                     <span class="commonStyle">&lt;/dependency&gt;</span><br> -->
                     <div class="lastButton">
                         <button type="button" id="copyBtn" class="copyButton">Copy</button><button type="button" onclick="downloadTextFile();" class="downButton">Download</button>
                     </div>
@@ -319,15 +320,24 @@
 		if (${empty setting.input}) {//input null일 때 설명 창 바로 보여지게
 		    document.querySelector(".desArea").style.display = "block";
 		}
+	
 
 	$(function(){
+
 		var settingInput = "${setting.input }";
-		
+		console.log(settingInput)
 		//선택/입력나눠주기
 		var choices = settingInput.split("|"); // 선택과 입력을 나눔
 		var selections = choices[0].split("/"); // 선택 옵션을 추출
 		var inputs = choices[1].split("/"); // 입력 옵션을 추출
+
 		
+		// 선택 값들을 담을 배열
+	    var selectedValues = [];
+		
+        //입력값 담을 배열
+        var inputValues = [];
+        
         //선택 옵션 뿌려주기
         if(selections.length > 0){
         	
@@ -336,7 +346,7 @@
         		
         		//옵션 제목
         		var choiceTitle = selections[i].split("-")[0];
-        		str += "<div class=\"choice_title\"><span>"+choiceTitle+"</span></div>";
+        		str += "<div class=\"choice_title\"><span name=\"choice\">"+choiceTitle+"</span></div>";
         		
         		//옵션 나열된 문자열
         		var option = selections[i].split("-")[1];
@@ -350,7 +360,7 @@
         			
         			var optionValue = optionList[j];
         			
-        			str += "<input type=\"radio\" id=\"choice"+j+"\"><label for=\"choice"+j+"\">"+optionValue+"</label>";
+        			str += "<input type=\"radio\" name=\"choice\" id=\"choice"+j+"\"><label for=\"choice"+j+"\">"+optionValue+"</label>";
         		}
         		str += "</div>";
         		
@@ -359,8 +369,14 @@
         	
         	$(".choice-choice").html(str);
         	
-        }
-		
+        	//선택값들을 배열에 저장
+        	$(".choice-choice input[type='radio']").change(function() {
+                var selectedValue = $(this).next("label").text();
+                selectedValues.push(selectedValue);
+                console.log("1.선택"+selectedValues);
+            });
+        
+	}
     	//inputs 뿌려주기
         if(inputs.length > 0){
         	
@@ -375,6 +391,16 @@
         	
         	$(".chArea").html(str2);
         	
+        	
+        	//입력값 배열에 저장
+        	$(".chArea input[type='text']").change(function(){
+        		var inputValue = $(this).val();
+        		inputValues.push(inputValue);
+        		console.log(inputValues);
+
+      	
+        	});
+        	
     	}
     	
         //입력 부분 생성 및 추가
@@ -385,8 +411,84 @@
         submitButton.id = "choiceSub";
         submitButton.value = "submit";
         inputArea.appendChild(submitButton);
+        
+
 		
+        //기호 찾아내서 코드 바꾸기
+        function updateCodeZone(){
+        	//이전 문자열
+        	  var codeZoneValue = $("#codeZoneId").val();
+        	
+        	
+        	
+        	  //제목 찾아서 ^^ 추가
+        	  var preChoice = "^"+$("span[name='choice']").text()+"^";
+        	  //사용자가 작성한 값
+        	  var selectOption = $("input[type='radio'][name='choice']:checked").next().text()
+        	  //처리한 문자열
+        	  var result = codeZoneValue.replace(preChoice, selectOption);
+        	  
+        	  //input제목 찾아서 ^^ 추가
+        	  var preChoice2 = "^"+$("span[name='input']").text()+"^";
+        	  //사용자 작성한 값
+        	  var inputOption = $("input[type='text']")
+        	  
+        	  
+        	  
+        	  
+        	  //값 넣어주기
+        	  $("#codeZoneId").val(result);
+
+        	  //선택 값들을 기호 뒷부분에 뿌려주기
+        	  for (var i = 0; i < allValues.length; i++) {
+
+        		//이건 제목값 
+        		var changeSpanTitle = "^"+$("span[name='choice']").text()+"^";
+        		var	changeInputTitle = "^"+$("span[name='input']").text()+"^";
+        		
+        		//이게 입력 값  
+// 				var changeTag = allValues[i] +"^";
+// 				console.log("추가된걸로 나와야 되는데?"+changeTag);
+				var result = codeZoneValue.replace(c)
+				
+        	  }
+        	  
+        	  
+
+
+        	 // 수정된 값을 textarea에 넣기
+        	  $("#codeZoneId").val(codeZoneValue);
+        	  allValues = selectedValues.concat(inputValues);
+              console.log("선택 배열: " + selectedValues);
+              console.log("합친 배열: " + allValues);
+            
+        }
+        
+     	// 선택 값들이 변경될 때마다 코드 업데이트 함수 호출
+        $(".choice-choice input[type='radio']").change(updateCodeZone);
+
+        // 입력 값들이 변경될 때마다 코드 업데이트 함수 호출
+        $(".chArea input[type='text']").change(updateCodeZone);
+
+        
+        // 버튼 클릭 이벤트 처리
+        $(document).on("click", "#choiceSub", function() {
+            console.log("코드바꾸는 거");
+            updateCodeZone(); // 코드 업데이트 함수 호출
+        });
+        
+        
+// 		배열 합쳐서 출력하기
+		
+		var allValues = selectedValues.concat(inputValues);
+		console.log("선택 배열 : "+selectedValues);
+		console.log("합친 배열 : "+allValues);
+	
 	});
+	
+
+	
+	
 	
 // 	    //입력창 내용 옮기기
 		document.getElementById("chArea").addEventListener("click", function (event) {
@@ -397,29 +499,22 @@
         console.log("보여줘..");
         desArea.style.display = "block"; // 설명 보여주기
         choiceA.style.display = "none"; // 선택 창 가리기
-        
+
     	}
 		});
 	
 	 //코드 카피하기
-        var codeArea = document.getElementById("copy_code");
+        var codeArea = document.getElementById("codeZoneId");
         
-        var setting = '${setting}';
-
-        document.getElementById("copyBtn").onclick=()=>{
-
-            var spanElements = codeArea.getElementsByTagName("span");//span태그만 가져오기
-            var spanContents = "";
-
-            for(var i=0; i<spanElements.length; i++){
-                spanContents += spanElements[i].textContent; //span태그 안의 내용만
-            }
-            window.navigator.clipboard.writeText(spanContents).then(()=>{
-                //복사 완료 시 호출
+        var textAreaContent = codeArea.value;
+		
+        document.getElementById("copyBtn").onclick = () => {
+            window.navigator.clipboard.writeText(textAreaContent).then(() => {
+                // 복사 완료 시 호출
                 alert('복사되었습니다!');
             });
-        }
-        
+        };
+
         //파일 다운로드하기
         function downloadTextFile(){
         	//태그 내용 추출

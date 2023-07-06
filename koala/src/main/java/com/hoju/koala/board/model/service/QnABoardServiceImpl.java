@@ -263,6 +263,14 @@ public class QnABoardServiceImpl implements QnABoardService{
 		return qnaDao.selectLastBoardNo(sqlSession);
 	}
 
+	//liked테이블 업데이트
+	@Override
+	public void makeZeroLike(int boardNo) {
+
+		qnaDao.makeZeroLike(sqlSession,boardNo);
+		
+	}
+
 	//qna 좋아요 수
 //	@Override
 //	public int countLike(int boardNo) {

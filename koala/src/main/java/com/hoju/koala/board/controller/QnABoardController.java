@@ -88,13 +88,16 @@ public class QnABoardController {
 			mv.addObject("b",b).setViewName("board/qnaBoard/qnaBoardDetail");
 		
 			System.out.println(b);
-			if(session.getAttribute("loginUser") != null) {
+//			if(session.getAttribute("loginUser") != null) {
 				int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
-				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
-				int likeYoN = qnaService.likeYesOrNo(liked);
-//				System.out.println("쪼아요를 했는가? : "+likeYoN);
-				mv.addObject("likeYoN",likeYoN);
-			}
+////				Liked liked = Liked.builder().refUno(userNo).refBno(boardNo).build();
+////				int likeYoN = qnaService.likeYesOrNo(liked);
+////				System.out.println("쪼아요를 했는가? : "+likeYoN);
+////				mv.addObject("likeYoN",likeYoN);
+//			}
+			Liked liked = Liked.builder().refBno(boardNo).refUno(userNo).build();
+			int likeYoN = qnaService.likeYesOrNo(liked);
+			mv.addObject("likeYoN",likeYoN);
 			
 //			System.out.println("파일 번호 : "+b.getFileNo());
 		if(b.getFileNo()!=0) {
@@ -242,7 +245,7 @@ public class QnABoardController {
 		
 
 		ArrayList<Reply> list = qnaService.selectReply(boardNo);
-		
+		System.out.println(list);
 		return new Gson().toJson(list);	}
 	
 	//로그인 유저 닉네임 가져가지
@@ -279,8 +282,8 @@ public class QnABoardController {
 	@ResponseBody
 	@RequestMapping(value="updateLike", method=RequestMethod.POST)
 	public Map<String, Object> updateLike(@RequestParam("boardNo") int boardNo, 
-	                      @RequestParam("userNo") int userNo, 
-	                      @RequestParam("boardWriter") String boardWriter) {
+	                      				  @RequestParam("userNo") int userNo, 
+	                      				  @RequestParam("boardWriter") String boardWriter) {
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -297,8 +300,9 @@ public class QnABoardController {
 	    } else if (likeChk  == 1) {
 	        // 두번째 좋아요를 눌렀을 때
 	        System.out.println("두번째 누른 추천 그니까 취소");
-	        qnaService.pointDelete(boardNo); // member 테이블 포인트 차감 업데이트
 	        qnaService.deleteLike(boardNo); //board 테이블 liked 차감 업데이트
+	        qnaService.pointDelete(boardNo); // member 테이블 포인트 차감 업데이트
+	        qnaService.makeZeroLike(boardNo);//liked테이블 0설정
 	        response.put("isLiked", false);
 	    }
 	    
