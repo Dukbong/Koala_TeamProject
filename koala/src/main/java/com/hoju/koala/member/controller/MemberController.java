@@ -342,7 +342,6 @@ public class MemberController {
 						String token,
 						ModelAndView mv) {
 		
-		
 		//ec필드에 저장한 토큰 가져오기
 		String getToken = ec.getTokenMap().get(userId);
 		

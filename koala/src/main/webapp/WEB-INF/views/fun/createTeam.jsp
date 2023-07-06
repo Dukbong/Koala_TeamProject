@@ -177,7 +177,7 @@ li{
 							</c:when>
 							<c:otherwise>
 								<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-									<div class="ownerimg"><img style="width: 100%; height: 100%;  height: 100%; border-radius: 300px;" src='/koala/resources/memberImage/default.jpg' alt="s"></div>
+									<div class="ownerimg"><img style="width: 100%; height: 100%;  height: 100%; border-radius: 300px;" src='/koala/resources/memberImage/default.png' alt="s"></div>
 									<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 								</div>
 							</c:otherwise>
@@ -193,7 +193,7 @@ li{
 					</c:when>
 					<c:otherwise>
 						<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-							<div class="ownerimg"><img style="width: 100%; height: 100%; border-radius: 300px;" src='/koala/resources/memberImage/default.jpg' alt="s"></div>
+							<div class="ownerimg"><img style="width: 100%; height: 100%; border-radius: 300px;" src='/koala/resources/memberImage/default.png' alt="s"></div>
 							<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 						</div>
 					</c:otherwise>
@@ -245,7 +245,7 @@ li{
 											let fullname = filePath + changeName;
 			 								ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='/koala"+ fullname + "' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
 										}else{
-											ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='/koala/resources/memberImage/default.jpg' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
+											ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='/koala/resources/memberImage/default.png' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
 											// 아이디를 가지고 있따 중복 을 막아보자.
 										}
 									}
@@ -311,7 +311,7 @@ li{
 									str	+= "<div style='position:absolute; margin:auto; left:0; top:0; bottom:0; width:90px; height:90px;'><img style='width:100%; height:100%;border-radius: 300px;' src='/koala"+ data.profile.filePath + data.profile.changeName +"' alt='error'></div>";								
 								}else{
 									// 이미지가 없을때
-									str	+= "<div style='position:absolute; margin:auto; left:0; top:0; bottom:0; width:90px; height:90px;'><img style='width:100%; height:100%;border-radius: 300px;' src='/koala/resources/memberImage/default.jpg' alt='error'></div>"
+									str	+= "<div style='position:absolute; margin:auto; left:0; top:0; bottom:0; width:90px; height:90px;'><img style='width:100%; height:100%;border-radius: 300px;' src='/koala/resources/memberImage/default.png' alt='error'></div>"
 								}
 								if(data.githubId && data.githubId != " "){
 									// 서포터즈

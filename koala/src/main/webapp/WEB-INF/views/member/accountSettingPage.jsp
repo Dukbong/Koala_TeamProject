@@ -274,6 +274,8 @@
 										success:function(result){
 											if(result>0){
 												alert("닉네임 변경 완료");
+												
+												location.reload();
 											}else{
 												alert("이미 존재하는 닉네임입니다.");
 											}
@@ -303,7 +305,7 @@
 									    </div>
 									</c:when>
 									<c:otherwise>
-									    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+									    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.png">									
 									    <div class="overlab">
 									    	<div id="overlab-in" data-bs-toggle="modal" data-bs-target="#profileUpdateModal">
 									    		<span style="color:white; font-size: 30px; font-size:30">변경</span>
