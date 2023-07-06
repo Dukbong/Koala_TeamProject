@@ -60,23 +60,32 @@
 	
 <!-- 	<beans:bean id="onePage" class="com.hoju.koala.admin.webSocket.OnePageSocket3"/> -->
 	<beans:bean id="onePage" class="com.hoju.koala.admin.webSocket.Atest"/>
-	<websocket:handlers allowed-origins="*">
-		<websocket:mapping handler="onePage" path="/sqlcloud"/>
+<!-- 	<websocket:handlers allowed-origins="*"> -->
+<!-- 		<websocket:mapping handler="onePage" path="/sqlcloud"/> -->
 		
-		<websocket:handshake-interceptors>
-			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
-		</websocket:handshake-interceptors>
-	</websocket:handlers>
+<!-- <<<<<<< HEAD -->
+<!-- 		<websocket:handshake-interceptors> -->
+<!-- 			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean> -->
+<!-- 		</websocket:handshake-interceptors> -->
+<!-- 	</websocket:handlers> -->
+<!-- ======= -->
+<!-- 		<websocket:handshake-interceptors> -->
+<!-- 			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean> -->
+<!-- 		</websocket:handshake-interceptors> -->
+<!-- 	</websocket:handlers> -->
 
 
+<!-- >>>>>>> 772cb5b765790a03217f1d1d95d9098770099230 -->
 	
 	<!-- 채팅 빈 -->
 	<beans:bean id="chatHandler" class="com.hoju.koala.member.chat.ChatHandler"/>
 	<!-- 채팅 핸들러 설정 -->
 	<websocket:handlers>
 		<websocket:mapping handler="chatHandler" path="/chat"/>
+		<websocket:mapping handler="onePage" path="/sqlcloud"/>
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+<!-- 			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean> -->
 		</websocket:handshake-interceptors>
 		<websocket:sockjs/>
 	</websocket:handlers>

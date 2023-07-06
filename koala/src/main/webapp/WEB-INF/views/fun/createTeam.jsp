@@ -141,7 +141,7 @@ li{
 <body style="background-color: black;">
 	<div class="wrap">
 	<div class="selecter" style="padding : 50px; width: 50%; height: 100%; border-right: 1px solid white;">
-		<h2 class="mainText" style="display:inline;">CREATE TEAM</h2><button id="create" style="margin-left:550px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-plus fa-2xl" style="color: #ffffff;"></i></button>
+		<h2 class="mainText" style="display:inline;">CREATE TEAM</h2><button id="create" style="margin-left:60%;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-plus fa-2xl" style="color: #ffffff;"></i></button>
 		<br><br><br>
 		<div class="input-box">
 			<label class="text-label" for="teamName">TEAM NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -161,7 +161,7 @@ li{
 		</div>
 	</div>
 	<div class="memberShow" style="padding : 50px; width: 50%; height: 100%;">
-		<h2 class="mainText" style="display:inline;">CONTRIBUTORS</h2><button id="refer" style="margin-left:550px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-xmark fa-2xl" style="color: #ffffff;"></i></button>
+		<h2 class="mainText" style="display:inline;">CONTRIBUTORS</h2><button id="refer" style="margin-left:60%;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-xmark fa-2xl" style="color: #ffffff;"></i></button>
 		<br><br>
 		<div class="teamInfo" style="width:100%; height: 100%; display:none;">
 		
