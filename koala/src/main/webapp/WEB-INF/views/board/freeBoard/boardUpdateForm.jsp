@@ -25,7 +25,6 @@
         }
         .enroll-outer{
         	width: 100%;
-            background-color: black;
             color: white;
             margin: auto;
         }

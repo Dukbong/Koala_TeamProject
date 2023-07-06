@@ -202,4 +202,10 @@ public class BulletinBoardDao {
 		return sqlSession.delete("bulletinBoardMapper.deleteScheduledBoard");
 	}
 
+	//공지글 조회 메소드
+	public ArrayList<Board> selectNoticeList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("bulletinBoardMapper.selectNoticeList");
+	}
+
 }

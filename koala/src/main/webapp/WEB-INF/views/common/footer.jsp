@@ -100,9 +100,9 @@
                 <a class="footerAtag ii" href="/koala/qnaBoard/list">QnA_Board</a>
             </div>
 
-            <div class="item more">
-                <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a>
-            </div>
+<!--             <div class="item more"> -->
+<!--                 <a class=footerAtag href="#" style="color: rgb(40, 151, 223);">Exit Site</a> -->
+<!--             </div> -->
             <div class="item">
                 <a class="footerAtag ii" href="/koala/bulletinBoard/list">Bulletin_Board</a>
             </div>
@@ -112,16 +112,16 @@
                 Study
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Java</a>
+                <a class="footerAtag ii" href="https://docs.oracle.com/javase/8/docs/api/" target='_blank'>Java</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">JavaScript</a>
+                <a class="footerAtag ii" href="https://ko.javascript.info/" target='_blank'>JavaScript</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">SQL</a>
+                <a class="footerAtag ii" href="https://chillin-dev.tistory.com/42" target='_blank'>SQL</a>
             </div>
             <div class="item">
-                <a class="footerAtag ii" href="#">Spring</a>
+                <a class="footerAtag ii" href="https://velog.io/@ililil9482/Spring%EC%97%90-%EB%8C%80%ED%95%9C-%EC%A0%95%EB%A6%AC-%EA%B8%80" target='_blank'>Spring</a>
             </div>
         </div>
         <div class="column3">

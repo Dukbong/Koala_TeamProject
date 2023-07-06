@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@EnableScheduling
+//@EnableScheduling
 @RequestMapping("/rankingBoard")
 public class RankingBoardController {
 	
@@ -36,8 +36,8 @@ public class RankingBoardController {
 	@Autowired
 	private RankingBoardService rnkService;
 	
-	@Autowired
-	private ResourceLoader resourceLoader;
+//	@Autowired
+//	private ResourceLoader resourceLoader;
 	
 	@Autowired
 	private RankCal rankCal;
@@ -68,37 +68,37 @@ public class RankingBoardController {
 			return "board/rankingBoard/rankingBoard";
 		}
 		
-		@Scheduled(fixedRate = 3600000) // 1시간
-		public void saveRankingsToFile() {
-			log.info("스케쥴러 : 등수 저장중");
-			try {
-				FileOutputStream outputStream = new FileOutputStream("rankings.properties");
-				Properties properties = new Properties();
-				
-				List<Member> previousData = rankCal.getPreviousData();//previousData갖고오기
-				int rank = 1;
-				
-				for(Member m : previousData) {
-					String userId = m.getUserId();
-					String rankKey = "rank." + rank;
-					log.info("여기도 안들어왔나?"+userId+rankKey);
-					properties.setProperty(rankKey, userId);
-					rank ++;
-					log.info("등수 저장 완료"+rank);
-				}
-				
-				properties.store(outputStream, null);
-				outputStream.close();
-				System.out.println("랭킹 저장됨");
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
+//		@Scheduled(fixedRate = 3600000) // 1시간
+//		public void saveRankingsToFile() {
+//			log.info("스케쥴러 : 등수 저장중");
+//			try {
+//				FileOutputStream outputStream = new FileOutputStream("rankings.properties");
+//				Properties properties = new Properties();
+//				
+//				List<Member> previousData = rankCal.getPreviousData();//previousData갖고오기
+//				int rank = 1;
+//				
+//				for(Member m : previousData) {
+//					String userId = m.getUserId();
+//					String rankKey = "rank." + rank;
+//					log.info("여기도 안들어왔나?"+userId+rankKey);
+//					properties.setProperty(rankKey, userId);
+//					rank ++;
+//					log.info("등수 저장 완료"+rank);
+//				}
+//				
+//				properties.store(outputStream, null);
+//				outputStream.close();
+//				System.out.println("랭킹 저장됨");
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		}
 		
 		
 }

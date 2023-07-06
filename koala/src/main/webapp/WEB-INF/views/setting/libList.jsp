@@ -100,7 +100,7 @@
 						<div class="binArea"></div>
 						<c:if test="${slist.size() > i+1 }">
 							<div class="nobinArea ic">
-								<input type="hidden" value="${slist.get(i).settingNo }">
+								<input type="hidden" value="${slist.get(i+1).settingNo }">
 								<div class="liName ii">&nbsp;${slist.get(i+1).settingTitle }</div>
 								<div class="liCount">
 								<c:if test="${(not empty loginUser) and (loginUser.type == 2)}">
@@ -137,7 +137,9 @@
 			}).on("mouseleave", ".nobinArea", function(){
 				$(this).children().css("color", "white");
 			}).on("click", ".nobinArea", function(){
-				alert("이동");
+				var settingNo = $(this).children().eq(0).val();
+				var settingTitle = $(this).children().eq(1).text();
+				location.href="detail?settingNo="+settingNo+"&settingTitle="+settingTitle;
 			});
 			
 			$(".deletelib").on("click", function(){

@@ -141,7 +141,7 @@ li{
 <body style="background-color: black;">
 	<div class="wrap">
 	<div class="selecter" style="padding : 50px; width: 50%; height: 100%; border-right: 1px solid white;">
-		<h2 class="mainText" style="display:inline;">CREATE TEAM</h2><button id="create" style="margin-left:550px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-plus fa-2xl" style="color: #ffffff;"></i></button>
+		<h2 class="mainText" style="display:inline;">CREATE TEAM</h2><button id="create" style="margin-left:60%;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-plus fa-2xl" style="color: #ffffff;"></i></button>
 		<br><br><br>
 		<div class="input-box">
 			<label class="text-label" for="teamName">TEAM NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -161,7 +161,7 @@ li{
 		</div>
 	</div>
 	<div class="memberShow" style="padding : 50px; width: 50%; height: 100%;">
-		<h2 class="mainText" style="display:inline;">CONTRIBUTORS</h2><button id="refer" style="margin-left:550px;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-xmark fa-2xl" style="color: #ffffff;"></i></button>
+		<h2 class="mainText" style="display:inline;">CONTRIBUTORS</h2><button id="refer" style="margin-left:60%;text-align:right; inline; background-color: transparent; border: 0; font-size:22px; color:white;"><i class="fa-solid fa-xmark fa-2xl" style="color: #ffffff;"></i></button>
 		<br><br>
 		<div class="teamInfo" style="width:100%; height: 100%; display:none;">
 		
@@ -171,7 +171,7 @@ li{
 						<c:choose>
 							<c:when test="${not empty owner.getProfile() }">
 								<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-									<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${owner.getProfile().getFilePath()}" + "${owner.getProfile().getChangeName()}"' alt="s"></div>
+									<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src="/koala${owner.getProfile().getFilePath()}${owner.getProfile().getChangeName()}" alt="s"></div>
 									<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 								</div>
 							</c:when>
@@ -187,7 +187,7 @@ li{
 				<c:choose>
 					<c:when test="${not empty owner.getProfile() }">
 						<div class="ownerName" style="width: 130px; height: 190px; text-align: center; margin: auto;">
-							<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src='"${owner.getProfile().getFilePath()}" + "${owner.getProfile().getChangeName()}"' alt="s"></div>
+							<div class="ownerimg"><img style="width: 100%; height: 100%; border: 5px solid green; height: 100%; border-radius: 300px;" src="/koala${owner.getProfile().getFilePath()}${owner.getProfile().getChangeName()}" alt='s'></div>
 							<span style="font-size: 15px; font-weight:bold; color:white;">${owner.getNickName()} <i class="fa-solid fa-feather-pointed fa-bounce" style="color: #2bb106;"></i></span>
 						</div>
 					</c:when>
@@ -236,13 +236,14 @@ li{
 							if(data.length > 0){
 								var ele = "<ul>";
 								for(var i = 0; i < data.length; i++){
-									var filePath = "";
-									var changeName = "";
+									var filePath = '';
+									var changeName = '';
 									if(!checkPoint.includes(data[i].userId)){
 										if(data[i].profile != null){
 											filePath = data[i].profile.filePath;
 											changeName = data[i].profile.changeName;
-			 								ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='"+ filePath + changeName + "' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
+											let fullname = filePath + changeName;
+			 								ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='/koala"+ fullname + "' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
 										}else{
 											ele += "<li><div class='ttt' style='display:none'>"+ data[i].userId +"</div><div class='info'><div class='imgclass'><img style='width:100%; height:100%;' src='/koala/resources/memberImage/default.jpg' alt='" + data[i].userId + "'></div><div class='idclass'>" + data[i].userId + "</div></div></li>";
 											// 아이디를 가지고 있따 중복 을 막아보자.
@@ -307,7 +308,7 @@ li{
 								str	+= 			"<div style='width:100%; height:100%; position:absolute; margin:auto; text-align: center;'>";
 								if(data.profile){
 									// 이미지가 있을때
-									str	+= "<div style='position:absolute; margin:auto; left:0; top:0; bottom:0; width:90px; height:90px;'><img style='width:100%; height:100%;border-radius: 300px;' src='"+ data.profile.filePath + data.profile.changeName +"' alt='error'></div>";								
+									str	+= "<div style='position:absolute; margin:auto; left:0; top:0; bottom:0; width:90px; height:90px;'><img style='width:100%; height:100%;border-radius: 300px;' src='/koala"+ data.profile.filePath + data.profile.changeName +"' alt='error'></div>";								
 								}else{
 									// 이미지가 없을때
 									str	+= "<div style='position:absolute; margin:auto; left:0; top:0; bottom:0; width:90px; height:90px;'><img style='width:100%; height:100%;border-radius: 300px;' src='/koala/resources/memberImage/default.jpg' alt='error'></div>"
