@@ -326,12 +326,14 @@ public class MemberController {
 						String token,
 						ModelAndView mv) {
 		
-		System.out.println("hi");
 		
 		//ec필드에 저장한 토큰 가져오기
 		String getToken = ec.getTokenMap().get(userId);
 		
-		if(token == getToken) { //내가 뿌린 토큰과 매핑주소로 접근했을때 토큰이 일치하는지 확인
+		log.debug("getToken : {}", getToken);
+		log.debug("매핑요청 : {}", token);
+		
+		if(token.equals(getToken)) { //내가 뿌린 토큰과 매핑주소로 접근했을때 토큰이 일치하는지 확인
 			
 			String newPwd = ec.makeRandomPwd();
 			
@@ -347,7 +349,7 @@ public class MemberController {
 			int result = memberService.updatePwd(m);
 			
 			if(result>0) {
-				mv.addObject("msg", "비밀번호 변경이 완료되었습니다.");
+				mv.addObject("msg", "비밀번호 변경이 완료되었습니다. 임시 비밀번호 : "+newPwd);
 				mv.setViewName("common/emailProcessing");
 			}else {
 				mv.addObject("msg", "비밀번호 변경과정에서 오류");
@@ -812,7 +814,7 @@ public class MemberController {
 		
 		ArrayList<Member> mlist = memberService.searchUser(searchUser);
 		
-		System.out.println(mlist);
+//		System.out.println(mlist);
 //		for(Member m : mlist) {
 //			System.out.println(m);
 //		}

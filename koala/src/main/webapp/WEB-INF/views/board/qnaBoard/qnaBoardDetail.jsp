@@ -306,14 +306,14 @@ body {
 					<c:choose>
 						<c:when test="${b.boardWriter != loginUser.nickName }">
 							<button type="submit" onclick="updateLike(this);" class="likeIt">
-								<i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount">
+								<i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount_${b.boardNo}">
 									 ${b.liked }
 								</span>
 							</button>
 						</c:when>
 						<c:otherwise>
 							<button type="submit" disabled>
-								<i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount">
+								<i class="fa-regular fa-heart fa-lg"></i> <span id="likeCount_${b.boardNo}">
 									 ${b.liked } 
 								</span>
 							</button>
@@ -369,39 +369,39 @@ body {
 								},
 								success : function(list) {
 									var result = "";
-									// 							console.log("여기들어온 닉네임은 "+loginUser);
 									var boardWriter = "${b.boardWriter}";
-									// 							console.log("글 작성자는 "+boardWriter);
+									
 									for ( var i in list) {
 										var replyId = list[i].replyId;
 										result += "<tr data-reply-id='"+list[i].replyId+"'>"
-												+ "<td>"
-												+ list[i].replyNo
-												+ "</td>"
-												+ "<td>"
-												+ list[i].replyWriter
-												+ "</td>"
-												+ "<td>"
-												+ list[i].replyContent
-												+ "</td>"
-												+ "<td>"
-												+ list[i].createDate + "</td>"
+												+ "<td>"+ list[i].replyNo+ "</td>"
 
-										//게시글 작성자인 경우에만 채택 버튼 추가
-										if (loginUser === boardWriter && !selected) {
-											console.log(loginUser + "입니다.");
+												if(list[i].replyWriter === boardWriter){//글쓴이 일때 작성자 붙여주기
+													result += "<td>" + list[i].replyWriter + "&nbsp;<span style='color: red;'>(작성자)</span></td>";
+												}else{
+													result += "<td>" +list[i].replyWriter + "</td>";
+												}
+
+												+ "<td>"+ list[i].replyContent+ "</td>"
+												+ "<td>"+ list[i].createDate + "</td>";
+													console.log(list[i].createDate);
+
+
+										//게시글 작성자인 경우에만 채택 버튼 추가, 댓글 작성자인 경우 삭제버튼
+										if (loginUser === boardWriter && list[i].replyWriter !== boardWriter) {
 											result += "<td>"
 													+ "<button class='selectBtn' style='background-color:lightseagreen'>채택"
-													+ "</button>" + "</td>"
+													+ "</button>" + "</td>";
 										} else if (loginUser === list[i].replyWriter) {
 											result += "<td>"
 													+ "<button class='replyDel' style='background-color:darkmagenta'>삭제"
-													+ "</button>" + "</td>"
-										} else {
-											result += "<td>" + "</td>"
+													+ "</button>" + "</td>";
+										}
+										else {
+											result += "<td>" + "</td>";
 										}
 
-										result += "</tr>"
+										result += "</tr>";
 
 										checkSelectedReply(replyId); //채택 여부 확인
 									}
@@ -512,30 +512,22 @@ body {
 					var userNo = "${loginUser.userNo}";
 					var boardWriter = "${b.boardWriter}";
 					var likeCnt = "${b.liked}";
-					var isLiked = ${b.liked} !== 0 ? 1 : 0;
+					var isLiked = "${likeYoN}";
 
-					if (isLiked) {
+					console.log(isLiked);
+					if (isLiked==1) {
 						$(".likeIt").css("background-color", "crimson");//버튼 색 변경
 						$(".likeIt").find("i").removeClass(
 								"fa-regular fa-heart").addClass(
 								"fa-solid fa-heart");//채운 하트
 					} else {
-						$(likeIt).css("background-color",
-								"rgb(156, 220, 254)");//예전 버튼 색으로 돌리기
-						$(btn).find("i").removeClass(
-								"fa-solid fa-heart").addClass(
-								"fa-regular fa-heart");//빈 하트
+						$(".likeIt").css("background-color","rgb(156, 220, 254)");//예전 버튼 색으로 돌리기
+						 $(".likeIt").find("i").removeClass("fa-solid fa-heart").addClass("fa-regular fa-heart");
 					}
-					$("#likeCount").text(likeCount);
-					
+					$("#likeCount_${b.boardNo}").text(likeCnt);
+					console.log(likeCnt);
 
-					//본인 게시글인지 확인
-// 					if (userNo != boardWriter) {
-// 						//로그인 유저가 다른 사람의 게시글에 좋아요를 눌렀을 때
-// 						$(btn).css("background-color", "crimson");
-// 						$(btn).find("i").removeClass("fa-regular fa-heart")
-// 								.addClass("fa-solid fa-heart");
-// 					}
+
 				}
 				
 
@@ -554,9 +546,9 @@ body {
 							boardWriter : boardWriter
 						},
 						success : function(response) {
-							var likeCount = response.likeCouunt;//좋아요 개수
+							var likeCount = response.likeCount;//좋아요 개수
 							var isLiked = response.isLiked;//좋아요 여부
-
+							console.log("좋아요 개수 : "+likeCount);
 							if (isLiked) {
 								console.log("처음하는 추천");
 								alert("추천되었습니다!");
@@ -572,7 +564,7 @@ body {
 										"fa-solid fa-heart").addClass(
 										"fa-regular fa-heart");//빈 하트
 							}
-							$("#likeCount").text(likeCount);
+							$("#likeCount_${b.boardNo}").text(likeCount);
 						},
 						error : function() {
 							console.log("통신 실패");
