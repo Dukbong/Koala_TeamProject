@@ -389,8 +389,8 @@
             
             <div id="header_3">
             	<c:if test="${not empty loginUser }">
-					${loginUser.nickName }님 <br>
-					<i id="message-icon" class="fa-regular fa-comment fa-2xl" data-bs-toggle="modal" data-bs-target="#messengerModal"></i>
+					${loginUser.nickName }님
+					<!-- <i id="message-icon" class="fa-regular fa-comment fa-2xl" data-bs-toggle="modal" data-bs-target="#messengerModal"></i> -->
             	</c:if>
             </div>
             
