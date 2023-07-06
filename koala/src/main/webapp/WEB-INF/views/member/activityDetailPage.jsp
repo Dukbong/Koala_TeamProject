@@ -630,7 +630,7 @@
                 		</c:when>
                 		
                 		<c:when test="${not empty libList}">
-                			<table class="rel-board" style="color:white;">
+                			<table class="rel-board" id="lib-board" style="color:white;">
                 				<thead>
 									<tr>
 										<th scope="col" width="10">No.</th>
@@ -724,7 +724,7 @@
 	                	
 
 	                	//세팅페이지로 넘기기
-	                	$("#result-area>.rel-board>tbody>tr").on("click", function(){
+	                	$("#result-area>#lib-board>tbody>tr").on("click", function(){
 	                		
 	                		location.href = "/koala/setting/detail?settingNo="+$(this).find("input[type=hidden]").val();
 	                	});
