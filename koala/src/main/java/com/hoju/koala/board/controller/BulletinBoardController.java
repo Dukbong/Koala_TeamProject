@@ -52,8 +52,10 @@ public class BulletinBoardController {
 		PageInfo pi = Paging.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<Board> bbList = bbService.selectList(pi);
+		ArrayList<Board> nbList = bbService.selectNoticeList();
 		
 		model.addAttribute("pi",pi);
+		model.addAttribute("nbList",nbList);
 		model.addAttribute("bbList", bbList);
 		return "board/freeBoard/boardListView";
 	}
@@ -187,6 +189,10 @@ public class BulletinBoardController {
 		
 		if(b.getContentCode().equals("")||b.getContentCode()==null) {
 			b.setContentCode("비어있습니다.");
+		}
+		
+		if(b.getNotice()==null) {
+			b.setNotice("N");
 		}
 		
 		int result2 = bbService.insertBoard(b);

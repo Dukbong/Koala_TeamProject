@@ -171,7 +171,6 @@ public class AdminController {
 			int bn = issueDetail.get(i).getBoard().getBoardNo();
 			boardPack.add(bn);
 		}
-		
 		try {			
 			int refSno = issueDetail.get(page-1).getErrorBoard().getRefSno();
 			Setting prevSetting = adminService.selectprevSetting(settingTitle);
