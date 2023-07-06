@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>boardUpdate</title>
     <script src="/koala/resources/codemirror-5.53.2/lib/codemirror.js"></script>
     <script src="/koala/resources/codemirror-5.53.2/mode/clike/clike.js"></script>
     <script src="/koala/resources/codemirror-5.53.2/addon/edit/closetag/js"></script>
