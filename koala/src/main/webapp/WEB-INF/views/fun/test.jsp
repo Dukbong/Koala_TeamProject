@@ -212,11 +212,11 @@ span {
 				socket.onopen = function (e) {
 // 					alert("teamNo = " + teamNo + ", socket = " + socket);
 					sendEnter(teamNo, "Enter")
-					alert("Connect Success");
+// 					alert("Connect Success");
 				}
 				socket.onclose = function () {
 					
-					alert("disconnnect SuccCess");
+// 					alert("disconnnect SuccCess");
 				}
 				socket.onmessage = function (e) {
 // 					alert(e.data);
@@ -257,7 +257,7 @@ span {
 									}
 									$("#testnumin").val(str);
 								}
-								alert("받은 후  " + startcursor);
+// 								alert("받은 후  " + startcursor);
 								document.getElementById("testarea").setSelectionRange(startcursor,startcursor);
 								$("#testarea").focus();
 							});						
@@ -414,7 +414,7 @@ span {
 				$("#testarea").on("keyup", function() { // 보강 필요
 // 					$(this).focus();
 					startcursor = $("#testarea").prop("selectionStart");
-					alert("작성시 " + startcursor);
+// 					alert("작성시 " + startcursor);
 					if(socket){
 						var test = $(this).val().split("\n");
 						var str = "";
