@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -40,6 +41,8 @@ public class EmailCheck {
 	
 	private Properties prop;
 	
+	@Autowired
+	private ServletContext context;
 	//램덤숫자(6자리) 생성후 인증번호에 집어넣기
 	public void makeRandomNumber() {
 		
@@ -125,6 +128,7 @@ public class EmailCheck {
 	
 	//아이디와 임시 비밀번호 보내기
 	//에서 -> 아이디만 보내고 사용자가 링크를 눌렀을때 기존 pwd에서 임시비밀번호로 발급
+	
 	public void forgetUserEmail(String email, String userId) throws MessagingException {
 		
 //		makeRandomPwd();
@@ -135,6 +139,7 @@ public class EmailCheck {
 		//고유 식별자 토큰 생성
 		String token = UUID.randomUUID().toString();
 		
+		
 		//맵에 해당유저와 토큰값저장
 		tokenMap.put(userId, token);
 		
@@ -143,7 +148,7 @@ public class EmailCheck {
 		String localhost = "";
 		String port = "";
 		try {
-			prop.load(new FileInputStream("file:src/main/webapp/WEB-INF/spring/setting-config.properties"));
+			prop.load(new FileInputStream(context.getRealPath("WEB-INF/spring/setting-config.properties")));
 			
 			localhost = prop.getProperty("localhost");
 			port = prop.getProperty("port");
@@ -167,6 +172,8 @@ public class EmailCheck {
 		buf.append("'>임시비밀번호 발급</a>");
 		
 		String content = buf.toString();
+		
+		System.out.println(content);
 		mailSend(setFrom, toMail, title, content);
 		
 //		return randomPwd;

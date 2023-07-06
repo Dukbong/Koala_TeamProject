@@ -517,7 +517,7 @@
 										if(result>0){
 											alert("계정 삭제완료");
 											
-											$("#deleteAccountModal").modal("hide");
+											location.href="/koala/member/logout";
 										}else{
 											alert("계정 처리중 오류발생!");
 										}
