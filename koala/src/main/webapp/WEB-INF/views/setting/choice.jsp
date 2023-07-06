@@ -275,8 +275,9 @@
                 <div class="block_title">
                     <span>${setting.settingTitle}  ${setting.settingVersion }</span>
                     <select name="version" id="versionHistory">
-                    	<c:forEach var="option" items="${setting.settingVersion}">
-                    			<option value="${setting.settingVersion }" >${setting.settingVersion}</option>
+                    	<option id="verMove" value="" >--history--</option>
+                    	<c:forEach var="v" items="${vList}">
+                    			<option id="verMove" value="${v.settingNo }" >${v.settingVersion}</option>
                     	</c:forEach>
 <!--                         <option value="commons 2.0.7">commons 2.0.7</option> -->
 <!--                         <option value="commons 2.0.7">commons 2.0.7</option> -->
@@ -285,6 +286,16 @@
 <!--                         <option value="commons 2.0.7">commons 2.0.7</option> -->
                     </select>
                 </div>
+                <script>
+                	$(function(){
+                		console.log("들어옴");
+     
+                		$("#versionHistory").on("change", function(){
+                			console.log($(this).val());
+                			location.href="/koala/setting/detail?settingNo="+$(this).val();
+                		});
+                	});
+                </script>
 
                 <div class="code_content" id="copy_code">
                 <textarea id="codeZoneId" cols="60" rows="14" style="background-color: transparent; border:none; color:white;">${setting.settingCode }</textarea>               
@@ -323,6 +334,9 @@
 	
 
 	$(function(){
+		
+		var choiceObj = {};
+		var inputObj = {};
 
 		var settingInput = "${setting.input }";
 		console.log(settingInput)
@@ -346,7 +360,9 @@
         		
         		//옵션 제목
         		var choiceTitle = selections[i].split("-")[0];
-        		str += "<div class=\"choice_title\"><span name=\"choice\">"+choiceTitle+"</span></div>";
+        		str += "<div class=\"choice_title\"><span class=\"seol\" name=\"choice\">"+choiceTitle+"</span></div>";
+//         		choiceTitle = "^"+choiceTitle+"^";
+//         		choiceObj.choiceTitle = "";
         		
         		//옵션 나열된 문자열
         		var option = selections[i].split("-")[1];
@@ -384,7 +400,7 @@
        		
         	for(var i=0; i<inputs.length; i++){
         		
-        		str2 += "<div class=\"choice_title\"><span name=\"input\">"+inputs[i]+"</span></div>";
+        		str2 += "<div class=\"choice_title\"><span class=\"hee\" name=\"input\">"+inputs[i]+"</span></div>";
         		str2 += "<div class=\"choice_content\" id=\"classInput\"><input type=\"text\" id=\"driverClassNameInput"+i+"\" placeholder=\""+inputs[i]+"\"></div>";
         		
         	}
@@ -419,57 +435,47 @@
         	//이전 문자열
         	  var codeZoneValue = $("#codeZoneId").val();
         	
-        	
-        	
-        	  //제목 찾아서 ^^ 추가
-        	  var preChoice = "^"+$("span[name='choice']").text()+"^";
-        	  //사용자가 작성한 값
-        	  var selectOption = $("input[type='radio'][name='choice']:checked").next().text()
-        	  //처리한 문자열
-        	  var result = codeZoneValue.replace(preChoice, selectOption);
+        	  var choiceList = $(".seol");
         	  
-        	  //input제목 찾아서 ^^ 추가
-        	  var preChoice2 = "^"+$("span[name='input']").text()+"^";
-        	  //사용자 작성한 값
-        	  var inputOption = $("input[type='text']")
+        	  for(var i=0; i<choiceList.length; i++){
+        		  
+	        	  //제목 찾아서 ^^ 추가
+	        	  var preChoice = "^"+$(choiceList[i]).text()+"^";
+	        	  //사용자가 작성한 값
+	        	  var selectOption = $(choiceList[i]).parent().next().find("input[name='choice']:checked").next().text();
+	        	  
+	        	  //처리한 문자열
+	        	  codeZoneValue = codeZoneValue.replace(preChoice, selectOption);
+        	  }
         	  
+        	  var inputList = $(".hee");
         	  
-        	  
-        	  
-        	  //값 넣어주기
-        	  $("#codeZoneId").val(result);
-
-        	  //선택 값들을 기호 뒷부분에 뿌려주기
-        	  for (var i = 0; i < allValues.length; i++) {
-
-        		//이건 제목값 
-        		var changeSpanTitle = "^"+$("span[name='choice']").text()+"^";
-        		var	changeInputTitle = "^"+$("span[name='input']").text()+"^";
-        		
-        		//이게 입력 값  
-// 				var changeTag = allValues[i] +"^";
-// 				console.log("추가된걸로 나와야 되는데?"+changeTag);
-				var result = codeZoneValue.replace(c)
-				
+			  for(var i=0; i<inputList.length; i++){
+        		  
+	        	  //제목 찾아서 ^^ 추가
+	        	  var preChoice = "^"+$(inputList[i]).text()+"^";
+	        	  //사용자가 작성한 값
+	        	  var selectOption = $(inputList[i]).parent().next().children().val();
+	        	  //처리한 문자열
+	        	  
+	        	  codeZoneValue = codeZoneValue.replace(preChoice, selectOption);
         	  }
         	  
         	  
-
-
-        	 // 수정된 값을 textarea에 넣기
+        	  //값 넣어주기
         	  $("#codeZoneId").val(codeZoneValue);
-        	  allValues = selectedValues.concat(inputValues);
-              console.log("선택 배열: " + selectedValues);
-              console.log("합친 배열: " + allValues);
+        	 
             
         }
         
-     	// 선택 값들이 변경될 때마다 코드 업데이트 함수 호출
-        $(".choice-choice input[type='radio']").change(updateCodeZone);
+//      	// 선택 값들이 변경될 때마다 코드 업데이트 함수 호출
+//         $(".choice-choice input[type='radio']").change(updateCodeZone);
 
-        // 입력 값들이 변경될 때마다 코드 업데이트 함수 호출
-        $(".chArea input[type='text']").change(updateCodeZone);
+//         // 입력 값들이 변경될 때마다 코드 업데이트 함수 호출
+//         $(".chArea input[type='text']").change(updateCodeZone);
 
+        
+        
         
         // 버튼 클릭 이벤트 처리
         $(document).on("click", "#choiceSub", function() {
