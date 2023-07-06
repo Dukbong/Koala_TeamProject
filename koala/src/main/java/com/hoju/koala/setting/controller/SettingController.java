@@ -63,12 +63,6 @@ public class SettingController {
 			model.addAttribute("setting", s);
 		}
 
-		//해당 세팅의 버전 정보(settingNo, settingVersion)
-		ArrayList<Setting> versionList = stService.selectVersionList(s.getSettingTitle());
-		
-		if(!versionList.isEmpty()) {
-			model.addAttribute("vList", versionList);
-		}
 		
 		return "setting/choice";
 //		return "setting/description";
