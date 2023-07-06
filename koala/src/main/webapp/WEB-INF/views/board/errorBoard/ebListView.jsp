@@ -246,15 +246,21 @@
 								<c:otherwise><tr style="height: 47px;" class="notice"></c:otherwise>
 							</c:choose>
 								<td>${listCount - status.index }</td>
-								<td>${eb.createSetting.settingTitle }</td>
+								<td>
+									<c:choose>
+										<c:when test="${eb.board.notice eq 'Y'}">-</c:when>
+										<c:otherwise>${eb.createSetting.settingTitle }</c:otherwise>
+									</c:choose>
+								</td>
 								<td>${eb.board.title } [ ${eb.replyCount } ]</td>
 								<td>${eb.board.boardWriter }</td>
 								<td>${eb.board.createDate }</td>
 								<td>${eb.board.count }</td>
 								<td>
 									<c:choose>
+										<c:when test="${eb.board.notice eq 'Y'}"><span>-</span></c:when>
 										<c:when test="${eb.errorBoard.solved eq 'Y'}"><span style="color:gray">해결완료</span></c:when>
-										<c:when test="${eb.errorBoard.solved eq 'N' and eb.board.notice eq 'N'}"><span style="color:rgb(255,116,96);">대기중</span></c:when>
+										<c:when test="${eb.errorBoard.solved eq 'N'}"><span style="color:rgb(255,116,96);">대기중</span></c:when>
 									</c:choose>
 								</td>
 							</tr>

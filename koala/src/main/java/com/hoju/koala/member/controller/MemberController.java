@@ -65,7 +65,13 @@ public class MemberController {
 	@GetMapping("/login")
 	public String login(@CookieValue(value = "saveId", required = false) String saveId,
 						Model model,
-						HttpServletResponse response) {
+						HttpServletRequest request,
+						HttpServletResponse response,
+						HttpSession session) {
+		
+		//이전 페이지 저장
+		String preUrl = request.getHeader("Referer");
+		session.setAttribute("preUrl", preUrl);
 		
 		if (saveId != null) {
 	        model.addAttribute("savedId", saveId);
@@ -80,6 +86,7 @@ public class MemberController {
 							  HttpServletResponse response,
 							  Member m,
 							  ModelAndView mv) {
+		
 		
 		//아이디저장 
 		String keepId = request.getParameter("keepId");
@@ -127,7 +134,16 @@ public class MemberController {
 			memberService.attendance(userNo);
 			//======================================================
 			
-			mv.setViewName("redirect:/");
+			
+			//로그인페이지들어오기 이전페이지로 이동하기 위해
+			//변수에 먼저담고 세션 이전url정보 삭제 해주기
+			String preUrl = (String)session.getAttribute("preUrl");
+			session.removeAttribute("preUrl");
+			
+			log.debug("preUrl : {}",preUrl);
+			
+			
+			mv.setViewName("redirect:"+preUrl);
 		}else {
 			session.setAttribute("msg", "로그인 실패");
 			mv.setViewName("member/loginPage");

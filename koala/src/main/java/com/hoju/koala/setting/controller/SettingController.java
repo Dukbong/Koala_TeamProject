@@ -42,7 +42,6 @@ public class SettingController {
 			
 		}
 		
-		
 		return "setting/libList";
 	}
 	
@@ -69,6 +68,7 @@ public class SettingController {
 		}
 		System.out.println(s);
 		System.out.println(versionList);
+		
 		return "setting/choice";
 	}
 	

@@ -192,8 +192,9 @@ span {
 -->
 		<script>
 			var socket;
+// 			var cok = document.cookie;
 			var teamNo;
-			
+			var startcursor;
 			function sendEnter(teamNo, type){
 				var text = {
 						type : type,
@@ -205,20 +206,26 @@ span {
 			
 			function connect() {
 				if (!socket) {
-					socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
+// 					socket = new WebSocket("ws://localhost:8888/koala/sqlcloud");
+					socket = new SockJS("/koala/sqlcloud");
 				}
 				socket.onopen = function (e) {
+// 					alert("teamNo = " + teamNo + ", socket = " + socket);
 					sendEnter(teamNo, "Enter")
 // 					alert("Connect Success");
 				}
 				socket.onclose = function () {
 					
-// 					alert("disconnnect Success");
+// 					alert("disconnnect SuccCess");
 				}
 				socket.onmessage = function (e) {
 // 					alert(e.data);
 					if(e.data.includes("SEND:")){
 						// 메시지 전송을위한 경우
+// 						$("#testarea").prop("selectionStart");
+// 						alert($("#testarea")[0].selectionStart);
+// 						$("#testarea").setSelectionRange(4,6);
+						
 						$("#testarea").val(e.data.replace("SEND:",""));
 						var test = $("#testarea").val().split("\n");
 						var str = "";
@@ -228,6 +235,8 @@ span {
 							}
 							$("#testnumin").val(str);
 						}
+						document.getElementById("testarea").setSelectionRange(startcursor,startcursor);
+						
 					}else{
 						if(e.data.includes("MSG:")){
 							var idAndMsg = e.data.split("MSG:");
@@ -248,6 +257,9 @@ span {
 									}
 									$("#testnumin").val(str);
 								}
+// 								alert("받은 후  " + startcursor);
+								document.getElementById("testarea").setSelectionRange(startcursor,startcursor);
+								$("#testarea").focus();
 							});						
 						}else if(e.data.includes("SAVE:")){
 							var modifyDate = e.data.replace("SAVE:","");
@@ -280,6 +292,11 @@ span {
 			$(function(){
 				$(".teamButton").on("click", function(){
 					teamNo = $(this).parent().children().eq(2).val();
+					//test
+// 					cok="teamNo="+teamNo;
+					//test
+// 					alert(cok);
+// 					alert("필요 !!!  +" + teamNo);
 					var form = document.createElement("form");
 					form.setAttribute("method","GET");
 					form.setAttribute("action", "/koala/together/sqlCloud");
@@ -294,10 +311,15 @@ span {
 				});
 				
 				$("#conbtn").on("click", function(){
+// 					alert("click");
 					connect();
 				});
 				
 				$("#disconbtn").on("click", function(){
+					
+					//test
+// 					document.cookie = "max-age=0"
+					//test
 					disconnect();
 					socket = "";
 				});
@@ -390,6 +412,9 @@ span {
 				
 				// 입력 (접속시 입력창 생성)
 				$("#testarea").on("keyup", function() { // 보강 필요
+// 					$(this).focus();
+					startcursor = $("#testarea").prop("selectionStart");
+// 					alert("작성시 " + startcursor);
 					if(socket){
 						var test = $(this).val().split("\n");
 						var str = "";
@@ -430,6 +455,7 @@ span {
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<div class="ii " style="width:80%; margin:auto; font-size: 22px; font-weight:bold; padding-bottom:8px; text-align: center; padding-top: 200px;">
+<!-- 		<a href="https://www.erdcloud.com/d/NE4QgEfTtmdrxAHAG">test</a> -->
 		TEAM
 		<button id="createTeam" class="ii" type="button" 
 				style="background-color: transparent; border: 0;"><i class="fa-solid fa-circle-plus fa-lg ii ic" style="color: #ffffff;"></i></button>
