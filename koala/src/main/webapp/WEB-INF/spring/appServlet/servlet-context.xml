@@ -67,8 +67,11 @@
 			<beans:bean id="handshakeInterceptor" class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
+
+
 	
-	
+	<!-- 채팅 빈 -->
+	<beans:bean id="chatHandler" class="com.hoju.koala.member.chat.ChatHandler"/>
 	<!-- 채팅 핸들러 설정 -->
 	<websocket:handlers>
 		<websocket:mapping handler="chatHandler" path="/chat"/>
@@ -77,8 +80,7 @@
 		</websocket:handshake-interceptors>
 		<websocket:sockjs/>
 	</websocket:handlers>
-	<!-- 채팅 빈 -->
-	<beans:bean id="chatHandler" class="com.hoju.koala.member.chat.ChatHandler"/>
+	
 	
 	
 	
