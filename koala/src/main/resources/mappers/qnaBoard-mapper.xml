@@ -397,6 +397,10 @@
 		AND CATEGORY = 'Y'
 	</update>
 	
-	
+	<update id="makeZeroLike">
+		UPDATE LIKED
+		SET LIKED_TYPE = 0
+		WHERE REF_BNO = #{boardNo}
+	</update>
 	
 </mapper>

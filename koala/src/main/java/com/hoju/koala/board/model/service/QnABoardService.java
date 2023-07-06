@@ -99,6 +99,9 @@ public interface QnABoardService {
 	//qna 글작성 게시글 번호
 	int selectLastBoardNo();
 
+	//qna 라이크 타입 0
+	void makeZeroLike(int boardNo);
+
 //	//댓글 보여주기
 //	ArrayList<Reply> selectReplyList(int boardNo);
 
