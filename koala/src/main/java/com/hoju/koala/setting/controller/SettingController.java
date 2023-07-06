@@ -42,7 +42,6 @@ public class SettingController {
 			
 		}
 		
-		
 		return "setting/libList";
 	}
 	
