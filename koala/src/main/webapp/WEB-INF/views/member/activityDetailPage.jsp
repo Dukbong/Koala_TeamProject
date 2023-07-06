@@ -273,7 +273,7 @@
 							    <img class="profile" src="${pageContext.request.contextPath}${user.profile.filePath}${user.profile.changeName}">
 							</c:when>
 							<c:otherwise>
-							    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+							    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.png">									
 							</c:otherwise>
 						</c:choose>
                     </div>
@@ -561,7 +561,7 @@
 													    <img class="profile" src="${pageContext.request.contextPath}${f.profile.filePath}${f.profile.changeName}"></img>
 													</c:when>
 													<c:otherwise>
-													    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.jpg">									
+													    <img class="profile" src="${pageContext.request.contextPath}/resources/memberImage/default.png">									
 													</c:otherwise>
 												</c:choose>
 					                        </th>

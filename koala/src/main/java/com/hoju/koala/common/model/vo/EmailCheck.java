@@ -37,12 +37,13 @@ public class EmailCheck {
 	private String randomPwd;
 	
 	//강제 임시비밀번호 발급을 막기 위한 토근
-	private Map<String, String> tokenMap = new HashMap<>();
+	private Map<String, String> tokenMap;
 	
 	private Properties prop;
 	
 	@Autowired
 	private ServletContext context;
+	
 	//램덤숫자(6자리) 생성후 인증번호에 집어넣기
 	public void makeRandomNumber() {
 		
@@ -71,7 +72,7 @@ public class EmailCheck {
 		StringBuffer password = new StringBuffer();
 		
 		Random r = new Random();
-		System.out.println(charSet.length);
+//		System.out.println(charSet.length);
 
 		for (int i=0; i<8; i++) {
 			//인덱스 0~71 총72개
@@ -86,19 +87,17 @@ public class EmailCheck {
 	
 	//이메일 전송 메소드
 	public void mailSend(String setFrom, String toMail, String title, String content) throws MessagingException { 
+		
+		//스프링프레임워크에서 제공하는 JavaMailSender 인터페이스 사용
 		MimeMessage message = mailSender.createMimeMessage();
 		// true 매개값을 전달하면 multipart 형식의 메세지 전달이 가능.문자 인코딩 설정도 가능하다.
-		try {
-			MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
-			helper.setFrom(setFrom);
-			helper.setTo(toMail);
-			helper.setSubject(title);
-			// true 전달 > html 형식으로 전송 , 작성하지 않으면 단순 텍스트로 전달.
-			helper.setText(content,true);
-			mailSender.send(message);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+		helper.setFrom(setFrom);
+		helper.setTo(toMail);
+		helper.setSubject(title);
+		// true 전달 > html 형식으로 전송 , 작성하지 않으면 단순 텍스트로 전달.
+		helper.setText(content,true);
+		mailSender.send(message);
 	}
 	
 	//가입시 이메일
@@ -131,15 +130,14 @@ public class EmailCheck {
 	
 	public void forgetUserEmail(String email, String userId) throws MessagingException {
 		
-//		makeRandomPwd();
-		String setFrom = "koala123test@naver.com"; // config에 설정한 서버 이메일 주소를 입력 
+		String setFrom = "koala123test@naver.com";
 		String toMail = email;
-		String title = "Koala사이트에서 회원정보를 보냈습니다."; // 이메일 제목 
+		String title = "Koala사이트에서 회원정보를 보냈습니다.";
 		
 		//고유 식별자 토큰 생성
 		String token = UUID.randomUUID().toString();
 		
-		
+		tokenMap = new HashMap<>();
 		//맵에 해당유저와 토큰값저장
 		tokenMap.put(userId, token);
 		
@@ -152,7 +150,6 @@ public class EmailCheck {
 			
 			localhost = prop.getProperty("localhost");
 			port = prop.getProperty("port");
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -173,10 +170,7 @@ public class EmailCheck {
 		
 		String content = buf.toString();
 		
-		System.out.println(content);
 		mailSend(setFrom, toMail, title, content);
-		
-//		return randomPwd;
 		
 	}
 	
