@@ -176,10 +176,6 @@ public class AdminController {
 			Setting prevSetting = adminService.selectprevSetting(settingTitle);
 			
 			mav.addObject("issueDetail", issueDetail.get(page-1));
-			System.out.println("===========================================");
-			System.out.println("page= " + page);
-			System.out.println(prevSetting);
-			System.out.println("===========================================");
 			mav.addObject("prevSetting", prevSetting);
 			mav.addObject("size", issueDetail.size());
 			mav.addObject("page",page);
@@ -220,8 +216,7 @@ public class AdminController {
 	
 	@GetMapping("/listDetail")
 	public String listDetail(int settingNo, Model m) {
-		Setting setting = adminService.listDetail(settingNo); // null 나옴!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.out.println(setting);
+		Setting setting = adminService.listDetail(settingNo); 
 		m.addAttribute("detail", setting);
 		return "admin/listDetail";
 	}
@@ -248,8 +243,6 @@ public class AdminController {
 	@ResponseBody
 	@Transactional
 	public int issuesSuccess(int boardNo, Setting setting, int boardWriter) {
-		System.out.println(boardPack);
-		System.out.println("settingNO = " + setting.getSettingNo());
 		String version1 = setting.getSettingVersion();
 		int version2 = Integer.parseInt(version1.replace(".", ""))+1;
 		String[] version3 = String.valueOf(version2).split("");
