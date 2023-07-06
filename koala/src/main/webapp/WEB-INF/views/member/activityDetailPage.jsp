@@ -713,7 +713,7 @@
 	            		});
 	                	
 	                	
-	                	$("#result-area>.rel-user").on("click", function(){
+	                	$("#result-area>#followList-area>.rel-user").on("click", function(){
 	                		//유저 아이디로 넘겨야함
 	                		
 	                		var uid = $(this).find("input[type=hidden]").val();

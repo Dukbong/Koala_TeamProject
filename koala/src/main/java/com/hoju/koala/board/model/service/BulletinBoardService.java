@@ -99,4 +99,7 @@ public interface BulletinBoardService {
 	//게시글 삭제 예정 삭제 메소드
 	int deleteScheduledBoard(int boardNo);
 
+	//공지글 조회 메소드
+	ArrayList<Board> selectNoticeList();
+
 }

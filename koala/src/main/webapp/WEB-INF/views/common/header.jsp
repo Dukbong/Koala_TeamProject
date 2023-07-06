@@ -325,10 +325,22 @@
                 			<c:when test='${path.contains("errorDetail")}'>
                 				<h4 class="headerName" onclick="adminPage();">Koala ErrorDetail</h4>     
                 			</c:when>
+                			<c:when test='${path.contains("issuesDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala IssuesDetail</h4>     
+                			</c:when>
+                			<c:when test='${path.contains("listDetail")}'>
+                				<h4 class="headerName" onclick="adminPage();">Koala WaitingLibrary</h4>     
+                			</c:when>
                 		</c:choose>    
                 		</c:when>
                 		<c:when test='${path.contains("together/sqlCloud")}'>
                 			<h4 class="headerName" onclick="sqlMain();">Koala SQL Cloud</h4>     
+                		</c:when>
+                		<c:when test='${path.contains("setting/list")}'>
+                			<h4 class="headerName" onclick="adminPage();">Koala LibraryList</h4>     
+                		</c:when>
+                		<c:when test='${path.contains("setting/detail")}'>
+                			<h4 class="headerName" onclick="adminPage();">Koala LibraryDetail</h4>     
                 		</c:when>
                 		<c:when test='${path.contains("errorBoard")}'>
                 		<!-- koala/errorBoard/~~~ >> 설희 -->                		
@@ -463,40 +475,52 @@
 	<!-- 메신저 스크립트 -->
 	<script>
 		$(function(){
-			$("#searchUserBtn").on("click", function(){
+			
+			$("#messengerModal input[type=text]").on("keydown", function(e){
+				if(e.keyCode == 13){
+					e.preventDefault();
+					$("#messengerModal #searchUserBtn").click();
+				}
+			});
+			
+			
+			
+			
+			$("#messengerModal #searchUserBtn").on("click", function(){
 				var searchUser = $("#messengerModal #searchUser").val();
 				
 				console.log(searchUser);
 				
-				$.ajax({
-					url:"/koala/member/searchUser",
-					data:{
-						searchUser:$("#messengerModal #searchUser").val()
-					},
-					success:function(list){
-						var str = "<tr><th>--검색결과--</th></tr>";
-						
-						if(list != null){
-							for(var i in list){
-								str += "<tr id='connectChat' data-bs-toggle='modal' data-bs-target='#chatRoomModal'>"
-									 + "<td>"+list[i].nickName+"</td>"
-									 + "</tr>";
+				if(searchUser != ""){
+					$.ajax({
+						url:"/koala/member/searchUser",
+						data:{
+							searchUser:$("#messengerModal #searchUser").val()
+						},
+						success:function(list){
+							var str = "<tr><th>--검색결과--</th></tr>";
+							
+							if(list != null){
+								for(var i in list){
+									str += "<tr id='connectChat' data-bs-toggle='modal' data-bs-target='#chatRoomModal'>"
+										 + "<td>"+list[i].nickName+"</td>"
+										 + "</tr>";
+								}
+							}else{
+								str += "<tr><td>조회된 회원이 없습니다.</td></tr>";
 							}
-						}else{
-							str += "<tr><td>조회된 회원이 없습니다.</td></tr>";
+							
+							
+							$("#searchList").html(str);
+						},
+						error:function(){
+							alert("유저 찾기 통신 오류");
+						},
+						complete:function(){
+							$("#searchUser").val("");
 						}
-						
-						
-						$("#searchList").html(str);
-					},
-					error:function(){
-						alert("유저 찾기 통신 오류");
-					},
-					complete:function(){
-						$("#searchUser").val("");
-					}
-				});
-				
+					});
+				}
 				
 			});
 			
@@ -558,10 +582,16 @@
 		var sock;
 		
 		function connectChatServer(){
-			sock = new SockJS("/chat");
+			sock = new SockJS("/koala/chat");
 			
 			sock.onopen = function(){
 				console.log("sockjs open");
+				var roomNumber = "방번호"; // 실제 방 번호로 대체해야 함
+				var message = {
+				  type: "join",
+				  roomNumber: roomNumber
+				};
+				sock.send(JSON.stringify(message));
 			}
 			
 			sock.onmessage = function(e){
@@ -608,27 +638,40 @@
 				var msg = $("#chat-room>.input-box>input").val();
 				console.log(msg);
 				
-				
-				
 				var str = "";
 				
-				str += "<div class='chat-message mine'>"
-					 + "<section><i class='fa fa-user'></i></section>"
-					 + "<span>${loginUser.nickName}</span>"
-					 + "<div>"+msg+"</div>"
-					 + "</div>";
+				if(msg != ""){
+					
+					str += "<div class='chat-message mine'>"
+						 + "<section><i class='fa fa-user'></i></section>"
+						 + "<span>${loginUser.nickName}</span>"
+						 + "<div>"+msg+"</div>"
+						 + "</div>";
+					
+					$("#chat-room>.message-box>.message-group").append(str);
+					   
+					$("#chat-room>.input-box>input").val("");
+					
+					//sockJS.send(msg);
+					
+					scrollChatToBottom();
+				}
 				
-				$("#chat-room>.message-box>.message-group").append(str);
-				   
-				$("#chat-room>.input-box>input").val("");
 				
-				//sockJS.send(msg);
 			});
 		    
 			
 			
 		});
+		var msgBox = $(".message-box");
 		
+		//스킄롤 젤 밑으로 내리기
+		function scrollChatToBottom() {
+			msgBox.scrollTop(msgBox[0].scrollHeight);
+		}
+		
+		
+	
 	</script>
 	<!-- <script>
 		$(function(){

@@ -1,6 +1,7 @@
 package com.hoju.koala.common.model.vo;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -39,6 +41,8 @@ public class EmailCheck {
 	
 	private Properties prop;
 	
+	@Autowired
+	private ServletContext context;
 	//램덤숫자(6자리) 생성후 인증번호에 집어넣기
 	public void makeRandomNumber() {
 		
@@ -124,6 +128,7 @@ public class EmailCheck {
 	
 	//아이디와 임시 비밀번호 보내기
 	//에서 -> 아이디만 보내고 사용자가 링크를 눌렀을때 기존 pwd에서 임시비밀번호로 발급
+	
 	public void forgetUserEmail(String email, String userId) throws MessagingException {
 		
 //		makeRandomPwd();
@@ -134,24 +139,41 @@ public class EmailCheck {
 		//고유 식별자 토큰 생성
 		String token = UUID.randomUUID().toString();
 		
+		
 		//맵에 해당유저와 토큰값저장
 		tokenMap.put(userId, token);
 		
 		prop = new Properties();
+		
+		String localhost = "";
+		String port = "";
+		try {
+			prop.load(new FileInputStream(context.getRealPath("WEB-INF/spring/setting-config.properties")));
+			
+			localhost = prop.getProperty("localhost");
+			port = prop.getProperty("port");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		StringBuffer buf = new StringBuffer();
 		buf.append("<h3>Koala 회원 정보 입니다.</h3><br><br>아이디 : ");
 		buf.append(userId);
 		buf.append("<br>");
 		buf.append("임시비밀번호를 발급받으시려면 링크를 눌러주세요.<br>	 <a href='http://");
-//		buf.append(localhost)
+		buf.append(localhost);
+		buf.append(":");
+		buf.append(port);
 		buf.append("/koala/member/tempPwd?userId=");
 		buf.append(userId);
 		buf.append("&token=");
 		buf.append(tokenMap.get(userId));
-		buf.append("'>링크입니다.</a>");
+		buf.append("'>임시비밀번호 발급</a>");
 		
 		String content = buf.toString();
+		
+		System.out.println(content);
 		mailSend(setFrom, toMail, title, content);
 		
 //		return randomPwd;
