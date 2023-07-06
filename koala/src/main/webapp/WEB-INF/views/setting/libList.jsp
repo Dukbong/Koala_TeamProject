@@ -91,9 +91,6 @@
 							<input type="hidden" value="${slist.get(i).settingNo }">
 							<div class="liName ii">&nbsp;${slist.get(i).settingTitle }</div>
 							<div class="liCount">
-							<c:if test="${(not empty loginUser) and (loginUser.type == 2)}">
-								<button style="font-size: 15px; width: 60%; height: 60%;" class="btn btn-danger deletelib"  type="button">Delete</button>
-							</c:if>
 							</div>
 							<div class="lidescrip ii">${slist.get(i).sortDescription}</div>
 						</div>
@@ -103,9 +100,6 @@
 								<input type="hidden" value="${slist.get(i+1).settingNo }">
 								<div class="liName ii">&nbsp;${slist.get(i+1).settingTitle }</div>
 								<div class="liCount">
-								<c:if test="${(not empty loginUser) and (loginUser.type == 2)}">
-									<button style="font-size: 15px; width: 60%; height: 60%;" class="btn btn-danger deletelib" type="button">Delete</button>
-								</c:if>
 								</div>
 								<div class="lidescrip ii">${slist.get(i+1).sortDescription}</div>
 							</div>
@@ -142,15 +136,6 @@
 				location.href="detail?settingNo="+settingNo+"&settingTitle="+settingTitle;
 			});
 			
-			$(".deletelib").on("click", function(){
-				if(confirm("삭제 하시겠습니끼?")){
-					var settingNo = $(this).parent().parent().children().eq(0).val();
-					location.href="/koala/setting/delete?settingNo="+settingNo;
-					return false; // false로 하여 이벤트가 추가 되는걸 막는다.
-				}else{
-					return false; // false로 하여 이벤트가 추가 되는걸 막는다.
-				}
-			});
 		});
 	</script>
 </body>

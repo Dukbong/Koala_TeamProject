@@ -88,9 +88,8 @@
                 <ul id="navi">
                     <li><a href="">CreateCode && DownloadFile</a>
                         <ul>
-                            <li><a href="">ex1CreateCodeCode</a></li>
-                            <li><a href="">ex2CreateCode</a></li>
-                            <li><a href="">ex3CreateCodeCode</a></li>
+                            <li><a href="">SELECT * FROM LIBRARY HELPER</a></li>
+                            <li><a href="">new List&lt; Create Code &gt;</a></li>
                         </ul>
                     </li>
                     <li><a href="/koala/bulletinBoard/list">Community(All user);</a></li>
