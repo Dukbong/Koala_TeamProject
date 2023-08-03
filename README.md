@@ -3,6 +3,7 @@
 운영체제 : Window 10 <br>
 사용언어 : Java, JSP, JavaScript, jQuery, HTML/CSS <br>
 FramWork : Spring <br>
+프로젝트 관리도구 : Maven <br>
 DB  : Oracle <br>
 Tool : STS <br>
 WAS : Tomcat <br>
