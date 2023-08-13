@@ -1,14 +1,14 @@
 ## 사용 기술 및 개발 환경
 
 운영체제 : Window 10 <br>
-사용언어 : Java, JSP, JavaScript, jQuery, HTML/CSS <br>
-FramWork : Spring <br>
+사용언어 : Java, JSP, JavaScript, jQuery, HTML5/CSS3 <br>
+FramWork : Spring Framework 5.2.24 release <br>
 프로젝트 관리도구 : Maven <br>
-DB  : Oracle <br>
+DB  : Oracle 11g <br>
 Tool : STS <br>
-WAS : Tomcat <br>
+WAS : Tomcat 9.0 <br>
 Collaboration : GitHub <br>
-기타사항 : Mybatis <br><br>
+기타사항 : Mybatis 3.5.11 <br><br>
 
 ## 프로젝트 소개
 
